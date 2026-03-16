@@ -1,4 +1,3 @@
-# toxicity-nav
 
 Cross-scale geospatial logic for real-time urban toxicity orchestration for healthier navigation of vulnerable commuters.
 
