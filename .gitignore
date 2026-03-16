@@ -1,28 +1,28 @@
 # Python
 __pycache__/
 *.py[cod]
-*.egg-info/
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .venv/
-.env
+venv/
 
 # Node
-node_modules/
-dist/
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+
+# Data caches and large generated artifacts
+data/era5_cache/*
+data/sentinel5p_cache/*
+data/graphs/bangalore_full.graphml
+
+# Jupyter
+.ipynb_checkpoints/
 
 # Rust
-/target/
+router/rust_astar/target/
 
-# Data artifacts
-*.parquet
-*.feather
-*.h5
-*.npy
-*.npz
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
