@@ -52,8 +52,13 @@ Template for required environment variables:
 GEE_SERVICE_ACCOUNT=
 GEE_KEY_FILE=
 TOMTOM_API_KEY=
+MOSDAC_USERNAME=
+MOSDAC_PASSWORD=
+MOSDAC_PRODUCT=INSAT_AMV
 REDIS_URL=redis://localhost:6379
 ERA5_CACHE_DIR=./data/era5_cache
+INSAT_REFRESH_MINUTES=15
+TRAFFIC_ANOMALY_ALPHA=1.5
 ```
 
 ### `.github/workflows/ci.yml`
@@ -67,15 +72,15 @@ Runs on every pull request:
 
 ## Module 1 — `ingestion/`
 
-**Purpose:** Creates the "Live State" of the atmosphere. Pulls Sentinel-5P and ERA5 data, nowcasts forward using wind vectors, injects traffic spikes, and pushes the result to Redis Streams as the shared "Global Truth" Physics Plane.
+**Purpose:** Creates the "Live State" of the atmosphere. Pulls Sentinel-5P and ERA5 base data, applies INSAT-style intra-day wind updates, injects threshold-gated traffic spikes, and pushes the result to Redis Streams as the shared "Global Truth" Physics Plane.
 
 ```
 ingestion/
 ├── README.md
 ├── __init__.py
-├── gee_pipeline.py          # Main GEE ingestion: Sentinel-5P NO₂/SO₂ + ERA5 wind
-├── nowcaster.py             # Multi-latency nowcasting: advects pollution mass using ERA5
-├── traffic_spike.py         # TomTom/Google Maps API → source spike injection
+├── gee_pipeline.py          # Main ingestion: Sentinel-5P + ERA5 base + INSAT-like wind refresh
+├── nowcaster.py             # Multi-latency nowcasting: advects pollution mass using current wind field
+├── traffic_spike.py         # Threshold-gated traffic anomaly injection (D > alpha*B)
 ├── physics_plane.py         # Builds 100m × 100m UTM grid (Graster) for Bangalore
 ├── redis_publisher.py       # Pushes Physics Plane to Redis Streams as Global Truth
 ├── bias_correction.py       # TROPOMI underestimation correction layer (East et al. 2022)
@@ -83,11 +88,11 @@ ingestion/
 └── tests/
     ├── __init__.py
     ├── test_gee_pipeline.py      # Mock GEE calls, validate NO₂ array shape and dtype
-    ├── test_nowcaster.py         # Validate wind advection with known ERA5 vectors
-    ├── test_traffic_spike.py     # Mock TomTom response, verify spike injection values
+    ├── test_nowcaster.py         # Validate wind advection with known vectors
+    ├── test_traffic_spike.py     # Verify threshold gating and anomalous-excess injection
     ├── test_physics_plane.py     # Validate 100m UTM grid bounds over Bangalore
     └── fixtures/
-        ├── era5_sample.nc        # Small ERA5 cached NetCDF for offline testing
+        ├── era5_sample.nc        # Small ERA5 cached NetCDF for offline base-state testing
         └── sentinel5p_sample.nc  # Small TROPOMI NO₂ sample for offline testing
 ```
 
@@ -96,12 +101,12 @@ ingestion/
 **`gee_pipeline.py`**
 - Authenticates with GEE using a service account key
 - Pulls Sentinel-5P TROPOMI `NO2_column_number_density` and `SO2_column_number_density`
-- Pulls ERA5 `u_component_of_wind`, `v_component_of_wind`, and `boundary_layer_height`
+- Uses ERA5 for base initialization and INSAT AMV feed for intra-day wind refresh
 - Returns numpy arrays clipped to Bangalore bounding box
 - Refresh interval: every 5–15 minutes (configurable via `INGESTION_REFRESH_MINUTES`)
 
 **`nowcaster.py`**
-- Since satellite passes are daily, uses fresh ERA5 wind data (pulled every 5 min) to "push" the existing pollution mass forward in time
+- Since satellite passes are daily, uses refreshed intra-day winds to "push" the existing pollution mass forward in time
 - Implements a 2D Eulerian advection step: `C(x,y,t+dt) = C(x,y,t) - u*dC/dx - v*dC/dy`
 - Accepts the current `physics_plane` array and wind vectors `(u, v)` as inputs
 - Returns the nowcast concentration array `C(x, y, t)` ready for Redis
@@ -109,7 +114,8 @@ ingestion/
 **`traffic_spike.py`**
 - Queries TomTom Traffic Flow API for current congestion across the Bangalore road network
 - Maps road-level congestion to the 100m grid by rasterizing OSMnx edge geometries
-- Computes "Source Spike" term `S(x, y, t)` — a toxicity impulse proportional to traffic density
+- Computes anomaly gate `D(l,t) > alpha * B(l,t)` per segment/time-of-day baseline
+- Injects source term `S(x, y, t) = k * (D(l,t) - B(l,t))` only when threshold is exceeded
 - Injects `S` into the concentration grid before wind advection begins
 
 **`physics_plane.py`**
@@ -472,7 +478,7 @@ data/
 
 ```
 notebooks/
-├── 01_eda_physics_plane.ipynb      # Visualise Sentinel-5P + ERA5 over Bangalore; validate 100m grid
+├── 01_eda_physics_plane.ipynb      # Visualise Sentinel-5P + ERA5/INSAT hybrid over Bangalore; validate 100m grid
 ├── 02_gnn_training.ipynb           # Full PyTorch Geometric training loop for PI-GNN; loss curves
 ├── 03_plume_validation.ipynb       # Compare Gaussian Plume predictions vs KSPCB station readings
 ├── 04_gale_shapley_demo.ipynb      # Interactive GS matching on 20 simulated commuters; equilibrium proof
@@ -487,8 +493,8 @@ notebooks/
 | Layer | Technology | Purpose |
 |---|---|---|
 | Satellite data | Sentinel-5P TROPOMI via GEE | NO₂, SO₂ base toxicity |
-| Atmospheric driver | ERA5 / GFS via GEE | Wind vectors, BLH |
-| Traffic proxy | TomTom Traffic Flow API | Real-time source spike |
+| Atmospheric driver | ERA5 base + INSAT-3D/3DR AMV updates | Wind vectors, BLH cadence |
+| Traffic proxy | TomTom Traffic Flow API + baseline profiler | Threshold-gated source spike |
 | Road network | OSMnx (OpenStreetMap) | Graph G=(V,E) |
 | State layer | Redis 7 Streams | Global Truth (GrasterState) |
 | GNN framework | PyTorch Geometric | PI-GNN message passing |

@@ -11,10 +11,18 @@ class Settings(BaseSettings):
 	gee_service_account: str = ""
 	gee_key_file: str = ""
 	tomtom_api_key: str = ""
+	mosdac_username: str = ""
+	mosdac_password: str = ""
+	mosdac_product: str = "INSAT_AMV"
 	redis_url: str = "redis://localhost:6379"
 	era5_cache_dir: str = "./data/era5_cache"
 	sentinel_cache_dir: str = "./data/sentinel5p_cache"
 	ingestion_refresh_minutes: int = 15
+	insat_refresh_minutes: int = 15
+	era5_base_refresh_hours: int = 24
+	traffic_baseline_window_days: int = 30
+	traffic_anomaly_alpha: float = 1.5
+	traffic_emission_factor_k: float = 1.0
 	frontend_origin: str = "http://localhost:5173"
 	grid_bbox: str = Field(default="12.834,77.461,13.144,77.781")
 

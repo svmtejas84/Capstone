@@ -3,7 +3,7 @@ Cross-scale geospatial logic for real-time urban toxicity orchestration for heal
 
 ## Modules
 
-- ingestion: Live Environmental Component (Sentinel-5P, ERA5, traffic spikes, Redis stream publish)
+- ingestion: Live Environmental Component (Sentinel-5P, ERA5 base + INSAT intra-day winds, threshold-gated traffic spikes, Redis stream publish)
 - gnn: Physics-Informed GNN and wake prediction for dynamic edge concentrations
 - matcher: Batch Gale-Shapley stable matching for equilibrium route assignment
 - router: FastAPI service plus Rust/WASM A* integration surface
@@ -44,5 +44,6 @@ npm run dev
 
 ## Notes
 
-- This scaffold defaults to SIMULATION_MODE and does not require live GEE or TomTom calls.
+- This scaffold defaults to SIMULATION_MODE and does not require live GEE, Mosdac, or TomTom calls.
+- Methodology amendment (March 2026): keep ERA5 as base initialization layer, use INSAT AMV cadence for intra-day wind updates, and inject traffic spikes only when observed density exceeds alpha times baseline.
 - Data placeholders are committed for repository structure completeness.
