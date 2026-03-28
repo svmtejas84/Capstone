@@ -15,11 +15,9 @@ All timestamps are in IST (Asia/Kolkata).
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Optional
 
 import aiohttp
 import osmnx as ox
@@ -32,9 +30,9 @@ from ingestion.redis_publisher import (
 	publish_weather,
 	publish_airquality,
 	publish_sensors,
-	get_latest_weather,
 )
 from ingestion.data_fusion import fuse_weather_and_airquality
+from gnn.edge_weights import update_graph_toxicity_from_streams
 
 logger = get_logger(__name__)
 
@@ -190,29 +188,47 @@ class OSMGraphLoader:
 	"""Lazy loader for OpenStreetMap road network graph."""
 
 	_graph = None
+	_cache_path = Path("data/graphs/bangalore_utm.graphml")
+
+	@classmethod
+	def load_road_graph(cls):
+		"""Load/fetch Bangalore road graph and ensure UTM Zone 43N projection."""
+		if cls._graph is not None:
+			return cls._graph
+
+		try:
+			if cls._cache_path.exists():
+				logger.info("Loading cached UTM graph from %s", cls._cache_path)
+				cls._graph = ox.load_graphml(cls._cache_path)
+				return cls._graph
+
+			logger.info("Fetching Bangalore road network from OSM...")
+			raw_graph = ox.graph_from_place(
+				"Bangalore, India",
+				simplify=True,
+				retain_all=False,
+				network_type="drive",
+			)
+			logger.info("Projecting road network to EPSG:32643")
+			cls._graph = ox.projection.project_graph(raw_graph, to_crs="EPSG:32643")
+			cls._cache_path.parent.mkdir(parents=True, exist_ok=True)
+			ox.save_graphml(cls._graph, cls._cache_path)
+			logger.info(
+				"Cached projected graph at %s (%s nodes, %s edges)",
+				cls._cache_path,
+				len(cls._graph.nodes),
+				len(cls._graph.edges),
+			)
+		except Exception as e:
+			logger.error("Failed to load UTM road graph: %s", e)
+			cls._graph = None
+
+		return cls._graph
 
 	@classmethod
 	def get_graph(cls):
-		"""
-		Get or load the Bangalore road network graph.
-
-		OSMnx loads the directed graph where nodes are intersections and
-		edges are road segments.
-		"""
-		if cls._graph is None:
-			try:
-				logger.info("Loading Bangalore road network from OSM...")
-				cls._graph = ox.graph_from_place(
-					"Bangalore, India",
-					simplify=True,
-					retain_all=False,
-					network_type="drive",
-				)
-				logger.info(f"Loaded graph: {len(cls._graph.nodes)} nodes, {len(cls._graph.edges)} edges")
-			except Exception as e:
-				logger.error(f"Failed to load OSM graph: {e}")
-				cls._graph = None
-		return cls._graph
+		"""Backward-compatible alias for load_road_graph."""
+		return cls.load_road_graph()
 
 
 async def ingest_once(
@@ -289,14 +305,27 @@ async def run_ingestor(
 	"""
 	settings = get_settings()
 
-	while True:
-		try:
-			await ingest_once(redis_store, settings)
-		except Exception as e:
-			logger.error(f"Ingestion cycle failed: {e}", exc_info=True)
+	async def _toxicity_refresh_loop(store: RedisStore) -> None:
+		while True:
+			try:
+				update_graph_toxicity_from_streams(store)
+			except Exception as e:
+				logger.error(f"Toxicity refresh cycle failed: {e}", exc_info=True)
+			await asyncio.sleep(300)
 
-		logger.info(f"Sleeping for {refresh_minutes} minutes until next ingestion...")
-		await asyncio.sleep(refresh_minutes * 60)
+	toxicity_task = asyncio.create_task(_toxicity_refresh_loop(redis_store))
+
+	try:
+		while True:
+			try:
+				await ingest_once(redis_store, settings)
+			except Exception as e:
+				logger.error(f"Ingestion cycle failed: {e}", exc_info=True)
+
+			logger.info(f"Sleeping for {refresh_minutes} minutes until next ingestion...")
+			await asyncio.sleep(refresh_minutes * 60)
+	finally:
+		toxicity_task.cancel()
 
 
 if __name__ == "__main__":

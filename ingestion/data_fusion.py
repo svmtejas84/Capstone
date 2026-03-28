@@ -1,258 +1,170 @@
-"""
-Data fusion layer that converts point-based observations from Open-Meteo and AQICN
-into grid-based representations compatible with the GNN and downstream modules.
-
-Handles interpolation and spatial discretization of real-time sensor data.
-"""
-
 from __future__ import annotations
 
-from datetime import datetime, timezone, timedelta
-from typing import Optional
+from math import atan2, cos, radians, sin
+from typing import Any
 
+import networkx as nx
 import numpy as np
-from scipy.interpolate import griddata
+from pyproj import Transformer
 
+from gnn.graph_builder import load_utm_graph
 from shared.config import get_settings
-from shared.logging_utils import get_logger
 
-logger = get_logger(__name__)
-
-# IST timezone offset
-IST = timezone(timedelta(hours=5, minutes=30))
+_WGS84_TO_UTM43 = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
+_UTM43_TO_WGS84 = Transformer.from_crs("EPSG:32643", "EPSG:4326", always_xy=True)
 
 
-class GridInterpolator:
-	"""Converts point observations to grid representation."""
-
-	def __init__(
-		self,
-		min_lat: float,
-		min_lon: float,
-		max_lat: float,
-		max_lon: float,
-		grid_rows: int = 50,
-		grid_cols: int = 50,
-	):
-		"""
-		Initialize grid interpolator with bounding box and grid dimensions.
-
-		Args:
-			min_lat, min_lon: Southwest corner of grid
-			max_lat, max_lon: Northeast corner of grid
-			grid_rows, grid_cols: Number of grid cells
-		"""
-		self.min_lat = min_lat
-		self.min_lon = min_lon
-		self.max_lat = max_lat
-		self.max_lon = max_lon
-		self.grid_rows = grid_rows
-		self.grid_cols = grid_cols
-
-		# Create regular grid for interpolation targets
-		lat_vals = np.linspace(min_lat, max_lat, grid_rows)
-		lon_vals = np.linspace(min_lon, max_lon, grid_cols)
-		self.grid_lat, self.grid_lon = np.meshgrid(lat_vals, lon_vals, indexing="ij")
-		self.grid_points = np.column_stack([self.grid_lat.ravel(), self.grid_lon.ravel()])
-
-	def interpolate_scalar(
-		self,
-		value: float | None,
-		lat: float,
-		lon: float,
-		method: str = "constant",
-	) -> np.ndarray:
-		"""
-		Interpolate a scalar observation to grid.
-
-		For point data, uses nearest-neighbor or constant value fill if only one point.
-
-		Args:
-			value: Scalar observation value
-			lat: Latitude of observation
-			lon: Longitude of observation
-			method: Interpolation method ('constant', 'nearest', 'linear')
-
-		Returns:
-			Grid array of interpolated values
-		"""
+def _safe_float(value: object, default: float = 0.0) -> float:
+	try:
 		if value is None:
-			return np.zeros((self.grid_rows, self.grid_cols))
+			return default
+		return float(value)
+	except (TypeError, ValueError):
+		return default
 
-		if method == "constant":
-			# Fill entire grid with constant value
-			return np.full((self.grid_rows, self.grid_cols), value, dtype=float)
 
-		# For single-point data, use nearest-neighbor interpolation
-		points = np.array([[lat, lon]])
-		values = np.array([value])
+def _extract_sensor_points(
+	weather_data: dict[str, object] | None,
+	aq_data: dict[str, object] | None,
+	sensors_data: dict[str, object] | None,
+) -> list[dict[str, float]]:
+	settings = get_settings()
+	points: list[dict[str, float]] = []
 
+	base_lat = _safe_float((aq_data or {}).get("lat"), settings.bangalore_lat)
+	base_lon = _safe_float((aq_data or {}).get("lon"), settings.bangalore_lon)
+	points.append(
+		{
+			"lat": base_lat,
+			"lon": base_lon,
+			"no2": _safe_float((aq_data or {}).get("nitrogen_dioxide")),
+			"so2": _safe_float((aq_data or {}).get("sulphur_dioxide")),
+			"pm2_5": _safe_float((aq_data or {}).get("pm2_5")),
+		}
+	)
+
+	sensor_lat = _safe_float((sensors_data or {}).get("lat"), settings.bangalore_lat)
+	sensor_lon = _safe_float((sensors_data or {}).get("lon"), settings.bangalore_lon)
+	if sensors_data:
+		points.append(
+			{
+				"lat": sensor_lat,
+				"lon": sensor_lon,
+				"no2": _safe_float(sensors_data.get("no2")),
+				"so2": _safe_float(sensors_data.get("so2")),
+				"pm2_5": _safe_float(sensors_data.get("pm2_5")),
+			}
+		)
+
+	if weather_data and not aq_data and not sensors_data:
+		points.append(
+			{
+				"lat": _safe_float(weather_data.get("lat"), settings.bangalore_lat),
+				"lon": _safe_float(weather_data.get("lon"), settings.bangalore_lon),
+				"no2": 0.0,
+				"so2": 0.0,
+				"pm2_5": 0.0,
+			}
+		)
+
+	return points
+
+
+def _edge_midpoint_xy(graph: nx.MultiDiGraph, u: int, v: int, data: dict[str, object]) -> tuple[float, float]:
+	geom = data.get("geometry")
+	if geom is not None:
 		try:
-			interpolated = griddata(
-				points,
-				values,
-				self.grid_points,
-				method="nearest",
-				fill_value=value,
-			)
-			return interpolated.reshape((self.grid_rows, self.grid_cols))
-		except Exception as e:
-			logger.warning(f"Interpolation failed: {e}, using constant fill")
-			return np.full((self.grid_rows, self.grid_cols), value, dtype=float)
+			coords = list(geom.coords)
+			if len(coords) >= 2:
+				mx = (coords[0][0] + coords[-1][0]) / 2.0
+				my = (coords[0][1] + coords[-1][1]) / 2.0
+				return float(mx), float(my)
+		except Exception:
+			pass
 
-	def wind_to_components(
-		self,
-		wind_speed: float | None,
-		wind_direction: float | None,
-	) -> tuple[np.ndarray, np.ndarray]:
-		"""
-		Convert wind speed and direction to u,v components on grid.
+	x1 = _safe_float(graph.nodes[u].get("x"))
+	y1 = _safe_float(graph.nodes[u].get("y"))
+	x2 = _safe_float(graph.nodes[v].get("x"))
+	y2 = _safe_float(graph.nodes[v].get("y"))
+	return (x1 + x2) / 2.0, (y1 + y2) / 2.0
 
-		Args:
-			wind_speed: Wind speed in m/s
-			wind_direction: Wind direction in degrees (0=North, 90=East, 180=South, 270=West)
 
-		Returns:
-			Tuple of (wind_u, wind_v) grids
-		"""
-		if wind_speed is None or wind_direction is None:
-			return (
-				np.zeros((self.grid_rows, self.grid_cols)),
-				np.zeros((self.grid_rows, self.grid_cols)),
-			)
+def _idw_pollution(edge_x: float, edge_y: float, sensor_points: list[dict[str, float]]) -> tuple[float, float, float]:
+	if not sensor_points:
+		return 0.0, 0.0, 0.0
 
-		# Convert direction to radians (meteorological convention: 0=N, 90=E)
-		rad = np.radians(wind_direction)
-		u = wind_speed * np.sin(rad)
-		v = wind_speed * np.cos(rad)
+	weighted_no2 = 0.0
+	weighted_so2 = 0.0
+	weighted_pm = 0.0
+	weight_sum = 0.0
 
-		# Fill grid with constant wind vectors (reasonable for small area)
-		wind_u = np.full((self.grid_rows, self.grid_cols), u, dtype=float)
-		wind_v = np.full((self.grid_rows, self.grid_cols), v, dtype=float)
+	for p in sensor_points:
+		sx, sy = _WGS84_TO_UTM43.transform(p["lon"], p["lat"])
+		dx = edge_x - sx
+		dy = edge_y - sy
+		d2 = dx * dx + dy * dy
+		w = 1.0 / (d2 + 1.0)
+		weighted_no2 += w * p["no2"]
+		weighted_so2 += w * p["so2"]
+		weighted_pm += w * p["pm2_5"]
+		weight_sum += w
 
-		return wind_u, wind_v
+	if weight_sum <= 0.0:
+		return 0.0, 0.0, 0.0
+
+	return weighted_no2 / weight_sum, weighted_so2 / weight_sum, weighted_pm / weight_sum
+
+
+def _wind_factor(weather_data: dict[str, object] | None, edge_bearing_deg: float) -> float:
+	wind_speed = _safe_float((weather_data or {}).get("wind_speed_10m"), 0.2)
+	wind_dir = _safe_float((weather_data or {}).get("wind_direction_10m"), 0.0)
+	delta = abs(((edge_bearing_deg - wind_dir + 180.0) % 360.0) - 180.0)
+	angular = np.exp(-((delta / 45.0) ** 2))
+	return float(max(0.2, (1.0 + 0.15 * wind_speed) * angular))
 
 
 def fuse_weather_and_airquality(
-	weather_data: dict | None,
-	aq_data: dict | None,
-	sensors_data: dict | None,
-	settings=None,
-) -> dict[str, object]:
-	"""
-	Fuse point-based weather and air quality observations into grid format.
-
-	Creates GrasterState-compatible dictionary with grids for:
-	- concentration (from air quality measurements)
-	- wind_u, wind_v (from weather wind vectors)
-	- source_spike (placeholder for now; could use traffic data)
-
-	Args:
-		weather_data: Dictionary from Open-Meteo Forecast API
-		aq_data: Dictionary from Open-Meteo Air Quality API
-		sensors_data: Dictionary from AQICN API
-		settings: Configuration object (default: get from shared.config)
-
-	Returns:
-		Dictionary with grid-based state compatible with existing GNN pipelines
-	"""
+	weather_data: dict[str, object] | None,
+	aq_data: dict[str, object] | None,
+	sensors_data: dict[str, object] | None,
+	settings: Any | None = None,
+	graph: nx.MultiDiGraph | None = None,
+) -> dict[tuple[int, int], dict[str, float]]:
+	"""Interpolate pollution onto UTM road-graph edges using IDW from nearest sensor points."""
 	if settings is None:
 		settings = get_settings()
+	if graph is None:
+		graph = load_utm_graph()
 
-	# Parse grid bounds
-	min_lat, min_lon, max_lat, max_lon = settings.grid_bbox_tuple
+	sensor_points = _extract_sensor_points(weather_data, aq_data, sensors_data)
+	edge_payload: dict[tuple[int, int], dict[str, float]] = {}
 
-	# Create interpolator
-	interp = GridInterpolator(min_lat, min_lon, max_lat, max_lon, grid_rows=50, grid_cols=50)
+	for u, v, _k, data in graph.edges(keys=True, data=True):
+		emx, emy = _edge_midpoint_xy(graph, u, v, data)
+		no2, so2, pm2_5 = _idw_pollution(emx, emy, sensor_points)
 
-	# Extract measurements (use air quality primary source, fall back to sensors)
-	concentration_value = None
-	if aq_data and aq_data.get("pm2_5"):
-		concentration_value = aq_data["pm2_5"]
-	elif sensors_data and sensors_data.get("pm2_5"):
-		concentration_value = sensors_data["pm2_5"]
+		x1 = _safe_float(graph.nodes[u].get("x"))
+		y1 = _safe_float(graph.nodes[u].get("y"))
+		x2 = _safe_float(graph.nodes[v].get("x"))
+		y2 = _safe_float(graph.nodes[v].get("y"))
+		edge_bearing = (np.degrees(atan2((y2 - y1), (x2 - x1))) + 360.0) % 360.0
 
-	# Use NO2 if PM2.5 unavailable
-	if concentration_value is None:
-		if aq_data and aq_data.get("nitrogen_dioxide"):
-			concentration_value = aq_data["nitrogen_dioxide"]
-		elif sensors_data and sensors_data.get("no2"):
-			concentration_value = sensors_data["no2"]
+		base_pollution = max(0.0, no2 + so2 + pm2_5)
+		toxicity = base_pollution * _wind_factor(weather_data, edge_bearing)
 
-	# Extract wind data
-	wind_speed = weather_data.get("wind_speed_10m") if weather_data else None
-	wind_direction = weather_data.get("wind_direction_10m") if weather_data else None
+		edge_payload[(int(u), int(v))] = {
+			"no2": float(no2),
+			"so2": float(so2),
+			"pm2_5": float(pm2_5),
+			"toxicity": float(toxicity),
+			"x": float(emx),
+			"y": float(emy),
+		}
 
-	# Interpolate to grids
-	concentration = interp.interpolate_scalar(
-		concentration_value,
-		settings.bangalore_lat,
-		settings.bangalore_lon,
-		method="constant",
-	)
-
-	wind_u, wind_v = interp.wind_to_components(wind_speed, wind_direction)
-
-	# Source spike (placeholder: can be enhanced with traffic data)
-	source_spike = np.zeros((50, 50), dtype=float)
-
-	# Determine timestamp from data sources (prefer weather as primary)
-	timestamp_str = None
-	if weather_data:
-		timestamp_str = weather_data.get("timestamp")
-	elif aq_data:
-		timestamp_str = aq_data.get("timestamp")
-	elif sensors_data:
-		timestamp_str = sensors_data.get("timestamp")
-
-	if not timestamp_str:
-		timestamp_str = datetime.now(IST).isoformat()
-
-	return {
-		"concentration": concentration.round(4).tolist(),
-		"wind_u": wind_u.round(4).tolist(),
-		"wind_v": wind_v.round(4).tolist(),
-		"source_spike": source_spike.round(4).tolist(),
-		"timestamp": timestamp_str,
-		"metadata": {
-			"source": "open-meteo+aqicn",
-			"concentration_source": "pm2_5" if concentration_value else "no2",
-			"concentration_value": float(concentration_value) if concentration_value else None,
-			"wind_speed_ms": float(wind_speed) if wind_speed else None,
-			"wind_direction_deg": float(wind_direction) if wind_direction else None,
-		},
-	}
+	return edge_payload
 
 
-if __name__ == "__main__":
-	"""
-	Test data fusion locally.
-
-	Usage:
-		python -m ingestion.data_fusion
-	"""
-	import json
-
-	# Mock data for testing
-	weather = {
-		"wind_speed_10m": 2.5,
-		"wind_direction_10m": 45.0,
-		"temperature_2m": 28.5,
-		"timestamp": datetime.now(IST).isoformat(),
-	}
-
-	aq = {
-		"pm2_5": 35.2,
-		"nitrogen_dioxide": 42.1,
-		"timestamp": datetime.now(IST).isoformat(),
-	}
-
-	sensors = {
-		"pm2_5": 38.0,
-		"no2": 40.5,
-		"timestamp": datetime.now(IST).isoformat(),
-	}
-
-	result = fuse_weather_and_airquality(weather, aq, sensors)
-	print(json.dumps({k: v for k, v in result.items() if k != "concentration" and k != "wind_u" and k != "wind_v" and k != "source_spike"}, indent=2))
-	print(f"Grid shapes: concentration={np.array(result['concentration']).shape}, wind_u={np.array(result['wind_u']).shape}")
+def edge_midpoint_latlon(graph: nx.MultiDiGraph, u: int, v: int, data: dict[str, object]) -> tuple[float, float]:
+	x, y = _edge_midpoint_xy(graph, u, v, data)
+	lon, lat = _UTM43_TO_WGS84.transform(x, y)
+	return float(lat), float(lon)

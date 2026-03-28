@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from gnn.edge_weights import compute_edge_weights
+from gnn.graph_builder import load_utm_graph
 from ingestion.data_fusion import fuse_weather_and_airquality
 from ingestion.redis_publisher import get_latest_airquality, get_latest_sensors, get_latest_weather
 from shared.config import get_settings
@@ -22,10 +23,10 @@ def _edge_keys() -> list[tuple[int, int]]:
 
 
 def build_gnn_dataset(samples: int, seed_start: int = 1000) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-	"""Generate tensors for GNN training from ingestion snapshots.
+	"""Generate edge-level tensors for GNN training from stream snapshots.
 
 	Returns:
-		features: [N, 4, H, W] concentration + wind_u + wind_v + source_spike
+		features: [N, E, 4] no2 + so2 + pm2_5 + base_toxicity
 		targets: [N, E] edge weight targets in sorted edge order
 		edge_index: [E, 2] edge node pairs aligned with targets
 	"""
@@ -35,6 +36,7 @@ def build_gnn_dataset(samples: int, seed_start: int = 1000) -> tuple[np.ndarray,
 	edges = _edge_keys()
 	edge_index = np.array(edges, dtype=np.int64)
 	settings = get_settings()
+	graph = load_utm_graph()
 	store = RedisStore()
 	store.connect()
 
@@ -45,16 +47,26 @@ def build_gnn_dataset(samples: int, seed_start: int = 1000) -> tuple[np.ndarray,
 		weather = get_latest_weather(store)
 		airquality = get_latest_airquality(store)
 		sensors = get_latest_sensors(store)
-		payload = fuse_weather_and_airquality(weather, airquality, sensors, settings)
-		concentration = np.array(payload["concentration"], dtype=np.float32)
-		wind_u = np.array(payload["wind_u"], dtype=np.float32)
-		wind_v = np.array(payload["wind_v"], dtype=np.float32)
-		source_spike = np.array(payload["source_spike"], dtype=np.float32)
+		edge_payload = fuse_weather_and_airquality(weather, airquality, sensors, settings, graph=graph)
 
-		edge_map = compute_edge_weights(concentration, wind_u=wind_u, wind_v=wind_v)
+		feature_vec = []
+		for e in edges:
+			vals = edge_payload.get(e, {"no2": 0.0, "so2": 0.0, "pm2_5": 0.0, "toxicity": 0.0})
+			feature_vec.append(
+				[
+					float(vals.get("no2", 0.0)),
+					float(vals.get("so2", 0.0)),
+					float(vals.get("pm2_5", 0.0)),
+					float(vals.get("toxicity", 0.0)),
+				]
+			)
+		features.append(np.array(feature_vec, dtype=np.float32))
+
+		wind_u = np.array([[float((weather or {}).get("wind_speed_10m", 0.2))]], dtype=np.float32)
+		wind_v = np.array([[float((weather or {}).get("wind_direction_10m", 0.0))]], dtype=np.float32)
+		edge_map = compute_edge_weights(np.ones((1, 1), dtype=np.float32), wind_u=wind_u, wind_v=wind_v)
 		target_vec = np.array([float(edge_map[e]) for e in edges], dtype=np.float32)
 
-		features.append(np.stack([concentration, wind_u, wind_v, source_spike], axis=0))
 		targets.append(target_vec)
 
 	return np.stack(features, axis=0), np.stack(targets, axis=0), edge_index
@@ -77,7 +89,7 @@ def save_gnn_dataset(output_dir: Path, samples: int, seed_start: int = 1000) -> 
 		"features_shape": list(features.shape),
 		"targets_shape": list(targets.shape),
 		"edge_index_shape": list(edge_index.shape),
-		"feature_channels": ["concentration", "wind_u", "wind_v", "source_spike"],
+		"feature_channels": ["no2", "so2", "pm2_5", "base_toxicity"],
 	}
 	meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 	return npz_path, meta_path

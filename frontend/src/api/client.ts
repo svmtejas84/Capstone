@@ -28,9 +28,14 @@ type WakeFeature = {
 };
 
 export type PlumeResponse = {
-	grid: number[][];
-	wind_u: number[][];
-	wind_v: number[][];
+	edges: Array<{
+		u: number;
+		v: number;
+		k: number;
+		lat: number;
+		lon: number;
+		toxicity: number;
+	}>;
 	timestamp: string;
 	wake?: WakeFeature;
 };
