@@ -61,13 +61,17 @@ class OpenMeteoIngestor:
 		params = {
 			"latitude": self.lat,
 			"longitude": self.lon,
-			"current": (
-				"temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,"
-				"wind_direction_10m,wind_gusts_10m,weather"
+			"hourly": (
+				"wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m,"
+				"relative_humidity_2m,surface_pressure"
 			),
-			"hourly": "wind_speed_10m,wind_direction_10m,boundary_layer_height",
+			"current": (
+				"wind_speed_10m,wind_direction_10m,wind_gusts_10m,temperature_2m,"
+				"relative_humidity_2m,surface_pressure"
+			),
 			"wind_speed_unit": "ms",
 			"timezone": "Asia/Kolkata",
+			"forecast_days": "1",
 		}
 
 		try:
@@ -75,13 +79,12 @@ class OpenMeteoIngestor:
 				if resp.status == 200:
 					data = await resp.json()
 					current = data.get("current", {})
-					hourly = data.get("hourly", {})
 
 					return {
 						"wind_speed_10m": current.get("wind_speed_10m"),
 						"wind_direction_10m": current.get("wind_direction_10m"),
 						"wind_gusts_10m": current.get("wind_gusts_10m"),
-						"boundary_layer_height": hourly.get("boundary_layer_height", [None])[0],
+						"boundary_layer_height": 500.0,
 						"temperature_2m": current.get("temperature_2m"),
 						"relative_humidity_2m": current.get("relative_humidity_2m"),
 						"surface_pressure": current.get("surface_pressure"),
@@ -139,10 +142,11 @@ class AQICNIngestor:
 	"""Async client for AQICN ground-level sensor API."""
 
 	def __init__(self, settings):
-		self.aqicn_url = settings.aqicn_url
-		self.aqicn_token = settings.aqicn_token
+		resolved_settings = settings or get_settings()
+		self.aqicn_url = resolved_settings.aqicn_url
+		self.aqicn_token = resolved_settings.aqicn_token
 		if not self.aqicn_token:
-			logger.warning("AQICN_TOKEN not configured; sensor validation will be skipped")
+			logger.warning("AQICN token not set — skipping sensor fetch")
 
 	async def fetch_sensors(self, session: aiohttp.ClientSession) -> dict[str, object] | None:
 		"""
@@ -152,12 +156,14 @@ class AQICNIngestor:
 			Dictionary with sensor measurements and metadata.
 		"""
 		if not self.aqicn_token:
+			logger.warning("AQICN token not set — skipping sensor fetch")
 			return None
 
-		params = {"token": self.aqicn_token}
+		separator = "&" if "?" in self.aqicn_url else "?"
+		request_url = f"{self.aqicn_url}{separator}token={self.aqicn_token}"
 
 		try:
-			async with session.get(self.aqicn_url, params=params, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+			async with session.get(request_url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
 				if resp.status == 200:
 					data = await resp.json()
 					if data.get("status") == "ok":
@@ -278,7 +284,13 @@ async def ingest_once(
 		logger.info("No sensor data available (AQICN token may not be configured)")
 
 	# Fuse data and create grid representation for GNN/routing
-	fused_state = fuse_weather_and_airquality(weather_data, aq_data, sensors_data, settings)
+	fused_state = fuse_weather_and_airquality(
+		weather_data,
+		aq_data,
+		sensors_data,
+		settings,
+		stringify_keys=True,
+	)
 	publish_state(redis_store, fused_state)  # Publish to legacy stream for backwards compatibility
 	logger.debug(f"Published fused grid state to legacy stream")
 

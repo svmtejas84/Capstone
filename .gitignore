@@ -33,3 +33,9 @@ data/raw/*meteostat*key*
 # Rust
 router/rust_astar/target/
 
+*.graphml
+data/graphs/
+*.json
+!package.json
+!tsconfig.json
+

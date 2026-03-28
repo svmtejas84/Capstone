@@ -123,13 +123,20 @@ def _wind_factor(weather_data: dict[str, object] | None, edge_bearing_deg: float
 	return float(max(0.2, (1.0 + 0.15 * wind_speed) * angular))
 
 
+def _edge_key(u: int, v: int, stringify_keys: bool) -> tuple[int, int] | str:
+	if stringify_keys:
+		return f"{int(u)}_{int(v)}"
+	return (int(u), int(v))
+
+
 def fuse_weather_and_airquality(
 	weather_data: dict[str, object] | None,
 	aq_data: dict[str, object] | None,
 	sensors_data: dict[str, object] | None,
 	settings: Any | None = None,
 	graph: nx.MultiDiGraph | None = None,
-) -> dict[tuple[int, int], dict[str, float]]:
+	stringify_keys: bool = False,
+) -> dict[tuple[int, int], dict[str, float]] | dict[str, dict[str, float]]:
 	"""Interpolate pollution onto UTM road-graph edges using IDW from nearest sensor points."""
 	if settings is None:
 		settings = get_settings()
@@ -137,7 +144,7 @@ def fuse_weather_and_airquality(
 		graph = load_utm_graph()
 
 	sensor_points = _extract_sensor_points(weather_data, aq_data, sensors_data)
-	edge_payload: dict[tuple[int, int], dict[str, float]] = {}
+	edge_payload: dict[tuple[int, int], dict[str, float]] | dict[str, dict[str, float]] = {}
 
 	for u, v, _k, data in graph.edges(keys=True, data=True):
 		emx, emy = _edge_midpoint_xy(graph, u, v, data)
@@ -152,7 +159,7 @@ def fuse_weather_and_airquality(
 		base_pollution = max(0.0, no2 + so2 + pm2_5)
 		toxicity = base_pollution * _wind_factor(weather_data, edge_bearing)
 
-		edge_payload[(int(u), int(v))] = {
+		edge_payload[_edge_key(int(u), int(v), stringify_keys)] = {
 			"no2": float(no2),
 			"so2": float(so2),
 			"pm2_5": float(pm2_5),
