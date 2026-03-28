@@ -16,9 +16,16 @@ frontend/dist/
 .env
 
 # Data caches and large generated artifacts
+data/raw/
+data/era5_cache/
+data/sentinel5p_cache/
 data/era5_cache/*
 data/sentinel5p_cache/*
 data/graphs/bangalore_full.graphml
+data/raw/metesotat_ingestion.txt
+data/raw/meteostat_ingestion*.txt
+data/raw/metesotat_ingestion*.txt
+data/raw/*meteostat*key*
 
 # Jupyter
 .ipynb_checkpoints/

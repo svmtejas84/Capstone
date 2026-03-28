@@ -66,4 +66,6 @@ npm run dev
 
 - This scaffold defaults to SIMULATION_MODE and does not require live GEE, Mosdac, or TomTom calls.
 - Methodology amendment (March 2026): keep ERA5 as base initialization layer, use INSAT AMV cadence for intra-day wind updates, and inject traffic spikes only when observed density exceeds alpha times baseline.
+- Optional atmospheric source toggle supports Meteostat via RapidAPI (`ATMOSPHERIC_DRIVER=METEOSTAT`), with key loaded from environment.
+- Raw ingestion snapshots are written to `data/raw` for traceability.
 - Data placeholders are committed for repository structure completeness.

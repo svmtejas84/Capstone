@@ -6,8 +6,9 @@ from typing import Any
 import numpy as np
 
 from gnn.edge_weights import compute_edge_weights
-from ingestion.gee_pipeline import build_next_payload
-from ingestion.redis_publisher import get_latest_state
+from ingestion.data_fusion import fuse_weather_and_airquality
+from ingestion.redis_publisher import get_latest_airquality, get_latest_sensors, get_latest_weather
+from shared.config import get_settings
 from shared.redis_client import RedisStore
 
 _store = RedisStore()
@@ -22,10 +23,11 @@ def redis_store() -> RedisStore:
 
 
 def latest_plume_state() -> dict[str, Any]:
-	state = get_latest_state(_store)
-	if state is None:
-		return build_next_payload(seed=42)
-	return state
+	settings = get_settings()
+	weather = get_latest_weather(_store)
+	airquality = get_latest_airquality(_store)
+	sensors = get_latest_sensors(_store)
+	return fuse_weather_and_airquality(weather, airquality, sensors, settings)
 
 
 def latest_edge_weight_values() -> list[float]:

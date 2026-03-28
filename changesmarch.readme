@@ -1,0 +1,242 @@
+# Capstone Architecture and March Changes
+
+## Project Architecture (Current State)
+
+### System Goal
+Real-time urban air-toxicity-aware navigation for vulnerable commuters in Bangalore.
+The platform models pollution as a dynamic wind-driven wake and routes users to lower-exposure corridors.
+
+### High-Level Module Map
+
+1. `ingestion/`
+- Builds and updates environmental state from live APIs.
+- Publishes live updates to Redis Streams as shared system state.
+- Maintains compatibility with older synthetic/legacy ingestion flows.
+
+2. `gnn/`
+- Converts environmental state into dynamic toxicity edge signals.
+- Contains plume/wake logic and edge-weight utilities consumed by routing.
+
+3. `matcher/`
+- Performs commuter-to-corridor allocation with batch matching logic.
+- Uses preference ranking and quota logic to balance safety and capacity.
+
+4. `router/`
+- FastAPI service exposing health/plume/route/audit endpoints.
+- Integrates edge costs, wake prediction, and stable corridor assignment.
+
+5. `shared/`
+- Centralized settings, schemas, logging, and Redis client.
+
+6. `frontend/`
+- Vite + React client for visualization and interaction.
+
+7. `data/` and `notebooks/`
+- Fixtures, raw snapshots, training artifacts, and analysis notebooks.
+
+### Runtime Data Flow
+
+1. `ingestion/ingestor.py` asynchronously fetches data from:
+- Open-Meteo Forecast API
+- Open-Meteo Air Quality API
+- AQICN API
+
+2. Data is pushed to Redis Streams:
+- `weather:live`
+- `airquality:live`
+- `sensors:live`
+
+3. `ingestion/data_fusion.py` fuses point data into grid-form state for downstream compatibility.
+
+4. Fused grid is published to legacy-compatible stream:
+- `toxicity:global_truth`
+
+5. Router and downstream analytics consume latest state via Redis, compute toxicity-informed route logic, and return stable corridor recommendations.
+
+## March Changes (Comprehensive)
+
+### A) Data Ingestion and State Layer Refactor
+
+#### 1. New Open-Meteo + AQICN ingestion pipeline
+Added:
+- `ingestion/ingestor.py`
+- `ingestion/data_fusion.py`
+
+What changed:
+- Introduced async ingestion loop using `aiohttp`.
+- Added Open-Meteo weather pull (wind, gusts, temperature, humidity, pressure, boundary-layer proxy pull path).
+- Added Open-Meteo air-quality pull (NO2, SO2, PM2.5, PM10, CO).
+- Added AQICN sensor validation pull.
+- Added OSMnx lazy graph load for Bangalore road network.
+- Added fusion step to preserve grid-compatible payload shape for existing consumers.
+
+#### 2. Redis stream model expansion
+Updated:
+- `ingestion/redis_publisher.py`
+
+What changed:
+- Kept legacy stream support (`toxicity:global_truth`).
+- Added dedicated stream keys:
+  - `weather:live`
+  - `airquality:live`
+  - `sensors:live`
+- Added publish/get helpers for each new stream.
+
+#### 3. Backward compatibility preserved
+- Existing `get_latest_state` and legacy routing dependencies remain operable.
+- New pipeline can coexist with earlier synthetic pipeline modules.
+
+### B) Configuration and Secrets Standardization
+
+#### 1. Centralized config updates
+Updated:
+- `shared/config.py`
+
+What changed:
+- Added Open-Meteo URLs.
+- Added AQICN token/url settings.
+- Added Bangalore lat/lon settings.
+- Kept older config fields for compatibility (simulation/GEE/Meteostat-era fields).
+
+#### 2. Environment files
+Updated/created:
+- `.env`
+- `.env.example`
+
+Current state:
+- `.env` contains Open-Meteo/AQICN/Bangalore/Redis settings and legacy keys.
+- `.env.example` currently mirrors the same values and currently includes a real AQICN token value.
+
+Note:
+- `.gitignore` already excludes `.env`.
+- Best practice is to keep only placeholders in `.env.example`.
+
+### C) Dependency and Packaging Changes
+
+Updated:
+- `pyproject.toml`
+
+Added dependencies:
+- `python-dotenv>=1.0.0`
+- `aiohttp>=3.9.0`
+- `osmnx>=1.8.0`
+- `scipy>=1.11.0`
+
+### D) Ingestion Legacy Enhancements Added During March
+
+Updated:
+- `ingestion/config.py`
+- `ingestion/gee_pipeline.py`
+- Added `ingestion/meteostat_source.py`
+- Added `ingestion/pull_gnn_training_data.py`
+
+What changed:
+- Added atmospheric driver toggles and Meteostat support paths.
+- Added raw snapshot persistence under `data/raw`.
+- Added GNN dataset generation utility from ingestion snapshots.
+
+### E) Matcher and Allocation Engine Upgrades
+
+Updated:
+- `matcher/commuter_model.py`
+- `matcher/segment_model.py`
+- `matcher/quota_manager.py`
+- `matcher/gale_shapley.py`
+- `matcher/route_pool.py`
+
+What changed:
+- Introduced stronger typed commuter modes and tolerance fields.
+- Added commuter preference construction based on dose + distance.
+- Added segment-side preference ranking with vulnerability prioritization.
+- Enhanced quota controls with min/max and route-wise quota mapping.
+- Replaced simplistic batch matching with capacity-aware Gale-Shapley, iteration cap, and fallback assignment logic.
+- Added route metric builder for corridor scoring inputs.
+
+### F) Router API Behavior Changes
+
+Updated:
+- `router/api/routes.py`
+
+What changed:
+- Route endpoint now creates a cohort-style batch matching simulation around requester.
+- Builds commuter preferences and segment preferences dynamically.
+- Applies capacity quotas from route cedge values.
+- Performs batch allocation and uses requester assignment as selected stable corridor.
+
+### G) Tests Added/Expanded
+
+Added/updated tests in:
+- `ingestion/tests/test_meteostat_source.py`
+- `ingestion/tests/test_pull_gnn_training_data.py`
+- `matcher/tests/test_commuter_model.py`
+- `matcher/tests/test_segment_model.py`
+- `matcher/tests/test_gale_shapley.py`
+- `matcher/tests/test_quota_manager.py`
+- `matcher/tests/test_route_pool.py`
+
+Focus of new coverage:
+- Preference ranking correctness.
+- Capacity-aware matching behavior.
+- Fallback allocation behavior.
+- Quota scaling behavior.
+- Dataset generation and Meteostat summary behavior.
+
+### H) Documentation and Dev-UX Additions
+
+Added:
+- `ARCHITECTURE_UPDATE.md`
+- `INTEGRATION_GUIDE.md`
+- `REFACTORING_CHECKLIST.md`
+- `scripts/quickstart.sh`
+
+What changed:
+- Added detailed architecture and deployment guidance.
+- Added quickstart script for local environment setup.
+- Added end-to-end migration and rollout checklist.
+
+## Current Architecture Snapshot (By Responsibility)
+
+### Ingestion Responsibility
+- Pull live meteorology + pollutants + sensor validation asynchronously.
+- Normalize/fuse data.
+- Publish to Redis streams as system truth.
+
+### Modeling Responsibility
+- Use grid/wind/plume state to derive edge toxicity representation.
+
+### Matching Responsibility
+- Allocate commuters across candidate corridors under capacity and vulnerability-aware preferences.
+
+### Routing/API Responsibility
+- Serve toxicity-aware route outputs and audit traces.
+- Consume latest state from Redis.
+
+## Important Compatibility Notes
+
+1. Legacy ingestion files still exist and are partially documented in older docs.
+2. Both old and new ingestion concepts currently coexist in repository history/state.
+3. Router remains wired to legacy latest-state helper while new streams are also available.
+4. New docs were added, but root docs may still include legacy wording in some places.
+
+## Net Result of March Work
+
+- The codebase moved from a primarily legacy/simulated ingestion approach toward a real-time async external API ingestion architecture.
+- Redis was evolved from single-stream usage toward a multi-stream shared-truth model while preserving backward compatibility.
+- Matching and routing logic became significantly richer with preference-aware, capacity-aware commuter allocation.
+- Tooling, documentation, and test coverage were expanded to support implementation and migration.
+
+## Files Most Central to the New Architecture
+
+- `shared/config.py`
+- `ingestion/ingestor.py`
+- `ingestion/data_fusion.py`
+- `ingestion/redis_publisher.py`
+- `router/api/routes.py`
+- `matcher/gale_shapley.py`
+- `matcher/commuter_model.py`
+- `matcher/segment_model.py`
+- `matcher/quota_manager.py`
+
+---
+
+Generated as requested in March 2026 to capture the complete architecture and all major changes made so far.

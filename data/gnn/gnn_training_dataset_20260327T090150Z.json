@@ -1,0 +1,25 @@
+{
+  "created_at": "20260327T090150Z",
+  "samples": 64,
+  "seed_start": 2000,
+  "features_shape": [
+    64,
+    4,
+    50,
+    50
+  ],
+  "targets_shape": [
+    64,
+    5
+  ],
+  "edge_index_shape": [
+    5,
+    2
+  ],
+  "feature_channels": [
+    "concentration",
+    "wind_u",
+    "wind_v",
+    "source_spike"
+  ]
+}

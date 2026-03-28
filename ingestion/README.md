@@ -1,26 +1,34 @@
 # ingestion
 
-Live environmental ingestion module.
+Live environmental ingestion package.
 
 ## Responsibilities
 
-- Build and update the 100m physics grid state.
-- Inject threshold-gated traffic source spikes from anomalous congestion only.
-- Advect plume concentrations with wind vectors.
-- Publish the latest state to Redis stream `toxicity:global_truth`.
+- Fetch live observations asynchronously for Bangalore.
+- Publish point observations to Redis streams.
+- Fuse stream observations into grid-form state for downstream consumers.
+
+## Main Files
+
+- `ingestor.py`: async worker loop.
+- `data_fusion.py`: point-to-grid conversion.
+- `redis_publisher.py`: stream read/write helpers.
+- `physics_plane.py`: grid utilities.
+- `pull_gnn_training_data.py`: tensor generation from stream-backed state.
+
+## Stream Keys
+
+- `weather:live`
+- `airquality:live`
+- `sensors:live`
 
 ## Run
 
-```powershell
-python -m ingestion.gee_pipeline
+```bash
+python -m ingestion.ingestor
 ```
 
 ## Notes
 
-- Current scaffold uses simulation mode only.
-- Amendment-ready design:
-	- ERA5 is treated as the base climatological layer.
-	- INSAT-3D/3DR AMV feed is the intended intra-day wind update source.
-	- Traffic spike injection uses D(l, t) > alpha * B(l, t), and injects only k * (D - B).
-- Replace `gee_pipeline.py` internals with live GEE, Mosdac, and traffic API integration in Phase 2.
-
+- Keep secrets in root `.env`.
+- All env-backed settings are loaded in `shared/config.py`.

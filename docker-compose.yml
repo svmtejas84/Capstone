@@ -28,7 +28,7 @@ services:
       - ./:/app
     env_file:
       - .env
-    command: sh -c "pip install -e . && python -m ingestion.gee_pipeline"
+    command: sh -c "pip install -e . && python -m ingestion.ingestor"
     depends_on:
       - redis
 

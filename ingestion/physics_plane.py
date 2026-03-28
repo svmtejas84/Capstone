@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Any
 
 import numpy as np
-
-from ingestion.config import IngestionConfig
 
 
 @dataclass
@@ -17,8 +16,10 @@ class GrasterState:
 	timestamp: datetime
 
 
-def build_empty_state(cfg: IngestionConfig) -> GrasterState:
-	shape = (cfg.grid_rows, cfg.grid_cols)
+def build_empty_state(cfg: Any) -> GrasterState:
+	rows = int(getattr(cfg, "grid_rows", 50))
+	cols = int(getattr(cfg, "grid_cols", 50))
+	shape = (rows, cols)
 	return GrasterState(
 		concentration=np.zeros(shape, dtype=float),
 		wind_u=np.zeros(shape, dtype=float),
@@ -28,7 +29,7 @@ def build_empty_state(cfg: IngestionConfig) -> GrasterState:
 	)
 
 
-def simulate_base_state(cfg: IngestionConfig, seed: int = 42) -> GrasterState:
+def simulate_base_state(cfg: Any, seed: int = 42) -> GrasterState:
 	rng = np.random.default_rng(seed)
 	state = build_empty_state(cfg)
 	state.concentration = rng.uniform(12.0, 40.0, size=state.concentration.shape)

@@ -12,6 +12,7 @@ ingestion/__init__.py
 ingestion/bias_correction.py
 ingestion/config.py
 ingestion/gee_pipeline.py
+ingestion/meteostat_source.py
 ingestion/nowcaster.py
 ingestion/physics_plane.py
 ingestion/redis_publisher.py
