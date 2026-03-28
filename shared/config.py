@@ -1,14 +1,25 @@
+from pathlib import Path
+
 from dotenv import load_dotenv
 from functools import lru_cache
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
+REPO_ROOT = Path(__file__).resolve().parents[1]
+ENV_PATH = REPO_ROOT / ".env"
+
+# Runtime config must come from .env only; .env.example is documentation-only.
+# Use override=True so stale exported shell vars do not shadow .env updates.
+load_dotenv(dotenv_path=ENV_PATH, override=True)
 
 
 class Settings(BaseSettings):
-	model_config = SettingsConfigDict(extra="ignore")
+	model_config = SettingsConfigDict(
+		extra="ignore",
+		env_file=str(ENV_PATH),
+		env_file_encoding="utf-8",
+	)
 
 	# Open-Meteo API URLs (no key required)
 	open_meteo_forecast_url: str = "https://api.open-meteo.com/v1/forecast"
@@ -40,5 +51,11 @@ class Settings(BaseSettings):
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
-	return Settings()
+	settings = Settings()
+	if not settings.aqicn_token or settings.aqicn_token == "your_token_here":
+		raise ValueError(
+			"Invalid AQICN_TOKEN in .env. Set AQICN_TOKEN to a real token in the "
+			"repository root .env file."
+		)
+	return settings
 
