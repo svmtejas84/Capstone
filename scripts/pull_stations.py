@@ -22,8 +22,13 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import requests
+from rich.console import Console
+from rich.live import Live
+from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn, MofNCompleteColumn
 
 from shared.config import get_settings
+
+console = Console()
 
 settings = get_settings()
 API_KEY = settings.openaq_api_key
@@ -140,16 +145,17 @@ def save_station_meta(stations: list[dict]) -> None:
     log(f"  + Station metadata saved -> {META_PATH}")
 
 
-def fetch_station_year(station: dict, year: int, start: str, end: str) -> pd.DataFrame | None:
+def fetch_station_year(station: dict, year: int, start: str, end: str, progress, param_task, page_task) -> pd.DataFrame | None:
     all_rows      = []
     target_params = ["no2", "so2", "pm25", "pm10", "co"]
     sensors       = station.get("sensors", {})
-    total_params  = len([p for p in target_params if p in sensors])
-    done_params   = 0
 
     for param in target_params:
+        progress.update(param_task, description=f"[yellow]{param}")
         sensor_id = sensors.get(param)
         if not sensor_id:
+            progress.advance(param_task)
+            progress.reset(page_task)
             continue
 
         page = 1
@@ -181,15 +187,15 @@ def fetch_station_year(station: dict, year: int, start: str, end: str) -> pd.Dat
                     "station_name": station["name"],
                 })
 
-            log(f"    {param} page {page} — {len(all_rows):,} rows so far...")
+            progress.update(page_task, description=f"[white]page {page} — {len(all_rows):,} rows")
+            progress.advance(page_task)
             if len(results) < PAGE_LIMIT:
                 break
             page += 1
             time.sleep(1)
 
-        done_params += 1
-        bar = ("█" * int((done_params / total_params) * 20)).ljust(20)
-        log(f"  [{bar}] {int((done_params/total_params)*100)}% — {param} done — {len(all_rows):,} rows total")
+        progress.advance(param_task)
+        progress.reset(page_task)
 
     if not all_rows:
         return None
@@ -257,46 +263,61 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
         )
 
     total = len(years)
-    for idx, (year, start, end, label) in enumerate(years, 1):
-        year_key = f"stations_{year}"
-        log(f"\n[{idx}/{total}] Stations {year} ({start} -> {end})")
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
+        console=console,
+        refresh_per_second=4,
+    ) as progress:
+        year_task = progress.add_task(f"[cyan]Years", total=total)
+        station_task = progress.add_task(f"[green]Stations", total=len(stations))
+        param_task = progress.add_task(f"[yellow]Parameters", total=5)
+        page_task = progress.add_task(f"[white]Pages", total=None)
 
-        if resume and year_key in checkpoint["completed"]:
-            log("  - Already pulled - skipping")
-            continue
+        for idx, (year, start, end, label) in enumerate(years, 1):
+            year_key = f"stations_{year}"
 
-        year_bar = ("━" * int((idx / total) * 20)).ljust(20)
-        log(f"\n[Year {idx}/{total}] {year_bar} {int((idx/total)*100)}%")
+            if resume and year_key in checkpoint["completed"]:
+                progress.advance(year_task)
+                continue
 
-        year_frames = []
-        for s_idx, station in enumerate(stations, 1):
-            log(f"\n  [Station {s_idx}/{len(stations)}] {station['name']}")
-            df = fetch_station_year(station, year, start, end)
-            if df is not None:
-                year_frames.append(df)
-                log(f"    + {len(df):,} rows")
+            progress.update(year_task, description=f"[cyan]Year {year}")
+            progress.reset(station_task)
+
+            year_frames = []
+            for s_idx, station in enumerate(stations, 1):
+                progress.update(station_task, description=f"[green]{station['name']}")
+                progress.reset(param_task)
+
+                df = fetch_station_year(station, year, start, end, progress, param_task, page_task)
+
+                if df is not None:
+                    year_frames.append(df)
+
+                progress.advance(station_task)
+                time.sleep(RATE_DELAY)
+
+            if year_frames:
+                combined = pd.concat(year_frames)
+                path = OUT_DIR / f"{label}.parquet"
+                save_parquet(combined, path)
+                checkpoint["completed"].append(year_key)
+                checkpoint["failed"] = [f for f in checkpoint["failed"] if f != year_key]
+                save_checkpoint(checkpoint)
+                log_milestone(f"Progress: {idx}/{total} years complete ({(idx / total) * 100:.0f}%)")
             else:
-                log(f"    x No data for {station['name']} {year}")
-            station_bar = ("█" * int((s_idx / len(stations)) * 20)).ljust(20)
-            log(f"  [█ Stations {station_bar}] {int((s_idx/len(stations))*100)}% — {s_idx}/{len(stations)} done")
-            time.sleep(RATE_DELAY)
+                if year_key not in checkpoint["failed"]:
+                    checkpoint["failed"].append(year_key)
+                save_checkpoint(checkpoint)
+                log(f"  x No data for any station in {year} - run with --resume to retry")
 
-        if year_frames:
-            combined = pd.concat(year_frames)
-            path = OUT_DIR / f"{label}.parquet"
-            save_parquet(combined, path)
-            checkpoint["completed"].append(year_key)
-            checkpoint["failed"] = [f for f in checkpoint["failed"] if f != year_key]
-            save_checkpoint(checkpoint)
-            log_milestone(f"Progress: {idx}/{total} years complete ({(idx / total) * 100:.0f}%)")
-        else:
-            if year_key not in checkpoint["failed"]:
-                checkpoint["failed"].append(year_key)
-            save_checkpoint(checkpoint)
-            log(f"  x No data for any station in {year} - run with --resume to retry")
+            progress.advance(year_task)
 
-        if idx < total:
-            time.sleep(RATE_DELAY)
+            if idx < total:
+                time.sleep(RATE_DELAY)
 
     log_milestone("Station Pull Complete")
     log(f"Completed: {checkpoint['completed']}")
