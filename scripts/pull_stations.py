@@ -67,19 +67,6 @@ def save_checkpoint(state: dict) -> None:
     CHECKPOINT.write_text(json.dumps(state, indent=2))
 
 
-def get_quarterly_chunks(year: int, start: str, end: str) -> list[tuple[str, str]]:
-    import pandas as pd
-
-    chunks = []
-    starts = pd.date_range(start=start, end=end, freq="QS")
-    ends = pd.date_range(start=start, end=end, freq="QE")
-    for s, e in zip(starts, ends):
-        chunk_start = s.strftime("%Y-%m-%d")
-        chunk_end = min(e, pd.Timestamp(end)).strftime("%Y-%m-%d")
-        chunks.append((chunk_start, chunk_end))
-    return chunks
-
-
 def fetch_with_retry(url: str, params: dict, label: str) -> dict | None:
     for attempt in range(1, RETRY_LIMIT + 1):
         try:
@@ -154,61 +141,55 @@ def save_station_meta(stations: list[dict]) -> None:
 
 
 def fetch_station_year(station: dict, year: int, start: str, end: str) -> pd.DataFrame | None:
-    all_rows = []
+    all_rows      = []
     target_params = ["no2", "so2", "pm25", "pm10", "co"]
-    sensors = station.get("sensors", {})
-    chunks = get_quarterly_chunks(year, start, end)
-    total_chunks = len(chunks) * len([p for p in target_params if p in sensors])
-    done_chunks = 0
+    sensors       = station.get("sensors", {})
+    total_params  = len([p for p in target_params if p in sensors])
+    done_params   = 0
 
     for param in target_params:
         sensor_id = sensors.get(param)
         if not sensor_id:
             continue
 
-        for chunk_start, chunk_end in chunks:
-            page = 1
-            while True:
-                params = {
-                    "date_from": f"{chunk_start}T00:00:00Z",
-                    "date_to": f"{chunk_end}T23:59:59Z",
-                    "limit": PAGE_LIMIT,
-                    "page": page,
-                }
-                url = f"{BASE_URL}/sensors/{sensor_id}/measurements"
-                label = f"{station['name']} {param} {chunk_start[:7]} page {page}"
-                data = fetch_with_retry(url, params, label)
+        page = 1
+        while True:
+            params = {
+                "date_from": f"{start}T00:00:00Z",
+                "date_to":   f"{end}T23:59:59Z",
+                "limit":     PAGE_LIMIT,
+                "page":      page,
+            }
+            url   = f"{BASE_URL}/sensors/{sensor_id}/measurements"
+            label = f"{station['name']} {param} {year} page {page}"
+            data  = fetch_with_retry(url, params, label)
 
-                if not data:
-                    break
+            if not data:
+                break
 
-                results = data.get("results", [])
-                if not results:
-                    break
+            results = data.get("results", [])
+            if not results:
+                break
 
-                for r in results:
-                    all_rows.append(
-                        {
-                            "time": r["period"]["datetimeFrom"]["local"],
-                            "parameter": param,
-                            "value": r.get("value"),
-                            "unit": r["parameter"]["units"],
-                            "station_id": station["id"],
-                            "station_name": station["name"],
-                        }
-                    )
+            for r in results:
+                all_rows.append({
+                    "time":         r["period"]["datetimeFrom"]["local"],
+                    "parameter":    param,
+                    "value":        r.get("value"),
+                    "unit":         r["parameter"]["units"],
+                    "station_id":   station["id"],
+                    "station_name": station["name"],
+                })
 
-                log(f"    {param} {chunk_start[:7]} page {page} — {len(all_rows):,} rows so far...")
+            log(f"    {param} page {page} — {len(all_rows):,} rows so far...")
+            if len(results) < PAGE_LIMIT:
+                break
+            page += 1
+            time.sleep(1)
 
-                if len(results) < PAGE_LIMIT:
-                    break
-                page += 1
-                time.sleep(1)
-
-            done_chunks += 1
-            bar = ("█" * int((done_chunks / total_chunks) * 20)).ljust(20)
-            pct = (done_chunks / total_chunks) * 100
-            log(f"    [{bar}] {pct:.0f}% — {param} {chunk_start[:7]} done — {len(all_rows):,} rows total")
+        done_params += 1
+        bar = ("█" * int((done_params / total_params) * 20)).ljust(20)
+        log(f"  [{bar}] {int((done_params/total_params)*100)}% — {param} done — {len(all_rows):,} rows total")
 
     if not all_rows:
         return None
@@ -284,18 +265,20 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
             log("  - Already pulled - skipping")
             continue
 
+        year_bar = ("━" * int((idx / total) * 20)).ljust(20)
+        log(f"\n[Year {idx}/{total}] {year_bar} {int((idx/total)*100)}%")
+
         year_frames = []
         for s_idx, station in enumerate(stations, 1):
-            log(f"  [{s_idx}/{len(stations)}] {station['name']}")
+            log(f"\n  [Station {s_idx}/{len(stations)}] {station['name']}")
             df = fetch_station_year(station, year, start, end)
             if df is not None:
                 year_frames.append(df)
                 log(f"    + {len(df):,} rows")
             else:
                 log(f"    x No data for {station['name']} {year}")
-            station_pct = (s_idx / len(stations)) * 100
-            bar = ("█" * int(station_pct // 5)).ljust(20)
-            log(f"  Stations [{bar}] {station_pct:.0f}% — {s_idx}/{len(stations)} done")
+            station_bar = ("█" * int((s_idx / len(stations)) * 20)).ljust(20)
+            log(f"  [█ Stations {station_bar}] {int((s_idx/len(stations))*100)}% — {s_idx}/{len(stations)} done")
             time.sleep(RATE_DELAY)
 
         if year_frames:
