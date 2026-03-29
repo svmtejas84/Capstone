@@ -62,9 +62,11 @@ def log_milestone(msg: str) -> None:
 def load_checkpoint() -> dict:
     if CHECKPOINT.exists():
         data = json.loads(CHECKPOINT.read_text())
-        log(f"Resuming - already pulled: {data.get('completed', [])}")
+        data.setdefault("completed_stations", [])
+        log(f"Resuming — completed years: {data.get('completed', [])}")
+        log(f"Resuming — completed stations: {data.get('completed_stations', [])}")
         return data
-    return {"completed": [], "failed": [], "stations": []}
+    return {"completed": [], "failed": [], "stations": [], "completed_stations": []}
 
 
 def save_checkpoint(state: dict) -> None:
@@ -221,7 +223,7 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
     log(f"Bbox : {BBOX}")
     log("Range: Jan 2022 -> March 2026")
 
-    checkpoint = load_checkpoint() if resume else {"completed": [], "failed": [], "stations": []}
+    checkpoint = load_checkpoint() if resume else {"completed": [], "failed": [], "stations": [], "completed_stations": []}
 
     if resume and checkpoint.get("stations"):
         stations = checkpoint["stations"]
@@ -289,6 +291,12 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
 
             year_frames = []
             for s_idx, station in enumerate(stations, 1):
+                station_key = f"{year}_{station['id']}"
+                if station_key in checkpoint.get("completed_stations", []):
+                    log(f"  ↷ {station['name']} {year} already pulled — skipping")
+                    progress.advance(station_task)
+                    continue
+
                 progress.update(station_task, description=f"[green]{station['name']}")
                 progress.reset(param_task)
 
@@ -296,6 +304,8 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
 
                 if df is not None:
                     year_frames.append(df)
+                    checkpoint["completed_stations"].append(station_key)
+                    save_checkpoint(checkpoint)
 
                 progress.advance(station_task)
                 time.sleep(RATE_DELAY)
@@ -305,6 +315,11 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
                 path = OUT_DIR / f"{label}.parquet"
                 save_parquet(combined, path)
                 checkpoint["completed"].append(year_key)
+                checkpoint["completed_stations"] = [
+                    s for s in checkpoint["completed_stations"]
+                    if not s.startswith(str(year))
+                ]
+                save_checkpoint(checkpoint)
                 checkpoint["failed"] = [f for f in checkpoint["failed"] if f != year_key]
                 save_checkpoint(checkpoint)
                 log_milestone(f"Progress: {idx}/{total} years complete ({(idx / total) * 100:.0f}%)")
