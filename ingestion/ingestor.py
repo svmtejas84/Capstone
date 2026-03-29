@@ -292,7 +292,7 @@ async def ingest_once(
 		stringify_keys=True,
 	)
 	publish_state(redis_store, fused_state)  # Publish to legacy stream for backwards compatibility
-	logger.debug(f"Published fused grid state to legacy stream")
+	logger.debug("Published fused grid state to legacy stream")
 
 	# Load OSM graph once (lazy load on first ingestion)
 	graph = OSMGraphLoader.get_graph()

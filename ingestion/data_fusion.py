@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from math import atan2, cos, radians, sin
+from math import atan2
 from typing import Any
 
 import networkx as nx
