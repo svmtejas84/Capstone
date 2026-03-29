@@ -1,42 +1,216 @@
-Cross-scale geospatial logic for real-time urban toxicity-aware routing in Bangalore.
+# Urban Toxicity Navigation (Bangalore)
 
-## Modules
+Real-time urban toxicity-aware navigation for vulnerable commuters in Bangalore.
+The system combines weather, pollutant, sensor, graph, and routing components to produce safer travel corridors instead of shortest-distance-only routes.
 
-- ingestion: Async live data collection and Redis stream publishing.
-- gnn: Physics-informed graph toxicity estimation and wake prediction.
-- matcher: Batch stable matching for corridor assignment.
-- router: FastAPI service and path-cost orchestration.
-- shared: Settings, schemas, logging, and Redis helpers.
-- frontend: React + Vite client.
+## Project Overview
 
-## Runtime Data Pipeline
+This project models street-level toxicity risk and uses that risk in route and corridor selection.
+It is designed for people who are more sensitive to air pollution exposure, including people with respiratory conditions, elderly users, and children.
 
-1. ingestion pulls weather and pollutant observations for Bangalore.
-2. ingestion publishes point observations to Redis streams:
-   - weather:live
-   - airquality:live
-   - sensors:live
-3. downstream modules consume live stream state.
-4. router serves health, plume, route, and audit endpoints.
+## Architecture (Text Diagram)
 
-## Quickstart
+Data Sources -> Ingestor -> Redis Streams -> GNN -> Gale-Shapley -> FastAPI -> Frontend
 
-1. Copy env template:
-   - cp .env.example .env
-2. Fill AQICN token in .env.
-3. Start Redis:
-   - docker compose up -d redis
-4. Install Python dependencies:
-   - pip install -e .
-5. Start API:
-   - uvicorn router.api.main:app --reload --port 8000
-6. Start frontend in another terminal:
-   - cd frontend
-   - npm install
-   - npm run dev
+Flow details:
 
-## Notes
+1. Data Sources provide weather, air quality context, station observations, and graph topology.
+2. Ingestor normalizes and publishes live data.
+3. Redis Streams hold near-real-time weather/air/sensor streams.
+4. GNN computes toxicity-aware edge weights using physics + graph learning.
+5. Gale-Shapley matching allocates commuters to equilibrium corridors.
+6. FastAPI exposes route, plume, health, and audit APIs.
+7. Frontend renders map overlays, route options, and exposure metrics.
 
-- Environment values are centralized in shared/config.py.
-- Keep secrets only in .env.
-- Data/raw snapshots are ignored from source control.
+## Data Sources
+
+1. **Open-Meteo Forecast API**
+   - Provides weather variables: wind speed, direction, temperature, pressure, humidity.
+   - No API key required.
+   - URL: `archive-api.open-meteo.com` or `api.open-meteo.com`
+
+2. **Open-Meteo Air Quality API**
+   - Provides regional background pollutant context (CAMS Global, 45 km resolution).
+   - Variables: NO2, SO2, PM2.5, PM10, CO.
+   - No API key required.
+   - URL: `air-quality-api.open-meteo.com`
+
+3. **AQICN API**
+   - Live validation signal from 23 CPCB/KSPCB ground stations in Bangalore.
+   - Station-level observations for NO2, SO2, PM2.5, PM10, CO.
+   - Requires `AQICN_TOKEN` (set in `.env`).
+   - URL: `api.waqi.info`
+
+4. **OpenStreetMap via OSMnx**
+   - Road network extraction and graph construction.
+   - Graph is projected to UTM Zone 43N (EPSG:32643) and cached at `data/graphs/bangalore_utm.graphml`.
+
+## Data Folder Structure
+
+```
+data/
+  raw/
+    weather/
+    airquality/
+    stations/
+  graphs/
+  gnn/
+    training/
+    checkpoints/
+  sensors/
+    aqicn_live/
+```
+
+## Setup
+
+1. Clone the repository.
+2. Create environment file from template:
+   ```bash
+   cp .env.example .env
+   ```
+3. Add your AQICN token in `.env`:
+   ```
+   AQICN_TOKEN=your_token_here
+   ```
+4. Install dependencies:
+   ```bash
+   pip install -e .
+   ```
+5. Start Redis:
+   ```bash
+   redis-server
+   ```
+6. Start live ingestion (fetches from Open-Meteo + AQICN):
+   ```bash
+   python -m ingestion.ingestor
+   ```
+7. In another terminal, start the API:
+   ```bash
+   uvicorn router.api.main:app --reload --port 8000
+   ```
+8. Visit `http://localhost:8000/docs` for interactive API documentation.
+
+### Optional: Historical Data Archive
+
+To build the 2022–2026 data archive for training or validation:
+
+```bash
+# Weather archive (Light, hourly 2022-2026)
+python scripts/pull_weather.py
+
+# Air quality archive (CAMS, hourly 2022-2026)
+python scripts/pull_airquality.py
+
+# Station archive (CPCB, 15-minute 2022-2026; takes ~2 hours)
+python scripts/pull_stations.py
+```
+
+Data is stored in `data/raw/` as Parquet files.
+
+## GNN Layer
+
+The GNN layer combines physics-informed priors with learned spatio-temporal patterns:
+
+1. **Gaussian Plume Model** (Physics)
+   - Models pollutant transport and dispersion from source streets.
+   - Accounts for wind direction, stability class, and distance decay.
+   - Computes concentration-weighted impact on nearby segments.
+
+2. **Angular Diffusion** (Physics)
+   - Wind-aware diffusion perpendicular to mean flow.
+   - Cross-street concentration bleed based on atmospheric stability.
+
+3. **Spatio-Temporal GNN** (Learning)
+   - Learns dynamic edge toxicity weights over graph structure.
+   - Fuses live streams with 2022–2026 historical archive.
+   - Provides robust risk estimates under varying conditions.
+
+### Model State
+
+Trained weights stored in `gnn/model_weights/pi_gnn_v1.pt` (PyTorch format).
+Checkpoints can be updated from stream-backed training tensors.
+
+## Routing Layer
+
+Routing is computed on a **UTM-projected OSMnx graph** (EPSG:32643, UTM Zone 43N).
+
+1. **Edge Cost Computation**
+   - Base cost from GNN toxicity weights.
+   - Distance penalty and time-of-day adjustments.
+   - User profile factors (vulnerable, standard, athletic).
+
+2. **A* Search**
+   - Pathfinding with toxicity-aware heuristics.
+   - Rust/WASM acceleration available for large graphs.
+   - Returns top K routes (typically 3) balancing safety and practical constraints.
+
+3. **Exposure Estimation**
+   - Inhalation rate calculation per user profile.
+   - Cumulative exposure metrics for comparison.
+
+## Matching Layer
+
+The matcher allocates commuters to equilibrium corridors using **Gale-Shapley stable matching**:
+
+1. **Preference Ranking**
+   - Users rank available corridors by toxicity, distance, and time.
+   - Derived from GNN edge weights and recent stream state.
+
+2. **Capacity Constraints**
+   - Each corridor has a maximum capacity.
+   - Prevents demand collapse into a single route.
+
+3. **Segment-Level Control**
+   - Enforce special preferences on specific segments.
+   - Support isolation-focused behavior during pollution spikes.
+
+4. **Equilibrium Guarantee**
+   - No pair (user, corridor) can improve by swapping.
+   - Fallback to nearest route if capacity exhausted.
+
+## Deployment
+
+### Local Development
+
+See [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) for step-by-step local setup.
+
+### Docker Compose
+
+Full stack (Redis + ingestion worker + FastAPI):
+
+```bash
+docker-compose up
+```
+
+API available at `http://localhost:8000`.
+
+### Runtime Components
+
+1. **Redis** (state transport layer)
+   - Holds weather:live, airquality:live, sensors:live streams.
+   - Provides low-latency state exchange.
+
+2. **Ingestion Worker** (ingestor.py)
+   - Async process fetching from Open-Meteo and AQICN.
+   - Publishes to Redis streams every 5–15 minutes.
+
+3. **FastAPI Service** (router.api.main)
+   - Exposes REST endpoints: /health, /plume, /route, /audit/{hash}.
+   - Reads from Redis streams, computes routes, returns results.
+
+4. **Rust/WASM A*** (optional acceleration)
+   - Compiled in router/rust_astar/.
+   - Speeds up pathfinding on large graphs.
+
+## Audit
+
+The **Stake Audit hash** provides an immutable accountability marker for route generation:
+
+- **Purpose**: Reproducibility, traceability, and compliance review.
+- **Contents**: Request, model version, graph snapshot, stream state, timestamps.
+- **Endpoint**: `GET /audit/{stake_hash}` returns decision context.
+
+Example:
+```bash
+curl http://localhost:8000/audit/0xa1b2c3d4... | jq .
+```

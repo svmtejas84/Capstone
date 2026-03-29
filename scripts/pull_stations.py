@@ -23,7 +23,6 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import requests
 from rich.console import Console
-from rich.live import Live
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn, MofNCompleteColumn
 
 from shared.config import get_settings
@@ -274,10 +273,10 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
         console=console,
         refresh_per_second=4,
     ) as progress:
-        year_task = progress.add_task(f"[cyan]Years", total=total)
-        station_task = progress.add_task(f"[green]Stations", total=len(stations))
-        param_task = progress.add_task(f"[yellow]Parameters", total=5)
-        page_task = progress.add_task(f"[white]Pages", total=None)
+        year_task = progress.add_task("[cyan]Years", total=total)
+        station_task = progress.add_task("[green]Stations", total=len(stations))
+        param_task = progress.add_task("[yellow]Parameters", total=5)
+        page_task = progress.add_task("[white]Pages", total=None)
 
         for idx, (year, start, end, label) in enumerate(years, 1):
             year_key = f"stations_{year}"
