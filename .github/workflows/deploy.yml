@@ -1,12 +1,12 @@
 name: Deploy Placeholder
 
 on:
-	workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-	deploy:
-		runs-on: ubuntu-latest
-		steps:
-			- name: Placeholder
-				run: echo "Configure deployment target for your environment."
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder
+        run: echo "Configure deployment target for your environment."
 
