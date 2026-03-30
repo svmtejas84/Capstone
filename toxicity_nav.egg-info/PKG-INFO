@@ -12,60 +12,127 @@ Requires-Dist: redis>=5.0.0
 Requires-Dist: numpy>=1.26.0
 Requires-Dist: networkx>=3.3
 Requires-Dist: orjson>=3.10.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: osmnx>=1.8.0
+Requires-Dist: scipy>=1.11.0
 Provides-Extra: dev
 Requires-Dist: pytest>=8.0.0; extra == "dev"
 Requires-Dist: httpx>=0.27.0; extra == "dev"
 Requires-Dist: ruff>=0.6.0; extra == "dev"
 Requires-Dist: mypy>=1.11.0; extra == "dev"
 
+# Urban Toxicity Navigation (Bangalore)
 
-Cross-scale geospatial logic for real-time urban toxicity orchestration for healthier navigation of vulnerable commuters.
+Real-time urban toxicity-aware navigation for vulnerable commuters in Bangalore.
+The system combines weather, pollutant, sensor, graph, and routing components to produce safer travel corridors instead of shortest-distance-only routes.
 
-## Modules
+## Project Overview
 
-- ingestion: Live Environmental Component (Sentinel-5P, ERA5 base + INSAT intra-day winds, threshold-gated traffic spikes, Redis stream publish)
-- gnn: Physics-Informed GNN and wake prediction for dynamic edge concentrations
-- matcher: Batch Gale-Shapley stable matching for equilibrium route assignment
-- router: FastAPI service plus Rust/WASM A* integration surface
-- shared: Common settings, schemas, geo and Redis helpers
-- frontend: React + Vite demo client
+This project models street-level toxicity risk and uses that risk in route and corridor selection.
+It is designed for people who are more sensitive to air pollution exposure, including people with respiratory conditions, elderly users, and children.
 
-## Quickstart (simulation mode)
+## Architecture (Text Diagram)
 
-1. Copy environment file.
-2. Start Redis with Docker Compose.
-3. Install Python dependencies.
-4. Run FastAPI backend.
-5. Start frontend app.
+Data Sources -> Ingestor -> Redis Streams -> GNN -> Gale-Shapley -> FastAPI -> Frontend
 
-Windows PowerShell:
+Flow details:
 
-```powershell
-Copy-Item .env.example .env
-docker compose up -d redis
-pip install -e .
-uvicorn router.api.main:app --reload --port 8000
+1. Data Sources provide weather, air quality context, station observations, and graph topology.
+2. Ingestor normalizes and publishes live data.
+3. Redis Streams hold near-real-time weather/air/sensor streams.
+4. GNN computes toxicity-aware edge weights using physics + graph learning.
+5. Gale-Shapley matching allocates commuters to equilibrium corridors.
+6. FastAPI exposes route, plume, health, and audit APIs.
+7. Frontend renders map overlays, route options, and exposure metrics.
+
+## Data Sources
+
+1. Open-Meteo Forecast API
+   - Variables include wind, temperature, pressure.
+   - No API key required.
+2. Open-Meteo Air Quality API
+   - Provides regional background pollutant context.
+   - No API key required.
+3. OpenAQ CPCB Stations
+   - Ground-level observations such as NO2, SO2, PM2.5.
+   - Requires OPENAQ_API_KEY.
+4. AQICN
+   - Live validation signal for sensor consistency checks.
+   - Requires AQICN_TOKEN.
+5. OpenStreetMap via OSMnx
+   - Road network extraction and graph construction.
+
+## Data Folder Structure
+
+```
+data/
+  raw/
+    weather/
+    airquality/
+    stations/
+  graphs/
+  gnn/
+    training/
+    checkpoints/
+  sensors/
+    aqicn_live/
 ```
 
-In another terminal:
+## Setup
 
-```powershell
-Set-Location frontend
-npm install
-npm run dev
-```
+1. Clone the repository.
+2. Create env file from template.
+   - `cp .env.example .env`
+3. Fill required secrets in .env.
+   - OPENAQ_API_KEY
+   - AQICN_TOKEN
+4. Install dependencies.
+   - `pip install -e .`
+5. Start Redis.
+   - `redis-server`
+6. Test weather pull for one year.
+   - `python scripts/pull_weather.py --year 2022`
+7. Run full weather pull.
+   - `python scripts/pull_weather.py`
+8. Test and run air quality pulls.
+   - `python scripts/pull_airquality.py --year 2022`
+   - `python scripts/pull_airquality.py`
+9. Test and run station pulls.
+   - `python scripts/pull_stations.py --year 2022`
+   - `python scripts/pull_stations.py`
+10. Start live ingestion.
+   - `python -m ingestion.ingestor`
 
-## API (starter)
+## GNN Layer
 
-- GET /health
-- GET /plume
-- POST /route
-- GET /audit/{stake_hash}
+The GNN layer combines:
 
-## Notes
+1. Gaussian Plume Model (physics prior)
+   - Models pollutant transport and dispersion from source to nearby street segments.
+2. Spatio-Temporal GNN
+   - Learns dynamic edge toxicity weights over graph structure and time.
+   - Fuses live streams with historical context for robust route risk estimates.
 
-- This scaffold defaults to SIMULATION_MODE and does not require live GEE, Mosdac, or TomTom calls.
-- Methodology amendment (March 2026): keep ERA5 as base initialization layer, use INSAT AMV cadence for intra-day wind updates, and inject traffic spikes only when observed density exceeds alpha times baseline.
-- Optional atmospheric source toggle supports Meteostat via RapidAPI (`ATMOSPHERIC_DRIVER=METEOSTAT`), with key loaded from environment.
-- Raw ingestion snapshots are written to `data/raw` for traceability.
-- Data placeholders are committed for repository structure completeness.
+## Routing Layer
+
+Routing is computed on a UTM-projected OSMnx graph.
+Edge costs are toxicity-weighted and consumed by A* search so selected paths reduce exposure rather than only minimizing distance or ETA.
+
+## Matching Layer
+
+The matcher uses Gale-Shapley stable matching to allocate users to toxicity-aware corridors.
+This helps avoid demand collapse into one route and enforces equilibrium-like assignment under constraints.
+
+## Deployment
+
+Runtime stack:
+
+1. FastAPI service for route and diagnostics APIs.
+2. Rust/WASM A* acceleration for path computation.
+3. Redis for stream transport and low-latency state exchange.
+
+## Audit
+
+The Stake Audit hash provides an immutable accountability marker for route-generation context, model state, and critical decision inputs.
+It is intended to support reproducibility, traceability, and compliance-oriented review.
