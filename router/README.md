@@ -120,13 +120,18 @@ Retrieve decision context for a specific route (for reproducibility and complian
 
 - Base algorithm in `router/edge_cost.py`.
 - Rust/WASM acceleration available in `router/rust_astar/`.
-- Edge costs computed from GNN toxicity weights + distance + time constraints.
+- Edge costs computed as **inhaled dose** (concentration × RMV × time), not just distance.
 
-### Inhalation Rates
+### Edge Cost Computation
 
-- Compute exposure intake based on user profile and route path.
-- File: `router/inhalation_rates.py`.
-- Supports profiles: "vulnerable", "standard", "athletic".
+- File: `router/edge_cost.py`
+- Computes biological dose intake using **EPA-standard RMV values** from `shared/physics_config.py`:
+  - Walking: 1.2 m³/hr (light activity)
+  - Cycling: 3.5 m³/hr (heavy activity, ~2.9× pedestrian)
+  - Driving: 0.6 m³/hr (cabin protection)
+- Formula: `Dose = Concentration (µg/m³) × RMV (m³/hr) × Travel_Time (hr)`
+- Result: cyclists' routes weighted ~3× higher exposure than pedestrians on same streets
+- **Deprecated**: `inhalation_rates.py` (replaced by centralized physics_config)
 
 ### Stake Audit
 

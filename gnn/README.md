@@ -36,28 +36,39 @@ Saved weights available in `model_weights/`:
 
 ## Physics Layer
 
-The project combines:
+The GNN layer implements **city-agnostic physics** with three components:
 
-1. **Gaussian Plume Model**
+1. **Gaussian Plume Model** (`plume_physics.py`)
    - Models pollutant transport and dispersion from source streets.
-   - Accounts for wind direction, stability class, and distance decay.
-   - Computes concentration-weighted impact on nearby street segments.
+   - **Pasquill-Gifford stability classes (A–F)** dynamically determined from weather.
+   - Dispersion coefficients σy(d, stability) and σz(d, stability) scale with distance.
+   - Urban canyon correction: amplifies concentration in high building-density areas (BD > 0.7).
 
-2. **Angular Diffusion**
-   - Wind-aware diffusion for plume spread perpendicular to mean flow.
-   - Cross-street concentration bleed based on atmospheric stability.
+2. **Angular Diffusion** (`angular_diffusion.py`)
+   - Wind-driven diffusion perpendicular to mean flow.
+   - **Canyon tunneling**: high-density streets blend wind toward street bearing (85% deflection).
+   - Downwind concentration bleed computed as Gaussian in wind direction.
 
-3. **Edge Weight Aggregation**
-   - Accumulates toxicity contributions from all upstream and cross-wind sources.
-   - IDW (Inverse Distance Weighted) fusion of multi-pollutant exposures.
+3. **Respiratory Minute Volume (RMV)** (`router/edge_cost.py`)
+   - Mode-dependent biological intake rate (EPA standards):
+     - Walking: 1.2 m³/hr
+     - Cycling: 3.5 m³/hr (2.9× pedestrian)
+     - Driving: 0.6 m³/hr (cabin effect)
+   - Inhaled dose = Concentration × RMV × Travel Time (in µg)
 
-## Configuration
+### Configuration
 
-Physics parameters are loaded from `shared/config.py`:
+Physics parameters are **centralized** in `shared/physics_config.py`:
+- `StabilityClass` enum (A–F)
+- `get_pasquill_stability(wind, solar_rad, is_night)` — dynamic stability lookup
+- `get_stability_dispersion_params(stability)` — Pasquill coefficients
+- `get_respiratory_minute_volume(mode)` — EPA RMV constants
+- `UrbanCanyon`: building density thresholds, canyon deflection strength
+- `CITY_INSTANCES` dict: extensible city registry for multi-city support
 
-- Bangalore city center coordinates (used for wind interpolation).
-- UTM projection zone (EPSG:32643 for UTM 43N).
-- Grid bounding box for plume computation.
+Physics is **universal** across cities; only data varies (weather, graph, AQ sources).
+
+For detailed physics, see [docs/PHYSICS.md](../docs/PHYSICS.md) with full EPA sourcing.
 
 ## Integration with Routing
 

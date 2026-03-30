@@ -1,6 +1,24 @@
 # Integration Guide
 
-## Local Run
+## Prerequisites: Data Setup
+
+Before running the live system, prepare training data (one-time setup):
+
+```bash
+# Pull historical data (weather, AQ, stations from 2022-2026)
+python scripts/pull_weather.py
+python scripts/pull_airquality.py
+python scripts/pull_stations.py
+
+# Repair gaps and build tensors
+python scripts/finalize_data_layer.py  # IDW + station ratios
+python scripts/build_graph_tensors.py   # PyTorch graph
+python scripts/sync_on_entry.py         # Merge all sources
+```
+
+See [data/README.md](data/README.md) for detailed data processing pipeline.
+
+## Local Run (Live API)
 
 1. Create environment file:
    - `cp .env.example .env`

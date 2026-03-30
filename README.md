@@ -1,7 +1,17 @@
-# Urban Toxicity Navigation (Bangalore)
+# Urban Toxicity Navigation (Bangalore v1)
 
 Real-time urban toxicity-aware navigation for vulnerable commuters in Bangalore.
 The system combines weather, pollutant, sensor, graph, and routing components to produce safer travel corridors instead of shortest-distance-only routes.
+
+**Roadmap**: v1 (Bangalore) → v2 (multi-city with Delhi, Mumbai, etc.)  
+**Physics**: City-agnostic models (Gaussian plume, canyon effects, RMV). See [docs/PHYSICS.md](docs/PHYSICS.md).  
+**Architecture**: Data-agnostic design. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Documentation
+
+Start here for system-level understanding:
+- **[PHYSICS.md](docs/PHYSICS.md)** — Detailed physics model (Gaussian plume, Pasquill stability, urban canyon, RMV, dosimetry) with EPA sourcing.
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Multi-city structure, data flow, physics portability, startup automation scripts.
 
 ## Project Overview
 
@@ -90,9 +100,25 @@ data/
    ```
 8. Visit `http://localhost:8000/docs` for interactive API documentation.
 
-### Optional: Historical Data Archive
+### Data Processing Pipeline
 
-To build the 2022–2026 data archive for training or validation:
+After pulling historical data, prepare the training dataset:
+
+```bash
+# Step 1: Repair 2022 gaps using IDW + pollutant ratio imputation (run once)
+python scripts/finalize_data_layer.py
+# Output: Zero missing values in 2022, station_node_map.parquet
+
+# Step 2: Build PyTorch graph tensors from road network (run once per city)
+python scripts/build_graph_tensors.py
+# Output: data/instances/bangalore/static_graph.pt, node_index_map.parquet
+
+# Step 3: Merge data sources and sync on entry (runs at startup)
+python scripts/sync_on_entry.py
+# Logic: If new weather/AQ data detected, rebuild training master. Else skip.
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for script details.
 
 ```bash
 # Weather archive (Light, hourly 2022-2026)
@@ -109,21 +135,37 @@ Data is stored in `data/raw/` as Parquet files.
 
 ## GNN Layer
 
-The GNN layer combines physics-informed priors with learned spatio-temporal patterns:
+The GNN layer combines **physics-informed priors** with **learned spatio-temporal patterns**.
 
-1. **Gaussian Plume Model** (Physics)
-   - Models pollutant transport and dispersion from source streets.
-   - Accounts for wind direction, stability class, and distance decay.
-   - Computes concentration-weighted impact on nearby segments.
+### Physics (City-Agnostic)
 
-2. **Angular Diffusion** (Physics)
-   - Wind-aware diffusion perpendicular to mean flow.
-   - Cross-street concentration bleed based on atmospheric stability.
+1. **Gaussian Plume Model**
+   - Models pollutant dispersion from street sources.
+   - **Pasquill-Gifford stability classes (A–F)** dynamically determined from wind speed, solar radiation, and hour.
+   - Distance-decay concentration with stability-dependent dispersion σy and σz.
 
-3. **Spatio-Temporal GNN** (Learning)
+2. **Urban Canyon Tunneling**
+   - Building density (0–1) tunes wind deflection toward street bearing.
+   - High-density streets: 85% of wind assumes street direction (canyon effect).
+   - Low-density streets: diffusion spreads perpendicular to wind.
+
+3. **Respiratory Minute Volume (RMV)**
+   - **Walking**: 1.2 m³/hr (light activity)
+   - **Cycling**: 3.5 m³/hr (heavy; ~2.9× than walking)
+   - **Driving**: 0.6 m³/hr (cabin protection)
+   - **Basis**: EPA Exposure Factors Handbook (2023)
+
+### Learning (Data-Driven)
+
+1. **Spatio-Temporal GNN** (graph neural network)
+   - Fuses physics priors with 2022–2026 historical archive.
    - Learns dynamic edge toxicity weights over graph structure.
-   - Fuses live streams with 2022–2026 historical archive.
-   - Provides robust risk estimates under varying conditions.
+   - Accounts for time-of-day, seasonality, wind patterns by location.
+
+2. **Training Data**
+   - Merged tensor: weather (Open-Metoe) + CAMS regional AQ + CPCB station observations.
+   - 23 ground stations snapped to road nodes via KDTree (avg. 84.57 m snap distance).
+   - Hourly resolution, IST timezone, interpolated for gaps via IDW from neighbors.
 
 ### Model State
 
@@ -132,21 +174,24 @@ Checkpoints can be updated from stream-backed training tensors.
 
 ## Routing Layer
 
-Routing is computed on a **UTM-projected OSMnx graph** (EPSG:32643, UTM Zone 43N).
+Routing is computed on a **UTM-projected OSMnx graph** (EPSG:32643, UTM Zone 43N) with bidirectional edges.
 
-1. **Edge Cost Computation**
-   - Base cost from GNN toxicity weights.
-   - Distance penalty and time-of-day adjustments.
-   - User profile factors (vulnerable, standard, athletic).
+1. **Edge Cost Computation (Inhaled Dose)**
+   - GNN predicts street-level concentration (µg/m³).
+   - Multiplied by **Respiratory Minute Volume** and travel time to get biological dose.
+   - Formula: `Dose = Concentration × RMV × Travel_Time`
+   - Mode-dependent RMV (walking 1.2, cycling 3.5, driving 0.6 m³/hr) accounts for activity intensity.
+   - Result: Cyclists show 2.9–6× higher exposure than drivers/pedestrians at same air quality.
 
 2. **A* Search**
    - Pathfinding with toxicity-aware heuristics.
    - Rust/WASM acceleration available for large graphs.
    - Returns top K routes (typically 3) balancing safety and practical constraints.
 
-3. **Exposure Estimation**
-   - Inhalation rate calculation per user profile.
-   - Cumulative exposure metrics for comparison.
+3. **Route Comparison**
+   - Cumulative exposure (µg) for each route.
+   - Time and distance penalties.
+   - User vulnerability profile adjustments (elderly, respiratory, child).
 
 ## Matching Layer
 
@@ -201,6 +246,25 @@ API available at `http://localhost:8000`.
 4. **Rust/WASM A*** (optional acceleration)
    - Compiled in router/rust_astar/.
    - Speeds up pathfinding on large graphs.
+
+## Multi-City Support (v2 Roadmap)
+
+Physics modules are **city-agnostic**. Only data differs by location.
+
+**Current**: Bangalore v1 (physics + data)  
+**Target**: Delhi, Mumbai, Pune, etc. (same physics, new data)
+
+### Extending to New Cities
+
+All physics (Gaussian plume, canyon tunneling, RMV) is universal. To add a new city:
+
+1. Fetch raw data (weather, AQ, sensors) for the city.
+2. Run `scripts/finalize_data_layer.py` to repair gaps.
+3. Run `scripts/build_graph_tensors.py` to build road graph tensors.
+4. Register city in `shared/physics_config.py` (one entry in `CITY_INSTANCES` dict).
+5. Train GNN on your city's data; physics modules work unchanged.
+
+See [docs/ARCHITECTURE.md § City Addition Workflow](docs/ARCHITECTURE.md) for detailed steps.
 
 ## Audit
 
