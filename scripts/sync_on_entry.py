@@ -1,0 +1,308 @@
+"""
+scripts/sync_on_entry.py
+
+Welcome Gate sync script:
+- Checks whether raw data horizon is newer than processed master horizon.
+- Runs full merge only when new raw data is detected.
+- Applies 2023 pollutant ratio logic for station pm25/no2/co completion from pm10.
+- Updates data README with automated sync horizon notes.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
+from pathlib import Path
+import re
+
+import numpy as np
+import pandas as pd
+
+MASTER_PATH = Path("data/processed/gnn_training_master.parquet")
+MAP_PATH = Path("data/processed/station_node_map.parquet")
+README_PATH = Path("data/README.md")
+
+RAW_DIRS = [
+    Path("data/raw/weather"),
+    Path("data/raw/airquality"),
+    Path("data/raw/stations"),
+]
+
+WEATHER_DIR = Path("data/raw/weather")
+AIR_DIR = Path("data/raw/airquality")
+STATION_DIR = Path("data/raw/stations")
+
+RATIO_SOURCE_PATH = STATION_DIR / "2023.parquet"
+RATIO_TARGET_PARAMS = ["pm25", "no2", "co"]
+
+
+def normalize_ts_index(df: pd.DataFrame) -> pd.DataFrame:
+    idx = df.index
+    if not isinstance(idx, pd.DatetimeIndex):
+        idx = pd.to_datetime(idx, errors="coerce")
+
+    if idx.tz is None:
+        idx = idx.tz_localize("Asia/Kolkata")
+    else:
+        idx = idx.tz_convert("Asia/Kolkata")
+
+    out = df.copy()
+    out.index = idx
+    out.index.name = "timestamp"
+    return out
+
+
+def as_utc(ts: pd.Timestamp | None) -> pd.Timestamp | None:
+    if ts is None or pd.isna(ts):
+        return None
+    ts = pd.Timestamp(ts)
+    if ts.tzinfo is None:
+        return ts.tz_localize("Asia/Kolkata").tz_convert("UTC")
+    return ts.tz_convert("UTC")
+
+
+def to_hour_local(ts: pd.Timestamp | None) -> pd.Timestamp | None:
+    ts_utc = as_utc(ts)
+    if ts_utc is None:
+        return None
+    return ts_utc.tz_convert("Asia/Kolkata").floor("h")
+
+
+def file_max_timestamp(path: Path) -> pd.Timestamp | None:
+    try:
+        df = pd.read_parquet(path)
+    except Exception:
+        return None
+
+    if isinstance(df.index, pd.DatetimeIndex):
+        idx = pd.to_datetime(df.index, errors="coerce")
+        if idx.empty:
+            return None
+        return as_utc(pd.Series(idx).dropna().max())
+
+    for col in ["timestamp", "time"]:
+        if col in df.columns:
+            vals = pd.to_datetime(df[col], errors="coerce")
+            if vals.notna().any():
+                return as_utc(vals.max())
+
+    return None
+
+
+def raw_data_horizon() -> pd.Timestamp | None:
+    max_ts: pd.Timestamp | None = None
+    for raw_dir in RAW_DIRS:
+        for p in sorted(raw_dir.glob("*.parquet")):
+            ts = to_hour_local(file_max_timestamp(p))
+            if ts is None:
+                continue
+            if max_ts is None or ts > max_ts:
+                max_ts = ts
+    return max_ts
+
+
+def processed_horizon() -> pd.Timestamp | None:
+    if not MASTER_PATH.exists():
+        return None
+    return to_hour_local(file_max_timestamp(MASTER_PATH))
+
+
+def _station_ratio_fingerprint(source_df: pd.DataFrame) -> tuple[dict[str, pd.Series], dict[str, float]]:
+    source_df = normalize_ts_index(source_df)
+    y2023 = source_df[source_df.index.year == 2023]
+    if y2023.empty:
+        y2023 = source_df.copy()
+        print("[WARN] 2023 ratio source file has no calendar-year 2023 rows; using all rows.")
+
+    y2023 = y2023[["station_id", "parameter", "value"]].dropna(subset=["station_id", "parameter", "value"])
+
+    hourly = (
+        y2023.groupby([y2023.index.floor("h"), "station_id", "parameter"], observed=True)["value"]
+        .mean()
+        .unstack("parameter")
+    )
+    hourly.index = hourly.index.set_names(["timestamp", "station_id"])
+
+    if hourly.empty or "pm10" not in hourly.columns:
+        raise ValueError("Cannot compute ratios: pm10 missing in ratio source data.")
+
+    means = y2023.groupby(["station_id", "parameter"], observed=True)["value"].mean().unstack("parameter")
+
+    per_station: dict[str, pd.Series] = {}
+    global_ratio: dict[str, float] = {}
+    pm10 = hourly["pm10"]
+
+    for pollutant in RATIO_TARGET_PARAMS:
+        if pollutant not in hourly.columns:
+            raise ValueError(f"Cannot compute ratios: {pollutant} missing in ratio source data.")
+
+        direct = (hourly[pollutant] / pm10).replace([np.inf, -np.inf], np.nan)
+        direct = direct.where(pm10 > 0)
+        ratio_by_station = direct.groupby("station_id").mean()
+
+        if pollutant in means.columns and "pm10" in means.columns:
+            ratio_by_station = ratio_by_station.fillna((means[pollutant] / means["pm10"]).replace([np.inf, -np.inf], np.nan))
+
+        ratio_by_station = ratio_by_station.where(ratio_by_station > 0)
+        if ratio_by_station.dropna().empty:
+            raise ValueError(f"No valid ratio values for pollutant: {pollutant}")
+
+        per_station[pollutant] = ratio_by_station
+        global_ratio[pollutant] = float(ratio_by_station.dropna().mean())
+
+    return per_station, global_ratio
+
+
+def _load_concat_parquets(folder: Path) -> pd.DataFrame:
+    frames: list[pd.DataFrame] = []
+    for p in sorted(folder.glob("*.parquet")):
+        if p.name == "meta.parquet":
+            continue
+        df = pd.read_parquet(p)
+        df = normalize_ts_index(df)
+        frames.append(df)
+
+    if not frames:
+        raise FileNotFoundError(f"No parquet files found in {folder}")
+
+    merged = pd.concat(frames, axis=0)
+    return merged.sort_index()
+
+
+def build_master_dataframe() -> pd.DataFrame:
+    weather = _load_concat_parquets(WEATHER_DIR)
+    air = _load_concat_parquets(AIR_DIR)
+    stations = _load_concat_parquets(STATION_DIR)
+
+    ratio_source = pd.read_parquet(RATIO_SOURCE_PATH)
+    per_station_ratios, global_ratios = _station_ratio_fingerprint(ratio_source)
+
+    station_slice = stations[["station_id", "station_name", "parameter", "value"]].dropna(
+        subset=["station_id", "parameter", "value"]
+    )
+    station_hourly = (
+        station_slice.groupby(
+            [station_slice.index.floor("h"), "station_id", "station_name", "parameter"],
+            observed=True,
+        )["value"]
+        .mean()
+        .unstack("parameter")
+    )
+    station_hourly.index = station_hourly.index.set_names(["timestamp", "station_id", "station_name"])
+
+    if "pm10" not in station_hourly.columns:
+        raise ValueError("Station data does not contain pm10; cannot apply ratio imputation.")
+
+    station_ids = station_hourly.index.get_level_values("station_id")
+    for pollutant in RATIO_TARGET_PARAMS:
+        if pollutant not in station_hourly.columns:
+            station_hourly[pollutant] = np.nan
+        ratio_map = pd.Series(station_ids, index=station_hourly.index).map(per_station_ratios[pollutant])
+        ratio_map = ratio_map.fillna(global_ratios[pollutant])
+        imputed = station_hourly["pm10"] * ratio_map
+        station_hourly[pollutant] = station_hourly[pollutant].fillna(imputed)
+
+    station_hourly = station_hourly.reset_index()
+
+    mapping = pd.read_parquet(MAP_PATH)
+    mapping = mapping.rename(columns={"location_id": "station_id"})
+
+    station_join = station_hourly.merge(
+        mapping[["station_id", "node_id", "distance_meters"]],
+        on="station_id",
+        how="left",
+    )
+
+    weather_h = weather.copy()
+    weather_h.index = weather_h.index.floor("h")
+    weather_h = weather_h.groupby(level=0).mean().add_prefix("weather_")
+
+    air_h = air.copy()
+    air_h.index = air_h.index.floor("h")
+    air_h = air_h.groupby(level=0).mean().add_prefix("city_")
+
+    station_join = station_join.rename(columns={
+        "pm10": "station_pm10",
+        "pm25": "station_pm25",
+        "no2": "station_no2",
+        "so2": "station_so2",
+        "co": "station_co",
+    })
+
+    master = station_join.merge(weather_h, left_on="timestamp", right_index=True, how="left")
+    master = master.merge(air_h, left_on="timestamp", right_index=True, how="left")
+
+    master = master.sort_values(["timestamp", "node_id", "station_id"]).reset_index(drop=True)
+    return master
+
+
+def append_readme_sync_note(horizon: pd.Timestamp) -> None:
+    note_header = "### Automated Sync Gate"
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    horizon_str = horizon.strftime("%Y-%m-%d %H:%M:%S %Z")
+    note_line = (
+        f"- Sync gate active: full merge runs only when raw-data horizon exceeds master horizon. "
+        f"Latest Data Horizon: {horizon_str} (updated {now})."
+    )
+
+    text = README_PATH.read_text(encoding="utf-8") if README_PATH.exists() else ""
+    if note_header not in text:
+        if text and not text.endswith("\n"):
+            text += "\n"
+        text += f"\n{note_header}\n\n"
+
+    text = re.sub(r"^- Sync gate active: .*\n", "", text, flags=re.MULTILINE)
+    text += f"{note_line}\n"
+    README_PATH.write_text(text, encoding="utf-8")
+
+
+def print_activate_hook_instructions() -> None:
+    print("\n[AUTOMATION] Add this block to .venv/bin/activate to run sync on environment entry:")
+    print("--------------------")
+    print('if [ -f "$VIRTUAL_ENV/../scripts/sync_on_entry.py" ]; then')
+    print('  "$VIRTUAL_ENV/bin/python" "$VIRTUAL_ENV/../scripts/sync_on_entry.py"')
+    print("fi")
+    print("--------------------")
+
+
+def main() -> None:
+    processed_max = processed_horizon()
+    raw_max = raw_data_horizon()
+
+    if raw_max is None:
+        raise RuntimeError("Unable to determine raw data horizon from parquet inputs.")
+
+    if processed_max is not None and raw_max <= processed_max:
+        horizon_str = processed_max.strftime("%Y-%m-%d %H:%M:%S %Z")
+        print(f"[CHECKPOINT] Data is up to date (Horizon: {horizon_str}). Skipping sync.")
+        print_activate_hook_instructions()
+        return
+
+    master = build_master_dataframe()
+
+    if master.empty:
+        raise RuntimeError("Master dataframe is empty after merge; aborting write.")
+
+    new_horizon = to_hour_local(pd.to_datetime(master["timestamp"]).max())
+    if new_horizon is None:
+        raise RuntimeError("Could not determine new master horizon.")
+
+    if processed_max is None:
+        new_hours = int(master["timestamp"].nunique())
+    else:
+        new_hours = int((pd.to_datetime(master["timestamp"]) > processed_max).sum())
+        # Convert row count to hourly count.
+        new_hours = int(pd.to_datetime(master.loc[pd.to_datetime(master["timestamp"]) > processed_max, "timestamp"]).nunique())
+
+    MASTER_PATH.parent.mkdir(parents=True, exist_ok=True)
+    master.to_parquet(MASTER_PATH, index=False)
+
+    append_readme_sync_note(new_horizon)
+
+    horizon_str = new_horizon.strftime("%Y-%m-%d %H:%M:%S %Z")
+    print(f"[SYNC] Detected {new_hours} new hours of data. Master tensor updated.")
+    print(f"[STATUS] New Data Horizon: {horizon_str}.")
+    print_activate_hook_instructions()
+
+
+if __name__ == "__main__":
+    main()
