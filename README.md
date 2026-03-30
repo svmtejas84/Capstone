@@ -12,6 +12,7 @@ The system combines weather, pollutant, sensor, graph, and routing components to
 Start here for system-level understanding:
 - **[PHYSICS.md](docs/PHYSICS.md)** — Detailed physics model (Gaussian plume, Pasquill stability, urban canyon, RMV, dosimetry) with EPA sourcing.
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Multi-city structure, data flow, physics portability, startup automation scripts.
+- **[TRAINING_ST_PIGNN.md](docs/TRAINING_ST_PIGNN.md)** — End-to-end ST-PIGNN training playbook (windows, masked loss, AMP, V100 guidance).
 
 ## Project Overview
 
@@ -116,9 +117,33 @@ python scripts/build_graph_tensors.py
 # Step 3: Merge data sources and sync on entry (runs at startup)
 python scripts/sync_on_entry.py
 # Logic: If new weather/AQ data detected, rebuild training master. Else skip.
+
+# Step 4: Finalize ST-PIGNN assets (temporal repair + train mask + PyG serialization)
+python scripts/finalize_gnn_assets.py
+# Outputs: gnn_training_tensor_final.parquet, static_graph_pyg.pt
 ```
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for script details.
+
+### Recent Hardening (March 2026)
+
+- `scripts/sync_on_entry.py` now persists `data/processed/2023_ratios.parquet` and ensures helper artifacts exist even when sync is skipped.
+- New sync logging: `[SYNC] Applying pollutant ratio logic...` on real merge runs.
+- Idempotency verified: repeated runs show checkpoint skip when horizon is unchanged.
+- `shared/physics_config.py` now defines `PHYSICS_LOSS_LAMBDA = 0.1` for physics-informed training.
+- New `scripts/finalize_gnn_assets.py` produces V100-ready artifacts:
+   - `data/processed/gnn_training_tensor_final.parquet` (continuous hourly spine)
+   - `data/processed/static_graph_pyg.pt` (PyG `Data` with `train_mask` and `physics_lambda`)
+- New `gnn/model.py` adds ST-PIGNN (`GINEConv` + `GRU`) with:
+   - Masked MSE on sensor nodes only (`train_mask`)
+   - Physics penalty term weighted by `PHYSICS_LOSS_LAMBDA`
+   - AMP-ready train step for CUDA/V100.
+
+Note: On PyTorch 2.6+, load PyG artifacts with:
+
+```python
+torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+```
 
 ```bash
 # Weather archive (Light, hourly 2022-2026)

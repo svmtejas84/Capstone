@@ -19,6 +19,7 @@ import pandas as pd
 
 MASTER_PATH = Path("data/processed/gnn_training_master.parquet")
 MAP_PATH = Path("data/processed/station_node_map.parquet")
+RATIO_CACHE_PATH = Path("data/processed/2023_ratios.parquet")
 README_PATH = Path("data/README.md")
 
 RAW_DIRS = [
@@ -152,6 +153,54 @@ def _station_ratio_fingerprint(source_df: pd.DataFrame) -> tuple[dict[str, pd.Se
     return per_station, global_ratio
 
 
+def _persist_ratio_cache(per_station: dict[str, pd.Series], global_ratio: dict[str, float]) -> None:
+    rows: list[dict[str, object]] = []
+    for pollutant in RATIO_TARGET_PARAMS:
+        ratio_by_station = per_station[pollutant].dropna()
+        for station_id, ratio_value in ratio_by_station.items():
+            rows.append(
+                {
+                    "station_id": station_id,
+                    "pollutant": pollutant,
+                    "ratio": float(ratio_value),
+                    "global_ratio": float(global_ratio[pollutant]),
+                }
+            )
+
+    cache_df = pd.DataFrame(rows)
+    if cache_df.empty:
+        raise ValueError("Ratio cache dataframe is empty; aborting ratio cache write.")
+
+    RATIO_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    cache_df.to_parquet(RATIO_CACHE_PATH, index=False)
+
+
+def _load_or_build_ratio_maps(force_refresh: bool = False) -> tuple[dict[str, pd.Series], dict[str, float]]:
+    if RATIO_CACHE_PATH.exists() and not force_refresh:
+        try:
+            cached = pd.read_parquet(RATIO_CACHE_PATH)
+            required_cols = {"station_id", "pollutant", "ratio", "global_ratio"}
+            if required_cols.issubset(cached.columns):
+                per_station: dict[str, pd.Series] = {}
+                global_ratio: dict[str, float] = {}
+                for pollutant in RATIO_TARGET_PARAMS:
+                    pollutant_df = cached[cached["pollutant"] == pollutant]
+                    if pollutant_df.empty:
+                        raise ValueError(f"Cached ratio file missing pollutant rows: {pollutant}")
+
+                    per_station[pollutant] = pollutant_df.set_index("station_id")["ratio"]
+                    global_ratio[pollutant] = float(pollutant_df["global_ratio"].dropna().iloc[0])
+
+                return per_station, global_ratio
+        except Exception as exc:
+            print(f"[WARN] Unable to load cached 2023 ratios; rebuilding from source ({exc}).")
+
+    ratio_source = pd.read_parquet(RATIO_SOURCE_PATH)
+    per_station, global_ratio = _station_ratio_fingerprint(ratio_source)
+    _persist_ratio_cache(per_station, global_ratio)
+    return per_station, global_ratio
+
+
 def _load_concat_parquets(folder: Path) -> pd.DataFrame:
     frames: list[pd.DataFrame] = []
     for p in sorted(folder.glob("*.parquet")):
@@ -168,13 +217,12 @@ def _load_concat_parquets(folder: Path) -> pd.DataFrame:
     return merged.sort_index()
 
 
-def build_master_dataframe() -> pd.DataFrame:
+def build_master_dataframe(force_refresh_ratios: bool = False) -> pd.DataFrame:
     weather = _load_concat_parquets(WEATHER_DIR)
     air = _load_concat_parquets(AIR_DIR)
     stations = _load_concat_parquets(STATION_DIR)
 
-    ratio_source = pd.read_parquet(RATIO_SOURCE_PATH)
-    per_station_ratios, global_ratios = _station_ratio_fingerprint(ratio_source)
+    per_station_ratios, global_ratios = _load_or_build_ratio_maps(force_refresh=force_refresh_ratios)
 
     station_slice = stations[["station_id", "station_name", "parameter", "value"]].dropna(
         subset=["station_id", "parameter", "value"]
@@ -271,13 +319,20 @@ def main() -> None:
     if raw_max is None:
         raise RuntimeError("Unable to determine raw data horizon from parquet inputs.")
 
+    if not MAP_PATH.exists():
+        raise FileNotFoundError(f"Required helper file not found: {MAP_PATH}")
+
+    # Keep helper ratios persisted even when main sync is skipped.
+    _load_or_build_ratio_maps(force_refresh=False)
+
     if processed_max is not None and raw_max <= processed_max:
         horizon_str = processed_max.strftime("%Y-%m-%d %H:%M:%S %Z")
         print(f"[CHECKPOINT] Data is up to date (Horizon: {horizon_str}). Skipping sync.")
         print_activate_hook_instructions()
         return
 
-    master = build_master_dataframe()
+    print("[SYNC] Applying pollutant ratio logic...")
+    master = build_master_dataframe(force_refresh_ratios=True)
 
     if master.empty:
         raise RuntimeError("Master dataframe is empty after merge; aborting write.")

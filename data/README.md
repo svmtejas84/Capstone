@@ -129,8 +129,13 @@ python scripts/sync_on_entry.py
 **What it does**:
 - Checks if new weather/AQ/station data is available (read-only scan of `data/raw/`)
 - If no new data: prints checkpoint message and exits quietly
-- If new data: merges all sources hourly, applies station ratios, attaches node mapping, writes to `gnn_training_master.parquet`, updates README horizon timestamp
+- If new data: prints `[SYNC] Applying pollutant ratio logic...`, merges all sources hourly, applies station ratios, attaches node mapping, writes to `gnn_training_master.parquet`, updates README horizon timestamp
 - Idempotent: safe to run multiple times (only appends new README notes)
+
+**Helper-file persistence**:
+- `station_node_map.parquet` is required and validated.
+- `2023_ratios.parquet` is persisted in `data/processed/` and reused as ratio cache.
+- Ratio cache is maintained even when sync is skipped via checkpoint.
 
 **Auto-activation** (optional):
 Add this to `.venv/bin/activate` to run automatically when environment loads:
@@ -150,6 +155,37 @@ fi
 On skip (data already up-to-date):
 ```
 [CHECKPOINT] Data is up to date (Horizon: 2026-03-30 03:00:00 IST). Skipping sync.
+```
+
+### 4. Finalize GNN Assets (finalize_gnn_assets.py)
+
+```bash
+python scripts/finalize_gnn_assets.py
+```
+
+**What it does**:
+- Repairs temporal continuity per `node_id` to a full hourly spine.
+- Interpolates AQ features and fills weather features.
+- Builds `train_mask` from station-node mapping through `node_index_map.parquet`.
+- Serializes `static_graph_pyg.pt` as `torch_geometric.data.Data`.
+- Injects `physics_lambda` from `PHYSICS_LOSS_LAMBDA` for training consistency.
+- Runs `data.validate(raise_on_error=True)` and prints graph health checks.
+
+**Outputs**:
+- `gnn_training_tensor_final.parquet`
+- `static_graph_pyg.pt`
+
+**Validation snapshot (latest run)**:
+- contiguous hourly steps: `87,850`
+- bad hourly diffs: `0`
+- train mask labels: `23`
+- isolated nodes: `False`
+- self loops: `False`
+
+**PyTorch 2.6 note**:
+
+```python
+data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
 ```
 
 ## Notes

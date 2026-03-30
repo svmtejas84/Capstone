@@ -3,6 +3,7 @@
 This document describes the current structure for **Bangalore v1** and the path to **multi-city support (v2+)**.
 
 For detailed physics foundations (Gaussian plume, Pasquill stability, urban canyon, RMV), see [PHYSICS.md](PHYSICS.md).
+For model training workflow, see [TRAINING_ST_PIGNN.md](TRAINING_ST_PIGNN.md).
 
 ## Current Directory Structure (v1 — Bangalore)
 
@@ -198,8 +199,13 @@ python scripts/sync_on_entry.py
 1. Scan `data/raw/` for latest hour (UTC, then normalize to local IST)
 2. Compare to `processed/gnn_training_master.parquet` horizon
 3. **If no new data**: `[CHECKPOINT] Data is up to date` → exit
-4. **If new data**: Merge weather + AQ + stations, apply ratio-based pollutant imputation for new years, save to `processed/`, append README with sync timestamp
+4. **If new data**: print `[SYNC] Applying pollutant ratio logic...`, merge weather + AQ + stations, apply ratio-based pollutant imputation, save to `processed/`, append README with sync timestamp
 5. **Idempotent**: Safe to run multiple times; only appends new timestamps
+
+**Helper persistence guarantees**:
+- `data/processed/station_node_map.parquet` is required and validated at runtime.
+- `data/processed/2023_ratios.parquet` is cached and persisted for ratio reuse.
+- Ratio cache is ensured even during checkpoint skip paths.
 
 Used as a **post-pull hook**:
 ```bash
@@ -238,6 +244,69 @@ python scripts/build_graph_tensors.py --city bangalore
   - Validation: 0 isolated nodes, 2.74 edges/node density, 0.52–6884 m edge range
 
 **To adjust for local physics** (e.g., higher air mixing in coastal cities), tune the single parameters in `UrbanCanyon` or `RespiratoryCostant`.
+
+### Final GNN Asset Build: `scripts/finalize_gnn_assets.py`
+
+Run after sync to finalize model-ready assets:
+
+```bash
+python scripts/finalize_gnn_assets.py
+```
+
+**What it does in one pass**:
+1. Repairs temporal continuity on `gnn_training_master.parquet` by building a complete hourly spine per `node_id`.
+2. Interpolates AQ columns (`station_*`, `city_*`) and forward/backward fills weather columns (`weather_*`).
+3. Creates `train_mask` from station-node mapping using `node_index_map.parquet`.
+4. Converts `static_graph.pt` dict payload into PyG `Data` and stores:
+    - `edge_index`
+    - `edge_attr`
+    - `num_nodes`
+    - `train_mask` (23 labeled sensor nodes)
+    - `physics_lambda` (from `PHYSICS_LOSS_LAMBDA`)
+5. Runs `data.validate(raise_on_error=True)` and prints isolated/self-loop checks.
+
+**Outputs**:
+- `data/processed/gnn_training_tensor_final.parquet`
+- `data/processed/static_graph_pyg.pt`
+
+**Current validation snapshot**:
+- Temporal continuity: `bad_steps=0`
+- `train_mask` true count: `23`
+- Isolated nodes: `False`
+- Self loops: `False`
+
+On PyTorch 2.6+, load with:
+
+```python
+data = torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+```
+
+## ST-PIGNN Model
+
+`gnn/model.py` now provides a Spatio-Temporal Physics-Informed GNN:
+
+- **Spatial encoder**: `GINEConv` stack over `edge_index` + `edge_attr`.
+- **Temporal encoder**: `GRU` over node embeddings from a 12-hour sliding window.
+- **Output head**: one scalar per node (predicted PM2.5 concentration).
+
+### Training Loss
+
+Total loss:
+
+$$
+\mathcal{L} = \mathcal{L}_{data} + \lambda_{physics} \cdot \mathcal{L}_{physics}
+$$
+
+- $\mathcal{L}_{data}$: MSE only on nodes where `train_mask == True`.
+- $\mathcal{L}_{physics}$: upwind consistency penalty with Gaussian-plume-weighted edge severity.
+- $\lambda_{physics}$: `PHYSICS_LOSS_LAMBDA` from `shared/physics_config.py` (default `0.1`).
+
+### V100 Readiness
+
+`train_step_amp(...)` in `gnn/model.py` includes:
+- `.to(device)` tensor movement
+- `autocast(...)` mixed precision
+- `GradScaler` for stable AMP training on CUDA Tensor Cores.
 
 ## Future Enhancements
 

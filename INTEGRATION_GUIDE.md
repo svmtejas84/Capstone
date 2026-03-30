@@ -14,9 +14,33 @@ python scripts/pull_stations.py
 python scripts/finalize_data_layer.py  # IDW + station ratios
 python scripts/build_graph_tensors.py   # PyTorch graph
 python scripts/sync_on_entry.py         # Merge all sources
+python scripts/finalize_gnn_assets.py   # Temporal repair + train_mask + PyG Data
 ```
 
 See [data/README.md](data/README.md) for detailed data processing pipeline.
+Training details: [docs/TRAINING_ST_PIGNN.md](docs/TRAINING_ST_PIGNN.md).
+
+## ST-PIGNN Artifacts (Required Before Training)
+
+`scripts/finalize_gnn_assets.py` generates the model-ready files:
+
+- `data/processed/gnn_training_tensor_final.parquet`
+- `data/processed/static_graph_pyg.pt`
+
+Quick verification:
+
+```bash
+python - <<'PY'
+import torch
+data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
+data.validate(raise_on_error=True)
+print('train_mask_true_count=', int(data.train_mask.sum().item()))
+print('isolated_nodes=', data.has_isolated_nodes())
+print('self_loops=', data.has_self_loops())
+PY
+```
+
+Expected: `train_mask_true_count=23`, `isolated_nodes=False`, `self_loops=False`.
 
 ## Local Run (Live API)
 

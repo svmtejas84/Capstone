@@ -1,5 +1,42 @@
 # Data Pipeline Architecture
 
+## March 2026 Hardening Update
+
+### Implemented
+
+- Sync gate hardening in `scripts/sync_on_entry.py`:
+   - Persists ratio cache: `data/processed/2023_ratios.parquet`
+   - Validates helper map: `data/processed/station_node_map.parquet`
+   - Emits explicit merge log: `[SYNC] Applying pollutant ratio logic...`
+   - Preserves idempotency via checkpoint skip logic.
+- Added physics-loss constant:
+   - `shared/physics_config.py` now includes `PHYSICS_LOSS_LAMBDA = 0.1`.
+- Added one-pass finalizer:
+   - `scripts/finalize_gnn_assets.py` performs temporal repair, sensor masking, and PyG serialization.
+- Added ST-PIGNN model module:
+   - `gnn/model.py` with `GINEConv + GRU`, masked MSE, physics penalty, and AMP train step.
+
+### Produced Artifacts
+
+- `data/processed/gnn_training_tensor_final.parquet`
+- `data/processed/static_graph_pyg.pt`
+
+### Validation Results
+
+- Temporal continuity: hourly `bad_steps=0`
+- Sensor supervision mask: `23` true nodes
+- PyG graph validation: pass
+- Isolated nodes: `False`
+- Self loops: `False`
+
+### Runtime Compatibility Note
+
+On PyTorch 2.6+, load PyG `Data` artifacts with `weights_only=False`:
+
+```python
+data = torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+```
+
 ## Overview
 
 The platform uses a live, stream-first architecture for urban toxicity-aware navigation in Bangalore.

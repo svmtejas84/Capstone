@@ -11,6 +11,10 @@ from enum import Enum
 from typing import Literal
 
 
+# Weight for physics-informed regularization term in composite training loss.
+PHYSICS_LOSS_LAMBDA: float = 0.1
+
+
 class StabilityClass(str, Enum):
     """Pasquill-Gifford stability classes A-F based on atmospheric conditions."""
 
