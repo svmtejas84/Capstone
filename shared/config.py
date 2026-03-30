@@ -28,6 +28,8 @@ class Settings(BaseSettings):
 	# AQICN API
 	aqicn_token: str = ""
 	aqicn_url: str = "https://api.waqi.info/feed/bangalore/"
+	openaq_api_key: str = ""
+	openaq_url: str = "https://api.openaq.org/v3"
 
 	# Bangalore coordinates
 	bangalore_lat: float = 12.9716
