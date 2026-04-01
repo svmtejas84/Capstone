@@ -108,10 +108,18 @@ python scripts/build_graph_tensors.py
 **What it does**:
 - Loads OSM road network parquets from `data/graphs/` (read-only)
 - Creates continuous node indexing: OSM osmid → 0, 1, 2, ... (saved to `node_index_map.parquet`)
+- Builds `graph.x` node features (`154,902 x 17`) via UTM nearest-neighbor assignment:
+	- Uses `scipy.spatial.KDTree` to map every road node to nearest environment grid point in meters.
+	- Primary source: `data/processed/environment_grid_utm.parquet` (if present).
+	- Fallback source: `data/processed/gnn_training_tensor_final.parquet` aggregated by `node_id`.
+- Applies physical sanitization to node features:
+	- PM2.5 values are unit-normalized (CAMS kg/m3 inputs converted when detected) and clamped to `0..500`.
+	- Humidity clamped to `0..100`, temperature to `10..50`, elevation to `800..1000`.
+	- Any post-join `NaN` or `0` is replaced with city-wide column median.
 - Adds bidirectional edges: for each directed edge (u→v), add reverse edge (v→u)
 - Encodes edge attributes as torch tensors:
   - `edge_index` [2, num_edges]: source/target node indices
-  - `edge_attr` [num_edges, 1+num_highways]: edge length (m) + one-hot highway type
+	- `edge_attr` [num_edges, 1+num_highways]: edge length (m) + one-hot highway type (case-insensitive OSM normalization)
 - Validates graph connectivity: degree distribution, isolated node count, edge length range
 - Outputs: `static_graph.pt` (PyTorch tensor), `node_index_map.parquet` (node mapping)
 
@@ -119,6 +127,9 @@ python scripts/build_graph_tensors.py
 - Isolated nodes: 0 (100% connectivity)
 - Graph density: 2.74 edges per node
 - Edge lengths: 0.52 m (min) to 6,884.93 m (max)
+- `graph.x` NaN count: 0
+- `graph.x` dead-zone ratio (all-zero rows): 0.0
+- `graph.edge_attr` categorical non-zero row ratio: 1.0
 
 ### 3. Sync on Entry (sync_on_entry.py)
 

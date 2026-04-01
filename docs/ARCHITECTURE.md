@@ -233,15 +233,17 @@ python scripts/finalize_data_layer.py
 Run **once per city** to convert OSM network → PyTorch Geometric:
 
 ```bash
-python scripts/build_graph_tensors.py --city bangalore
+python scripts/build_graph_tensors.py
 ```
 
 **Output**:
 - `data/instances/bangalore/node_index_map.parquet`: OSM osmid → continuous node index
 - `data/instances/bangalore/static_graph.pt`: Torch tensor with:
+    - `x` [num_nodes, 17]: sanitized node features aligned to road nodes via UTM KDTree nearest-neighbor join
   - `edge_index` [2, num_edges]: bidirectional edges
-  - `edge_attr` [num_edges, 1+num_highways]: length (m) + one-hot highway type
-  - Validation: 0 isolated nodes, 2.74 edges/node density, 0.52–6884 m edge range
+    - `edge_attr` [num_edges, 1+num_highways]: length (m) + case-insensitive one-hot highway type
+    - Validation: 0 isolated nodes, 2.74 edges/node density, 0.52–6884 m edge range
+    - Data-quality checks: `graph.x` has zero NaNs, zero all-zero rows, and physically clamped PM2.5/humidity/temperature/elevation ranges
 
 **To adjust for local physics** (e.g., higher air mixing in coastal cities), tune the single parameters in `UrbanCanyon` or `RespiratoryCostant`.
 

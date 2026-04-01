@@ -197,6 +197,15 @@ The GNN layer combines **physics-informed priors** with **learned spatio-tempora
 Trained weights stored in `gnn/model_weights/pi_gnn_v1.pt` (PyTorch format).
 Checkpoints can be updated from stream-backed training tensors.
 
+### Graph Preprocessing Hardening (April 2026)
+
+- `scripts/build_graph_tensors.py` now builds `graph.x` (17 node features) with a UTM `KDTree` nearest-neighbor join so each road node receives environmental features.
+- Physical sanitization is enforced during tensor build:
+   - PM2.5 normalization/clamping to realistic range (`0..500`).
+   - Humidity clamp (`0..100`), temperature clamp (`10..50`), elevation clamp (`800..1000`).
+   - Any `NaN`/`0` after join is replaced with city-level median for that column.
+- Road-type encoding for `graph.edge_attr` is now case-insensitive and robust to list-like OSM highway fields, ensuring non-zero categorical vectors per edge.
+
 ## Routing Layer
 
 Routing is computed on a **UTM-projected OSMnx graph** (EPSG:32643, UTM Zone 43N) with bidirectional edges.
