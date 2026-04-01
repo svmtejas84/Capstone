@@ -8,11 +8,15 @@ Supports multi-city deployments with city-agnostic urban physics.
 from __future__ import annotations
 
 from enum import Enum
+from pathlib import Path
 from typing import Literal
 
 
 # Weight for physics-informed regularization term in composite training loss.
 PHYSICS_LOSS_LAMBDA: float = 0.1
+
+# Project root: parent of this shared module directory.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class StabilityClass(str, Enum):
@@ -170,15 +174,15 @@ class UrbanCanyon:
 # City-specific instance path mapping (extensible for new cities).
 CITY_INSTANCES = {
     "bangalore": {
-        "data_dir": "data/instances/bangalore",
-        "graph_file": "static_graph.pt",
-        "node_map": "node_index_map.parquet",
-        "master_tensor": "gnn_training_master.parquet",
+        "data_dir": BASE_DIR / "data" / "instances" / "bangalore",
+        "graph_file": BASE_DIR / "data" / "instances" / "bangalore" / "static_graph.pt",
+        "node_map": BASE_DIR / "data" / "instances" / "bangalore" / "node_index_map.parquet",
+        "master_tensor": BASE_DIR / "data" / "instances" / "bangalore" / "gnn_training_master.parquet",
     },
 }
 
 
-def get_city_instance_paths(city: str) -> dict[str, str]:
+def get_city_instance_paths(city: str) -> dict[str, Path]:
     """
     Retrieve instance-specific paths for a given city.
 

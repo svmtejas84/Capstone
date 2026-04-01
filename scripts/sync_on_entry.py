@@ -17,20 +17,23 @@ import re
 import numpy as np
 import pandas as pd
 
-MASTER_PATH = Path("data/processed/gnn_training_master.parquet")
-MAP_PATH = Path("data/processed/station_node_map.parquet")
-RATIO_CACHE_PATH = Path("data/processed/2023_ratios.parquet")
-README_PATH = Path("data/README.md")
+# Project root: parent of this script directory.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MASTER_PATH = BASE_DIR / "data" / "processed" / "gnn_training_master.parquet"
+MAP_PATH = BASE_DIR / "data" / "processed" / "station_node_map.parquet"
+RATIO_CACHE_PATH = BASE_DIR / "data" / "processed" / "2023_ratios.parquet"
+README_PATH = BASE_DIR / "data" / "README.md"
 
 RAW_DIRS = [
-    Path("data/raw/weather"),
-    Path("data/raw/airquality"),
-    Path("data/raw/stations"),
+    BASE_DIR / "data" / "raw" / "weather",
+    BASE_DIR / "data" / "raw" / "airquality",
+    BASE_DIR / "data" / "raw" / "stations",
 ]
 
-WEATHER_DIR = Path("data/raw/weather")
-AIR_DIR = Path("data/raw/airquality")
-STATION_DIR = Path("data/raw/stations")
+WEATHER_DIR = BASE_DIR / "data" / "raw" / "weather"
+AIR_DIR = BASE_DIR / "data" / "raw" / "airquality"
+STATION_DIR = BASE_DIR / "data" / "raw" / "stations"
 
 RATIO_SOURCE_PATH = STATION_DIR / "2023.parquet"
 RATIO_TARGET_PARAMS = ["pm25", "no2", "co"]
