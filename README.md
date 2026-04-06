@@ -12,6 +12,7 @@ The system combines weather, pollutant, sensor, graph, and routing components to
 Start here for system-level understanding:
 - **[PHYSICS.md](docs/PHYSICS.md)** — Detailed physics model (Gaussian plume, Pasquill stability, urban canyon, RMV, dosimetry) with EPA sourcing.
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Multi-city structure, data flow, physics portability, startup automation scripts.
+- **[CHANGELOG.md](docs/CHANGELOG.md)** — Dated log of architecture, pipeline, model, and documentation changes.
 - **[TRAINING_ST_PIGNN.md](docs/TRAINING_ST_PIGNN.md)** — End-to-end ST-PIGNN training playbook (windows, masked loss, AMP, V100 guidance).
 
 ## Project Overview
@@ -123,7 +124,7 @@ python scripts/finalize_gnn_assets.py
 # Outputs: gnn_training_tensor_final.parquet, static_graph_pyg.pt
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for script details.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the canonical architecture and [docs/CHANGELOG.md](docs/CHANGELOG.md) for dated changes.
 
 ### Recent Hardening (March 2026)
 

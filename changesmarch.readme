@@ -184,7 +184,8 @@ Focus of new coverage:
 ### H) Documentation and Dev-UX Additions
 
 Added:
-- `ARCHITECTURE_UPDATE.md`
+- `docs/ARCHITECTURE.md`
+- `docs/CHANGELOG.md`
 - `INTEGRATION_GUIDE.md`
 - `REFACTORING_CHECKLIST.md`
 - `scripts/quickstart.sh`

@@ -7,7 +7,7 @@ set -e  # Exit on error
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
-echo "🚀 Toxicity Nav - Quick Start"
+echo "Toxicity Nav - Quick Start"
 echo "=============================="
 echo ""
 
@@ -89,7 +89,8 @@ echo "  4. Frontend will be available at:"
 echo "     http://localhost:5173"
 echo ""
 echo "Documentation:"
-echo "  - ARCHITECTURE_UPDATE.md    - Complete architecture reference"
+echo "  - docs/ARCHITECTURE.md     - Complete architecture reference"
+echo "  - docs/CHANGELOG.md        - Dated change log"
 echo "  - INTEGRATION_GUIDE.md      - Deployment options"
 echo "  - REFACTORING_CHECKLIST.md  - What changed and why"
 echo ""
