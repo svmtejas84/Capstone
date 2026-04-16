@@ -1,0 +1,85 @@
+:root {
+	color-scheme: light;
+	font-family: "Space Grotesk", "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+body {
+	margin: 0;
+	background:
+		radial-gradient(circle at 12% 18%, #d9efe9 0, #d9efe900 33%),
+		radial-gradient(circle at 87% 9%, #ffe7c6 0, #ffe7c600 30%),
+		linear-gradient(140deg, #f7faf6 0%, #edf4ff 44%, #f8f2ea 100%);
+	color: #1f2937;
+}
+
+.app-shell {
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 24px;
+	display: grid;
+	gap: 12px;
+}
+
+h1 {
+	letter-spacing: 0.02em;
+	font-weight: 700;
+}
+
+.card {
+	background: #ffffffd6;
+	border: 1px solid #bfd1dd;
+	border-radius: 14px;
+	padding: 14px;
+	backdrop-filter: blur(4px);
+	box-shadow: 0 8px 30px #29435e14;
+}
+
+button {
+	margin-left: 8px;
+	background: #0f766e;
+	border: 0;
+	color: #ffffff;
+	padding: 8px 12px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+button:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+select {
+	padding: 7px 10px;
+	border-radius: 8px;
+	border: 1px solid #8ab1b8;
+}
+
+.map-shell {
+	margin-top: 8px;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid #acc6d5;
+}
+
+.map-svg {
+	width: 100%;
+	height: auto;
+	display: block;
+	background: linear-gradient(180deg, #f6fbff 0%, #eef5f7 100%);
+}
+
+.wake-shape {
+	fill: #f9731680;
+	stroke: #f97316;
+	stroke-width: 1.5;
+}
+
+.route-line {
+	fill: none;
+	stroke: #1d4ed8;
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+

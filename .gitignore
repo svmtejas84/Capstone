@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+
+# Data caches and large generated artifacts
+data/raw/
+data/gnn/training/
+data/gnn/checkpoints/
+data/sensors/
+data/era5_cache/
+data/sentinel5p_cache/
+data/era5_cache/*
+data/sentinel5p_cache/*
+data/graphs/bangalore_full.graphml
+data/graphs/*.graphml
+data/graphs/*.parquet
+data/raw/metesotat_ingestion.txt
+data/raw/meteostat_ingestion*.txt
+data/raw/metesotat_ingestion*.txt
+data/raw/*meteostat*key*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Rust
+router/rust_astar/target/
+
+*.graphml
+*.nc
+*.npz
+*.parquet
+data/graphs/
+*.json
+!package.json
+!tsconfig.json
+!data/raw/stations/meta.parquet
+
+*.graphml
