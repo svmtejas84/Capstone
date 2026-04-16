@@ -1,0 +1,289 @@
+{
+  "completed": [
+    "stations_2022"
+  ],
+  "failed": [],
+  "stations": [
+    {
+      "id": 412,
+      "name": "Peenya, Bengaluru - KSPCB",
+      "lat": 13.0339,
+      "lon": 77.51321111,
+      "sensors": {
+        "co": 722,
+        "no2": 1518,
+        "pm25": 13852,
+        "so2": 13853
+      }
+    },
+    {
+      "id": 594,
+      "name": "BTM Layout, Bengaluru - KSPCB",
+      "lat": 12.912811110000002,
+      "lon": 77.60921944,
+      "sensors": {
+        "co": 1048,
+        "no2": 1427,
+        "pm25": 13836,
+        "so2": 13837
+      }
+    },
+    {
+      "id": 797,
+      "name": "City Railway Station - KSPCB",
+      "lat": 12.9773472,
+      "lon": 77.5706972222222,
+      "sensors": {
+        "co": 1384,
+        "no2": 1383,
+        "pm10": 1382,
+        "so2": 14096
+      }
+    },
+    {
+      "id": 2589,
+      "name": "SaneguravaHalli - KSPCB",
+      "lat": 12.9916694,
+      "lon": 77.5458305555555,
+      "sensors": {
+        "co": 5350,
+        "no2": 5349,
+        "pm10": 5348,
+        "so2": 14129
+      }
+    },
+    {
+      "id": 2592,
+      "name": "BWSSB Kadabesanahalli, Bengaluru - KSPCB",
+      "lat": 12.93890556,
+      "lon": 77.69727222,
+      "sensors": {
+        "co": 5381,
+        "no2": 5380,
+        "pm25": 13898,
+        "so2": 13888
+      }
+    },
+    {
+      "id": 5547,
+      "name": "BWSSB Kadabesanahalli, Bengaluru - CPCB",
+      "lat": 12.9352049,
+      "lon": 77.6814488,
+      "sensors": {
+        "co": 14637,
+        "no2": 14636,
+        "pm10": 1303004,
+        "pm25": 14641,
+        "so2": 14634
+      }
+    },
+    {
+      "id": 5548,
+      "name": "BTM Layout, Bengaluru - CPCB",
+      "lat": 12.9135218,
+      "lon": 77.5950804,
+      "sensors": {
+        "co": 12235356,
+        "no2": 12235358,
+        "pm10": 1305377,
+        "pm25": 14635,
+        "so2": 12235363
+      }
+    },
+    {
+      "id": 5574,
+      "name": "City Railway Station, Bengaluru - KSPCB",
+      "lat": 12.9756843,
+      "lon": 77.5660749,
+      "sensors": {
+        "co": 12235374,
+        "no2": 12235376,
+        "pm10": 12235377,
+        "so2": 14732
+      }
+    },
+    {
+      "id": 5607,
+      "name": "Peenya, Bengaluru - CPCB",
+      "lat": 13.0270199,
+      "lon": 77.494094,
+      "sensors": {
+        "co": 12235365,
+        "no2": 12235367,
+        "pm10": 1303005,
+        "pm25": 12235370,
+        "so2": 12235372
+      }
+    },
+    {
+      "id": 5644,
+      "name": "Sanegurava Halli, Bengaluru - KSPCB",
+      "lat": 12.990328,
+      "lon": 77.5431385,
+      "sensors": {
+        "co": 12235379,
+        "no2": 15035,
+        "pm10": 12235382,
+        "so2": 15032
+      }
+    },
+    {
+      "id": 6973,
+      "name": "Jayanagar 5th Block, Bengaluru - KSPCB",
+      "lat": 12.920984,
+      "lon": 77.584908,
+      "sensors": {
+        "co": 12235262,
+        "no2": 12235264,
+        "pm10": 20172,
+        "pm25": 20162,
+        "so2": 20152
+      }
+    },
+    {
+      "id": 6974,
+      "name": "Bapuji Nagar, Bengaluru - KSPCB",
+      "lat": 12.951913,
+      "lon": 77.539784,
+      "sensors": {
+        "co": 20153,
+        "no2": 20169,
+        "pm10": 20166,
+        "pm25": 20165,
+        "so2": 20164
+      }
+    },
+    {
+      "id": 6975,
+      "name": "Silk Board, Bengaluru - KSPCB",
+      "lat": 12.917348,
+      "lon": 77.622813,
+      "sensors": {
+        "co": 20171,
+        "no2": 12235282,
+        "pm10": 20161,
+        "pm25": 20156,
+        "so2": 12235287
+      }
+    },
+    {
+      "id": 6983,
+      "name": "Hombegowda Nagar, Bengaluru - KSPCB",
+      "lat": 12.938539,
+      "lon": 77.5901,
+      "sensors": {
+        "co": 12235253,
+        "no2": 12235255,
+        "pm10": 12235257,
+        "pm25": 12235258,
+        "so2": 20200
+      }
+    },
+    {
+      "id": 6984,
+      "name": "Hebbal, Bengaluru - KSPCB",
+      "lat": 13.029152,
+      "lon": 77.585901,
+      "sensors": {
+        "co": 12235244,
+        "no2": 12235246,
+        "pm10": 12235248,
+        "pm25": 12235249,
+        "so2": 20210
+      }
+    },
+    {
+      "id": 229473,
+      "name": "blore_India_07_14_official",
+      "lat": 13.003347077,
+      "lon": 77.628012188,
+      "sensors": {
+        "pm25": 1321837
+      }
+    },
+    {
+      "id": 2498781,
+      "name": "SiriJaya",
+      "lat": 12.909153635368195,
+      "lon": 77.52476183092863,
+      "sensors": {
+        "pm10": 7971081,
+        "pm25": 7951363
+      }
+    },
+    {
+      "id": 3409385,
+      "name": "RVCE-Mailasandra, Bengaluru - KSPCB",
+      "lat": 12.921418,
+      "lon": 77.502466,
+      "sensors": {
+        "co": 12237568,
+        "no2": 12237570,
+        "pm10": 12237572,
+        "pm25": 12237573,
+        "so2": 12237575
+      }
+    },
+    {
+      "id": 3409388,
+      "name": "Kasturi Nagar, Bengaluru - KSPCB",
+      "lat": 13.003872,
+      "lon": 77.664217,
+      "sensors": {
+        "co": 12237595,
+        "no2": 12237597,
+        "pm10": 12237599,
+        "pm25": 12237600,
+        "so2": 12237602
+      }
+    },
+    {
+      "id": 3409393,
+      "name": "Shivapura_Peenya, Bengaluru - KSPCB",
+      "lat": 13.0246342,
+      "lon": 77.5080115,
+      "sensors": {
+        "co": 12237640,
+        "no2": 12237642,
+        "pm10": 12237644,
+        "pm25": 12237645,
+        "so2": 12237647
+      }
+    },
+    {
+      "id": 6119271,
+      "name": "Kumaraswamy Layout",
+      "lat": 12.9044,
+      "lon": 77.5649,
+      "sensors": {
+        "pm25": 14551750
+      }
+    },
+    {
+      "id": 6146655,
+      "name": "Bellandur",
+      "lat": 12.9178128,
+      "lon": 77.6955288,
+      "sensors": {
+        "pm25": 14754075
+      }
+    },
+    {
+      "id": 6206921,
+      "name": "Koramangala",
+      "lat": 12.9370223,
+      "lon": 77.6115928,
+      "sensors": {
+        "pm25": 15203555
+      }
+    }
+  ],
+  "completed_stations": [
+    "2023_412",
+    "2023_594",
+    "2023_797",
+    "2023_2589",
+    "2023_2592",
+    "2023_5547"
+  ]
+}
