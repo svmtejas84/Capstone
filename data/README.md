@@ -3,18 +3,21 @@
 This directory contains all raw and processed data for the Bangalore urban toxicity navigation project.
 Do not commit files in `raw/` except `stations/meta.parquet` and checkpoint files.
 
-**Multi-city roadmap**: v1 (Bangalore) → v2 (Delhi, Mumbai, etc.). Data structure supports city-specific instances in `data/instances/{city}/`.
+**Multi-city roadmap**: v1 (Bangalore) → v2 (Delhi, Mumbai, etc.). Processed data is organized by purpose under `data/processed/`.
 
 ## Structure
 
 ```
 data/
-	instances/                # City-specific data (v1: Bangalore only)
-		bangalore/
-			static_graph.pt         # PyTorch Geometric graph tensor (edges, node features)
-			node_index_map.parquet  # OSM osmid → continuous node index
-			gnn_training_master.parquet # Merged training data (joined hourly)
-	processed/                # [Backward compat] Symlinks to data/instances/bangalore/
+	processed/
+		graph/                  # Graph/topology and station-to-node mapping artifacts
+		model_input/            # Final temporal model inputs
+		stations/               # Gapfill-derived station layer (processed-only)
+		airquality/             # Raw airquality copies used by processed-only envs
+		weather/                # Raw weather copies used by processed-only envs
+		checkpoints/            # Ingestion/pull state snapshots
+		logs/                   # Pull and remap logs/events
+		audits/                 # Timestamp and inventory audits
 	raw/                      # Raw data pulls (read-only for sync_on_entry.py)
 		weather/              # Open-Metoe Historical Forecast API
 			2022.parquet        # 8,760 rows — wind, temp, pressure, humidity (hourly)
@@ -45,6 +48,8 @@ data/
 | Open-Meteo Forecast | archive-api.open-meteo.com | wind_speed_10m, wind_direction_10m, wind_gusts_10m, temperature_2m, relative_humidity_2m, surface_pressure | 2-11km | No |
 | Open-Meteo Air Quality | air-quality-api.open-meteo.com | nitrogen_dioxide, sulphur_dioxide, pm2_5, pm10, carbon_monoxide | 45km (CAMS Global) | No |
 | OpenAQ CPCB | api.openaq.org/v3 | no2, so2, pm25, pm10, co | Station-level (23 stations) | Yes — OPENAQ_API_KEY |
+
+Note: observed station data for 2023 is not available in the current OpenAQ pulls, so the processed station layer is year-split only for 2022, 2024, 2025, and 2026 partial.
 
 ## Bangalore Stations (OpenAQ)
 
@@ -91,13 +96,15 @@ python scripts/finalize_data_layer.py
 - Imputes missing 2022 station PM2.5, NO2, CO from PM10 using 2023 ratios
 - Repairs city-level 2022 air quality gaps via IDW (Inverse Distance Weighting) from 23 ground stations
 - Maps each station to nearest road node using KDTree (WGS84 → UTM43N)
-- Outputs: `station_node_map.parquet` with snap distances
+- Outputs: `graph/station_to_topology_node_map.parquet` with snap distances
 
 **Validation** (current state):
 - Remaining 2022 missing count: 0
 - Average snap distance: 84.57 m (expected ~80–150m for urban roads)
 
 **Data caveat**: If 2023 has no data, ratio computation falls back to all available rows and logs warning.
+
+**Station coverage caveat**: `data/processed/stations/` intentionally omits `2023.parquet` unless a future recovery pass produces observed 2023 station rows.
 
 ### 2. Build Graph Tensors (build_graph_tensors.py)
 
@@ -107,11 +114,11 @@ python scripts/build_graph_tensors.py
 
 **What it does**:
 - Loads OSM road network parquets from `data/graphs/` (read-only)
-- Creates continuous node indexing: OSM osmid → 0, 1, 2, ... (saved to `node_index_map.parquet`)
+- Creates continuous node indexing: OSM osmid → 0, 1, 2, ... (saved to `graph/topology_nodeid_to_index_map.parquet`)
 - Builds `graph.x` node features (`154,902 x 17`) via UTM nearest-neighbor assignment:
 	- Uses `scipy.spatial.KDTree` to map every road node to nearest environment grid point in meters.
 	- Primary source: `data/processed/environment_grid_utm.parquet` (if present).
-	- Fallback source: `data/processed/gnn_training_tensor_final.parquet` aggregated by `node_id`.
+	- Fallback source: `data/processed/model_input/model_input_node_hourly_features.parquet` aggregated by `node_id`.
 - Applies physical sanitization to node features:
 	- PM2.5 values are unit-normalized (CAMS kg/m3 inputs converted when detected) and clamped to `0..500`.
 	- Humidity clamped to `0..100`, temperature to `10..50`, elevation to `800..1000`.
@@ -121,7 +128,7 @@ python scripts/build_graph_tensors.py
   - `edge_index` [2, num_edges]: source/target node indices
 	- `edge_attr` [num_edges, 1+num_highways]: edge length (m) + one-hot highway type (case-insensitive OSM normalization)
 - Validates graph connectivity: degree distribution, isolated node count, edge length range
-- Outputs: `static_graph.pt` (PyTorch tensor), `node_index_map.parquet` (node mapping)
+- Outputs: `graph/topology_graph.pt` (PyTorch tensor), `graph/topology_nodeid_to_index_map.parquet` (node mapping)
 
 **Validation** (current state):
 - Isolated nodes: 0 (100% connectivity)
@@ -140,11 +147,11 @@ python scripts/sync_on_entry.py
 **What it does**:
 - Checks if new weather/AQ/station data is available (read-only scan of `data/raw/`)
 - If no new data: prints checkpoint message and exits quietly
-- If new data: prints `[SYNC] Applying pollutant ratio logic...`, merges all sources hourly, applies station ratios, attaches node mapping, writes to `gnn_training_master.parquet`, updates README horizon timestamp
+- If new data: prints `[SYNC] Applying pollutant ratio logic...`, merges all sources hourly, applies station ratios, attaches node mapping, writes to `model_input/model_input_node_hourly_features.parquet`, updates README horizon timestamp
 - Idempotent: safe to run multiple times (only appends new README notes)
 
 **Helper-file persistence**:
-- `station_node_map.parquet` is required and validated.
+- `graph/station_to_topology_node_map.parquet` is required and validated.
 - `2023_ratios.parquet` is persisted in `data/processed/` and reused as ratio cache.
 - Ratio cache is maintained even when sync is skipped via checkpoint.
 
@@ -160,12 +167,12 @@ fi
 **Example output** on successful sync:
 ```
 [SYNC] Detected 24 new hours of data. Master tensor updated.
-[STATUS] New Data Horizon: 2026-03-31 03:00:00 IST.
+[STATUS] New Data Horizon: 2026-03-31 03:00:00 UTC.
 ```
 
 On skip (data already up-to-date):
 ```
-[CHECKPOINT] Data is up to date (Horizon: 2026-03-30 03:00:00 IST). Skipping sync.
+[CHECKPOINT] Data is up to date (Horizon: 2026-03-30 03:00:00 UTC). Skipping sync.
 ```
 
 ### 4. Finalize GNN Assets (finalize_gnn_assets.py)
@@ -177,14 +184,14 @@ python scripts/finalize_gnn_assets.py
 **What it does**:
 - Repairs temporal continuity per `node_id` to a full hourly spine.
 - Interpolates AQ features and fills weather features.
-- Builds `train_mask` from station-node mapping through `node_index_map.parquet`.
-- Serializes `static_graph_pyg.pt` as `torch_geometric.data.Data`.
+- Builds `train_mask` from station-to-topology mapping through `graph/topology_nodeid_to_index_map.parquet`.
+- Serializes `graph/topology_graph_pyg_inference.pt` as `torch_geometric.data.Data`.
 - Injects `physics_lambda` from `PHYSICS_LOSS_LAMBDA` for training consistency.
 - Runs `data.validate(raise_on_error=True)` and prints graph health checks.
 
 **Outputs**:
-- `gnn_training_tensor_final.parquet`
-- `static_graph_pyg.pt`
+- `model_input/model_input_node_hourly_features.parquet`
+- `graph/topology_graph_pyg_inference.pt`
 
 **Validation snapshot (latest run)**:
 - contiguous hourly steps: `87,850`
@@ -196,7 +203,7 @@ python scripts/finalize_gnn_assets.py
 **PyTorch 2.6 note**:
 
 ```python
-data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
+data = torch.load('data/processed/graph/topology_graph_pyg_inference.pt', weights_only=False)
 ```
 
 ## Notes
@@ -205,7 +212,7 @@ data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
 - 2022 air quality has ~25,000 missing values resolved by repair script (IDW from stations)
 - 2022 station data has ~22,515 missing pollutants resolved by ratio imputation
 - Station data is at 15-minute intervals, resampled to hourly at training time
-- All timestamps stored in IST (Asia/Kolkata, UTC+5:30)
+- All timestamps stored in UTC (timezone-naive in parquet schemas)
 - Parquet files use Snappy compression via pyarrow
 - For multi-city expansion, duplicate this structure in `data/instances/{new_city}/`; same physics applies city-wide
 

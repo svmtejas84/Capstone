@@ -6,8 +6,8 @@ Inputs (read-only):
 - data/graphs/bangalore_utm_edges.parquet
 
 Outputs:
-- data/processed/node_index_map.parquet
-- data/processed/static_graph.pt
+- data/processed/graph/topology_nodeid_to_index_map.parquet
+- data/processed/graph/topology_graph.pt
 """
 
 from __future__ import annotations
@@ -23,10 +23,10 @@ from scipy.spatial import KDTree
 
 NODES_PATH = Path("data/graphs/bangalore_utm_nodes.parquet")
 EDGES_PATH = Path("data/graphs/bangalore_utm_edges.parquet")
-NODE_MAP_OUT = Path("data/processed/node_index_map.parquet")
-STATIC_GRAPH_OUT = Path("data/processed/static_graph.pt")
+NODE_MAP_OUT = Path("data/processed/graph/topology_nodeid_to_index_map.parquet")
+STATIC_GRAPH_OUT = Path("data/processed/graph/topology_graph.pt")
 ENV_GRID_PATH = Path("data/processed/environment_grid_utm.parquet")
-MASTER_FEATURES_PATH = Path("data/processed/gnn_training_tensor_final.parquet")
+MASTER_FEATURES_PATH = Path("data/processed/model_input/model_input_node_hourly_features.parquet")
 
 NODE_FEATURE_COLUMNS = [
     "station_pm10",
@@ -127,12 +127,12 @@ def _prepare_environment_grid(nodes_df: pd.DataFrame) -> pd.DataFrame:
     if not MASTER_FEATURES_PATH.exists():
         raise FileNotFoundError(
             "Missing feature source. Expected either data/processed/environment_grid_utm.parquet "
-            "or data/processed/gnn_training_tensor_final.parquet"
+            "or data/processed/model_input/model_input_node_hourly_features.parquet"
         )
 
     master = pd.read_parquet(MASTER_FEATURES_PATH)
     if "node_id" not in master.columns:
-        raise ValueError("gnn_training_tensor_final.parquet must contain node_id for fallback feature source")
+        raise ValueError("model_input_node_hourly_features.parquet must contain node_id for fallback feature source")
 
     available_feature_cols = [c for c in NODE_FEATURE_COLUMNS if c in master.columns]
     if not available_feature_cols:

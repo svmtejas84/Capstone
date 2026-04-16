@@ -2,7 +2,7 @@
 scripts/pull_airquality.py
 
 Pulls hourly historical air quality data from Open-Meteo Air Quality API.
-Covers Jan 2022 -> March 2026 for Bangalore.
+Covers Jan 2022 -> current UTC date for Bangalore.
 
 Usage:
     python scripts/pull_airquality.py
@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -37,7 +37,7 @@ VARIABLES = [
 
 FULL_YEARS = [2022, 2023, 2024, 2025]
 PARTIAL_YEAR = 2026
-PARTIAL_END = "2026-03-28"
+PARTIAL_END = datetime.now(timezone.utc).date().isoformat()
 OUT_DIR = Path("data/raw/airquality")
 CHECKPOINT = Path("data/raw/.checkpoint_airquality.json")
 RETRY_LIMIT = 5
@@ -76,7 +76,7 @@ def fetch_year(year: int, start: str, end: str) -> pd.DataFrame | None:
         "end_date": end,
         "hourly": ",".join(VARIABLES),
         "domains": "cams_global",
-        "timezone": "Asia/Kolkata",
+        "timezone": "UTC",
     }
     for attempt in range(1, RETRY_LIMIT + 1):
         try:
@@ -89,7 +89,7 @@ def fetch_year(year: int, start: str, end: str) -> pd.DataFrame | None:
                     log(f"  x Empty response for {year}")
                     return None
                 df = pd.DataFrame(hourly)
-                df["time"] = pd.to_datetime(df["time"])
+                df["time"] = pd.to_datetime(df["time"], utc=True).dt.tz_localize(None)
                 df = df.set_index("time")
                 return df
             if resp.status_code == 429:
@@ -120,7 +120,7 @@ def save_parquet(df: pd.DataFrame, path: Path) -> None:
 def main(resume: bool = False, single_year: int | None = None) -> None:
     log_milestone("Open-Meteo AirQuality Historical Pull")
     log(f"Variables: {', '.join(VARIABLES)}")
-    log("Range    : Jan 2022 -> March 2026")
+    log(f"Range    : Jan 2022 -> {PARTIAL_END} (UTC)")
     checkpoint = load_checkpoint() if resume else {"completed": [], "failed": []}
 
     if single_year:

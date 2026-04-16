@@ -2,7 +2,7 @@
 scripts/pull_stations.py
 
 Pulls historical pollution readings from all OpenAQ CPCB stations
-within Bangalore bounding box. Covers Jan 2022 -> March 2026.
+within Bangalore bounding box. Covers Jan 2022 -> current UTC date.
 
 Usage:
     python scripts/pull_stations.py
@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -36,7 +36,7 @@ BBOX = "77.461,12.834,77.781,13.144"
 
 FULL_YEARS = [2022, 2023, 2024, 2025]
 PARTIAL_YEAR = 2026
-PARTIAL_END = "2026-03-28"
+PARTIAL_END = datetime.now(timezone.utc).date().isoformat()
 OUT_DIR = Path("data/raw/stations")
 CHECKPOINT = Path("data/raw/.checkpoint_stations.json")
 META_PATH = OUT_DIR / "meta.parquet"
@@ -202,7 +202,7 @@ def fetch_station_year(station: dict, year: int, start: str, end: str, progress,
         return None
 
     df = pd.DataFrame(all_rows)
-    df["time"] = pd.to_datetime(df["time"], utc=True).dt.tz_convert("Asia/Kolkata")
+    df["time"] = pd.to_datetime(df["time"], utc=True).dt.tz_localize(None)
     df = df.set_index("time")
     return df
 
@@ -220,7 +220,7 @@ def main(resume: bool = False, single_year: int | None = None) -> None:
 
     log_milestone("OpenAQ Station Historical Pull")
     log(f"Bbox : {BBOX}")
-    log("Range: Jan 2022 -> March 2026")
+    log(f"Range: Jan 2022 -> {PARTIAL_END} (UTC)")
 
     checkpoint = load_checkpoint() if resume else {"completed": [], "failed": [], "stations": [], "completed_stations": []}
 

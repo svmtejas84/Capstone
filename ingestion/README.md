@@ -138,7 +138,7 @@ Key test coverage:
 
 - Data fusion correctness (IDW interpolation).
 - Stream publish and consume.
-- Timestamp handling and timezone conversion (IST).
+- Timestamp handling and timezone normalization (UTC).
 - Bias correction calibration.
 - Nowcasting short-term predictions.
 
@@ -146,5 +146,5 @@ Key test coverage:
 
 - Keep stream payloads timestamped in ISO 8601 format (UTC).
 - Redis connection must be established before worker starts.
-- Timestamps are stored in IST (Asia/Kolkata, UTC+5:30) internally; convert as needed.
+- Timestamps are stored in UTC internally; convert to local time only at display boundaries if needed.
 

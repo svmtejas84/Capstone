@@ -26,7 +26,7 @@ STATION_2022_PATH = Path("data/raw/stations/2022.parquet")
 STATION_2023_PATH = Path("data/raw/stations/2023.parquet")
 STATION_META_PATH = Path("data/raw/stations/meta.parquet")
 NODES_PATH = Path("data/graphs/bangalore_utm_nodes.parquet")
-STATION_NODE_MAP_OUT = Path("data/processed/station_node_map.parquet")
+STATION_TO_TOPOLOGY_NODE_MAP_OUT = Path("data/processed/graph/station_to_topology_node_map.parquet")
 
 CITY_TO_STATION_PARAM = {
     "nitrogen_dioxide": "no2",
@@ -74,7 +74,7 @@ def normalize_time_index(df: pd.DataFrame) -> pd.DataFrame:
         idx = pd.to_datetime(idx)
 
     if idx.tz is not None:
-        idx = idx.tz_convert("Asia/Kolkata").tz_localize(None)
+        idx = idx.tz_localize(None)
 
     out = df.copy()
     out.index = idx
@@ -253,7 +253,7 @@ def repair_airquality_2022_with_idw() -> pd.DataFrame:
     return city_df
 
 
-def build_station_node_mapping() -> pd.DataFrame:
+def build_station_topology_node_mapping() -> pd.DataFrame:
     station_meta = pd.read_parquet(STATION_META_PATH)
     nodes = pd.read_parquet(NODES_PATH)
 
@@ -279,8 +279,8 @@ def build_station_node_mapping() -> pd.DataFrame:
         }
     )
 
-    STATION_NODE_MAP_OUT.parent.mkdir(parents=True, exist_ok=True)
-    mapped.to_parquet(STATION_NODE_MAP_OUT, index=False)
+    STATION_TO_TOPOLOGY_NODE_MAP_OUT.parent.mkdir(parents=True, exist_ok=True)
+    mapped.to_parquet(STATION_TO_TOPOLOGY_NODE_MAP_OUT, index=False)
 
     print(f"Average Snap Distance (m): {mapped['distance_meters'].mean():.2f}")
 
@@ -291,8 +291,8 @@ def main() -> None:
     print("=== Finalize Data Layer ===")
     impute_2022_station_pollutants_from_2023()
     repair_airquality_2022_with_idw()
-    build_station_node_mapping()
-    print(f"Saved station-node mapping -> {STATION_NODE_MAP_OUT}")
+    build_station_topology_node_mapping()
+    print(f"Saved station-to-topology mapping -> {STATION_TO_TOPOLOGY_NODE_MAP_OUT}")
 
 
 if __name__ == "__main__":

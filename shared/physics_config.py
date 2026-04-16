@@ -174,10 +174,10 @@ class UrbanCanyon:
 # City-specific instance path mapping (extensible for new cities).
 CITY_INSTANCES = {
     "bangalore": {
-        "data_dir": BASE_DIR / "data" / "instances" / "bangalore",
-        "graph_file": BASE_DIR / "data" / "instances" / "bangalore" / "static_graph.pt",
-        "node_map": BASE_DIR / "data" / "instances" / "bangalore" / "node_index_map.parquet",
-        "master_tensor": BASE_DIR / "data" / "instances" / "bangalore" / "gnn_training_master.parquet",
+        "data_dir": BASE_DIR / "data" / "processed",
+            "graph_file": BASE_DIR / "data" / "processed" / "graph" / "topology_graph.pt",
+            "node_map": BASE_DIR / "data" / "processed" / "graph" / "topology_nodeid_to_index_map.parquet",
+        "master_tensor": BASE_DIR / "data" / "processed" / "model_input_node_hourly_features.parquet",
     },
 }
 

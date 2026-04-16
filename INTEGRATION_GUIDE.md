@@ -24,15 +24,15 @@ Training details: [docs/TRAINING_ST_PIGNN.md](docs/TRAINING_ST_PIGNN.md).
 
 `scripts/finalize_gnn_assets.py` generates the model-ready files:
 
-- `data/processed/gnn_training_tensor_final.parquet`
-- `data/processed/static_graph_pyg.pt`
+- `data/processed/model_input/model_input_node_hourly_features.parquet`
+- `data/processed/graph/topology_graph_pyg_inference.pt`
 
 Quick verification:
 
 ```bash
 python - <<'PY'
 import torch
-data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
+data = torch.load('data/processed/graph/topology_graph_pyg_inference.pt', weights_only=False)
 data.validate(raise_on_error=True)
 print('train_mask_true_count=', int(data.train_mask.sum().item()))
 print('isolated_nodes=', data.has_isolated_nodes())

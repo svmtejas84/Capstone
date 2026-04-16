@@ -9,14 +9,14 @@ Data sources:
 - Open-Meteo Air Quality API: NO2, SO2, PM2.5, PM10, CO concentrations
 - AQICN API: ground-level sensor validation for pollutants
 
-All timestamps are in IST (Asia/Kolkata).
+All timestamps are emitted in UTC (ISO 8601).
 """
 
 from __future__ import annotations
 
 import asyncio
 import logging
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
 import aiohttp
@@ -36,8 +36,9 @@ from gnn.edge_weights import update_graph_toxicity_from_streams
 
 logger = get_logger(__name__)
 
-# IST timezone offset
-IST = timezone(timedelta(hours=5, minutes=30))
+def _utc_now_iso() -> str:
+	"""Return current UTC timestamp in ISO-8601 with explicit Z suffix."""
+	return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 class OpenMeteoIngestor:
@@ -70,7 +71,7 @@ class OpenMeteoIngestor:
 				"relative_humidity_2m,surface_pressure"
 			),
 			"wind_speed_unit": "ms",
-			"timezone": "Asia/Kolkata",
+			"timezone": "UTC",
 			"forecast_days": "1",
 		}
 
@@ -88,7 +89,7 @@ class OpenMeteoIngestor:
 						"temperature_2m": current.get("temperature_2m"),
 						"relative_humidity_2m": current.get("relative_humidity_2m"),
 						"surface_pressure": current.get("surface_pressure"),
-						"timestamp": datetime.now(IST).isoformat(),
+						"timestamp": _utc_now_iso(),
 						"lat": self.lat,
 						"lon": self.lon,
 					}
@@ -111,7 +112,7 @@ class OpenMeteoIngestor:
 			"latitude": self.lat,
 			"longitude": self.lon,
 			"current": "nitrogen_dioxide,sulphur_dioxide,pm2_5,pm10,carbon_monoxide",
-			"timezone": "Asia/Kolkata",
+			"timezone": "UTC",
 		}
 
 		try:
@@ -126,7 +127,7 @@ class OpenMeteoIngestor:
 						"pm2_5": current.get("pm2_5"),
 						"pm10": current.get("pm10"),
 						"carbon_monoxide": current.get("carbon_monoxide"),
-						"timestamp": datetime.now(IST).isoformat(),
+						"timestamp": _utc_now_iso(),
 						"lat": self.lat,
 						"lon": self.lon,
 					}
@@ -175,7 +176,7 @@ class AQICNIngestor:
 							"so2": data_payload.get("iaqi", {}).get("so2", {}).get("v"),
 							"pm2_5": data_payload.get("iaqi", {}).get("pm25", {}).get("v"),
 							"o3": data_payload.get("iaqi", {}).get("o3", {}).get("v"),
-							"timestamp": datetime.now(IST).isoformat(),
+							"timestamp": _utc_now_iso(),
 							"lat": self.aqicn_url.split("bangalore")[0],  # Placeholder; extract from response
 							"lon": self.aqicn_url.split("bangalore")[0],  # Placeholder; extract from response
 						}

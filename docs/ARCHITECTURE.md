@@ -60,10 +60,14 @@ For model training workflow, see [TRAINING_ST_PIGNN.md](TRAINING_ST_PIGNN.md).
 ├── data/
 │   ├── instances/
 │   │   └── bangalore/
-│   │       ├── static_graph.pt       # PyTorch Geometric graph tensor (edges + attributes)
-│   │       ├── node_index_map.parquet # OSM osmid → node index mapping
-│   │       └── gnn_training_master.parquet # Merged training data (weather + AQ + sensors)
-│   ├── processed/                    # [compat] symlinks to data/instances/bangalore/
+│   │       ├── graph/
+│   │       │   ├── topology_graph.pt       # PyTorch Geometric graph tensor (edges + attributes)
+│   │       │   ├── topology_graph_pyg_inference.pt # PyG-ready graph object
+│   │       │   ├── topology_nodeid_to_index_map.parquet # OSM osmid → node index mapping
+│   │       │   └── station_to_topology_node_map.parquet # Station-to-node lookup
+│   │       └── model_input/
+│   │           └── model_input_node_hourly_features.parquet # Merged training data (weather + AQ + sensors)
+│   ├── processed/                    # Processed workspace root
 │   ├── graphs/ (read-only)           # Raw OSM road network
 │   │   ├── bangalore_utm.graphml
 │   │   ├── bangalore_utm_nodes.parquet
@@ -196,15 +200,16 @@ python scripts/sync_on_entry.py
 ```
 
 **Logic**:
-1. Scan `data/raw/` for latest hour (UTC, then normalize to local IST)
-2. Compare to `processed/gnn_training_master.parquet` horizon
+1. Scan `data/raw/` for latest hour (UTC, kept as timezone-naive UTC for parquet joins)
+2. Compare to `processed/model_input/model_input_node_hourly_features.parquet` horizon
 3. **If no new data**: `[CHECKPOINT] Data is up to date` → exit
 4. **If new data**: print `[SYNC] Applying pollutant ratio logic...`, merge weather + AQ + stations, apply ratio-based pollutant imputation, save to `processed/`, append README with sync timestamp
 5. **Idempotent**: Safe to run multiple times; only appends new timestamps
 
 **Helper persistence guarantees**:
-- `data/processed/station_node_map.parquet` is required and validated at runtime.
+- `data/processed/graph/station_to_topology_node_map.parquet` is required and validated at runtime.
 - `data/processed/2023_ratios.parquet` is cached and persisted for ratio reuse.
+- Observed 2023 station data is currently unavailable from the source pulls; processed station year files therefore cover 2022, 2024, 2025, and 2026 partial only.
 - Ratio cache is ensured even during checkpoint skip paths.
 
 Used as a **post-pull hook**:
@@ -224,9 +229,10 @@ python scripts/finalize_data_layer.py
 **Steps**:
 1. Compute 2023 station **pollutant ratio fingerprint** (PM2.5/NO2/CO) per station
 2. Impute missing 2022 pollutants in PM10-only records using 2023 ratios
+3. If 2023 station observations remain unavailable, the ratio logic falls back to the best available rows and logs a warning instead of fabricating a 2023 observed layer.
 3. **IDW interpolation** from 23 ground stations to fill remaining gaps in merged data
 4. **Station-to-node mapping**: KDTree snap each station to nearest road node (avg 84.57m) for training
-5. Output: Zero missing values, station_node_map.parquet for node attachment
+5. Output: Zero missing values, station_to_topology_node_map.parquet for node attachment
 
 ### Graph Tensor Build: `scripts/build_graph_tensors.py`
 
@@ -237,8 +243,8 @@ python scripts/build_graph_tensors.py
 ```
 
 **Output**:
-- `data/instances/bangalore/node_index_map.parquet`: OSM osmid → continuous node index
-- `data/instances/bangalore/static_graph.pt`: Torch tensor with:
+- `data/processed/graph/topology_nodeid_to_index_map.parquet`: OSM osmid → continuous node index
+- `data/processed/graph/topology_graph.pt`: Torch tensor with:
     - `x` [num_nodes, 17]: sanitized node features aligned to road nodes via UTM KDTree nearest-neighbor join
   - `edge_index` [2, num_edges]: bidirectional edges
     - `edge_attr` [num_edges, 1+num_highways]: length (m) + case-insensitive one-hot highway type
@@ -256,10 +262,10 @@ python scripts/finalize_gnn_assets.py
 ```
 
 **What it does in one pass**:
-1. Repairs temporal continuity on `gnn_training_master.parquet` by building a complete hourly spine per `node_id`.
+1. Repairs temporal continuity on `model_input/model_input_node_hourly_features.parquet` by building a complete hourly spine per `node_id`.
 2. Interpolates AQ columns (`station_*`, `city_*`) and forward/backward fills weather columns (`weather_*`).
-3. Creates `train_mask` from station-node mapping using `node_index_map.parquet`.
-4. Converts `static_graph.pt` dict payload into PyG `Data` and stores:
+3. Creates `train_mask` from station-to-topology mapping using `graph/topology_nodeid_to_index_map.parquet`.
+4. Converts `graph/topology_graph.pt` dict payload into PyG `Data` and stores:
     - `edge_index`
     - `edge_attr`
     - `num_nodes`
@@ -268,8 +274,8 @@ python scripts/finalize_gnn_assets.py
 5. Runs `data.validate(raise_on_error=True)` and prints isolated/self-loop checks.
 
 **Outputs**:
-- `data/processed/gnn_training_tensor_final.parquet`
-- `data/processed/static_graph_pyg.pt`
+- `data/processed/model_input/model_input_node_hourly_features.parquet`
+- `data/processed/graph/topology_graph_pyg_inference.pt`
 
 **Current validation snapshot**:
 - Temporal continuity: `bad_steps=0`
@@ -280,7 +286,7 @@ python scripts/finalize_gnn_assets.py
 On PyTorch 2.6+, load with:
 
 ```python
-data = torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+data = torch.load("data/processed/graph/topology_graph_pyg_inference.pt", weights_only=False)
 ```
 
 ## ST-PIGNN Model

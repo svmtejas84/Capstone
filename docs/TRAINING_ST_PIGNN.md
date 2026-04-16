@@ -20,9 +20,9 @@ python scripts/finalize_gnn_assets.py
 ```
 
 Expected files:
-- `data/processed/gnn_training_tensor_final.parquet`
-- `data/processed/static_graph_pyg.pt`
-- `data/processed/node_index_map.parquet`
+- `data/processed/model_input/model_input_node_hourly_features.parquet`
+- `data/processed/graph/topology_graph_pyg_inference.pt`
+- `data/processed/graph/topology_nodeid_to_index_map.parquet`
 
 ## Sanity Check Before Training
 
@@ -31,10 +31,10 @@ python - <<'PY'
 import torch
 import pandas as pd
 
-df = pd.read_parquet('data/processed/gnn_training_tensor_final.parquet')
+df = pd.read_parquet('data/processed/model_input/model_input_node_hourly_features.parquet')
 print('rows=', len(df), 'cols=', len(df.columns))
 
-data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
+data = torch.load('data/processed/graph/topology_graph_pyg_inference.pt', weights_only=False)
 data.validate(raise_on_error=True)
 print('num_nodes=', data.num_nodes)
 print('num_edges=', int(data.edge_index.shape[1]))
@@ -60,7 +60,7 @@ Loss:
 
 ## Suggested Feature Columns
 
-Use stable columns already present in `gnn_training_tensor_final.parquet`:
+Use stable columns already present in `model_input/model_input_node_hourly_features.parquet`:
 - Station: `station_pm10`, `station_pm25`, `station_no2`, `station_so2`, `station_co`
 - Weather: `weather_wind_speed_10m`, `weather_wind_direction_10m`, `weather_wind_gusts_10m`, `weather_temperature_2m`, `weather_relative_humidity_2m`, `weather_surface_pressure`
 - City background: `city_nitrogen_dioxide`, `city_sulphur_dioxide`, `city_pm2_5`, `city_pm10`, `city_carbon_monoxide`
@@ -127,8 +127,8 @@ def build_windows(df: pd.DataFrame, feature_cols: list[str], target_col: str):
 
 
 def main() -> None:
-    df = pd.read_parquet('data/processed/gnn_training_tensor_final.parquet')
-    data = torch.load('data/processed/static_graph_pyg.pt', weights_only=False)
+    df = pd.read_parquet('data/processed/model_input/model_input_node_hourly_features.parquet')
+    data = torch.load('data/processed/graph/topology_graph_pyg_inference.pt', weights_only=False)
 
     feature_cols = [
         'station_pm10', 'station_pm25', 'station_no2', 'station_so2', 'station_co',

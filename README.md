@@ -109,11 +109,11 @@ After pulling historical data, prepare the training dataset:
 ```bash
 # Step 1: Repair 2022 gaps using IDW + pollutant ratio imputation (run once)
 python scripts/finalize_data_layer.py
-# Output: Zero missing values in 2022, station_node_map.parquet
+# Output: Zero missing values in 2022, data/processed/graph/station_to_topology_node_map.parquet
 
 # Step 2: Build PyTorch graph tensors from road network (run once per city)
 python scripts/build_graph_tensors.py
-# Output: data/instances/bangalore/static_graph.pt, node_index_map.parquet
+# Output: data/processed/graph/topology_graph.pt, data/processed/graph/topology_nodeid_to_index_map.parquet
 
 # Step 3: Merge data sources and sync on entry (runs at startup)
 python scripts/sync_on_entry.py
@@ -121,7 +121,7 @@ python scripts/sync_on_entry.py
 
 # Step 4: Finalize ST-PIGNN assets (temporal repair + train mask + PyG serialization)
 python scripts/finalize_gnn_assets.py
-# Outputs: gnn_training_tensor_final.parquet, static_graph_pyg.pt
+# Outputs: data/processed/model_input/model_input_node_hourly_features.parquet, data/processed/graph/topology_graph_pyg_inference.pt
 ```
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the canonical architecture and [docs/CHANGELOG.md](docs/CHANGELOG.md) for dated changes.
@@ -129,12 +129,13 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the canonical architecture 
 ### Recent Hardening (March 2026)
 
 - `scripts/sync_on_entry.py` now persists `data/processed/2023_ratios.parquet` and ensures helper artifacts exist even when sync is skipped.
+- `data/processed/stations/` intentionally omits `2023.parquet` until observed 2023 station rows exist.
 - New sync logging: `[SYNC] Applying pollutant ratio logic...` on real merge runs.
 - Idempotency verified: repeated runs show checkpoint skip when horizon is unchanged.
 - `shared/physics_config.py` now defines `PHYSICS_LOSS_LAMBDA = 0.1` for physics-informed training.
 - New `scripts/finalize_gnn_assets.py` produces V100-ready artifacts:
-   - `data/processed/gnn_training_tensor_final.parquet` (continuous hourly spine)
-   - `data/processed/static_graph_pyg.pt` (PyG `Data` with `train_mask` and `physics_lambda`)
+   - `data/processed/model_input/model_input_node_hourly_features.parquet` (continuous hourly spine)
+   - `data/processed/graph/topology_graph_pyg_inference.pt` (PyG `Data` with `train_mask` and `physics_lambda`)
 - New `gnn/model.py` adds ST-PIGNN (`GINEConv` + `GRU`) with:
    - Masked MSE on sensor nodes only (`train_mask`)
    - Physics penalty term weighted by `PHYSICS_LOSS_LAMBDA`
@@ -143,7 +144,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the canonical architecture 
 Note: On PyTorch 2.6+, load PyG artifacts with:
 
 ```python
-torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+torch.load("data/processed/graph/topology_graph_pyg_inference.pt", weights_only=False)
 ```
 
 ```bash
@@ -156,6 +157,8 @@ python scripts/pull_airquality.py
 # Station archive (CPCB, 15-minute 2022-2026; takes ~2 hours)
 python scripts/pull_stations.py
 ```
+
+Observed 2023 station data is currently absent from the source pulls, so `data/processed/stations/` is year-split only for 2022, 2024, 2025, and 2026 partial.
 
 Data is stored in `data/raw/` as Parquet files.
 
@@ -191,7 +194,7 @@ The GNN layer combines **physics-informed priors** with **learned spatio-tempora
 2. **Training Data**
    - Merged tensor: weather (Open-Metoe) + CAMS regional AQ + CPCB station observations.
    - 23 ground stations snapped to road nodes via KDTree (avg. 84.57 m snap distance).
-   - Hourly resolution, IST timezone, interpolated for gaps via IDW from neighbors.
+   - Hourly resolution, UTC-based timestamps, interpolated for gaps via IDW from neighbors.
 
 ### Model State
 

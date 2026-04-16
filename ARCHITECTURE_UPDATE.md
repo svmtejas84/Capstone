@@ -6,7 +6,7 @@
 
 - Sync gate hardening in `scripts/sync_on_entry.py`:
    - Persists ratio cache: `data/processed/2023_ratios.parquet`
-   - Validates helper map: `data/processed/station_node_map.parquet`
+   - Validates helper map: `data/processed/graph/station_to_topology_node_map.parquet`
    - Emits explicit merge log: `[SYNC] Applying pollutant ratio logic...`
    - Preserves idempotency via checkpoint skip logic.
 - Added physics-loss constant:
@@ -18,8 +18,8 @@
 
 ### Produced Artifacts
 
-- `data/processed/gnn_training_tensor_final.parquet`
-- `data/processed/static_graph_pyg.pt`
+- `data/processed/model_input/model_input_node_hourly_features.parquet`
+- `data/processed/graph/topology_graph_pyg_inference.pt`
 
 ### Validation Results
 
@@ -34,7 +34,7 @@
 On PyTorch 2.6+, load PyG `Data` artifacts with `weights_only=False`:
 
 ```python
-data = torch.load("data/processed/static_graph_pyg.pt", weights_only=False)
+data = torch.load("data/processed/graph/topology_graph_pyg_inference.pt", weights_only=False)
 ```
 
 ## Overview

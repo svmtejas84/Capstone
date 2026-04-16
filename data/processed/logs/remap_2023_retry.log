@@ -1,0 +1,313 @@
+====================================================================================================
+[2026-04-15T00:06:46.993296] Start 2023 remap retry | tasks=89 | resume=False
+[2026-04-15T00:06:47.909042] START task=2023|412|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - KSPCB param=co candidates=[722]
+[2026-04-15T00:06:48.830812] TRY task=2023|412|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=722 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:48.831091] END task=2023|412|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:49.751485] START task=2023|412|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - KSPCB param=no2 candidates=[1518]
+[2026-04-15T00:06:50.263665] TRY task=2023|412|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1518 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:50.263875] END task=2023|412|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:50.672481] START task=2023|412|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - KSPCB param=pm25 candidates=[13852]
+[2026-04-15T00:06:51.054505] TRY task=2023|412|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13852 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:51.054691] END task=2023|412|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:51.492300] START task=2023|412|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - KSPCB param=so2 candidates=[13853]
+[2026-04-15T00:06:51.901194] TRY task=2023|412|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13853 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:51.901405] END task=2023|412|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:52.310536] START task=2023|594|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - KSPCB param=co candidates=[1048]
+[2026-04-15T00:06:52.675217] TRY task=2023|594|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1048 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:52.675567] END task=2023|594|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:53.130708] START task=2023|594|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - KSPCB param=no2 candidates=[1427]
+[2026-04-15T00:06:53.487076] TRY task=2023|594|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1427 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:53.487294] END task=2023|594|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:53.847416] START task=2023|594|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - KSPCB param=pm25 candidates=[13836]
+[2026-04-15T00:06:54.258353] TRY task=2023|594|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13836 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:54.261029] END task=2023|594|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:55.176714] START task=2023|594|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - KSPCB param=so2 candidates=[13837]
+[2026-04-15T00:06:55.705396] TRY task=2023|594|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13837 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:55.705671] END task=2023|594|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:56.318526] START task=2023|797|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station - KSPCB param=co candidates=[1384]
+[2026-04-15T00:06:56.729153] TRY task=2023|797|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1384 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:56.729339] END task=2023|797|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:57.137835] START task=2023|797|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station - KSPCB param=no2 candidates=[1383]
+[2026-04-15T00:06:57.549940] TRY task=2023|797|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1383 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:57.550203] END task=2023|797|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:57.956974] START task=2023|797|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station - KSPCB param=pm10 candidates=[1382]
+[2026-04-15T00:06:58.369349] TRY task=2023|797|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1382 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:58.369668] END task=2023|797|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:58.740901] START task=2023|797|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station - KSPCB param=so2 candidates=[14096]
+[2026-04-15T00:06:59.174365] TRY task=2023|797|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14096 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:59.174569] END task=2023|797|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:06:59.580245] START task=2023|2589|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SaneguravaHalli - KSPCB param=co candidates=[5350]
+[2026-04-15T00:06:59.992150] TRY task=2023|2589|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=5350 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:06:59.994104] END task=2023|2589|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:00.399753] START task=2023|2589|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SaneguravaHalli - KSPCB param=no2 candidates=[5349]
+[2026-04-15T00:07:00.811042] TRY task=2023|2589|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=5349 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:00.813155] END task=2023|2589|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:01.218502] START task=2023|2589|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SaneguravaHalli - KSPCB param=pm10 candidates=[5348]
+[2026-04-15T00:07:01.633615] TRY task=2023|2589|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=5348 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:01.633841] END task=2023|2589|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:02.043707] START task=2023|2589|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SaneguravaHalli - KSPCB param=so2 candidates=[14129]
+[2026-04-15T00:07:02.962972] TRY task=2023|2589|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14129 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:02.965222] END task=2023|2589|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:03.370042] START task=2023|2592|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - KSPCB param=co candidates=[5381]
+[2026-04-15T00:07:03.781407] TRY task=2023|2592|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=5381 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:03.781654] END task=2023|2592|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:04.190225] START task=2023|2592|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - KSPCB param=no2 candidates=[5380]
+[2026-04-15T00:07:04.601209] TRY task=2023|2592|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=5380 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:04.603928] END task=2023|2592|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:05.007312] START task=2023|2592|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - KSPCB param=pm25 candidates=[13898]
+[2026-04-15T00:07:05.420254] TRY task=2023|2592|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13898 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:05.422182] END task=2023|2592|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:05.827051] START task=2023|2592|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - KSPCB param=so2 candidates=[13888]
+[2026-04-15T00:07:06.237919] TRY task=2023|2592|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=13888 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:06.238154] END task=2023|2592|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:06.603326] START task=2023|5547|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - CPCB param=co candidates=[14637]
+[2026-04-15T00:07:07.056770] TRY task=2023|5547|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14637 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:07.057016] END task=2023|5547|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:07.443281] START task=2023|5547|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - CPCB param=no2 candidates=[14636]
+[2026-04-15T00:07:07.880817] TRY task=2023|5547|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14636 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:07.881048] END task=2023|5547|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:08.274830] START task=2023|5547|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - CPCB param=pm10 candidates=[1303004]
+[2026-04-15T00:07:08.656544] TRY task=2023|5547|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1303004 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:08.656844] END task=2023|5547|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:09.024248] START task=2023|5547|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - CPCB param=pm25 candidates=[14641]
+[2026-04-15T00:07:09.924364] TRY task=2023|5547|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14641 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:09.924601] END task=2023|5547|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:10.290290] START task=2023|5547|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BWSSB Kadabesanahalli, Bengaluru - CPCB param=so2 candidates=[14634]
+[2026-04-15T00:07:10.744014] TRY task=2023|5547|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14634 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:10.744245] END task=2023|5547|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:11.357847] START task=2023|5548|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - CPCB param=co candidates=[12235356, 14657]
+[2026-04-15T00:07:11.770160] TRY task=2023|5548|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235356 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:12.177109] TRY task=2023|5548|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14657 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:12.177333] END task=2023|5548|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:12.892200] START task=2023|5548|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - CPCB param=no2 candidates=[12235358, 14639]
+[2026-04-15T00:07:13.262856] TRY task=2023|5548|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235358 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:13.712678] TRY task=2023|5548|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14639 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:13.712904] END task=2023|5548|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:14.072628] START task=2023|5548|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - CPCB param=pm10 candidates=[1305377, 12235360]
+[2026-04-15T00:07:14.533640] TRY task=2023|5548|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1305377 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:14.943635] TRY task=2023|5548|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235360 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:14.943876] END task=2023|5548|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:15.990723] START task=2023|5548|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - CPCB param=pm25 candidates=[14635, 12235361]
+[2026-04-15T00:07:16.363772] TRY task=2023|5548|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14635 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:16.782418] TRY task=2023|5548|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235361 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:16.782662] END task=2023|5548|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:17.500884] START task=2023|5548|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=BTM Layout, Bengaluru - CPCB param=so2 candidates=[12235363, 14642]
+[2026-04-15T00:07:17.911245] TRY task=2023|5548|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235363 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:18.321849] TRY task=2023|5548|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14642 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:18.322068] END task=2023|5548|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:18.731064] START task=2023|5574|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station, Bengaluru - KSPCB param=co candidates=[12235374, 14779]
+[2026-04-15T00:07:19.101821] TRY task=2023|5574|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235374 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:19.486312] TRY task=2023|5574|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14779 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:19.486553] END task=2023|5574|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:19.841393] START task=2023|5574|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station, Bengaluru - KSPCB param=no2 candidates=[12235376, 14773]
+[2026-04-15T00:07:20.266964] TRY task=2023|5574|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235376 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:20.677856] TRY task=2023|5574|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14773 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:20.678087] END task=2023|5574|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:21.069866] START task=2023|5574|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station, Bengaluru - KSPCB param=pm10 candidates=[12235377, 14775]
+[2026-04-15T00:07:21.496985] TRY task=2023|5574|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235377 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:21.882407] TRY task=2023|5574|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14775 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:21.882665] END task=2023|5574|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:22.313575] START task=2023|5574|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=City Railway Station, Bengaluru - KSPCB param=so2 candidates=[14732, 12235378]
+[2026-04-15T00:07:22.692822] TRY task=2023|5574|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14732 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:23.133507] TRY task=2023|5574|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235378 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:23.133756] END task=2023|5574|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:23.543542] START task=2023|5607|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - CPCB param=co candidates=[12235365, 15270]
+[2026-04-15T00:07:23.953078] TRY task=2023|5607|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235365 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:24.321797] TRY task=2023|5607|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15270 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:24.322025] END task=2023|5607|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:24.772213] START task=2023|5607|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - CPCB param=no2 candidates=[12235367, 14850]
+[2026-04-15T00:07:25.139058] TRY task=2023|5607|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235367 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:25.507377] TRY task=2023|5607|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14850 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:25.507600] END task=2023|5607|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:25.871857] START task=2023|5607|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - CPCB param=pm10 candidates=[1303005, 12235369]
+[2026-04-15T00:07:26.308650] TRY task=2023|5607|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1303005 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:26.683082] TRY task=2023|5607|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235369 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:07:26.683308] END task=2023|5607|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:07:27.126388] START task=2023|5607|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - CPCB param=pm25 candidates=[12235370]
+[2026-04-15T00:08:00.511396] TRY task=2023|5607|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235370 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:00.511648] END task=2023|5607|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:01.639527] START task=2023|5607|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Peenya, Bengaluru - CPCB param=so2 candidates=[12235372, 14862]
+[2026-04-15T00:08:02.046127] TRY task=2023|5607|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235372 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:02.970015] TRY task=2023|5607|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14862 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:02.970247] END task=2023|5607|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:03.581397] START task=2023|5644|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Sanegurava Halli, Bengaluru - KSPCB param=co candidates=[12235379, 15039]
+[2026-04-15T00:08:04.504770] TRY task=2023|5644|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235379 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:04.872417] TRY task=2023|5644|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15039 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:04.872673] END task=2023|5644|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:05.322834] START task=2023|5644|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Sanegurava Halli, Bengaluru - KSPCB param=no2 candidates=[15035, 12235381]
+[2026-04-15T00:08:05.690598] TRY task=2023|5644|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15035 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:06.142260] TRY task=2023|5644|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235381 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:06.142494] END task=2023|5644|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:06.552270] START task=2023|5644|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Sanegurava Halli, Bengaluru - KSPCB param=pm10 candidates=[12235382, 15033]
+[2026-04-15T00:08:07.474842] TRY task=2023|5644|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235382 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:07.883125] TRY task=2023|5644|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15033 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:07.883352] END task=2023|5644|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:09.009314] START task=2023|5644|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Sanegurava Halli, Bengaluru - KSPCB param=so2 candidates=[15032, 12235384]
+[2026-04-15T00:08:09.419356] TRY task=2023|5644|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15032 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:10.315675] TRY task=2023|5644|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235384 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:10.315909] END task=2023|5644|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:10.954328] START task=2023|6973|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Jayanagar 5th Block, Bengaluru - KSPCB param=co candidates=[12235262, 20173]
+[2026-04-15T00:08:11.313244] TRY task=2023|6973|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235262 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:11.775879] TRY task=2023|6973|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20173 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:11.776125] END task=2023|6973|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:12.152221] START task=2023|6973|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Jayanagar 5th Block, Bengaluru - KSPCB param=no2 candidates=[12235264, 20175]
+[2026-04-15T00:08:12.593680] TRY task=2023|6973|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235264 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:13.002820] TRY task=2023|6973|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20175 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:13.003043] END task=2023|6973|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:13.372486] START task=2023|6973|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Jayanagar 5th Block, Bengaluru - KSPCB param=pm10 candidates=[20172, 12235266]
+[2026-04-15T00:08:13.747788] TRY task=2023|6973|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20172 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:14.642034] TRY task=2023|6973|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235266 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:14.642296] END task=2023|6973|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:15.051970] START task=2023|6973|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Jayanagar 5th Block, Bengaluru - KSPCB param=pm25 candidates=[20162, 12235267]
+[2026-04-15T00:08:15.409376] TRY task=2023|6973|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20162 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:15.870079] TRY task=2023|6973|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235267 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:15.870291] END task=2023|6973|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:16.236883] START task=2023|6973|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Jayanagar 5th Block, Bengaluru - KSPCB param=so2 candidates=[20152, 12235269]
+[2026-04-15T00:08:16.689508] TRY task=2023|6973|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20152 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:17.610992] TRY task=2023|6973|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235269 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:17.611211] END task=2023|6973|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:18.223734] START task=2023|6974|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bapuji Nagar, Bengaluru - KSPCB param=co candidates=[20153, 12235235]
+[2026-04-15T00:08:19.062644] TRY task=2023|6974|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20153 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:19.454643] TRY task=2023|6974|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235235 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:19.454898] END task=2023|6974|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:19.864047] START task=2023|6974|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bapuji Nagar, Bengaluru - KSPCB param=no2 candidates=[20169, 12235237]
+[2026-04-15T00:08:20.273819] TRY task=2023|6974|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20169 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:20.630383] TRY task=2023|6974|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235237 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:20.630629] END task=2023|6974|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:21.297978] START task=2023|6974|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bapuji Nagar, Bengaluru - KSPCB param=pm10 candidates=[20166, 12235239]
+[2026-04-15T00:08:21.656534] TRY task=2023|6974|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20166 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:22.117000] TRY task=2023|6974|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235239 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:22.117233] END task=2023|6974|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:22.530624] START task=2023|6974|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bapuji Nagar, Bengaluru - KSPCB param=pm25 candidates=[20165, 12235240]
+[2026-04-15T00:08:22.901994] TRY task=2023|6974|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20165 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:23.252753] TRY task=2023|6974|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235240 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:23.253015] END task=2023|6974|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:23.628234] START task=2023|6974|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bapuji Nagar, Bengaluru - KSPCB param=so2 candidates=[20164, 12235242]
+[2026-04-15T00:08:24.062398] TRY task=2023|6974|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20164 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:24.574153] TRY task=2023|6974|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235242 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:24.574389] END task=2023|6974|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:24.983870] START task=2023|6975|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Silk Board, Bengaluru - KSPCB param=co candidates=[20171, 12235280]
+[2026-04-15T00:08:25.395187] TRY task=2023|6975|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20171 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:25.803360] TRY task=2023|6975|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235280 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:25.803573] END task=2023|6975|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:26.212809] START task=2023|6975|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Silk Board, Bengaluru - KSPCB param=no2 candidates=[12235282, 20154]
+[2026-04-15T00:08:26.623655] TRY task=2023|6975|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235282 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:26.988870] TRY task=2023|6975|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20154 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:26.989105] END task=2023|6975|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:27.441291] START task=2023|6975|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Silk Board, Bengaluru - KSPCB param=pm10 candidates=[20161, 12235284]
+[2026-04-15T00:08:27.851473] TRY task=2023|6975|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20161 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:28.260903] TRY task=2023|6975|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235284 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:28.261129] END task=2023|6975|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:28.624154] START task=2023|6975|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Silk Board, Bengaluru - KSPCB param=pm25 candidates=[20156, 12235285]
+[2026-04-15T00:08:29.080021] TRY task=2023|6975|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20156 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:29.443670] TRY task=2023|6975|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235285 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:08:29.443903] END task=2023|6975|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:08:29.899037] START task=2023|6975|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Silk Board, Bengaluru - KSPCB param=so2 candidates=[12235287, 20176]
+[2026-04-15T00:08:30.309626] TRY task=2023|6975|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235287 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:03.694831] TRY task=2023|6975|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20176 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:03.695087] END task=2023|6975|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:04.785565] START task=2023|6983|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hombegowda Nagar, Bengaluru - KSPCB param=co candidates=[12235253, 20195]
+[2026-04-15T00:09:05.227814] TRY task=2023|6983|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235253 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:06.053486] TRY task=2023|6983|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20195 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:06.053702] END task=2023|6983|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:06.404277] START task=2023|6983|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hombegowda Nagar, Bengaluru - KSPCB param=no2 candidates=[12235255, 20196]
+[2026-04-15T00:09:06.867717] TRY task=2023|6983|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235255 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:07.224305] TRY task=2023|6983|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20196 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:07.224571] END task=2023|6983|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:08.298206] START task=2023|6983|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hombegowda Nagar, Bengaluru - KSPCB param=pm10 candidates=[12235257, 20198]
+[2026-04-15T00:09:08.683068] TRY task=2023|6983|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235257 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:09.120320] TRY task=2023|6983|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20198 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:09.120554] END task=2023|6983|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:09.742185] START task=2023|6983|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hombegowda Nagar, Bengaluru - KSPCB param=pm25 candidates=[12235258, 20199]
+[2026-04-15T00:09:10.246538] TRY task=2023|6983|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235258 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:10.608983] TRY task=2023|6983|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20199 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:10.609230] END task=2023|6983|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:11.777877] START task=2023|6983|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hombegowda Nagar, Bengaluru - KSPCB param=so2 candidates=[20200, 12235260]
+[2026-04-15T00:09:12.190345] TRY task=2023|6983|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20200 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:12.554230] TRY task=2023|6983|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235260 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:12.554444] END task=2023|6983|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:13.159192] START task=2023|6984|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hebbal, Bengaluru - KSPCB param=co candidates=[12235244, 20224]
+[2026-04-15T00:09:13.982429] TRY task=2023|6984|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235244 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:14.849334] TRY task=2023|6984|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20224 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:14.849551] END task=2023|6984|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:15.978600] START task=2023|6984|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hebbal, Bengaluru - KSPCB param=no2 candidates=[12235246, 20222]
+[2026-04-15T00:09:16.388979] TRY task=2023|6984|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235246 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:17.231230] TRY task=2023|6984|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20222 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:17.231480] END task=2023|6984|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:18.334094] START task=2023|6984|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hebbal, Bengaluru - KSPCB param=pm10 candidates=[12235248, 20213]
+[2026-04-15T00:09:18.699673] TRY task=2023|6984|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235248 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:19.078502] TRY task=2023|6984|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20213 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:19.078752] END task=2023|6984|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:19.697870] START task=2023|6984|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hebbal, Bengaluru - KSPCB param=pm25 candidates=[12235249, 20212]
+[2026-04-15T00:09:20.055844] TRY task=2023|6984|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235249 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:20.431801] TRY task=2023|6984|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20212 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:20.432021] END task=2023|6984|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:21.098672] START task=2023|6984|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Hebbal, Bengaluru - KSPCB param=so2 candidates=[20210, 12235251]
+[2026-04-15T00:09:21.510759] TRY task=2023|6984|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=20210 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:21.875854] TRY task=2023|6984|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12235251 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:21.876098] END task=2023|6984|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:22.328067] START task=2023|229473|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=blore_India_07_14_official param=pm25 candidates=[1321837]
+[2026-04-15T00:09:22.737860] TRY task=2023|229473|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=1321837 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:22.738091] END task=2023|229473|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:23.124665] START task=2023|2498781|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SiriJaya param=pm10 candidates=[7971081, 7979259]
+[2026-04-15T00:09:23.968747] TRY task=2023|2498781|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=7971081 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:24.334812] TRY task=2023|2498781|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=7979259 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:24.335100] END task=2023|2498781|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:24.787092] START task=2023|2498781|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=SiriJaya param=pm25 candidates=[7951363]
+[2026-04-15T00:09:25.708306] TRY task=2023|2498781|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=7951363 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:25.708578] END task=2023|2498781|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:26.427635] START task=2023|3409385|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=RVCE-Mailasandra, Bengaluru - KSPCB param=co candidates=[12237568]
+[2026-04-15T00:09:26.834242] TRY task=2023|3409385|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237568 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:26.834578] END task=2023|3409385|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:27.245295] START task=2023|3409385|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=RVCE-Mailasandra, Bengaluru - KSPCB param=no2 candidates=[12237570]
+[2026-04-15T00:09:28.083426] TRY task=2023|3409385|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237570 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:28.083674] END task=2023|3409385|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:28.473166] START task=2023|3409385|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=RVCE-Mailasandra, Bengaluru - KSPCB param=pm10 candidates=[12237572]
+[2026-04-15T00:09:28.828008] TRY task=2023|3409385|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237572 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:28.828269] END task=2023|3409385|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:29.223537] START task=2023|3409385|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=RVCE-Mailasandra, Bengaluru - KSPCB param=pm25 candidates=[12237573]
+[2026-04-15T00:09:30.111513] TRY task=2023|3409385|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237573 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:30.111783] END task=2023|3409385|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:30.527702] START task=2023|3409385|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=RVCE-Mailasandra, Bengaluru - KSPCB param=so2 candidates=[12237575]
+[2026-04-15T00:09:30.908091] TRY task=2023|3409385|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237575 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:30.908373] END task=2023|3409385|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:31.280966] START task=2023|3409388|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kasturi Nagar, Bengaluru - KSPCB param=co candidates=[12237595]
+[2026-04-15T00:09:31.666586] TRY task=2023|3409388|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237595 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:31.666955] END task=2023|3409388|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:32.061669] START task=2023|3409388|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kasturi Nagar, Bengaluru - KSPCB param=no2 candidates=[12237597]
+[2026-04-15T00:09:32.437702] TRY task=2023|3409388|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237597 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:32.437946] END task=2023|3409388|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:33.285727] START task=2023|3409388|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kasturi Nagar, Bengaluru - KSPCB param=pm10 candidates=[12237599]
+[2026-04-15T00:09:33.644521] TRY task=2023|3409388|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237599 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:33.644946] END task=2023|3409388|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:34.103984] START task=2023|3409388|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kasturi Nagar, Bengaluru - KSPCB param=pm25 candidates=[12237600]
+[2026-04-15T00:09:34.470184] TRY task=2023|3409388|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237600 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:34.470430] END task=2023|3409388|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:34.824721] START task=2023|3409388|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kasturi Nagar, Bengaluru - KSPCB param=so2 candidates=[12237602]
+[2026-04-15T00:09:35.233522] TRY task=2023|3409388|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237602 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:35.233853] END task=2023|3409388|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:35.640618] START task=2023|3409393|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Shivapura_Peenya, Bengaluru - KSPCB param=co candidates=[12237640]
+[2026-04-15T00:09:36.564181] TRY task=2023|3409393|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237640 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:09:36.566649] END task=2023|3409393|co|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:09:36.926145] START task=2023|3409393|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Shivapura_Peenya, Bengaluru - KSPCB param=no2 candidates=[12237642]
+[2026-04-15T00:10:10.820872] TRY task=2023|3409393|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237642 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:10.821105] END task=2023|3409393|no2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:11.685395] START task=2023|3409393|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Shivapura_Peenya, Bengaluru - KSPCB param=pm10 candidates=[12237644]
+[2026-04-15T00:10:12.052191] TRY task=2023|3409393|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237644 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:12.052433] END task=2023|3409393|pm10|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:12.427457] START task=2023|3409393|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Shivapura_Peenya, Bengaluru - KSPCB param=pm25 candidates=[12237645]
+[2026-04-15T00:10:13.323543] TRY task=2023|3409393|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237645 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:13.323783] END task=2023|3409393|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:13.690690] START task=2023|3409393|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Shivapura_Peenya, Bengaluru - KSPCB param=so2 candidates=[12237647]
+[2026-04-15T00:10:14.144471] TRY task=2023|3409393|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=12237647 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:14.144724] END task=2023|3409393|so2|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:14.536989] START task=2023|6119271|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Kumaraswamy Layout param=pm25 candidates=[14551750]
+[2026-04-15T00:10:14.901952] TRY task=2023|6119271|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14551750 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:14.902289] END task=2023|6119271|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:15.258262] START task=2023|6146655|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Bellandur param=pm25 candidates=[14754075]
+[2026-04-15T00:10:15.680741] TRY task=2023|6146655|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=14754075 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:15.681021] END task=2023|6146655|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:16.088027] START task=2023|6206921|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z station=Koramangala param=pm25 candidates=[15203555]
+[2026-04-15T00:10:16.439465] TRY task=2023|6206921|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z sensor=15203555 http=200 raw_api_rows=0 api_rows=0
+[2026-04-15T00:10:16.439700] END task=2023|6206921|pm25|2023-01-01T00:00:00Z|2023-12-31T23:59:59Z status=confirmed_missing http=200 raw_api_rows=0 api_rows=0 inserted=0 selected_sensor=-1 msg=all_candidate_sensors_returned_no_rows
+[2026-04-15T00:10:16.462535] Finished 2023 remap retry | processed=89

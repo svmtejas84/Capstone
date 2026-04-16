@@ -2,13 +2,13 @@
 scripts/finalize_gnn_assets.py
 
 One-pass finalization for ST-PIGNN assets:
-1) Temporal continuity repair on the training master table.
+1) Temporal continuity repair on the training tensor.
 2) Sensor train-mask creation from station-node mapping.
 3) PyG Data serialization with built-in validation.
 
 Outputs:
-- data/processed/gnn_training_tensor_final.parquet
-- data/processed/static_graph_pyg.pt
+- data/processed/model_input/model_input_node_hourly_features.parquet
+- data/processed/graph/topology_graph_pyg_inference.pt
 """
 
 from __future__ import annotations
@@ -22,12 +22,12 @@ from torch_geometric.data import Data
 
 from shared.physics_config import PHYSICS_LOSS_LAMBDA
 
-MASTER_IN = Path("data/processed/gnn_training_master.parquet")
-MASTER_OUT = Path("data/processed/gnn_training_tensor_final.parquet")
-STATION_NODE_MAP = Path("data/processed/station_node_map.parquet")
-NODE_INDEX_MAP = Path("data/processed/node_index_map.parquet")
-STATIC_GRAPH_IN = Path("data/processed/static_graph.pt")
-STATIC_GRAPH_OUT = Path("data/processed/static_graph_pyg.pt")
+MASTER_IN = Path("data/processed/model_input/model_input_node_hourly_features.parquet")
+MASTER_OUT = MASTER_IN
+STATION_NODE_MAP = Path("data/processed/graph/station_to_topology_node_map.parquet")
+NODE_INDEX_MAP = Path("data/processed/graph/topology_nodeid_to_index_map.parquet")
+STATIC_GRAPH_IN = Path("data/processed/graph/topology_graph.pt")
+STATIC_GRAPH_OUT = Path("data/processed/graph/topology_graph_pyg_inference.pt")
 
 AQ_PREFIXES = ("station_", "city_")
 WEATHER_PREFIX = "weather_"
@@ -48,6 +48,8 @@ def _node_hourly_spine(df: pd.DataFrame) -> pd.DataFrame:
 
     out = df.copy()
     out["timestamp"] = pd.to_datetime(out["timestamp"], errors="coerce")
+    if isinstance(out["timestamp"].dtype, pd.DatetimeTZDtype):
+        out["timestamp"] = out["timestamp"].dt.tz_localize(None)
     out = out.dropna(subset=["timestamp", "node_id"]).copy()
     out["node_id"] = out["node_id"].astype("int64")
 
@@ -106,9 +108,9 @@ def _build_sensor_train_mask(num_nodes: int) -> torch.Tensor:
     idx_map = pd.read_parquet(NODE_INDEX_MAP)
 
     if "node_id" not in mapping.columns:
-        raise ValueError("station_node_map.parquet must contain column: node_id")
+        raise ValueError("station_to_topology_node_map.parquet must contain column: node_id")
     if not {"node_id", "node_index"}.issubset(idx_map.columns):
-        raise ValueError("node_index_map.parquet must contain columns: node_id, node_index")
+        raise ValueError("topology_nodeid_to_index_map.parquet must contain columns: node_id, node_index")
 
     sensor_node_ids = pd.Series(mapping["node_id"]).dropna().astype("int64").drop_duplicates()
     merged = sensor_node_ids.to_frame("node_id").merge(
@@ -147,14 +149,14 @@ def finalize_assets() -> None:
     print(f"✅ Continuity Fixed: {len(unique_ts):,} contiguous hourly steps (bad_steps={bad_steps}).")
 
     print("[2/3] Generating Sensor Mask...")
-    graph_dict = torch.load(STATIC_GRAPH_IN)
+    graph_dict = torch.load(STATIC_GRAPH_IN, weights_only=False)
     if not isinstance(graph_dict, dict):
-        raise TypeError("Expected static_graph.pt to store a dict payload.")
+        raise TypeError("Expected topology_graph.pt to store a dict payload.")
 
-    required_graph_keys = {"edge_index", "edge_attr", "num_nodes"}
+    required_graph_keys = {"x", "edge_index", "edge_attr", "num_nodes"}
     missing_graph_keys = required_graph_keys - set(graph_dict.keys())
     if missing_graph_keys:
-        raise KeyError(f"static_graph.pt missing required keys: {sorted(missing_graph_keys)}")
+        raise KeyError(f"topology_graph.pt missing required keys: {sorted(missing_graph_keys)}")
 
     num_nodes = int(graph_dict["num_nodes"])
     train_mask = _build_sensor_train_mask(num_nodes)
@@ -162,12 +164,17 @@ def finalize_assets() -> None:
 
     print("[3/3] Serializing as PyG Data Object...")
     data = Data(
+        x=graph_dict["x"],
         edge_index=graph_dict["edge_index"],
         edge_attr=graph_dict["edge_attr"],
         num_nodes=num_nodes,
         train_mask=train_mask,
         physics_lambda=torch.tensor([PHYSICS_LOSS_LAMBDA], dtype=torch.float32),
     )
+
+    for key in ["node_feature_schema", "highway_categories", "edge_attr_schema"]:
+        if key in graph_dict:
+            setattr(data, key, graph_dict[key])
 
     data.validate(raise_on_error=True)
     STATIC_GRAPH_OUT.parent.mkdir(parents=True, exist_ok=True)

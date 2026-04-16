@@ -5,7 +5,7 @@ This log records the main architecture, pipeline, model, and documentation chang
 ## 2026-04-01
 
 - Hardened `scripts/build_graph_tensors.py` with physical sanitization, UTM KDTree joins, case-insensitive highway encoding, and stronger data-quality checks.
-- Regenerated the canonical graph artifacts and training tensor outputs, including `data/processed/static_graph_pyg.pt` and `data/processed/gnn_training_tensor_final.parquet`.
+- Regenerated the canonical graph artifacts and training tensor outputs, including `data/processed/graph/topology_graph_pyg_inference.pt` and `data/processed/model_input/model_input_node_hourly_features.parquet`.
 - Finalized the ST-PIGNN pipeline and phase-7 training refinements, including the resumable engine work reflected in the recent training commits.
 - Updated the architecture and data docs to describe the new graph preprocessing and artifact outputs.
 
