@@ -55,6 +55,11 @@ The matcher implements the **Gale-Shapley stable matching algorithm** with exten
    - Verify no pair (user, corridor) can improve by swapping.
    - Check capacity constraints are met.
 
+## Mode Policy
+
+- Matcher mode profiles are tuned for `jogger`, `cyclist`, and `two_wheeler`.
+- Legacy `car` inputs are still accepted and mapped to the same weighting profile as `two_wheeler` for backward compatibility.
+
 ## Integration with Routing
 
 The matcher accepts toxicity-aware routes from the router's A* search and allocates commuters across them:

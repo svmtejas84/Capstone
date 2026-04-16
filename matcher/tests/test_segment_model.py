@@ -10,7 +10,7 @@ def test_segment_model_fields() -> None:
 def test_build_preference_list_prioritizes_vulnerable_commuter() -> None:
 	segment = Segment(id="corridor_a", cedge_mean=12.0, capacity=2)
 	commuters = [
-		Commuter(id="car_user", mode="car", id_min=3.0),
+		Commuter(id="two_wheeler_user", mode="two_wheeler", id_min=3.0),
 		Commuter(id="jogger_user", mode="jogger", id_min=2.0),
 	]
 	prefs = build_preference_list(segment, commuters)

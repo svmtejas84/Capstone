@@ -10,7 +10,12 @@ class Segment(BaseModel):
 	cedge_mean: float
 	capacity: int = Field(ge=1)
 	vulnerability_preference: dict[str, float] = Field(
-		default_factory=lambda: {"jogger": 3.0, "cyclist": 2.0, "car": 1.0}
+		default_factory=lambda: {
+			"jogger": 3.0,
+			"cyclist": 2.0,
+			"two_wheeler": 1.0,
+			"car": 1.0,  # legacy alias retained for compatibility
+		}
 	)
 
 

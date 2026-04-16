@@ -178,7 +178,8 @@ The GNN layer combines **physics-informed priors** with **learned spatio-tempora
 3. **Respiratory Minute Volume (RMV)**
    - **Walking**: 1.2 m³/hr (light activity)
    - **Cycling**: 3.5 m³/hr (heavy; ~2.9× than walking)
-   - **Driving**: 0.6 m³/hr (cabin protection)
+   - **Two wheeler (`two_wheeler`)**: 0.6 m³/hr (current motorized baseline)
+   - **Legacy reference**: `driving`/`car` aliases are still accepted in code paths
    - **Basis**: EPA Exposure Factors Handbook (2023)
 
 ### Learning (Data-Driven)
@@ -215,8 +216,9 @@ Routing is computed on a **UTM-projected OSMnx graph** (EPSG:32643, UTM Zone 43N
    - GNN predicts street-level concentration (µg/m³).
    - Multiplied by **Respiratory Minute Volume** and travel time to get biological dose.
    - Formula: `Dose = Concentration × RMV × Travel_Time`
-   - Mode-dependent RMV (walking 1.2, cycling 3.5, driving 0.6 m³/hr) accounts for activity intensity.
-   - Result: Cyclists show 2.9–6× higher exposure than drivers/pedestrians at same air quality.
+   - Mode-dependent RMV (walking 1.2, cycling 3.5, two_wheeler 0.6 m³/hr) accounts for activity intensity.
+   - Legacy `driving`/`car` labels are retained as aliases for backward compatibility.
+   - Result: Cyclists show 2.9–6× higher exposure than two-wheeler riders/pedestrians at same air quality.
 
 2. **A* Search**
    - Pathfinding with toxicity-aware heuristics.

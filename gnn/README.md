@@ -53,7 +53,8 @@ The GNN layer implements **city-agnostic physics** with three components:
    - Mode-dependent biological intake rate (EPA standards):
      - Walking: 1.2 m³/hr
      - Cycling: 3.5 m³/hr (2.9× pedestrian)
-     - Driving: 0.6 m³/hr (cabin effect)
+       - Two wheeler (`two_wheeler`): 0.6 m³/hr (current motorized baseline)
+       - Legacy aliases: `driving`, `car` (reference/compatibility)
    - Inhaled dose = Concentration × RMV × Travel Time (in µg)
 
 ### Configuration

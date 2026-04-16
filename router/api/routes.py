@@ -25,12 +25,16 @@ def _id_min_for_mode(mode: str) -> float:
 		return 1.8
 	if mode == "cyclist":
 		return 2.4
+	if mode == "two_wheeler":
+		return 3.0
+	if mode == "car":  # legacy alias
+		return 3.0
 	return 3.0
 
 
 def _build_batch_commuters(requester: Commuter) -> list[Commuter]:
 	cohort: list[Commuter] = [requester]
-	modes = ["jogger", "cyclist", "car", "cyclist", "car", "jogger", "car", "cyclist", "jogger"]
+	modes = ["jogger", "cyclist", "two_wheeler", "cyclist", "two_wheeler", "jogger", "car", "cyclist", "jogger"]
 	for idx, mode in enumerate(modes, start=1):
 		cohort.append(
 			Commuter(

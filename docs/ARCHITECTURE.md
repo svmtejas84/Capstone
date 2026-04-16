@@ -172,9 +172,10 @@ Now: mode-dependent from `shared/physics_config.RespiratoryCostant`:
 |------|---|---|---|
 | Walking | 1.2 | Light | 2.5 L/min @ 60 breaths/min × vol |
 | Cycling | 3.5 | Heavy | 5.8 L/min @ 60 breaths/min (Ernst et al., 2015) |
-| Driving | 0.6 | Light (cabin effect) | ~50% baseline due to HVAC |
+| Two wheeler (`two_wheeler`) | 0.6 | Light (motorized baseline) | aligned to prior cabin-effect baseline |
 
 **Result**: Cyclists' inhaled dose = 2.9–6× pedestrians at same air quality.
+Legacy `driving`/`car` labels are still accepted as aliases for backward compatibility.
 
 ```python
 from shared.physics_config import get_respiratory_minute_volume

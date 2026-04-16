@@ -15,7 +15,7 @@ class GrasterState(BaseModel):
 class RouteRequest(BaseModel):
 	origin: tuple[float, float]
 	destination: tuple[float, float]
-	mode: Literal["jogger", "cyclist", "car"]
+	mode: Literal["jogger", "cyclist", "two_wheeler", "car"]
 
 
 class RouteResponse(BaseModel):

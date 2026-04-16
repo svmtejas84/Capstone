@@ -11,7 +11,8 @@ def compute_edge_weight(concentration_ug_m3: float, travel_time_s: float, mode: 
 	Args:
 		concentration_ug_m3: Pollutant concentration in µg/m³.
 		travel_time_s: Time spent on edge in seconds.
-		mode: Transport mode ('walking', 'cycling', 'driving').
+		mode: Transport mode ('walking', 'cycling', 'two_wheeler').
+			Legacy aliases ('driving', 'car') are still accepted.
 
 	Returns:
 		Inhaled dose in µg.

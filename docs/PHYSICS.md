@@ -102,9 +102,10 @@ The volume of air a person inhales per hour **depends on exertion level**:
 |------|----------|----------|---------------|-----------|
 | Walking | 1.2 | Moderate | 1.4 m/s | $V_t \approx 1.0$ L, $f \approx 20$ bpm |
 | Cycling | 3.5 | Heavy | 6 m/s | $V_t \approx 2.5$ L, $f \approx 50$ bpm |
-| Driving | 0.6 | Minimal | 15 m/s | $V_t \approx 0.5$ L, $f \approx 12$ bpm |
+| Two wheeler (`two_wheeler`) | 0.6 | Minimal | 15 m/s | $V_t \approx 0.5$ L, $f \approx 12$ bpm |
 
-**Note**: Cycling has **6× higher** respiratory volume than driving. At the same air quality, a cyclist inhales far more pollution.
+**Note**: Cycling has **6× higher** respiratory volume than the two-wheeler baseline. At the same air quality, a cyclist inhales far more pollution.
+Legacy label `driving`/`car` is still accepted in code as an alias for historical compatibility.
 
 #### Scientific Basis: EPA & Physiological Standards
 
@@ -123,7 +124,8 @@ The **U.S. Environmental Protection Agency (EPA)** maintains the *Exposure Facto
 - **Application**: Our project uses:
   - **Walking (1.2 m³/hr)**: Corresponds to EPA "Light" activity
   - **Cycling (3.5 m³/hr)**: Corresponds to EPA "Heavy" activity (road cycling at 6 m/s)
-  - **Driving (0.6 m³/hr)**: Below EPA "Light", reflecting relaxed breathing in climate-controlled cabin
+  - **Two wheeler (0.6 m³/hr)**: Below EPA "Light", retained from the prior motorized baseline
+  - **Reference only**: Legacy code paths may still use the labels `driving`/`car`
 
 ##### 2. Physiological Calculation Base
 
@@ -153,9 +155,9 @@ Our value of 3.5 m³/hr represents a sustainable cycling pace (not sprint intens
 
 ##### 3. Urban Cycling & "Filter Effect" Studies
 
-Environmental health researchers have studied the paradox that cyclists can accumulate higher total doses of $\text{PM}_{2.5}$ than car drivers **despite shorter trip times**, due to elevated breathing rates.
+Environmental health researchers have studied the paradox that cyclists can accumulate higher total doses of $\text{PM}_{2.5}$ than low-exertion motorized travelers **despite shorter trip times**, due to elevated breathing rates.
 
-- **Reference**: Studies published in *Environmental Health Perspectives*, *Atmospheric Environment*, and *Transportation Research* confirm that on identical routes with equivalent air quality, cyclists' inhaled dose is 3–5× higher than drivers/pedestrians.
+- **Reference**: Studies published in *Environmental Health Perspectives*, *Atmospheric Environment*, and *Transportation Research* confirm that on identical routes with equivalent air quality, cyclists' inhaled dose is 3–5× higher than low-exertion motorized travelers/pedestrians.
 - **Key Finding**: Mode choice and route optimization **must account for RMV**. A cyclist taking a longer but cleaner route may still accumulate **less total dose** than the fast but polluted shortcut.
 - **Implication for Routing**: The GNN learns that for cyclists, air quality matters **much more** than time saved. This is why cycling cost can exceed walking cost in high-pollution zones.
 
@@ -184,17 +186,17 @@ Where:
 
 **Scientific Foundation**: This formula is the standard approach in the EPA Exposure Factors Handbook and is used in environmental risk assessments worldwide. It directly connects ambient air quality measurements to biological intake.
 
-**Validation**: The dose metric captures the key trade-off in urban toxicity-aware routing: a longer route with lower pollution can result in lower total inhaled dose than a shorter route through high-pollution corridors, **especially for cyclists whose RMV is 6× that of drivers**.
+**Validation**: The dose metric captures the key trade-off in urban toxicity-aware routing: a longer route with lower pollution can result in lower total inhaled dose than a shorter route through high-pollution corridors, **especially for cyclists whose RMV is 6× that of the two-wheeler baseline**.
 
-### Example: Why Cycling Cost > Driving Cost (Same Air)
+### Example: Why Cycling Cost > Two-Wheeler Cost (Same Air)
 
 Scenario: Route through same street, concentration = 40 µg/m³, travel time = 300 seconds (5 minutes).
 
 **Cycling**:
 $$\text{Dose}_\text{cycle} = 40 \times 3.5 \times \frac{300}{3600} = 40 \times 3.5 \times 0.0833 = 11.67 \text{ µg}$$
 
-**Driving**:
-$$\text{Dose}_\text{drive} = 40 \times 0.6 \times \frac{300}{3600} = 40 \times 0.6 \times 0.0833 = 2.0 \text{ µg}$$
+**Two wheeler**:
+$$\text{Dose}_\text{two_wheeler} = 40 \times 0.6 \times \frac{300}{3600} = 40 \times 0.6 \times 0.0833 = 2.0 \text{ µg}$$
 
 **Ratio**: $11.67 / 2.0 = 5.84×$ higher dose for cycling.
 
@@ -265,7 +267,7 @@ To add a new city:
      - Standard reference for inhalation rates by activity level and age group.
      - Walking (Light activity): 1.0–1.5 m³/hr
      - Cycling (Heavy activity): 3.0–5.0 m³/hr
-     - Driving (Sedentary): 0.3–0.7 m³/hr
+    - Two wheeler baseline (legacy driving-sedentary reference): 0.3–0.7 m³/hr
    
    - **Physiological Basis**: Tidal volume and breathing frequency measurements from exercise physiology literature.
      - Reference: American College of Sports Medicine. (2021). *Guidelines for Exercise Testing and Prescription* (11th ed.). Lippincott Williams & Wilkins.
@@ -273,7 +275,7 @@ To add a new city:
    - **Urban Cycling Studies**: 
      - Reference: Cole-Hunter, T., et al. (2012). "Inhaled air pollution and cognitive performance of schoolchildren." *Environmental Health Perspectives*, 120(12), 1675–1680.
      - Reference: de Nazelle, A., et al. (2012). "Improving health through policies that promote active travel." *American Journal of Public Health*, 101(12), 2296–2302.
-     - Key Finding: Cyclists' inhaled dose of PM₂.₅ can exceed that of car drivers despite shorter trip duration, due to elevated RMV during exertion.
+    - Key Finding: Cyclists' inhaled dose of PM₂.₅ can exceed that of low-exertion motorized travelers despite shorter trip duration, due to elevated RMV during exertion.
 
 5. **Multi-City Portability**: 
    - The RMV values and physiological constants are human-universal; they do not vary by geographic location.

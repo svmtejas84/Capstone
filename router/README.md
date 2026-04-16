@@ -128,9 +128,10 @@ Retrieve decision context for a specific route (for reproducibility and complian
 - Computes biological dose intake using **EPA-standard RMV values** from `shared/physics_config.py`:
   - Walking: 1.2 m³/hr (light activity)
   - Cycling: 3.5 m³/hr (heavy activity, ~2.9× pedestrian)
-  - Driving: 0.6 m³/hr (cabin protection)
+  - Two wheeler (`two_wheeler`): 0.6 m³/hr (current motorized baseline)
+  - Legacy aliases: `driving`, `car` (kept for compatibility/reference)
 - Formula: `Dose = Concentration (µg/m³) × RMV (m³/hr) × Travel_Time (hr)`
-- Result: cyclists' routes weighted ~3× higher exposure than pedestrians on same streets
+- Result: cyclists' routes weighted ~3× higher exposure than two-wheeler riders/pedestrians on same streets
 - **Deprecated**: `inhalation_rates.py` (replaced by centralized physics_config)
 
 ### Stake Audit

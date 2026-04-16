@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 class Commuter(BaseModel):
 	id: str
-	mode: Literal["jogger", "cyclist", "car"]
+	mode: Literal["jogger", "cyclist", "two_wheeler", "car"]
 	id_min: float = Field(default=2.0, gt=0)
 	distance_tolerance_m: float = Field(default=8000.0, gt=0)
 
@@ -15,7 +15,8 @@ class Commuter(BaseModel):
 MODE_ALPHA: dict[str, float] = {
 	"jogger": 0.75,
 	"cyclist": 0.60,
-	"car": 0.35,
+	"two_wheeler": 0.35,
+	"car": 0.35,  # legacy alias retained for compatibility
 }
 
 

@@ -135,7 +135,8 @@ class RespiratoryCostant:
 
     WALKING = 1.2  # m^3/hr @ ~1.4 m/s walking speed
     CYCLING = 3.5  # m^3/hr @ ~6 m/s cycling speed (elevated due to exertion)
-    DRIVING = 0.6  # m^3/hr @ relaxed breathing in vehicle
+    TWO_WHEELER = 0.6  # m^3/hr currently aligned to legacy driving baseline
+    DRIVING_LEGACY_REFERENCE = 0.6  # kept only for historical reference
 
 
 def get_respiratory_minute_volume(mode: str) -> float:
@@ -143,7 +144,8 @@ def get_respiratory_minute_volume(mode: str) -> float:
     Get respiratory minute volume (RMV) in m³/hr for a given travel mode.
 
     Args:
-        mode: One of 'walking', 'cycling', 'driving'.
+        mode: Preferred modes are 'walking', 'cycling', 'two_wheeler'.
+            Legacy aliases 'driving', 'car', and 'two-wheeler' are supported.
 
     Returns:
         RMV in m³/hr.
@@ -152,14 +154,20 @@ def get_respiratory_minute_volume(mode: str) -> float:
         ValueError: If mode is not recognized.
     """
     mode_lower = mode.lower()
+    mode_aliases = {
+        "two-wheeler": "two_wheeler",
+        "driving": "two_wheeler",
+        "car": "two_wheeler",
+    }
+    mode_normalized = mode_aliases.get(mode_lower, mode_lower)
     rmv_map = {
         "walking": RespiratoryCostant.WALKING,
         "cycling": RespiratoryCostant.CYCLING,
-        "driving": RespiratoryCostant.DRIVING,
+        "two_wheeler": RespiratoryCostant.TWO_WHEELER,
     }
-    if mode_lower not in rmv_map:
+    if mode_normalized not in rmv_map:
         raise ValueError(f"Unknown transport mode: {mode}. Expected one of {list(rmv_map.keys())}")
-    return rmv_map[mode_lower]
+    return rmv_map[mode_normalized]
 
 
 # Urban Canyon Parameters
