@@ -49,3 +49,5 @@ data/graphs/
 !data/raw/stations/meta.parquet
 
 *.graphml
+data/processed/tensors/
+data/processed/graph/*.pkl

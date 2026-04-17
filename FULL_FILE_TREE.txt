@@ -1,0 +1,311 @@
+/home/jupyter-1nt23cb058/Capstone
+├── .github
+│   └── workflows
+│       ├── ci.yml
+│       └── deploy.yml
+├── .ruff_cache
+│   ├── 0.15.6
+│   │   ├── 10411485412535748384
+│   │   ├── 10448091036930415164
+│   │   ├── 10788097806218464294
+│   │   ├── 10816744255599912773
+│   │   ├── 10869548826320196753
+│   │   ├── 11894523293864016001
+│   │   ├── 12751923785127802807
+│   │   ├── 13188735529876112181
+│   │   ├── 13482468282942555842
+│   │   ├── 14433870498527056788
+│   │   ├── 14482996308455944966
+│   │   ├── 14556065726716429362
+│   │   ├── 15169738354472289100
+│   │   ├── 15173518406937453439
+│   │   ├── 1581861061828689620
+│   │   ├── 16358394021600081483
+│   │   ├── 16683535145628259492
+│   │   ├── 16919771830942901093
+│   │   ├── 18433446861888350226
+│   │   ├── 2607156898884215636
+│   │   ├── 2731912164400610097
+│   │   ├── 3533292798155005935
+│   │   ├── 3712437922308362963
+│   │   ├── 5658379136030968266
+│   │   ├── 5678623816123511574
+│   │   ├── 6254448403560677289
+│   │   ├── 6513961633979649713
+│   │   ├── 6664574472773684452
+│   │   ├── 6752836443202102720
+│   │   ├── 6862489833670388309
+│   │   ├── 6862746457149083555
+│   │   ├── 7545592567328512704
+│   │   └── 8518391600649484052
+│   ├── .gitignore
+│   └── CACHEDIR.TAG
+├── cache
+│   ├── 1202155ad824e6629d177c1440b032c1c7ab301c.json
+│   └── 3162b86650807d60a981d16503d505bfee9b14e3.json
+├── data
+│   ├── gnn
+│   │   ├── checkpoints
+│   │   └── training
+│   ├── graphs
+│   │   ├── bangalore_utm.graphml
+│   │   ├── bangalore_utm_edges.parquet
+│   │   └── bangalore_utm_nodes.parquet
+│   ├── processed
+│   │   ├── airquality
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2023.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   └── 2026_partial.parquet
+│   │   ├── audits
+│   │   │   └── processed_file_timestamps_2026-04-15.txt
+│   │   ├── checkpoints
+│   │   │   ├── .checkpoint_2023_remap_retry.json
+│   │   │   ├── .checkpoint_airquality.json
+│   │   │   ├── .checkpoint_stations.json
+│   │   │   ├── .checkpoint_stations_targeted_missing.json
+│   │   │   └── .checkpoint_weather.json
+│   │   ├── gapfill
+│   │   │   ├── gapfill_benchmark_method_scores.parquet
+│   │   │   ├── gapfill_benchmark_report.md
+│   │   │   ├── gapfill_selected_method_policy.parquet
+│   │   │   ├── station_timeseries_imputation_build_report.md
+│   │   │   ├── station_timeseries_imputation_summary.parquet
+│   │   │   ├── station_timeseries_observed_imputed.parquet
+│   │   │   └── station_timeseries_unresolved_index.parquet
+│   │   ├── graph
+│   │   │   ├── global_scaler.pkl
+│   │   │   ├── master_scaled_checkpoint.parquet
+│   │   │   ├── station_to_topology_node_map.parquet
+│   │   │   ├── topology_graph.pt
+│   │   │   ├── topology_graph_pyg_inference.pt
+│   │   │   └── topology_nodeid_to_index_map.parquet
+│   │   ├── logs
+│   │   │   ├── remap_2023_retry.log
+│   │   │   ├── remap_2023_retry_events.parquet
+│   │   │   ├── remap_2023_retry_log.md
+│   │   │   ├── targeted_missing_pull.log
+│   │   │   ├── targeted_missing_pull_events.parquet
+│   │   │   └── targeted_missing_pull_log.md
+│   │   ├── model_input
+│   │   │   └── model_input_node_hourly_features.parquet
+│   │   ├── source_docs
+│   │   │   └── README.md
+│   │   ├── stations
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   ├── 2026_partial.parquet
+│   │   │   ├── station_timeseries_imputation_summary.parquet
+│   │   │   ├── station_timeseries_observed_imputed.parquet
+│   │   │   └── station_timeseries_unresolved_index.parquet
+│   │   ├── tensors
+│   │   │   ├── node_ids.pt
+│   │   │   ├── X_train.pt
+│   │   │   └── y_train.pt
+│   │   ├── weather
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2023.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   └── 2026_partial.parquet
+│   │   └── data_processed_index.md
+│   ├── raw
+│   │   ├── airquality
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2023.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   └── 2026_partial.parquet
+│   │   ├── stations
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2023.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   ├── 2026_partial.parquet
+│   │   │   └── meta.parquet
+│   │   ├── weather
+│   │   │   ├── 2022.parquet
+│   │   │   ├── 2023.parquet
+│   │   │   ├── 2024.parquet
+│   │   │   ├── 2025.parquet
+│   │   │   └── 2026_partial.parquet
+│   │   ├── .checkpoint_2023_remap_retry.json
+│   │   ├── .checkpoint_airquality.json
+│   │   ├── .checkpoint_stations.json
+│   │   ├── .checkpoint_stations_targeted_missing.json
+│   │   ├── .checkpoint_weather.json
+│   │   ├── README.md
+│   │   ├── remap_2023_retry.log
+│   │   ├── remap_2023_retry_events.parquet
+│   │   ├── remap_2023_retry_log.md
+│   │   ├── targeted_missing_pull.log
+│   │   ├── targeted_missing_pull_events.parquet
+│   │   └── targeted_missing_pull_log.md
+│   ├── sensors
+│   │   └── aqicn_live
+│   ├── check_data.py
+│   └── README.md
+├── docs
+│   ├── ARCHITECTURE.md
+│   ├── CHANGELOG.md
+│   ├── PHYSICS.md
+│   ├── STATIONDATA_GAPFILL_OPTIONS_MATRIX.md
+│   └── TRAINING_ST_PIGNN.md
+├── frontend
+│   ├── dist
+│   │   ├── assets
+│   │   │   ├── index-D2I7LyLK.js
+│   │   │   └── index-oH9j_i71.css
+│   │   └── index.html
+│   ├── src
+│   │   ├── api
+│   │   │   └── client.ts
+│   │   ├── components
+│   │   │   ├── AgentSim.tsx
+│   │   │   ├── AuditViewer.tsx
+│   │   │   ├── EquilibriumViz.tsx
+│   │   │   ├── PlumeMap.tsx
+│   │   │   └── RoutePanel.tsx
+│   │   ├── hooks
+│   │   │   ├── usePlumeStream.ts
+│   │   │   └── useRouteResult.ts
+│   │   ├── styles
+│   │   │   └── index.css
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+├── gnn
+│   ├── model_weights
+│   │   └── pi_gnn_v1.pt
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_edge_weights.py
+│   │   ├── test_graph_builder.py
+│   │   ├── test_pi_gnn.py
+│   │   └── test_plume_physics.py
+│   ├── __init__.py
+│   ├── angular_diffusion.py
+│   ├── edge_weights.py
+│   ├── graph_builder.py
+│   ├── model.py
+│   ├── pi_gnn.py
+│   ├── plume_physics.py
+│   ├── README.md
+│   └── wake_predictor.py
+├── ingestion
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_nowcaster.py
+│   │   ├── test_pull_gnn_training_data.py
+│   │   └── test_traffic_spike.py
+│   ├── __init__.py
+│   ├── bias_correction.py
+│   ├── data_fusion.py
+│   ├── ingestor.py
+│   ├── nowcaster.py
+│   ├── pull_gnn_training_data.py
+│   ├── README.md
+│   ├── redis_publisher.py
+│   └── traffic_spike.py
+├── matcher
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_commuter_model.py
+│   │   ├── test_equilibrium_checker.py
+│   │   ├── test_gale_shapley.py
+│   │   ├── test_quota_manager.py
+│   │   ├── test_route_pool.py
+│   │   └── test_segment_model.py
+│   ├── __init__.py
+│   ├── commuter_model.py
+│   ├── equilibrium_checker.py
+│   ├── gale_shapley.py
+│   ├── quota_manager.py
+│   ├── README.md
+│   ├── route_pool.py
+│   └── segment_model.py
+├── notebooks
+│   ├── 01_eda_physics_plane.ipynb
+│   ├── 01_gnn_v100_training.ipynb
+│   ├── 02_gnn_training_workingtrial1.ipynb
+│   ├── 03_gnn_training_trial2.ipynb
+│   ├── 03_plume_validation.ipynb
+│   ├── 04_gale_shapley_demo.ipynb
+│   ├── 05_astar_benchmark.ipynb
+│   └── 06_route_comparison.ipynb
+├── router
+│   ├── api
+│   │   ├── dependencies.py
+│   │   ├── main.py
+│   │   ├── middleware.py
+│   │   └── routes.py
+│   ├── rust_astar
+│   │   ├── src
+│   │   │   ├── astar.rs
+│   │   │   ├── graph.rs
+│   │   │   ├── lib.rs
+│   │   │   └── types.rs
+│   │   └── Cargo.toml
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── test_astar.py
+│   │   ├── test_edge_cost.py
+│   │   ├── test_inhalation_rates.py
+│   │   ├── test_routes.py
+│   │   └── test_stake_audit.py
+│   ├── __init__.py
+│   ├── edge_cost.py
+│   ├── inhalation_rates.py
+│   ├── README.md
+│   └── stake_audit.py
+├── scripts
+│   ├── build_gapfill_derived_layer.py
+│   ├── build_graph_tensors.py
+│   ├── check_processed_time_format.py
+│   ├── check_station_year_coverage.py
+│   ├── evaluate_gapfill_options.py
+│   ├── finalize_data_layer.py
+│   ├── finalize_gnn_assets.py
+│   ├── pull_airquality.py
+│   ├── pull_stations.py
+│   ├── pull_stations_2023_remap_retry.py
+│   ├── pull_stations_missing_targeted.py
+│   ├── pull_weather.py
+│   ├── quickstart.sh
+│   └── sync_on_entry.py
+├── shared
+│   ├── __init__.py
+│   ├── config.py
+│   ├── geo_utils.py
+│   ├── logging_utils.py
+│   ├── physics_config.py
+│   ├── redis_client.py
+│   └── schemas.py
+├── toxicity_nav.egg-info
+│   ├── dependency_links.txt
+│   ├── PKG-INFO
+│   ├── requires.txt
+│   ├── SOURCES.txt
+│   └── top_level.txt
+├── .env
+├── .env.example
+├── .gitignore
+├── ARCHITECTURE_UPDATE.md
+├── changesmarch.readme
+├── docker-compose.yml
+├── INTEGRATION_GUIDE.md
+├── json
+├── Methodology_Amendment_March_2026.md
+├── pa
+├── pd
+├── pyproject.toml
+├── README.md
+├── REFACTORING_CHECKLIST.md
+├── REPO_STRUCTURE.md
+└── time

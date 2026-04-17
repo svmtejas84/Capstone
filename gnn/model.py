@@ -92,7 +92,7 @@ class STPIGNN(nn.Module):
         else:
             batch_edge_attr = edge_attr.repeat(bsz, 1)
 
-        for conv, norm in zip(self.gnn_layers, self.norms, strict=False):
+        for conv, norm in zip(self.gnn_layers, self.norms):
             residual = x
             x = conv(x, batch_edge_index, batch_edge_attr)
             x = norm(x)
