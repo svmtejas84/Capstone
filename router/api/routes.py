@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 import networkx as nx
+import os
 from fastapi import APIRouter
 from pyproj import Transformer
 
 from gnn.edge_weights import update_graph_toxicity_from_streams
+from gnn.persistence_baseline import predict_route_edge_concentrations_persistence
+from gnn.stpignn_inference import predict_route_edge_concentrations
 from gnn.wake_predictor import predict_wake_polygon
 from matcher.commuter_model import Commuter, build_preference_list as build_commuter_preferences
 from matcher.gale_shapley import batch_match
 from matcher.quota_manager import quotas_from_route_cedge
 from matcher.segment_model import Segment, build_preference_list as build_segment_preferences
 from router.api.dependencies import env_seed_from_state, redis_store
-from router.edge_cost import compute_path_cost
+from router.edge_cost import compute_edge_weight, compute_path_cost
 from router.stake_audit import create_audit, verify_audit
 from shared.schemas import RouteRequest, RouteResponse
 
@@ -81,8 +84,68 @@ def _tox_weight(graph: nx.MultiDiGraph, u: int, v: int) -> float:
 	return 0.5
 
 
+def _speed_mps_for_mode(mode: str) -> float:
+	if mode == "jogger":
+		return 1.4
+	if mode == "cyclist":
+		return 6.0
+	if mode == "two_wheeler":
+		return 15.0
+	if mode == "car":
+		return 15.0
+	return 1.4
+
+
+def _first_edge_attrs(graph: nx.MultiDiGraph, u: int, v: int) -> dict[str, object]:
+	edge_data = graph.get_edge_data(u, v, default={})
+	if isinstance(edge_data, dict):
+		attrs0 = edge_data.get(0)
+		if isinstance(attrs0, dict):
+			return attrs0
+		for attrs in edge_data.values():
+			if isinstance(attrs, dict):
+				return attrs
+	return {}
+
+
+def _edge_length_m(attrs: dict[str, object]) -> float:
+	return max(1.0, float(attrs.get("length", attrs.get("length_m", 1.0))))
+
+
+def _edge_travel_time_s(attrs: dict[str, object], mode: str) -> float:
+	speed_mps = _speed_mps_for_mode(mode)
+	return _edge_length_m(attrs) / max(0.1, speed_mps)
+
+
+def _edge_dose_weight(graph: nx.MultiDiGraph, u: int, v: int, mode: str) -> float:
+	attrs = _first_edge_attrs(graph, u, v)
+	concentration = float(attrs.get("toxicity", 0.5))
+	travel_time_s = _edge_travel_time_s(attrs, mode)
+	return compute_edge_weight(concentration_ug_m3=concentration, travel_time_s=travel_time_s, mode=mode)
+
+
 def _path_edges(path: list[int]) -> list[tuple[int, int]]:
 	return [(path[i], path[i + 1]) for i in range(len(path) - 1)]
+
+
+def _route_model_concentrations(route_edges: dict[str, list[tuple[int, int]]]) -> dict[tuple[int, int], float]:
+	model_name = os.environ.get("TOXICITY_ROUTE_MODEL", "persistence").lower()
+	all_edges: list[tuple[int, int]] = []
+	for edges in route_edges.values():
+		all_edges.extend(edges)
+	try:
+		if model_name == "stpignn":
+			return predict_route_edge_concentrations(all_edges)
+		if model_name == "stream":
+			return {}
+		return predict_route_edge_concentrations_persistence(all_edges)
+	except Exception:
+		if model_name == "stpignn":
+			try:
+				return predict_route_edge_concentrations_persistence(all_edges)
+			except Exception:
+				return {}
+		return {}
 
 
 def _path_to_latlon(graph: nx.MultiDiGraph, path: list[int]) -> list[tuple[float, float]]:
@@ -95,12 +158,12 @@ def _path_to_latlon(graph: nx.MultiDiGraph, path: list[int]) -> list[tuple[float
 	return coords
 
 
-def _candidate_paths(graph: nx.MultiDiGraph, source: int, target: int, k: int = 3) -> list[list[int]]:
+def _candidate_paths(graph: nx.MultiDiGraph, source: int, target: int, mode: str, k: int = 3) -> list[list[int]]:
 	digraph = nx.DiGraph()
 	for u, v, _k, _data in graph.edges(keys=True, data=True):
-		w = _tox_weight(graph, int(u), int(v))
-		if not digraph.has_edge(int(u), int(v)) or w < float(digraph[int(u)][int(v)]["toxicity"]):
-			digraph.add_edge(int(u), int(v), toxicity=w)
+		w = _edge_dose_weight(graph, int(u), int(v), mode)
+		if not digraph.has_edge(int(u), int(v)) or w < float(digraph[int(u)][int(v)]["dose"]):
+			digraph.add_edge(int(u), int(v), dose=w)
 
 	paths: list[list[int]] = []
 	try:
@@ -109,14 +172,14 @@ def _candidate_paths(graph: nx.MultiDiGraph, source: int, target: int, k: int = 
 			source,
 			target,
 			heuristic=lambda a, b: _heuristic(graph, a, b),
-			weight="toxicity",
+			weight="dose",
 		)
 		paths.append(base)
 	except nx.NetworkXNoPath:
 		return []
 
 	try:
-		for p in nx.shortest_simple_paths(digraph, source, target, weight="toxicity"):
+		for p in nx.shortest_simple_paths(digraph, source, target, weight="dose"):
 			if p not in paths:
 				paths.append(p)
 			if len(paths) >= k:
@@ -159,7 +222,7 @@ def route(req: RouteRequest) -> RouteResponse:
 	source = _nearest_node(graph, req.origin[0], req.origin[1])
 	target = _nearest_node(graph, req.destination[0], req.destination[1])
 
-	candidate_paths = _candidate_paths(graph, source, target, k=3)
+	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3)
 	if not candidate_paths:
 		route_line = [req.origin, req.destination]
 		total_cost = 0.0
@@ -167,17 +230,19 @@ def route(req: RouteRequest) -> RouteResponse:
 	else:
 		route_ids = [f"route_{i}" for i in range(len(candidate_paths))]
 		route_edges = {rid: _path_edges(path) for rid, path in zip(route_ids, candidate_paths, strict=False)}
+		route_model_concentrations = _route_model_concentrations(route_edges)
 		route_dose: dict[str, float] = {}
 		route_distance_m: dict[str, float] = {}
 		for rid, edges in route_edges.items():
 			tox_vals = []
+			edge_times_s = []
 			dist_m = 0.0
 			for u, v in edges:
-				edge_data = graph.get_edge_data(u, v, default={})
-				attrs = edge_data.get(0, {}) if isinstance(edge_data, dict) else {}
-				tox_vals.append(float(attrs.get("toxicity", 0.0)))
-				dist_m += float(attrs.get("length", attrs.get("length_m", 0.0)))
-			route_dose[rid] = float(sum(tox_vals))
+				attrs = _first_edge_attrs(graph, u, v)
+				tox_vals.append(float(route_model_concentrations.get((u, v), attrs.get("toxicity", 0.0))))
+				edge_times_s.append(_edge_travel_time_s(attrs, req.mode))
+				dist_m += _edge_length_m(attrs)
+			route_dose[rid] = float(compute_path_cost(tox_vals, req.mode, edge_times_s=edge_times_s))
 			route_distance_m[rid] = float(dist_m)
 
 		requester = Commuter(id="requester", mode=req.mode, id_min=2.0, distance_tolerance_m=8000.0)
@@ -207,8 +272,7 @@ def route(req: RouteRequest) -> RouteResponse:
 		corridor_id = allocation["requester"]
 		chosen_path = candidate_paths[int(corridor_id.split("_")[-1])]
 		route_line = _path_to_latlon(graph, chosen_path)
-		edge_values = [float(graph.get_edge_data(u, v, {}).get(0, {}).get("toxicity", 0.0)) for u, v in _path_edges(chosen_path)]
-		total_cost = compute_path_cost(edge_values, req.mode)
+		total_cost = route_dose[corridor_id]
 
 	state = {
 		"timestamp": "live",

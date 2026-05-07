@@ -158,6 +158,12 @@ def get_respiratory_minute_volume(mode: str) -> float:
         "two-wheeler": "two_wheeler",
         "driving": "two_wheeler",
         "car": "two_wheeler",
+        "jogger": "walking",
+        "jogging": "walking",
+        "pedestrian": "walking",
+        "cyclist": "cycling",
+        "bike": "cycling",
+        "bicycle": "cycling",
     }
     mode_normalized = mode_aliases.get(mode_lower, mode_lower)
     rmv_map = {

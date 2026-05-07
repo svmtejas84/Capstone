@@ -8,5 +8,4 @@ def test_compute_edge_weight_positive() -> None:
 def test_compute_path_cost_mode_differs() -> None:
 	jogger_cost = compute_path_cost([10.0, 10.0], "jogger")
 	cyclist_cost = compute_path_cost([10.0, 10.0], "cyclist")
-	assert jogger_cost > cyclist_cost
-
+	assert cyclist_cost > jogger_cost
