@@ -250,6 +250,27 @@ To add a new city:
 
 ---
 
+## Routing Integration, Explanations, and Deprecations
+
+The physics and dosimetry layers described above are consumed by the routing
+service to compute inhaled-dose edge weights. The router assembles candidate
+corridors, scores them by dose and distance, and applies a Gale–Shapley stable
+matching layer to allocate corridors across cohorts (e.g., vulnerable users).
+
+The `/route` API returns all candidate corridors and deterministic
+additive route-score explanations under `candidates[].explanation.route_score`.
+An optional neural explanation for ST‑PIGNN model predictions is available
+behind an opt-in flag: set `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1` to include
+`candidates[].explanation.neural_model` (this runs `shap.GradientExplainer` and
+is opt-in because it loads the checkpoint and adds computation time).
+
+Note on deprecated helpers: `router/inhalation_rates.py` contains legacy
+inhalation-rate helpers retained for backwards compatibility. The active
+routing path reads RMV values from `shared/physics_config.get_respiratory_minute_volume`.
+Do not add new call sites to `router/inhalation_rates.py`—use the centralized
+`shared.physics_config` helpers instead.
+
+
 ## References & Assumptions
 
 1. **Gaussian Plume**: Standard EPA/NOAA model; assumes flat terrain, steady-state wind.

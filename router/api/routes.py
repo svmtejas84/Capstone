@@ -7,16 +7,17 @@ from pyproj import Transformer
 
 from gnn.edge_weights import update_graph_toxicity_from_streams
 from gnn.persistence_baseline import predict_route_edge_concentrations_persistence
+from gnn.stpignn_explain import explain_route_edges_with_stpignn
 from gnn.stpignn_inference import predict_route_edge_concentrations
 from gnn.wake_predictor import predict_wake_polygon
-from matcher.commuter_model import Commuter, build_preference_list as build_commuter_preferences
+from matcher.commuter_model import MODE_ALPHA, Commuter, build_preference_list as build_commuter_preferences
 from matcher.gale_shapley import batch_match
 from matcher.quota_manager import quotas_from_route_cedge
 from matcher.segment_model import Segment, build_preference_list as build_segment_preferences
 from router.api.dependencies import env_seed_from_state, redis_store
 from router.edge_cost import compute_edge_weight, compute_path_cost
 from router.stake_audit import create_audit, verify_audit
-from shared.schemas import RouteRequest, RouteResponse
+from shared.schemas import NeuralModelExplanation, RouteCandidate, RouteExplanation, RouteRequest, RouteResponse, RouteScoreExplanation
 
 router = APIRouter()
 _WGS84_TO_UTM43 = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
@@ -148,6 +149,10 @@ def _route_model_concentrations(route_edges: dict[str, list[tuple[int, int]]]) -
 		return {}
 
 
+def _include_neural_explanation() -> bool:
+	return os.environ.get("TOXICITY_INCLUDE_NEURAL_EXPLANATION", "0").lower() in {"1", "true", "yes"}
+
+
 def _path_to_latlon(graph: nx.MultiDiGraph, path: list[int]) -> list[tuple[float, float]]:
 	coords: list[tuple[float, float]] = []
 	for nid in path:
@@ -190,6 +195,50 @@ def _candidate_paths(graph: nx.MultiDiGraph, source: int, target: int, mode: str
 	return paths
 
 
+def _route_score_explanations(
+	route_ids: list[str],
+	route_dose: dict[str, float],
+	route_distance_m: dict[str, float],
+	mode: str,
+	distance_tolerance_m: float,
+) -> dict[str, RouteScoreExplanation]:
+	"""Explain the same dose/distance preference score used for route ranking.
+
+	The terms are additive around the mean candidate route. They are SHAP-style
+	attributions for this linear route score, not model-internal neural SHAP.
+	"""
+	if not route_ids:
+		return {}
+
+	alpha = MODE_ALPHA.get(mode, 0.5)
+	finite_doses = [
+		max(0.0, route_dose.get(rid, float("inf")))
+		for rid in route_ids
+		if route_dose.get(rid, float("inf")) != float("inf")
+	]
+	max_dose = max(finite_doses) if finite_doses else 1.0
+	if max_dose <= 0.0:
+		max_dose = 1.0
+
+	norm_dose = {rid: route_dose.get(rid, float("inf")) / max_dose for rid in route_ids}
+	distance_ratio = {rid: route_distance_m.get(rid, float("inf")) / distance_tolerance_m for rid in route_ids}
+	mean_norm_dose = sum(norm_dose.values()) / len(route_ids)
+	mean_distance_ratio = sum(distance_ratio.values()) / len(route_ids)
+	base_score = alpha * mean_norm_dose + (1.0 - alpha) * mean_distance_ratio
+
+	explanations: dict[str, RouteScoreExplanation] = {}
+	for rid in route_ids:
+		dose_contribution = alpha * (norm_dose[rid] - mean_norm_dose)
+		distance_contribution = (1.0 - alpha) * (distance_ratio[rid] - mean_distance_ratio)
+		explanations[rid] = RouteScoreExplanation(
+			base_score=round(float(base_score), 9),
+			dose_contribution=round(float(dose_contribution), 9),
+			distance_contribution=round(float(distance_contribution), 9),
+			final_score=round(float(base_score + dose_contribution + distance_contribution), 9),
+		)
+	return explanations
+
+
 @router.get("/health")
 def health() -> dict[str, str]:
 	return {"status": "ok"}
@@ -223,6 +272,7 @@ def route(req: RouteRequest) -> RouteResponse:
 	target = _nearest_node(graph, req.destination[0], req.destination[1])
 
 	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3)
+	candidates: list[RouteCandidate] = []
 	if not candidate_paths:
 		route_line = [req.origin, req.destination]
 		total_cost = 0.0
@@ -273,6 +323,53 @@ def route(req: RouteRequest) -> RouteResponse:
 		chosen_path = candidate_paths[int(corridor_id.split("_")[-1])]
 		route_line = _path_to_latlon(graph, chosen_path)
 		total_cost = route_dose[corridor_id]
+		explanations = _route_score_explanations(
+			route_ids,
+			route_dose=route_dose,
+			route_distance_m=route_distance_m,
+			mode=req.mode,
+			distance_tolerance_m=requester.distance_tolerance_m,
+		)
+		neural_explanations: dict[str, NeuralModelExplanation] = {}
+		if _include_neural_explanation():
+			for rid, edges in route_edges.items():
+				neural = explain_route_edges_with_stpignn(edges)
+				neural_explanations[rid] = NeuralModelExplanation(
+					available=neural.available,
+					method=neural.method,
+					target=neural.target,
+					feature_attributions=neural.feature_attributions,
+					reason=neural.reason,
+				)
+		for rid, path in zip(route_ids, candidate_paths, strict=False):
+			edges = route_edges[rid]
+			total_time_s = 0.0
+			weighted_concentration = 0.0
+			for u, v in edges:
+				attrs = _first_edge_attrs(graph, u, v)
+				length_m = _edge_length_m(attrs)
+				concentration = float(route_model_concentrations.get((u, v), attrs.get("toxicity", 0.0)))
+				total_time_s += _edge_travel_time_s(attrs, req.mode)
+				weighted_concentration += concentration * length_m
+			distance_m = route_distance_m[rid]
+			mean_concentration = weighted_concentration / distance_m if distance_m > 0.0 else 0.0
+			candidates.append(
+				RouteCandidate(
+					id=rid,
+					route=_path_to_latlon(graph, path),
+					node_ids=[int(node_id) for node_id in path],
+					distance_m=round(distance_m, 3),
+					travel_time_s=round(total_time_s, 3),
+					mean_concentration_ug_m3=round(mean_concentration, 6),
+					dose_ug=round(route_dose[rid], 6),
+					preference_rank=commuter_preferences["requester"].index(rid) + 1,
+					recommended=rid == corridor_id,
+					explanation=RouteExplanation(
+						route_score=explanations[rid],
+						neural_model=neural_explanations.get(rid),
+					),
+				)
+			)
 
 	state = {
 		"timestamp": "live",
@@ -288,6 +385,7 @@ def route(req: RouteRequest) -> RouteResponse:
 		total_cost_w=round(total_cost, 6),
 		stake_hash=stake_hash,
 		stable_corridor_id=corridor_id,
+		candidates=sorted(candidates, key=lambda candidate: candidate.preference_rank),
 	)
 
 

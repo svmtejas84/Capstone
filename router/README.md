@@ -67,32 +67,60 @@ Compute toxicity-aware route(s) from origin to destination.
 **Request:**
 ```json
 {
-  "start": {"lat": 12.93, "lon": 77.61},
-  "end": {"lat": 12.97, "lon": 77.57},
-  "user_profile": "vulnerable",
-  "num_routes": 3
+  "origin": [12.93, 77.61],
+  "destination": [12.97, 77.57],
+  "mode": "cyclist"
 }
 ```
 
 **Response:**
 ```json
 {
-  "routes": [
+  "route": [[12.93, 77.61], [12.94, 77.60]],
+  "total_cost_w": 149.430787,
+  "stake_hash": "0xa1b2c3d4...",
+  "stable_corridor_id": "route_1",
+  "candidates": [
     {
-      "path": [{"lat": 12.93, "lon": 77.61}, ...],
-      "distance_m": 2500,
-      "estimated_exposure": 145.2,
-      "estimated_time_s": 420,
-      "toxicity_percentile": 35
+      "id": "route_1",
+      "route": [[12.93, 77.61], [12.94, 77.60]],
+      "node_ids": [101, 102, 103],
+      "distance_m": 2500.0,
+      "travel_time_s": 416.667,
+      "mean_concentration_ug_m3": 102.5,
+      "dose_ug": 149.430787,
+      "preference_rank": 2,
+      "recommended": true,
+      "explanation": {
+        "route_score": {
+          "base_score": 0.972084448,
+          "dose_contribution": 0.028031019,
+          "distance_contribution": 0.003331425,
+          "final_score": 1.003446892
+        },
+        "neural_model": {
+          "available": true,
+          "method": "shap.gradient",
+          "target": "route_mean_stpignn_prediction",
+          "feature_attributions": {
+            "station_pm25": 0.021,
+            "city_pm2_5": 0.014
+          },
+          "reason": null
+        }
+      }
     }
-  ],
-  "plume_state": {...},
-  "stake_hash": "0xa1b2c3d4..."
+  ]
 }
 ```
 
-**Optional Query Params:**
-- `mode`: "fastest", "safest", or "balanced" (default: "balanced").
+Supported modes: `jogger`, `cyclist`, `two_wheeler`, and `car`.
+
+Candidate route-score explanations are additive dose/distance attributions for
+the route preference model. Neural ST-PIGNN SHAP explanations are available
+when `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`; they use `shap.GradientExplainer`
+on a route-local ST-PIGNN wrapper and are placed under
+`candidates[].explanation.neural_model`.
 
 ### Audit Trail
 
@@ -188,4 +216,3 @@ Requires FastAPI test client dependencies. If unavailable, run matcher/gnn tests
 - Route search (A*): ~50–200 ms depending on graph size and destination.
 - Full request latency (typical): 100–300 ms with warm cache.
 - Latency degrades if stream lag exceeds 2 minutes.
-

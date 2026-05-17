@@ -87,6 +87,30 @@ Routing is persistence-first until the learned model beats persistence on a larg
 
 This keeps dose-aware routing scientifically conservative while preserving the ST-PIGNN integration for experiments and demos.
 
+## Route Recommendations And Explanations
+
+The `/route` API returns all candidate corridors under `candidates[]`. Each
+candidate includes route geometry, graph `node_ids`, distance, travel time,
+mean concentration, inhaled dose, preference rank, and whether it was selected
+by the stable matching layer.
+
+Explanations are returned under `candidates[].explanation`:
+
+- `route_score`: deterministic additive attributions for the route preference
+  score. The terms decompose the same dose/distance score used by commuter
+  preference ranking.
+- `neural_model`: optional ST-PIGNN neural SHAP explanation. Enable with
+  `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`. This uses `shap.GradientExplainer`
+  against a route-local ST-PIGNN wrapper and explains the mean route prediction
+  by input feature. It is opt-in because it loads the checkpoint and performs
+  extra gradient passes.
+
+Gale-Shapley mitigation is active in the route API: individual route preferences
+are computed from dose and distance, segment capacities are derived from route
+dose, segments rank commuters by vulnerability, and `batch_match()` selects the
+stable corridor. This can intentionally return a corridor whose raw individual
+rank is not 1 when that avoids over-allocating the same corridor.
+
 ## Known Limitations
 
 - Only 23 sensor nodes are supervised by station targets.
@@ -94,4 +118,7 @@ This keeps dose-aware routing scientifically conservative while preserving the S
 - Biology and dosimetry are not part of the checkpoint.
 - The route API defaults to persistence because the current checkpoint has not beaten persistence on smoke holdout checks.
 - `TOXICITY_ROUTE_MODEL=stpignn` enables route-local checkpoint inference for candidate route dose scoring.
+- Neural ST-PIGNN SHAP explains the model prediction, while `route_score`
+  explains the final recommendation score; these are related but not identical
+  quantities.
 - The notebook contains machine-specific paths and should be treated as provenance, not the production training entry point.
