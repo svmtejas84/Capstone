@@ -36,6 +36,7 @@ FEATURE_COLS_16 = [
     "city_carbon_monoxide",
 ]
 TARGET_SCALE = 342.9356
+TARGET_PM25_MAX = 120.0
 
 
 def _metrics(pred: np.ndarray, target: np.ndarray) -> dict[str, float]:
@@ -64,7 +65,11 @@ def _load_model_input(model_input_path: Path, node_map_path: Path) -> pd.DataFra
     df = df.dropna(subset=["node_index", ts_col]).copy()
     df["node_index"] = df["node_index"].astype(np.int64)
     df[ts_col] = pd.to_datetime(df[ts_col])
-    df["target_scaled"] = pd.to_numeric(df["station_pm25"], errors="coerce").fillna(0.0).astype(np.float32) / TARGET_SCALE
+    df["station_pm25"] = pd.to_numeric(df["station_pm25"], errors="coerce").fillna(0.0).astype(np.float32).clip(
+        lower=0.0,
+        upper=TARGET_PM25_MAX,
+    )
+    df["target_scaled"] = df["station_pm25"] / TARGET_SCALE
     for col in FEATURE_COLS_16:
         df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0).astype(np.float32)
     return df.sort_values([ts_col, "node_index"]).rename(columns={ts_col: "timestamp"})

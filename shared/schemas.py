@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from __future__ import annotations
-
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -20,6 +18,7 @@ class RouteRequest(BaseModel):
 	origin: tuple[float, float]
 	destination: tuple[float, float]
 	mode: Literal["jogger", "cyclist", "two_wheeler", "car"]
+	departure_time: Optional[datetime] = None
 
 
 class RouteScoreExplanation(BaseModel):
@@ -34,12 +33,12 @@ class NeuralModelExplanation(BaseModel):
 	method: str
 	target: str
 	feature_attributions: dict[str, float] = Field(default_factory=dict)
-	reason: str | None = None
+	reason: Optional[str] = None
 
 
 class RouteExplanation(BaseModel):
 	route_score: RouteScoreExplanation
-	neural_model: NeuralModelExplanation | None = None
+	neural_model: Optional[NeuralModelExplanation] = None
 
 
 class RouteCandidate(BaseModel):

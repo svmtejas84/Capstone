@@ -118,9 +118,9 @@ def _edge_travel_time_s(attrs: dict[str, object], mode: str) -> float:
 	return _edge_length_m(attrs) / max(0.1, speed_mps)
 
 
-def _edge_dose_weight(graph: nx.MultiDiGraph, u: int, v: int, mode: str) -> float:
+def _edge_dose_weight(graph: nx.MultiDiGraph, u: int, v: int, mode: str, tox_val: float | None = None) -> float:
 	attrs = _first_edge_attrs(graph, u, v)
-	concentration = float(attrs.get("toxicity", 0.5))
+	concentration = tox_val if tox_val is not None else float(attrs.get("toxicity", 0.5))
 	travel_time_s = _edge_travel_time_s(attrs, mode)
 	return compute_edge_weight(concentration_ug_m3=concentration, travel_time_s=travel_time_s, mode=mode)
 
@@ -163,10 +163,20 @@ def _path_to_latlon(graph: nx.MultiDiGraph, path: list[int]) -> list[tuple[float
 	return coords
 
 
-def _candidate_paths(graph: nx.MultiDiGraph, source: int, target: int, mode: str, k: int = 3) -> list[list[int]]:
+def _candidate_paths(
+	graph: nx.MultiDiGraph,
+	source: int,
+	target: int,
+	mode: str,
+	k: int = 3,
+	tox_preds: dict[tuple[int, int], float] | None = None,
+) -> list[list[int]]:
+	if tox_preds is None:
+		tox_preds = {}
 	digraph = nx.DiGraph()
 	for u, v, _k, _data in graph.edges(keys=True, data=True):
-		w = _edge_dose_weight(graph, int(u), int(v), mode)
+		tox_val = tox_preds.get((int(u), int(v)))
+		w = _edge_dose_weight(graph, int(u), int(v), mode, tox_val=tox_val)
 		if not digraph.has_edge(int(u), int(v)) or w < float(digraph[int(u)][int(v)]["dose"]):
 			digraph.add_edge(int(u), int(v), dose=w)
 
@@ -271,7 +281,21 @@ def route(req: RouteRequest) -> RouteResponse:
 	source = _nearest_node(graph, req.origin[0], req.origin[1])
 	target = _nearest_node(graph, req.destination[0], req.destination[1])
 
-	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3)
+	# Predict concentrations for all edges in the graph for the ST-PIGNN model
+	all_edges = list(graph.edges())
+	tox_preds = {}
+	model_name = os.environ.get("TOXICITY_ROUTE_MODEL", "persistence").lower()
+	if model_name == "stpignn":
+		try:
+			tox_preds = predict_route_edge_concentrations(all_edges)
+		except Exception:
+			# Fallback to persistence if ST-PIGNN fails
+			tox_preds = predict_route_edge_concentrations_persistence(all_edges)
+	elif model_name != "stream":
+		tox_preds = predict_route_edge_concentrations_persistence(all_edges)
+
+
+	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3, tox_preds=tox_preds)
 	candidates: list[RouteCandidate] = []
 	if not candidate_paths:
 		route_line = [req.origin, req.destination]
@@ -280,7 +304,10 @@ def route(req: RouteRequest) -> RouteResponse:
 	else:
 		route_ids = [f"route_{i}" for i in range(len(candidate_paths))]
 		route_edges = {rid: _path_edges(path) for rid, path in zip(route_ids, candidate_paths, strict=False)}
-		route_model_concentrations = _route_model_concentrations(route_edges)
+		
+		# The concentrations are already predicted, so we just need to get them for the candidate routes.
+		route_model_concentrations = {edge: tox_preds.get(edge, 0.0) for rid in route_ids for edge in route_edges[rid]}
+
 		route_dose: dict[str, float] = {}
 		route_distance_m: dict[str, float] = {}
 		for rid, edges in route_edges.items():

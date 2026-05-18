@@ -8,6 +8,7 @@ import torch
 from gnn.checkpoint import load_stpignn_checkpoint
 
 TARGET_SCALE = 342.9356
+TARGET_PM25_MAX = 120.0
 DEFAULT_GRAPH_PATH = Path("data/processed/graph/topology_graph_pyg_inference.pt")
 DEFAULT_NODE_MAP_PATH = Path("data/processed/graph/topology_nodeid_to_index_map.parquet")
 DEFAULT_CHECKPOINT_PATH = Path("citywide_stpignn_best.pt")
@@ -96,5 +97,5 @@ def predict_route_edge_concentrations(
 	for edge, (gu, gv) in edge_index_pairs.items():
 		if gu in local and gv in local:
 			edge_scaled = float((pred_scaled[local[gu]] + pred_scaled[local[gv]]) / 2.0)
-			pred[edge] = max(0.0, edge_scaled * TARGET_SCALE)
+			pred[edge] = max(0.0, min(edge_scaled * TARGET_SCALE, TARGET_PM25_MAX))
 	return pred

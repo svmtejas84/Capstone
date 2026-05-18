@@ -1,149 +1,178 @@
-#!/usr/bin/env python3
+import os
+import requests
 import json
-import sys
-import time
-from pathlib import Path
+from pyproj import Transformer
+from datetime import datetime
 
-# Fix relative imports by anchoring to project root.
-root_path = Path(__file__).resolve().parent
-sys.path.insert(0, str(root_path))
+# --- Configuration ---
+# Set the model to use (stpignn or persistence)
+os.environ["TOXICITY_ROUTE_MODEL"] = "stpignn" 
+# Include SHAP explanations from the model
+os.environ["TOXICITY_INCLUDE_NEURAL_EXPLANATION"] = "1"
 
-import torch  # type: ignore
-from fastapi.testclient import TestClient
-from router.api.main import app
-from shared.physics_config import get_respiratory_minute_volume
-from tqdm import tqdm
+# API endpoint
+API_URL = "http://127.0.0.1:8000/route"
 
-def print_separator(title):
-    print("\n" + "─" * 90)
-    print(f"• {title}")
-    print("─" * 90)
+# --- Test Case ---
+# Source and Destination Coordinates (WGS84: lat, lon)
+SOURCE_COORDS_WGS84 = (12.9716, 77.5946)  # Bangalore
+DESTINATION_COORDS_WGS84 = (12.9795, 77.5908) # Near Cubbon Park
 
-def run_replication():
-    print("=" * 90)
-    print("REPLICATING CAPSTONE BACKEND VERIFICATION RUN (SEQUENTIAL STREAM)")
-    print("=" * 90)
+# Commute modes to test
+COMMUTE_MODES = ["jogger", "cyclist", "car"]
 
-    # 100 total ticks for fluid progression feedback
-    total_ticks = 100
-    pbar = tqdm(total=total_ticks, desc="System Pipeline Activity", bar_format="{l_bar}{bar:30}{r_bar}")
+# --- Coordinate Transformation ---
+# Transformer to convert WGS84 to UTM Zone 43N (EPSG:32643), which is the project standard
+_WGS84_TO_UTM43 = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
 
-    # --- PHASE 1: CHECKPOINT VERIFICATION ---
-    print_separator("Model Verification Pass")
-    pbar.set_description("Loading ST-PIGNN Weights")
-    for _ in range(10):
-        time.sleep(0.01)
-        pbar.update(1)
+def to_utm(lat, lon):
+    """Converts latitude and longitude to UTM coordinates."""
+    x, y = _WGS84_TO_UTM43.transform(lon, lat)
+    return x, y
+
+def get_user_input():
+    """Gets user input for source, destination, and departure time."""
+    try:
+        source_lat = float(input("Enter source latitude (e.g., 12.9716): "))
+        source_lon = float(input("Enter source longitude (e.g., 77.5946): "))
+        dest_lat = float(input("Enter destination latitude (e.g., 12.9795): "))
+        dest_lon = float(input("Enter destination longitude (e.g., 77.5908): "))
         
-    print(f"Loading ST-PIGNN Checkpoint from citywide_stpignn_best.pt...")
-    print(f"└─ status: checkpoint_ok")
-    print(f"└─ dimensions: node_in_dim=16, edge_dim=16, spatial_hidden_dim=96")
-    print(f"└─ checkpoint metrics: epoch=11, best_val_mse=0.0188857")
-
-    # --- PHASE 2: BIOLOGY DOSIMETRY REGISTRY ---
-    print_separator("Biological Dosimetry Engine Configuration")
-    pbar.set_description("Auditing EPA RMV Metrics")
-    for _ in range(10):
-        time.sleep(0.01)
-        pbar.update(1)
+        time_str = input("Enter departure time (YYYY-MM-DD HH:MM:SS) or leave blank for now: ")
+        departure_time = None
+        if time_str:
+            try:
+                # Attempt to parse the most common format first
+                datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+                departure_time = time_str
+            except ValueError:
+                # Handle cases with extra components like milliseconds
+                parts = time_str.split(":")
+                if len(parts) > 2:
+                    time_str = f"{parts[0]}:{parts[1]}:{parts[2].split('.')[0]}"
+                    try:
+                        datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+                        departure_time = time_str
+                        print(f"Warning: Truncated time input to '{time_str}'")
+                    except ValueError:
+                        print("Invalid time format. Ignoring departure time.")
+                else:
+                    print("Invalid time format. Ignoring departure time.")
         
-    modes = ["jogger", "cyclist", "two_wheeler", "car"]
-    print("EPA-Aligned Respiratory Minute Volume (RMV) Registry:")
-    for mode in modes:
-        print(f"├── {mode:<12} : {get_respiratory_minute_volume(mode):.1f} m³/hr")
 
-    # --- PHASE 3: GRAPH SETUP ---
-    print_separator("Spatiotemporal Graph Scale Allocation")
-    pbar.set_description("Spinning Up ASGI Server & Graph Mesh")
-    for _ in range(15):
-        time.sleep(0.01)
-        pbar.update(1)
-        
-    client = TestClient(app)
-    print("Nodes Loaded : 154,902 Nodes")
-    print("Edges Loaded : 393,089 Directed Intersections")
+        return (source_lat, source_lon), (dest_lat, dest_lon), departure_time
+    except ValueError:
+        print("Invalid input. Please enter valid numbers for coordinates.")
+        return None, None, None
 
-    # --- PHASE 4: SEQUENTIAL ROUTING MODE EVALUATION (CUDA ACCELERATED) ---
-    print_separator("Route Allocation Engine Run (Sequential Processing)")
-    
-    # Target Hardware Engine Initialization
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Target Hardware Matrix: Utilizing {device.type.upper()} Acceleration Engine")
-    
-    # Push the network weights onto the RTX 4050 VRAM layer if available
-    if device.type == "cuda" and hasattr(app, "state") and hasattr(app.state, "model") and app.state.model is not None:
+# --- Main Test Function ---
+def run_route_test():
+    """
+    Runs a test of the routing engine for different commute modes,
+    prints the results, and provides explanations for the chosen routes.
+    """
+    print("--- Starting Toxicity-Aware Routing Engine Test ---")
+
+    source_coords, dest_coords, departure_time = get_user_input()
+    if not source_coords or not dest_coords:
+        return
+
+    # Convert coordinates to UTM
+    source_utm = to_utm(source_coords[0], source_coords[1])
+    dest_utm = to_utm(dest_coords[0], dest_coords[1])
+
+    print(f"Source (WGS84): {source_coords}")
+    print(f"Destination (WGS84): {dest_coords}")
+    print(f"Source (UTM): {source_utm}")
+    print(f"Destination (UTM): {dest_utm}")
+    if departure_time:
+        print(f"Departure Time: {departure_time}")
+    print("\n")
+
+    for mode in COMMUTE_MODES:
+        print(f"--- Testing Commute Mode: {mode.upper()} ---")
+
+        # Prepare the request payload
+        payload = {
+            "origin": [source_coords[0], source_coords[1]],
+            "destination": [dest_coords[0], dest_coords[1]],
+            "mode": mode,
+        }
+        if departure_time:
+            payload["departure_time"] = departure_time
+
         try:
-            app.state.model = app.state.model.to(device)
-            print("ST-PIGNN Tensor Layers successfully mapped to RTX 4050 CUDA cores.")
-        except Exception as e:
-            print(f"Hardware mapping warning: {e}. Falling back to default baseline allocation.")
+            # Make the request to the routing API
+            response = requests.post(API_URL, json=payload)
+            response.raise_for_status()  # Raise an exception for bad status codes
+            data = response.json()
 
-    payload = {
-        "origin": [12.97530, 77.60660],
-        "destination": [13.02190, 77.56710],
-        "mode": "cyclist"
-    }
-    print(f"Simulation Window : 2026-03-30 03:00:00 [Historical Frame]")
-    print(f"Start Lat/Lon      : {payload['origin']} (MG Road)")
-    print(f"End Lat/Lon        : {payload['destination']} (IISc Side)")
+            # --- Print Results ---
+            print(f"Recommended Route ID: {data.get('stable_corridor_id')}")
+            print(f"Total Cost (Toxicity Dose): {data.get('total_cost_w')}")
 
-    # Execute requests sequentially to keep terminal fluid and show progress live
-    saved_responses = {}
-    
-    for mode in modes:
-        pbar.set_description(f"Processing Route: {mode.upper()}")
-        
-        payload["mode"] = mode
-        start_time = time.time()
-        
-        # Fire sequential isolated endpoint pass
-        res = client.post("/route", json=payload)
-        elapsed = time.time() - start_time
-        
-        print(f"├── {mode.upper():<12} Pass: status={res.status_code} | computed in {elapsed:.2f}s")
-        if res.status_code == 200:
-            saved_responses[mode] = res.json()
+            recommended_route = None
+            for candidate in data.get("candidates", []):
+                if candidate.get("recommended"):
+                    recommended_route = candidate
+                    break
             
-        # Tick the progress bar incrementally as each mode evaluation path completes
-        pbar.update(11)
-    pbar.update(1) # Catch rounding offsets
+            if not recommended_route:
+                print("No recommended route found in candidates.")
+                continue
+            
+            print(f"Distance Covered: {recommended_route.get('distance_m')} meters\n")
 
-    # --- PHASE 5: GALE-SHAPLEY EQUILIBRIUM ---
-    print_separator("Gale-Shapley Multi-Agent Corridor Deviations")
-    pbar.set_description("Resolving Multi-Agent Game Equilibrium")
-    for _ in range(10):
-        time.sleep(0.01)
-        pbar.update(1)
+            # --- Route Explanation ---
+            print("--- Route Explanation ---")
+            explanation = recommended_route.get("explanation", {})
+            
+            # Gale-Shapley and A* explanation
+            score_exp = explanation.get("route_score", {})
+            if score_exp:
+                print("Gale-Shapley and A* Scoring (Preference Score):")
+                print(f"  - Base Score: {score_exp.get('base_score')}")
+                print(f"  - Dose Contribution: {score_exp.get('dose_contribution')}")
+                print(f"  - Distance Contribution: {score_exp.get('distance_contribution')}")
+                print(f"  - Final Score: {score_exp.get('final_score')}")
+                print("  (This score determines route preference. A lower score is better.)\n")
 
-    # Use cyclist data as baseline visualization matrix
-    cyclist_data = saved_responses.get("cyclist", {})
-    candidates = cyclist_data.get("candidates", [])
-    
-    print(f"Total Candidate Corridors Evaluated: {len(candidates)}")
-    for c in candidates:
-        print(f"\n🔹 Path ID: {c['id']}")
-        print(f"  ├── Graph Sequence Size : {len(c['node_ids'])} nodes")
-        print(f"  ├── Distance Matrix     : {c['distance_m']:.2f} meters")
-        print(f"  ├── Integrated Exposure : {c['mean_concentration_ug_m3']:.4f} ug/m³")
-        print(f"  └── Match Allocation    : recommended = {c['recommended']}")
+            # ST-PIGNN SHAP Explanation
+            neural_exp = explanation.get("neural_model", {})
+            if neural_exp and neural_exp.get("available"):
+                print("ST-PIGNN SHAP Explanation (Feature Importance):")
+                print(f"  Method: {neural_exp.get('method')}")
+                attributions = neural_exp.get("feature_attributions", {})
+                if attributions:
+                    for feature, value in sorted(attributions.items(), key=lambda item: abs(item[1]), reverse=True):
+                        print(f"  - {feature}: {value:.4f}")
+                else:
+                    print("  - No feature attributions available.")
+                print(f"  Reason: {neural_exp.get('reason')}\n")
+            else:
+                print("ST-PIGNN SHAP Explanation not available for this route.\n")
 
-    # --- PHASE 6: CONTRACT EXPLANATIONS ---
-    print_separator("Deterministic Explanation Schema Contract Validation")
-    pbar.set_description("Unpacking Attribute Payload Schemas")
-    for _ in range(10):
-        time.sleep(0.01)
-        pbar.update(1)
+            # Nodes changed explanation
+            print("--- Node Analysis & Gale-Shapley Candidates ---")
+            print(f"The recommended route ({recommended_route.get('id')}) consists of {len(recommended_route.get('node_ids', []))} nodes.")
+            print("This path was chosen by the A* algorithm using a composite weight of distance and predicted toxicity from the ST-PIGNN model.")
+            print("The Gale-Shapley algorithm then selected this route from a set of candidates to mitigate herd behavior.\n")
+            
+            print("All evaluated candidates:")
+            for cand in data.get("candidates", []):
+                rec_marker = " (Recommended)" if cand.get('recommended') else ""
+                print(f"  - Candidate: {cand.get('id')}{rec_marker}")
+                print(f"    - Rank: {cand.get('preference_rank')}")
+                print(f"    - Distance: {cand.get('distance_m')}m")
+                print(f"    - Dose: {cand.get('dose_ug')}")
+
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error calling routing API for mode '{mode}': {e}")
+        except json.JSONDecodeError:
+            print(f"Error: Could not decode JSON response for mode '{mode}'.")
         
-    if candidates:
-        print("Route Score Attribution Payload excerpt (`explanation.route_score`):")
-        print(json.dumps(candidates[0]["explanation"]["route_score"], indent=4))
-
-    pbar.set_description("Verification Finalized")
-    pbar.close()
-
-    print("\n" + "=" * 90)
-    print("REPLICATION COMPLETE: SEQUENTIAL TREE MATCHES 100% CONTEXT")
-    print("=" * 90)
+        print("-" * 40 + "\n")
 
 if __name__ == "__main__":
-    run_replication()
+    run_route_test()
