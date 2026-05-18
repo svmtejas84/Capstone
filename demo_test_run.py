@@ -15,9 +15,9 @@ try:
     from fastapi.testclient import TestClient
     from router.api.main import app
     from shared.physics_config import get_respiratory_minute_volume
-except ImportError:
-    print("Error: Dependencies missing. Run: pip install tqdm fastapi torch requests")
-    sys.exit(1)
+except ImportError as e:
+    print("Warning: Import failed but continuing. If you see runtime errors, install missing packages.")
+    print(f"ImportError: {e}")
 
 def print_separator(title):
     print("\n" + "─" * 90)
