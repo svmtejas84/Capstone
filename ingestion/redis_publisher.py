@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 
 from shared.redis_client import RedisStore
