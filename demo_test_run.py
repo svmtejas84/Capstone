@@ -1,23 +1,18 @@
 #!/usr/bin/env python3
-import os
-import sys
 import json
+import sys
 import time
 from pathlib import Path
 
-# Fix relative imports by anchoring to project root
+# Fix relative imports by anchoring to project root.
 root_path = Path(__file__).resolve().parent
 sys.path.insert(0, str(root_path))
 
-try:
-    import torch  # Injected for native hardware accelerator detection
-    from tqdm import tqdm
-    from fastapi.testclient import TestClient
-    from router.api.main import app
-    from shared.physics_config import get_respiratory_minute_volume
-except ImportError as e:
-    print("Warning: Import failed but continuing. If you see runtime errors, install missing packages.")
-    print(f"ImportError: {e}")
+import torch  # type: ignore
+from fastapi.testclient import TestClient
+from router.api.main import app
+from shared.physics_config import get_respiratory_minute_volume
+from tqdm import tqdm
 
 def print_separator(title):
     print("\n" + "─" * 90)
