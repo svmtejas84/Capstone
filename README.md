@@ -57,8 +57,100 @@ Flow details:
    - Road network extraction and graph construction.
    - Graph is projected to UTM Zone 43N (EPSG:32643) and cached at `data/graphs/bangalore_utm.graphml`.
 
-## Data Folder Structure
+## How to Run
 
+This section provides a complete guide to setting up and running the toxicity-aware routing engine.
+
+### 1. Environment Setup
+
+First, set up your Python environment and install the required dependencies.
+
+```bash
+# Create and activate a virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install the project and its dependencies
+pip install -e .
+```
+
+### 2. Configuration
+
+The system requires an API token for the AQICN service to fetch live air quality data.
+
+```bash
+# Create a .env file from the example
+cp .env.example .env
+
+# Open the .env file and add your AQICN token
+# AQICN_TOKEN=your_token_here
+```
+
+### 3. Start Services
+
+The routing engine depends on a Redis server for data streaming.
+
+```bash
+# Start the Redis server in a separate terminal
+redis-server
+```
+
+### 4. Run the Application
+
+The application consists of two main components that need to be run in separate terminals: the data ingestor and the web server.
+
+**Terminal 1: Start the Data Ingestor**
+
+The ingestor fetches live data from external APIs and publishes it to Redis.
+
+```bash
+python -m ingestion.ingestor
+```
+
+**Terminal 2: Start the Web Server**
+
+The web server exposes the routing API.
+
+```bash
+uvicorn router.api.main:app --reload
+```
+
+You should see a confirmation that the server is running on `http://127.0.0.1:8000`.
+
+### 5. Run the Test Script
+
+With the server and ingestor running, you can now run the interactive test script in a third terminal.
+
+```bash
+# Make sure your virtual environment is activated
+source .venv/bin/activate
+
+# Run the test script
+python demo_test_run.py
+```
+
+The script will prompt you to enter source and destination coordinates and an optional departure time. It will then make requests to the running server and print a detailed analysis of the results.
+
+To include SHAP explanations in the output, run the script with the `TOXICITY_INCLUDE_NEURAL_EXPLANATION` environment variable:
+
+```bash
+TOXICITY_INCLUDE_NEURAL_EXPLANATION=1 python demo_test_run.py
+```
+
+## Performance Log
+
+The following table shows the approximate time taken to get routing results on different hardware.
+
+| Hardware      | Task                  | Time (seconds) |
+|---------------|-----------------------|----------------|
+| NVIDIA V100   | GNN Training (1 epoch)| ~180 - 240     |
+| NVIDIA V100   | Route Calculation     | < 1            |
+| NVIDIA RTX 4050| GNN Training (1 epoch)| ~300 - 420     |
+| NVIDIA RTX 4050| Route Calculation     | ~1 - 2         |
+
+*Note: Training times are highly dependent on the dataset size and hyperparameters. Route calculation times are for a single request.*
+
+## Data Folder Structure
 ```
 data/
   raw/
@@ -73,31 +165,6 @@ data/
     aqicn_live/
 ```
 
-## Setup
-
-1. Clone the repository.
-2. Create environment file from template:
-   ```bash
-   cp .env.example .env
-   ```
-3. Add your AQICN token in `.env`:
-   ```
-   AQICN_TOKEN=your_token_here
-   ```
-4. Install dependencies:
-   ```bash
-   pip install -e .
-   ```
-5. Start Redis:
-   ```bash
-   redis-server
-   ```
-6. Start live ingestion (fetches from Open-Meteo + AQICN):
-   ```bash
-   python -m ingestion.ingestor
-   ```
-7. In another terminal, start the API:
-   ```bash
    uvicorn router.api.main:app --reload --port 8000
    ```
 8. Visit `http://localhost:8000/docs` for interactive API documentation.

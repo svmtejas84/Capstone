@@ -57,3 +57,44 @@ def predict_route_edge_concentrations_persistence(
 		cv = _node_concentration(graph, gv, station_pm25_idx, city_pm25_idx)
 		pred[(int(u), int(v))] = max(0.0, (cu + cv) / 2.0)
 	return pred
+
+
+def predict_route_edge_concentrations_true_persistence(
+    route_edges: list[tuple[int, int]],
+    current_time_step_tensor: torch.Tensor,
+    node_to_index: dict[int, int],
+    station_pm25_idx: int,
+    city_pm25_idx: int
+) -> dict[tuple[int, int], float]:
+    """
+    LEAK-FREE PERSISTENCE BASELINE: Replaces static graph lookups with 
+    the actual feature states from the current operational time step.
+    """
+    if not route_edges or current_time_step_tensor is None:
+        return {}
+
+    pred: dict[tuple[int, int], float] = {}
+    
+    for u, v in route_edges:
+        if int(u) not in node_to_index or int(v) not in node_to_index:
+            continue
+            
+        gu = node_to_index[int(u)]
+        gv = node_to_index[int(v)]
+        
+        # Pull features explicitly from the historical time-step tensor slicing matrix
+        xu = current_time_step_tensor[gu]
+        xv = current_time_step_tensor[gv]
+        
+        # Read the current step features to persist into the next evaluation window
+        station_u = float(xu[station_pm25_idx])
+        city_u = float(xu[city_pm25_idx])
+        cu = station_u if station_u > 0.0 else (city_u if city_u > 0.0 else 0.0)
+        
+        station_v = float(xv[station_pm25_idx])
+        city_v = float(xv[city_pm25_idx])
+        cv = station_v if station_v > 0.0 else (city_v if city_v > 0.0 else 0.0)
+        
+        pred[(int(u), int(v))] = max(0.0, (cu + cv) / 2.0)
+        
+    return pred

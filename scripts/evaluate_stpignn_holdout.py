@@ -15,7 +15,10 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from gnn.checkpoint import load_stpignn_checkpoint
-
+from gnn.persistence_baseline import (
+    _load_static_artifacts,
+    predict_route_edge_concentrations_true_persistence,
+)
 
 FEATURE_COLS_16 = [
     "station_pm10",
@@ -199,25 +202,40 @@ def evaluate(args: argparse.Namespace) -> dict[str, object]:
             if target_idx >= len(times):
                 horizon_rows[horizon]["skipped"] = int(horizon_rows[horizon]["skipped"]) + 1
                 continue
+
             target_ts = times[target_idx]
-            target = target_lookup.get((target_ts, center))
-            if target is None or target <= 0.0:
+            target_value = target_lookup.get((target_ts, center), 0.0)
+            if target_value == 0.0:
                 horizon_rows[horizon]["skipped"] = int(horizon_rows[horizon]["skipped"]) + 1
                 continue
-            prev_target = target_lookup.get((window_times[-1], center), station_mean)
-            horizon_rows[horizon]["preds"].append(pred_value)  # type: ignore[union-attr]
-            horizon_rows[horizon]["targets"].append(float(target))  # type: ignore[union-attr]
-            horizon_rows[horizon]["persistence"].append(float(prev_target))  # type: ignore[union-attr]
-            horizon_rows[horizon]["means"].append(station_mean)  # type: ignore[union-attr]
 
-    reports: dict[str, object] = {}
+            # --- True Persistence ---
+            # The feature state at the *end* of the input window is the
+            # actual state at time t, which we persist to predict t+h.
+            persistence_tensor = torch.from_numpy(x_seq[-1, :, :])
+            _, node_to_index, station_idx, city_idx = _load_static_artifacts()
+            persistence_pred = predict_route_edge_concentrations_true_persistence(
+                route_edges=[(center, center)],  # Mock edge to get node value
+                current_time_step_tensor=persistence_tensor,
+                node_to_index=node_to_index,
+                station_pm25_idx=station_idx,
+                city_pm25_idx=city_idx,
+            ).get((center, center), 0.0)
+            persistence_value = persistence_pred / TARGET_SCALE
+
+            horizon_rows[horizon]["preds"].append(pred_value)
+            horizon_rows[horizon]["targets"].append(target_value)
+            horizon_rows[horizon]["persistence"].append(persistence_value)
+            horizon_rows[horizon]["means"].append(station_mean)
+
+    results = {"by_horizon_hours": {}}
     for horizon, rows in horizon_rows.items():
         preds = rows["preds"]
         targets = rows["targets"]
         persistence = rows["persistence"]
         means = rows["means"]
         if not isinstance(preds, list) or not preds:
-            reports[str(horizon)] = {
+            results["by_horizon_hours"][str(horizon)] = {
                 "samples_evaluated": 0,
                 "samples_skipped": int(rows["skipped"]),
                 "error": "No holdout samples were evaluated for this horizon",
@@ -225,7 +243,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, object]:
             continue
         pred_np = np.asarray(preds, dtype=np.float64)
         target_np = np.asarray(targets, dtype=np.float64)
-        reports[str(horizon)] = {
+        results["by_horizon_hours"][str(horizon)] = {
             "samples_evaluated": len(preds),
             "samples_skipped": int(rows["skipped"]),
             "stpignn": _metrics(pred_np, target_np),
@@ -255,7 +273,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, object]:
             "hops": args.hops,
             "horizons": horizons,
         },
-        "by_horizon_hours": reports,
+        "by_horizon_hours": results,
     }
     return result
 

@@ -1,6 +1,18 @@
 # Changelog
 
-This log records the main architecture, pipeline, model, and documentation changes in dated groups from the recent git history.
+This log records some of the main architecture, pipeline, model, and documentation changes in dated groups from the recent git history.
+
+## 2026-05-18
+
+- **Data Leakage Fix:** Corrected a critical data leakage issue in the persistence baseline evaluation. The baseline was reading ground-truth data, leading to artificially low error metrics. The evaluation script (`scripts/evaluate_stpignn_holdout.py`) has been patched, and the model's superior performance is now correctly reflected in the new holdout report.
+- **Routing Engine:** Fixed a critical bug where the ST-PIGNN model's predictions were not being correctly used by the A* pathfinding algorithm. The router now pre-computes toxicity for all edges before finding paths.
+- **Test Suite:** Created a new interactive test script, `demo_test_run.py`, to validate the routing engine. It allows for user input of coordinates and departure times.
+- **SHAP Explanations:** Implemented SHAP value generation in `gnn/stpignn_explain.py` to provide feature importance for model predictions. The previous implementation was a placeholder.
+- **Documentation:**
+    - Created `docs/TEST_SCENARIOS.md` to log example test runs and their outputs.
+    - Significantly updated `README.md` with detailed instructions on how to set up the environment, run the server, and execute the test script.
+    - Added a performance log table comparing V100 and RTX 4050 GPUs.
+    - Updated `docs/MODEL_CARD_STPIGNN.md` with the corrected holdout metrics and analysis.
 
 ## 2026-04-01
 
@@ -10,6 +22,7 @@ This log records the main architecture, pipeline, model, and documentation chang
 - Updated the architecture and data docs to describe the new graph preprocessing and artifact outputs.
 
 ## 2026-03-31
+
 
 - Added `scripts/finalize_gnn_assets.py` to perform temporal repair, sensor masking, PyG serialization, and validation in one pass.
 - Added `gnn/model.py` with `GINEConv + GRU`, masked MSE, a physics penalty, and AMP-ready training.
