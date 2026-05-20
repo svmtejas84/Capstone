@@ -2,6 +2,21 @@
 
 FastAPI serving toxicity-aware routing endpoints with diagnostics and audit support.
 
+## Recent Runtime Changes (2026-05-20)
+
+The following runtime-only changes were introduced to improve model output scaling and observability without retraining the ST‑PIGNN model. These files and endpoints were added for testing and can be removed or hard-committed after validation.
+
+- Added a lightweight post-prediction scaler that applies a per-zone/per-edge linear transform to model outputs at inference time to correct target-scale mismatches (no model retraining required). See `router/prediction_scaler.py` for the in-memory scaler API.
+- Added simple metric helpers in `router/metrics.py` and an offline fitter utility `scripts/fit_scalers.py` to compute per-zone linear scalers from paired (prediction, observation) data.
+- Added `scripts/compute_and_store_global_scaler.py` to compute a quick global multiplicative scaler from recent station observations and store the parameters to Redis under `scaler:__global__`.
+- The runtime routing path (`router/api/routes.py`) was instrumented to load scaler parameters from Redis at runtime and apply scaling to edge concentration predictions before dose computations.
+- A temporary debug endpoint `GET /_debug_scaler` was added to inspect the in-memory scaler cache while testing.
+
+Notes:
+- These runtime edits were applied without committing model or training artifacts. The intent is to validate scaling behavior in shadow/canary mode before making permanent code changes.
+- To remove the runtime debug endpoint and any test scripts after validation, delete `GET /_debug_scaler` and the `scripts/compute_and_store_global_scaler.py`/`scripts/fit_scalers.py` utilities.
+
+
 ## Responsibilities
 
 - Expose REST API for route computation and diagnostics.
