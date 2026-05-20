@@ -18,6 +18,7 @@ from router.api.dependencies import env_seed_from_state, redis_store
 from router.edge_cost import compute_edge_weight, compute_path_cost
 from router.stake_audit import create_audit, verify_audit
 from shared.schemas import NeuralModelExplanation, RouteCandidate, RouteExplanation, RouteRequest, RouteResponse, RouteScoreExplanation
+from router.prediction_scaler import ScalerStore
 
 router = APIRouter()
 _WGS84_TO_UTM43 = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
@@ -275,9 +276,32 @@ def plume() -> dict[str, object]:
 	}
 
 
+@router.get("/_debug_scaler")
+def debug_scaler() -> dict[str, object]:
+	try:
+		vals = {k: {"a": v.a, "b": v.b, "version": v.version, "last_updated": v.last_updated} for k, v in (_scaler_store._cache.items() if _scaler_store is not None else {})}
+	except Exception:
+		vals = {}
+	return {"scaler_cache": vals}
+
+
 @router.post("/route", response_model=RouteResponse)
 def route(req: RouteRequest) -> RouteResponse:
 	graph = update_graph_toxicity_from_streams(redis_store())
+
+	# Initialize scaler store lazily to avoid import-time Redis connection
+	global _scaler_store
+	try:
+		_scaler_store
+	except NameError:
+		_scaler_store = None
+	if _scaler_store is None:
+		try:
+			_store = redis_store()
+			_scaler_store = ScalerStore(redis_client=_store.client if _store is not None else None)
+			_scaler_store.refresh_from_redis()
+		except Exception:
+			_scaler_store = ScalerStore()
 	source = _nearest_node(graph, req.origin[0], req.origin[1])
 	target = _nearest_node(graph, req.destination[0], req.destination[1])
 
@@ -305,8 +329,24 @@ def route(req: RouteRequest) -> RouteResponse:
 		route_ids = [f"route_{i}" for i in range(len(candidate_paths))]
 		route_edges = {rid: _path_edges(path) for rid, path in zip(route_ids, candidate_paths, strict=False)}
 		
-		# The concentrations are already predicted, so we just need to get them for the candidate routes.
-		route_model_concentrations = {edge: tox_preds.get(edge, 0.0) for rid in route_ids for edge in route_edges[rid]}
+		# The concentrations are already predicted. Apply post-prediction scaling (per-edge/zone) if available.
+		route_model_concentrations: dict[tuple[int, int], float] = {}
+		# Refresh scaler parameters from Redis so runtime updates take effect.
+		try:
+			if _scaler_store is not None:
+				_scaler_store.refresh_from_redis()
+		except Exception:
+			pass
+
+		for rid in route_ids:
+			for edge in route_edges[rid]:
+				raw = tox_preds.get(edge, 0.0)
+				zone_id = f"{edge[0]}_{edge[1]}"
+				try:
+					scaled = _scaler_store.apply(zone_id, raw) if _scaler_store is not None else raw
+				except Exception:
+					scaled = raw
+				route_model_concentrations[edge] = float(scaled)
 
 		route_dose: dict[str, float] = {}
 		route_distance_m: dict[str, float] = {}
@@ -406,7 +446,15 @@ def route(req: RouteRequest) -> RouteResponse:
 		],
 	}
 	env_seed = env_seed_from_state(state)
-	stake_hash, _ = create_audit(route_line, env_seed=env_seed, store=redis_store())
+	# include scaler cache versions in audit metadata for reproducibility
+	meta = {}
+	try:
+		if _scaler_store is not None:
+			meta = {"scaler_versions": {k: getattr(v, "version", None) for k, v in _scaler_store._cache.items()}}
+	except Exception:
+		meta = {}
+
+	stake_hash, _ = create_audit(route_line, env_seed=env_seed, store=redis_store(), meta=meta)
 	return RouteResponse(
 		route=route_line,
 		total_cost_w=round(total_cost, 6),

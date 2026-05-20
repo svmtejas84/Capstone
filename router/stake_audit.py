@@ -14,9 +14,12 @@ def create_audit(
 	route: list[tuple[float, float]],
 	env_seed: str,
 	store: RedisStore | None = None,
+	meta: dict[str, object] | None = None,
 ) -> tuple[str, dict[str, object]]:
 	ts = datetime.now(timezone.utc).isoformat()
 	payload = {"route": route, "env_seed": env_seed, "timestamp": ts}
+	if meta:
+		payload["meta"] = meta
 	raw = json.dumps(payload, sort_keys=True)
 	stake_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()
 	_AUDIT_STORE[stake_hash] = payload
