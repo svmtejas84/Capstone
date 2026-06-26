@@ -1,0 +1,65 @@
+Cluster_ID,Nodes_Count,Empirical_MAE,Empirical_RMSE,R2_Score
+0,2244,No True Station Data,No True Station Data,N/A
+1,3035,No True Station Data,No True Station Data,N/A
+2,3131,No True Station Data,No True Station Data,N/A
+3,3259,No True Station Data,No True Station Data,N/A
+4,2462,No True Station Data,No True Station Data,N/A
+5,2571,No True Station Data,No True Station Data,N/A
+6,2777,15.3247,17.0638,-21.7937
+7,1774,No True Station Data,No True Station Data,N/A
+8,2525,No True Station Data,No True Station Data,N/A
+9,2997,No True Station Data,No True Station Data,N/A
+10,1655,No True Station Data,No True Station Data,N/A
+11,1993,No True Station Data,No True Station Data,N/A
+12,1490,No True Station Data,No True Station Data,N/A
+13,2267,No True Station Data,No True Station Data,N/A
+14,3166,17.1307,19.4346,-0.7216
+15,2481,No True Station Data,No True Station Data,N/A
+16,2864,No True Station Data,No True Station Data,N/A
+17,1760,No True Station Data,No True Station Data,N/A
+18,2415,12.9271,17.3357,-3.5359
+19,2341,No True Station Data,No True Station Data,N/A
+20,1702,No True Station Data,No True Station Data,N/A
+21,1599,No True Station Data,No True Station Data,N/A
+22,2267,No True Station Data,No True Station Data,N/A
+23,1544,No True Station Data,No True Station Data,N/A
+24,3507,No True Station Data,No True Station Data,N/A
+25,2510,21.4802,24.29,-3.9482
+26,1238,No True Station Data,No True Station Data,N/A
+27,2899,No True Station Data,No True Station Data,N/A
+28,2895,No True Station Data,No True Station Data,N/A
+29,3025,15.0103,19.5783,-0.3237
+30,2957,9.3532,12.4887,-0.6057
+31,1882,No True Station Data,No True Station Data,N/A
+32,2251,21.7222,28.2155,0.0911
+33,3153,No True Station Data,No True Station Data,N/A
+34,2016,No True Station Data,No True Station Data,N/A
+35,3024,200.1693,217.0832,-5.8357
+36,2133,No True Station Data,No True Station Data,N/A
+37,2988,17.9409,23.0261,-0.9906
+38,2709,No True Station Data,No True Station Data,N/A
+39,2216,No True Station Data,No True Station Data,N/A
+40,2111,No True Station Data,No True Station Data,N/A
+41,3338,115.7725,157.7021,-1.0901
+42,1726,23.8228,34.5179,-0.0430
+43,2766,18.4186,20.0356,-9.3099
+44,1815,No True Station Data,No True Station Data,N/A
+45,3122,7.899,10.8834,-2.7759
+46,3009,No True Station Data,No True Station Data,N/A
+47,2255,No True Station Data,No True Station Data,N/A
+48,2493,No True Station Data,No True Station Data,N/A
+49,2950,No True Station Data,No True Station Data,N/A
+50,2014,No True Station Data,No True Station Data,N/A
+51,2320,No True Station Data,No True Station Data,N/A
+52,1915,No True Station Data,No True Station Data,N/A
+53,1726,No True Station Data,No True Station Data,N/A
+54,2626,No True Station Data,No True Station Data,N/A
+55,2015,No True Station Data,No True Station Data,N/A
+56,1499,No True Station Data,No True Station Data,N/A
+57,3746,No True Station Data,No True Station Data,N/A
+58,1938,No True Station Data,No True Station Data,N/A
+59,1922,13.0463,68.2108,-0.0087
+60,1853,No True Station Data,No True Station Data,N/A
+61,2977,299.3214,299.5267,-1249.5037
+62,2131,No True Station Data,No True Station Data,N/A
+63,2913,No True Station Data,No True Station Data,N/A

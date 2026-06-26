@@ -1,0 +1,12 @@
+[RUN] Launching validation comparative sweep across baseline neural layers...
+
+Benchmarking Baselines: 100%
+306/306 [00:27<00:00, 11.19it/s]
+
+
+================================================================================
+🏆 LIVE CODESPACE BENCHMARKING COMPLETION REPORT
+================================================================================
+🔹 Vanilla_GCN  | MAE: 75.3489 | RMSE: 132.3808 | PVR: 1.1124% | Latency: 3.25 ms
+🔹 GRU_GCN      | MAE: 62.5053 | RMSE: 97.9427 | PVR: 0.3525% | Latency: 12.36 ms
+================================================================================
