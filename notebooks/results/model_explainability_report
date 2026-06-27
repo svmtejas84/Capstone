@@ -1,0 +1,26 @@
+[INIT] Launching Phase 8.5 Integrated Gradients Probing Engine...
+[CAPTUM] Memory-safeguarding path integrals on Subgraph 6...
+
+================================================================================
+🧬 MATHEMATICAL MODEL EXPLAINABILITY REPORT: INTEGRATED GRADIENTS
+================================================================================
+  ▪️ Pressure             : 13.12%
+  ▪️ Elevation            : 12.96%
+  ▪️ Wind_Speed           : 11.72%
+  ▪️ Boundary_Layer       : 11.33%
+  ▪️ Population_Density   : 7.03%
+  ▪️ Humidity             : 6.00%
+  ▪️ Wind_Direction       : 5.22%
+  ▪️ Road_Proximity       : 5.13%
+  ▪️ NDVI                 : 4.88%
+  ▪️ Industrial_Output    : 4.53%
+  ▪️ Temperature          : 4.18%
+  ▪️ PM2.5_t-2            : 3.06%
+  ▪️ Albedo               : 2.82%
+  ▪️ Built_Up_Area        : 2.76%
+  ▪️ PM2.5_t-1            : 2.66%
+  ▪️ Traffic_Density      : 2.61%
+================================================================================
+📈 IG CONVERGENCE ERROR (DELTA): 0.000011
+================================================================================
+✅ Explainability matrix compiled successfully under memory limits.
