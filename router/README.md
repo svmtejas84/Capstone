@@ -115,7 +115,7 @@ Compute toxicity-aware route(s) from origin to destination.
         },
         "neural_model": {
           "available": true,
-          "method": "shap.gradient",
+          "method": "captum.integrated_gradients",
           "target": "route_mean_stpignn_prediction",
           "feature_attributions": {
             "station_pm25": 0.021,
@@ -132,8 +132,8 @@ Compute toxicity-aware route(s) from origin to destination.
 Supported modes: `jogger`, `cyclist`, `two_wheeler`, and `car`.
 
 Candidate route-score explanations are additive dose/distance attributions for
-the route preference model. Neural ST-PIGNN SHAP explanations are available
-when `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`; they use `shap.GradientExplainer`
+the route preference model. Neural ST-PIGNN Integrated Gradients explanations are available
+when `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`; they use `captum.attr.IntegratedGradients`
 on a route-local ST-PIGNN wrapper and are placed under
 `candidates[].explanation.neural_model`.
 

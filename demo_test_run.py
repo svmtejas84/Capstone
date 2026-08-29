@@ -5,9 +5,7 @@ from pyproj import Transformer
 from datetime import datetime
 
 # --- Configuration ---
-# Set the model to use (stpignn or persistence)
-os.environ["TOXICITY_ROUTE_MODEL"] = "stpignn" 
-# Include SHAP explanations from the model
+# Include Captum Integrated Gradients explanations from the evaluated model
 os.environ["TOXICITY_INCLUDE_NEURAL_EXPLANATION"] = "1"
 
 # API endpoint
@@ -19,7 +17,7 @@ SOURCE_COORDS_WGS84 = (12.9716, 77.5946)  # Bangalore
 DESTINATION_COORDS_WGS84 = (12.9795, 77.5908) # Near Cubbon Park
 
 # Commute modes to test
-COMMUTE_MODES = ["jogger", "cyclist", "car"]
+COMMUTE_MODES = ["jogger", "cyclist", "two_wheeler", "car"]
 
 # --- Coordinate Transformation ---
 # Transformer to convert WGS84 to UTM Zone 43N (EPSG:32643), which is the project standard
@@ -29,6 +27,7 @@ def to_utm(lat, lon):
     """Converts latitude and longitude to UTM coordinates."""
     x, y = _WGS84_TO_UTM43.transform(lon, lat)
     return x, y
+
 
 def get_user_input():
     """Gets user input for source, destination, and departure time."""
@@ -65,6 +64,25 @@ def get_user_input():
         print("Invalid input. Please enter valid numbers for coordinates.")
         return None, None, None
 
+
+def get_commuter_counts():
+    """Optionally configure a cohort to exercise capacity-aware matching."""
+    if input("Simulate Gale-Shapley load? (y/N): ").strip().lower() not in {"y", "yes"}:
+        return None
+
+    counts = {}
+    for mode in COMMUTE_MODES:
+        while True:
+            try:
+                value = int(input(f"Total {mode} commuters (including you if applicable): ") or "0")
+                if value < 0:
+                    raise ValueError
+                counts[mode] = value
+                break
+            except ValueError:
+                print("Enter a whole number of zero or more.")
+    return counts
+
 # --- Main Test Function ---
 def run_route_test():
     """
@@ -76,6 +94,7 @@ def run_route_test():
     source_coords, dest_coords, departure_time = get_user_input()
     if not source_coords or not dest_coords:
         return
+    commuter_counts = get_commuter_counts()
 
     # Convert coordinates to UTM
     source_utm = to_utm(source_coords[0], source_coords[1])
@@ -97,19 +116,29 @@ def run_route_test():
             "origin": [source_coords[0], source_coords[1]],
             "destination": [dest_coords[0], dest_coords[1]],
             "mode": mode,
+            "route_model": "stpignn",
         }
         if departure_time:
             payload["departure_time"] = departure_time
+        if commuter_counts is not None:
+            payload["commuter_counts"] = commuter_counts
 
         try:
             # Make the request to the routing API
-            response = requests.post(API_URL, json=payload)
+            # TestClient creates an isolated app with its fallback graph.
+            # Query the running service so every mode uses the live route state.
+            response = requests.post(API_URL, json=payload, timeout=60)
             response.raise_for_status()  # Raise an exception for bad status codes
             data = response.json()
 
             # --- Print Results ---
             print(f"Recommended Route ID: {data.get('stable_corridor_id')}")
             print(f"Total Cost (Toxicity Dose): {data.get('total_cost_w')}")
+            if data.get("matching_applied"):
+                print(f"Gale-Shapley cohort: {data.get('simulated_commuter_counts')}")
+                print(f"Road-based route capacities: {data.get('route_capacities')}")
+            else:
+                print("Gale-Shapley load simulation: off (using this mode's top-ranked route)")
 
             recommended_route = None
             for candidate in data.get("candidates", []):
@@ -135,12 +164,12 @@ def run_route_test():
                 print(f"  - Dose Contribution: {score_exp.get('dose_contribution')}")
                 print(f"  - Distance Contribution: {score_exp.get('distance_contribution')}")
                 print(f"  - Final Score: {score_exp.get('final_score')}")
-                print("  (This score determines route preference. A lower score is better.)\n")
+                print("  (This is the raw preference score used to rank candidates. A lower score is better for ranking, but the final stable corridor can differ after Gale-Shapley matching.)\n")
 
-            # ST-PIGNN SHAP Explanation
+            # ST-PIGNN Captum Integrated Gradients Explanation
             neural_exp = explanation.get("neural_model", {})
             if neural_exp and neural_exp.get("available"):
-                print("ST-PIGNN SHAP Explanation (Feature Importance):")
+                print("ST-PIGNN Integrated Gradients Explanation (Feature Importance):")
                 print(f"  Method: {neural_exp.get('method')}")
                 attributions = neural_exp.get("feature_attributions", {})
                 if attributions:
@@ -150,13 +179,19 @@ def run_route_test():
                     print("  - No feature attributions available.")
                 print(f"  Reason: {neural_exp.get('reason')}\n")
             else:
-                print("ST-PIGNN SHAP Explanation not available for this route.\n")
+                print("ST-PIGNN Integrated Gradients explanation not available for this route.\n")
 
             # Nodes changed explanation
             print("--- Node Analysis & Gale-Shapley Candidates ---")
             print(f"The recommended route ({recommended_route.get('id')}) consists of {len(recommended_route.get('node_ids', []))} nodes.")
             print("This path was chosen by the A* algorithm using a composite weight of distance and predicted toxicity from the ST-PIGNN model.")
             print("The Gale-Shapley algorithm then selected this route from a set of candidates to mitigate herd behavior.\n")
+
+            if recommended_route.get("preference_rank", 0) > 1:
+                print(
+                    "Note: the recommended route is not the raw rank-1 candidate. "
+                    "That is expected when the stable matcher reallocates commuters to respect route capacities and segment preferences.\n"
+                )
             
             print("All evaluated candidates:")
             for cand in data.get("candidates", []):

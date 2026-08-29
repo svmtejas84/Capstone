@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from functools import lru_cache
-from typing import Any
 
 import torch
 import torch.nn as nn
 
-from gnn.stpignn_inference import _load_static_artifacts, _route_subgraph
+from gnn.stpignn_inference import _build_temporal_x_seq, _load_static_artifacts, _route_subgraph
 
 
 FEATURE_NAMES = [
@@ -31,7 +31,7 @@ FEATURE_NAMES = [
 
 
 @dataclass(frozen=True)
-class STPIGNNShapExplanation:
+class STPIGNNIntegratedGradientsExplanation:
 	available: bool
 	method: str
 	target: str
@@ -48,48 +48,42 @@ class _RouteMeanWrapper(nn.Module):
 
 	def forward(self, x_seq: torch.Tensor) -> torch.Tensor:
 		pred = self.model(x_seq=x_seq, edge_index=self.edge_index, edge_attr=self.edge_attr)
-		return pred.mean(dim=1, keepdim=True)
+		return pred.mean(dim=1)
 
 
-@lru_cache(maxsize=1)
-def _import_shap() -> Any:
-	import shap
-
-	return shap
-
-
-def explain_route_edges_with_stpignn(
+def explain_route_edges_with_integrated_gradients(
 	route_edges: list[tuple[int, int]],
 	*,
 	window: int = 12,
 	max_route_nodes: int = 32,
 	top_k: int = 8,
-) -> STPIGNNShapExplanation:
-	"""Compute neural SHAP attributions for route-local ST-PIGNN inference.
+	departure_time: datetime | None = None,
+) -> STPIGNNIntegratedGradientsExplanation:
+	"""Explain route-local ST-PIGNN predictions with Captum Integrated Gradients.
 
-	The explainer wraps the trained ST-PIGNN checkpoint with fixed route-local
-	edges and explains the mean predicted concentration over route nodes with
-	respect to the 16 node/time input features.
+	This mirrors the evaluated wind-advection notebook: a zero baseline,
+	25 integration steps, and sequential internal batches to bound memory use.
 	"""
 	if not route_edges:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
 			reason="route has no edges",
 		)
 
 	try:
-		shap = _import_shap()
+		from captum.attr import IntegratedGradients
+
 		model, graph, node_to_index = _load_static_artifacts()
 	except Exception as exc:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
-			reason=f"ST-PIGNN SHAP dependencies unavailable: {type(exc).__name__}: {exc}",
+			reason=f"Integrated Gradients unavailable: {type(exc).__name__}: {exc}",
 		)
 
 	route_node_indices: set[int] = set()
@@ -99,9 +93,9 @@ def explain_route_edges_with_stpignn(
 			route_node_indices.add(node_to_index[int(v)])
 
 	if not route_node_indices:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
 			reason="route nodes are absent from the ST-PIGNN node map",
@@ -113,44 +107,50 @@ def explain_route_edges_with_stpignn(
 	try:
 		nodes, sub_edge_index, sub_edge_attr, _local = _route_subgraph(graph, route_node_indices, max_extra_neighbors=0)
 	except Exception as exc:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
 			reason=f"route-local subgraph unavailable: {type(exc).__name__}: {exc}",
 		)
 
 	model.eval()
-	x_static = graph.x[nodes, : len(FEATURE_NAMES)].float()
-	x_seq = x_static.unsqueeze(0).repeat(window, 1, 1).unsqueeze(0)
-	background = torch.zeros_like(x_seq)
+	try:
+		x_seq = _build_temporal_x_seq(graph, nodes, departure_time=departure_time, window=window)
+	except Exception:
+		x_static = graph.x[nodes, : len(FEATURE_NAMES)].float()
+		x_seq = x_static.unsqueeze(0).repeat(window, 1, 1).unsqueeze(0)
+	baseline = torch.zeros_like(x_seq)
 	wrapper = _RouteMeanWrapper(model, sub_edge_index, sub_edge_attr.float())
 	wrapper.eval()
 
 	try:
-		explainer = shap.GradientExplainer(wrapper, background)
-		shap_values = explainer.shap_values(x_seq)
+		explainer = IntegratedGradients(wrapper)
+		values, delta = explainer.attribute(
+			x_seq,
+			baselines=baseline,
+			n_steps=25,
+			internal_batch_size=1,
+			return_convergence_delta=True,
+		)
 	except Exception as exc:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
-			reason=f"SHAP computation failed: {type(exc).__name__}: {exc}",
+			reason=f"Integrated Gradients computation failed: {type(exc).__name__}: {exc}",
 		)
 
-	values = shap_values[0] if isinstance(shap_values, list) else shap_values
 	values_t = torch.as_tensor(values, dtype=torch.float32)
-	if values_t.dim() == 5 and values_t.shape[-1] == 1:
-		values_t = values_t.squeeze(-1)
 	if values_t.dim() != 4:
-		return STPIGNNShapExplanation(
+		return STPIGNNIntegratedGradientsExplanation(
 			available=False,
-			method="shap.gradient",
+			method="captum.integrated_gradients",
 			target="route_mean_stpignn_prediction",
 			feature_attributions={},
-			reason=f"unexpected SHAP tensor shape: {tuple(values_t.shape)}",
+			reason=f"unexpected Integrated Gradients tensor shape: {tuple(values_t.shape)}",
 		)
 
 	feature_scores = values_t.abs().mean(dim=(0, 1, 2))
@@ -159,9 +159,14 @@ def explain_route_edges_with_stpignn(
 		key=lambda item: item[1],
 		reverse=True,
 	)
-	return STPIGNNShapExplanation(
+	return STPIGNNIntegratedGradientsExplanation(
 		available=True,
-		method="shap.gradient",
+		method="captum.integrated_gradients",
 		target="route_mean_stpignn_prediction",
 		feature_attributions=dict(ranked[:top_k]),
+		reason=f"mean convergence delta={float(torch.as_tensor(delta).abs().mean()):.6g}",
 	)
+
+
+# Compatibility alias for callers that used the previous runtime name.
+explain_route_edges_with_stpignn = explain_route_edges_with_integrated_gradients

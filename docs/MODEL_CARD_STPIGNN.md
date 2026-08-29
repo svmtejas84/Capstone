@@ -102,8 +102,8 @@ Explanations are returned under `candidates[].explanation`:
 - `route_score`: deterministic additive attributions for the route preference
   score. The terms decompose the same dose/distance score used by commuter
   preference ranking.
-- `neural_model`: optional ST-PIGNN neural SHAP explanation. Enable with
-  `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`. This uses `shap.GradientExplainer`
+- `neural_model`: optional ST-PIGNN neural Integrated Gradients explanation. Enable with
+  `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1`. This uses `captum.attr.IntegratedGradients`
   against a route-local ST-PIGNN wrapper and explains the mean route prediction
   by input feature. It is opt-in because it loads the checkpoint and performs
   extra gradient passes.
@@ -121,7 +121,7 @@ rank is not 1 when that avoids over-allocating the same corridor.
 - Biology and dosimetry are not part of the checkpoint.
 - The route API defaults to persistence because the current checkpoint has not beaten persistence on smoke holdout checks.
 - `TOXICITY_ROUTE_MODEL=stpignn` enables route-local checkpoint inference for candidate route dose scoring.
-- Neural ST-PIGNN SHAP explains the model prediction, while `route_score`
+- Neural ST-PIGNN Integrated Gradients explains the model prediction, while `route_score`
   explains the final recommendation score; these are related but not identical
   quantities.
 - The notebook contains machine-specific paths and should be treated as provenance, not the production training entry point.

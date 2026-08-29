@@ -19,6 +19,10 @@ class RouteRequest(BaseModel):
 	destination: tuple[float, float]
 	mode: Literal["jogger", "cyclist", "two_wheeler", "car"]
 	departure_time: Optional[datetime] = None
+	route_model: Literal["stpignn", "persistence", "stream"] | None = None
+	# When supplied, these are the total commuters in the matching simulation,
+	# including the requester in their selected mode.
+	commuter_counts: dict[Literal["jogger", "cyclist", "two_wheeler", "car"], int] | None = None
 
 
 class RouteScoreExplanation(BaseModel):
@@ -59,6 +63,9 @@ class RouteResponse(BaseModel):
 	total_cost_w: float
 	stake_hash: str
 	stable_corridor_id: str
+	matching_applied: bool = False
+	simulated_commuter_counts: dict[str, int] = Field(default_factory=dict)
+	route_capacities: dict[str, int] = Field(default_factory=dict)
 	candidates: list[RouteCandidate] = Field(default_factory=list)
 
 

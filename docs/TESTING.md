@@ -37,8 +37,8 @@ python -m pytest \
 Route responses always include deterministic route-score explanations under
 `candidates[].explanation.route_score`.
 
-ST-PIGNN neural SHAP explanations are opt-in because they load the checkpoint
-and run `shap.GradientExplainer` over route-local subgraphs:
+ST-PIGNN neural Integrated Gradients explanations are opt-in because they load the checkpoint
+and run `captum.attr.IntegratedGradients` over route-local subgraphs:
 
 ```bash
 TOXICITY_INCLUDE_NEURAL_EXPLANATION=1 python -m pytest router/tests/test_routes.py -q

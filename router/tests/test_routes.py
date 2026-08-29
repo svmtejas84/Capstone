@@ -45,7 +45,7 @@ def test_route_and_audit_flow() -> None:
 	assert audit_res.json()["valid"] is True
 
 
-def test_route_can_allocate_corridor_different_from_raw_rank_one() -> None:
+def test_route_defaults_to_requester_raw_rank_one_without_load_simulation() -> None:
 	route_res = client.post(
 		"/route",
 		json={
@@ -61,4 +61,5 @@ def test_route_can_allocate_corridor_different_from_raw_rank_one() -> None:
 
 	assert len(recommended) == 1
 	assert recommended[0]["id"] == payload["stable_corridor_id"]
-	assert recommended[0]["preference_rank"] > 1
+	assert recommended[0]["preference_rank"] == 1
+	assert payload["matching_applied"] is False

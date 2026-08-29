@@ -7,12 +7,12 @@ from pyproj import Transformer
 
 from gnn.edge_weights import update_graph_toxicity_from_streams
 from gnn.persistence_baseline import predict_route_edge_concentrations_persistence
-from gnn.stpignn_explain import explain_route_edges_with_stpignn
+from gnn.stpignn_explain import explain_route_edges_with_integrated_gradients
 from gnn.stpignn_inference import predict_route_edge_concentrations
 from gnn.wake_predictor import predict_wake_polygon
 from matcher.commuter_model import MODE_ALPHA, Commuter, build_preference_list as build_commuter_preferences
 from matcher.gale_shapley import batch_match
-from matcher.quota_manager import quotas_from_route_cedge
+from matcher.road_capacity import route_capacity
 from matcher.segment_model import Segment, build_preference_list as build_segment_preferences
 from router.api.dependencies import env_seed_from_state, redis_store
 from router.edge_cost import compute_edge_weight, compute_path_cost
@@ -23,6 +23,12 @@ from router.prediction_scaler import ScalerStore
 router = APIRouter()
 _WGS84_TO_UTM43 = Transformer.from_crs("EPSG:4326", "EPSG:32643", always_xy=True)
 _UTM43_TO_WGS84 = Transformer.from_crs("EPSG:32643", "EPSG:4326", always_xy=True)
+
+
+def _route_model_name(req: RouteRequest | None = None) -> str:
+	if req is not None and req.route_model:
+		return req.route_model.lower()
+	return os.environ.get("TOXICITY_ROUTE_MODEL", "persistence").lower()
 
 
 def _id_min_for_mode(mode: str) -> float:
@@ -37,18 +43,31 @@ def _id_min_for_mode(mode: str) -> float:
 	return 3.0
 
 
-def _build_batch_commuters(requester: Commuter) -> list[Commuter]:
+def _build_batch_commuters(
+	requester: Commuter,
+	commuter_counts: dict[str, int] | None = None,
+) -> list[Commuter]:
+	"""Build an explicit matching cohort only when load simulation is requested."""
+	if commuter_counts is None:
+		return [requester]
+
+	counts = {mode: max(0, int(commuter_counts.get(mode, 0))) for mode in MODE_ALPHA}
+	# The route request always represents one real requester.
+	counts[requester.mode] = max(1, counts[requester.mode])
 	cohort: list[Commuter] = [requester]
-	modes = ["jogger", "cyclist", "two_wheeler", "cyclist", "two_wheeler", "jogger", "car", "cyclist", "jogger"]
-	for idx, mode in enumerate(modes, start=1):
-		cohort.append(
-			Commuter(
-				id=f"sim_{idx}",
-				mode=mode,
-				id_min=_id_min_for_mode(mode),
-				distance_tolerance_m=6800.0 + idx * 350.0,
+	idx = 0
+	for mode, count in counts.items():
+		additional = count - (1 if mode == requester.mode else 0)
+		for _ in range(additional):
+			idx += 1
+			cohort.append(
+				Commuter(
+					id=f"sim_{idx}",
+					mode=mode,
+					id_min=_id_min_for_mode(mode),
+					distance_tolerance_m=6800.0 + idx * 350.0,
+				)
 			)
-		)
 	return cohort
 
 
@@ -130,8 +149,12 @@ def _path_edges(path: list[int]) -> list[tuple[int, int]]:
 	return [(path[i], path[i + 1]) for i in range(len(path) - 1)]
 
 
+def _normalize_edge_predictions(predictions: dict[tuple[int, int], float]) -> dict[tuple[int, int], float]:
+	return {(int(u), int(v)): float(value) for (u, v), value in predictions.items()}
+
+
 def _route_model_concentrations(route_edges: dict[str, list[tuple[int, int]]]) -> dict[tuple[int, int], float]:
-	model_name = os.environ.get("TOXICITY_ROUTE_MODEL", "persistence").lower()
+	model_name = _route_model_name()
 	all_edges: list[tuple[int, int]] = []
 	for edges in route_edges.values():
 		all_edges.extend(edges)
@@ -174,36 +197,78 @@ def _candidate_paths(
 ) -> list[list[int]]:
 	if tox_preds is None:
 		tox_preds = {}
+	else:
+		tox_preds = _normalize_edge_predictions(tox_preds)
 	digraph = nx.DiGraph()
 	for u, v, _k, _data in graph.edges(keys=True, data=True):
-		tox_val = tox_preds.get((int(u), int(v)))
-		w = _edge_dose_weight(graph, int(u), int(v), mode, tox_val=tox_val)
-		if not digraph.has_edge(int(u), int(v)) or w < float(digraph[int(u)][int(v)]["dose"]):
-			digraph.add_edge(int(u), int(v), dose=w)
+		edge_key = (int(u), int(v))
+		tox_val = tox_preds.get(edge_key)
+		w = _edge_dose_weight(graph, edge_key[0], edge_key[1], mode, tox_val=tox_val)
+		if not digraph.has_edge(edge_key[0], edge_key[1]) or w < float(digraph[edge_key[0]][edge_key[1]]["dose"]):
+			digraph.add_edge(
+				edge_key[0],
+				edge_key[1],
+				dose=w,
+				distance=_edge_length_m(_first_edge_attrs(graph, edge_key[0], edge_key[1])),
+			)
 
+	# Dose for a mode is concentration × travel time × respiratory rate.  The
+	# latter two are mode-wide multipliers here, so dose-only search has the same
+	# ordering for every mode.  Include both exposure- and distance-oriented
+	# alternatives, then use the mode's existing dose/distance preference to
+	# select the candidate set passed to stable matching.
 	paths: list[list[int]] = []
+
+	def add_path(path: list[int]) -> None:
+		if path not in paths:
+			paths.append(path)
+
 	try:
-		base = nx.astar_path(
+		add_path(nx.astar_path(
 			digraph,
 			source,
 			target,
 			heuristic=lambda a, b: _heuristic(graph, a, b),
 			weight="dose",
-		)
-		paths.append(base)
+		))
 	except nx.NetworkXNoPath:
 		return []
 
 	try:
 		for p in nx.shortest_simple_paths(digraph, source, target, weight="dose"):
-			if p not in paths:
-				paths.append(p)
-			if len(paths) >= k:
+			add_path(p)
+			if len(paths) >= k * 2:
 				break
 	except (nx.NetworkXNoPath, nx.NodeNotFound):
 		pass
 
-	return paths
+	try:
+		for p in nx.shortest_simple_paths(digraph, source, target, weight="distance"):
+			add_path(p)
+			if len(paths) >= k * 4:
+				break
+	except (nx.NetworkXNoPath, nx.NodeNotFound):
+		pass
+
+	path_metrics = [
+		(
+			path,
+			sum(float(digraph[u][v]["dose"]) for u, v in _path_edges(path)),
+			sum(float(digraph[u][v]["distance"]) for u, v in _path_edges(path)),
+		)
+		for path in paths
+	]
+	max_dose = max((dose for _path, dose, _distance in path_metrics), default=1.0) or 1.0
+	max_distance = max((distance for _path, _dose, distance in path_metrics), default=1.0) or 1.0
+	alpha = MODE_ALPHA.get(mode, 0.5)
+	path_metrics.sort(
+		key=lambda item: (
+			alpha * item[1] / max_dose + (1.0 - alpha) * item[2] / max_distance,
+			item[1],
+			item[2],
+		)
+	)
+	return [path for path, _dose, _distance in path_metrics[:k]]
 
 
 def _route_score_explanations(
@@ -215,8 +280,8 @@ def _route_score_explanations(
 ) -> dict[str, RouteScoreExplanation]:
 	"""Explain the same dose/distance preference score used for route ranking.
 
-	The terms are additive around the mean candidate route. They are SHAP-style
-	attributions for this linear route score, not model-internal neural SHAP.
+	The terms are additive around the mean candidate route. They are additive
+	attributions for this linear route score, not model-internal neural Integrated Gradients.
 	"""
 	if not route_ids:
 		return {}
@@ -306,17 +371,18 @@ def route(req: RouteRequest) -> RouteResponse:
 	target = _nearest_node(graph, req.destination[0], req.destination[1])
 
 	# Predict concentrations for all edges in the graph for the ST-PIGNN model
-	all_edges = list(graph.edges())
+	all_edges = [(int(u), int(v)) for u, v in graph.edges()]
 	tox_preds = {}
-	model_name = os.environ.get("TOXICITY_ROUTE_MODEL", "persistence").lower()
+	model_name = _route_model_name(req)
 	if model_name == "stpignn":
 		try:
-			tox_preds = predict_route_edge_concentrations(all_edges)
+			tox_preds = predict_route_edge_concentrations(all_edges, departure_time=req.departure_time)
 		except Exception:
 			# Fallback to persistence if ST-PIGNN fails
 			tox_preds = predict_route_edge_concentrations_persistence(all_edges)
 	elif model_name != "stream":
 		tox_preds = predict_route_edge_concentrations_persistence(all_edges)
+	tox_preds = _normalize_edge_predictions(tox_preds)
 
 
 	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3, tox_preds=tox_preds)
@@ -340,13 +406,14 @@ def route(req: RouteRequest) -> RouteResponse:
 
 		for rid in route_ids:
 			for edge in route_edges[rid]:
-				raw = tox_preds.get(edge, 0.0)
-				zone_id = f"{edge[0]}_{edge[1]}"
+				edge_key = (int(edge[0]), int(edge[1]))
+				raw = tox_preds.get(edge_key, 0.0)
+				zone_id = f"{edge_key[0]}_{edge_key[1]}"
 				try:
 					scaled = _scaler_store.apply(zone_id, raw) if _scaler_store is not None else raw
 				except Exception:
 					scaled = raw
-				route_model_concentrations[edge] = float(scaled)
+				route_model_concentrations[edge_key] = float(scaled)
 
 		route_dose: dict[str, float] = {}
 		route_distance_m: dict[str, float] = {}
@@ -363,12 +430,18 @@ def route(req: RouteRequest) -> RouteResponse:
 			route_distance_m[rid] = float(dist_m)
 
 		requester = Commuter(id="requester", mode=req.mode, id_min=2.0, distance_tolerance_m=8000.0)
-		all_commuters = _build_batch_commuters(requester)
+		all_commuters = _build_batch_commuters(requester, req.commuter_counts)
 		commuter_preferences = {
 			c.id: build_commuter_preferences(c, route_ids, route_dose=route_dose, route_distance_m=route_distance_m)
 			for c in all_commuters
 		}
-		segment_capacities = quotas_from_route_cedge(route_dose, scale=24.0, min_quota=2, max_quota=6)
+		segment_capacities = {
+			rid: route_capacity(
+				[_first_edge_attrs(graph, u, v) for u, v in edges],
+				travel_time_s=sum(_edge_travel_time_s(_first_edge_attrs(graph, u, v), req.mode) for u, v in edges),
+			)
+			for rid, edges in route_edges.items()
+		}
 		segment_preferences = {
 			rid: build_segment_preferences(
 				Segment(id=rid, cedge_mean=route_dose[rid], capacity=segment_capacities[rid]),
@@ -386,7 +459,11 @@ def route(req: RouteRequest) -> RouteResponse:
 			route_distances={c.id: route_distance_m for c in all_commuters},
 			max_iterations=len(route_ids) * len(all_commuters),
 		)
-		corridor_id = allocation["requester"]
+		# With no load simulation the requester retains the raw dose/distance
+		# optimum. Gale-Shapley can reassign it only when an explicit cohort fills
+		# that corridor's capacity.
+		preferred_corridor_id = commuter_preferences["requester"][0]
+		corridor_id = allocation.get("requester") or preferred_corridor_id
 		chosen_path = candidate_paths[int(corridor_id.split("_")[-1])]
 		route_line = _path_to_latlon(graph, chosen_path)
 		total_cost = route_dose[corridor_id]
@@ -400,7 +477,7 @@ def route(req: RouteRequest) -> RouteResponse:
 		neural_explanations: dict[str, NeuralModelExplanation] = {}
 		if _include_neural_explanation():
 			for rid, edges in route_edges.items():
-				neural = explain_route_edges_with_stpignn(edges)
+				neural = explain_route_edges_with_integrated_gradients(edges, departure_time=req.departure_time)
 				neural_explanations[rid] = NeuralModelExplanation(
 					available=neural.available,
 					method=neural.method,
@@ -460,6 +537,12 @@ def route(req: RouteRequest) -> RouteResponse:
 		total_cost_w=round(total_cost, 6),
 		stake_hash=stake_hash,
 		stable_corridor_id=corridor_id,
+		matching_applied=req.commuter_counts is not None,
+		simulated_commuter_counts={
+			mode: sum(commuter.mode == mode for commuter in all_commuters)
+			for mode in MODE_ALPHA
+		} if candidate_paths else {},
+		route_capacities=segment_capacities if candidate_paths else {},
 		candidates=sorted(candidates, key=lambda candidate: candidate.preference_rank),
 	)
 

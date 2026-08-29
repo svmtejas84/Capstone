@@ -131,7 +131,7 @@ python demo_test_run.py
 
 The script will prompt you to enter source and destination coordinates and an optional departure time. It will then make requests to the running server and print a detailed analysis of the results.
 
-To include SHAP explanations in the output, run the script with the `TOXICITY_INCLUDE_NEURAL_EXPLANATION` environment variable:
+To include Integrated Gradients explanations in the output, run the script with the `TOXICITY_INCLUDE_NEURAL_EXPLANATION` environment variable:
 
 ```bash
 TOXICITY_INCLUDE_NEURAL_EXPLANATION=1 python demo_test_run.py

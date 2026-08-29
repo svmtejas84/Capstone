@@ -261,7 +261,7 @@ The `/route` API returns all candidate corridors and deterministic
 additive route-score explanations under `candidates[].explanation.route_score`.
 An optional neural explanation for ST‑PIGNN model predictions is available
 behind an opt-in flag: set `TOXICITY_INCLUDE_NEURAL_EXPLANATION=1` to include
-`candidates[].explanation.neural_model` (this runs `shap.GradientExplainer` and
+`candidates[].explanation.neural_model` (this runs `captum.attr.IntegratedGradients` and
 is opt-in because it loads the checkpoint and adds computation time).
 
 Note on deprecated helpers: `router/inhalation_rates.py` contains legacy
