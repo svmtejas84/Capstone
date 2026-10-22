@@ -1,0 +1,176 @@
+{
+  "timestamp_utc": "2026-10-22T20:53:59.087319+00:00",
+  "seed": 42,
+  "source_git_commit": "22a0f5ac5a0527bf173e97692e22c20a245bc6a7",
+  "artifact_sha256": {
+    "canonical_notebook": "0c2f967c13bf4d2bdaf14c12399b7e8796feefffe670785628558aca2159d37a",
+    "checkpoint": "7f4bc65f0aaba920f2269a1b385b7c408b5c3e2ce7855233af9a8523ca2cdd3f"
+  },
+  "hardware": "Tesla V100-PCIE-32GB",
+  "versions": {
+    "torch": "2.8.0+cu128",
+    "torch_geometric": "2.6.1",
+    "pandas": "2.3.3",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "sklearn": "1.6.1"
+  },
+  "checkpoint": {
+    "path": "citywide_stpignn_best.pt",
+    "mtime_utc": "2026-10-16T17:35:25.037222+00:00",
+    "embedded_timestamp": "Fri Jun 26 09:23:41 2026",
+    "epoch": 2,
+    "global_config": {
+      "lr_initial": 3e-06,
+      "max_epochs": 15,
+      "train_stride": 128,
+      "val_stride": 24,
+      "temporal_window": 12,
+      "total_nodes": 154902,
+      "num_clusters": 64,
+      "spatial_hidden_dim": 96,
+      "temporal_hidden_dim": 96,
+      "gnn_layers": 2,
+      "target_scale": 342.9356,
+      "physics_lambda_max": 0.06,
+      "stability_floor_lr": 1e-06,
+      "lr_backoff_factor": 0.7,
+      "max_bad_events_per_epoch": 50
+    },
+    "metadata": {
+      "note": "best"
+    },
+    "best_val_mse": 0.06140642368064966
+  },
+  "rows": {
+    "model_input": 1932700,
+    "master": 1070203,
+    "nodes": 154902
+  },
+  "graph": {
+    "sensor_mask_nodes": 23,
+    "edges": 424550,
+    "edge_feature_names": [
+      "length",
+      "highway_busway",
+      "highway_living_street",
+      "highway_motorway",
+      "highway_motorway_link",
+      "highway_primary",
+      "highway_primary_link",
+      "highway_residential",
+      "highway_road",
+      "highway_secondary",
+      "highway_secondary_link",
+      "highway_tertiary",
+      "highway_tertiary_link",
+      "highway_trunk",
+      "highway_trunk_link",
+      "highway_unclassified"
+    ],
+    "node_feature_names": [
+      "station_pm10",
+      "station_pm25",
+      "station_no2",
+      "station_so2",
+      "station_co",
+      "weather_wind_speed_10m",
+      "weather_wind_direction_10m",
+      "weather_wind_gusts_10m",
+      "weather_temperature_2m",
+      "weather_relative_humidity_2m",
+      "weather_surface_pressure",
+      "city_nitrogen_dioxide",
+      "city_sulphur_dioxide",
+      "city_pm2_5",
+      "city_pm10",
+      "city_carbon_monoxide",
+      "elevation"
+    ]
+  },
+  "time": {
+    "distinct_hours": 87850,
+    "first": "2016-03-21T18:00:00+00:00",
+    "last": "2026-03-30T03:00:00+00:00",
+    "train_start_0": "2016-03-21T18:00:00+00:00",
+    "train_last_target_87178": "2026-03-02T04:00:00+00:00",
+    "val_first_target_87189": "2026-03-02T15:00:00+00:00",
+    "val_last_start_87514": "2026-03-16T04:00:00+00:00"
+  },
+  "station_counts": {
+    "model_input_ids": 22,
+    "model_input_nodes": 22,
+    "master_ids": 17,
+    "master_nodes": 17
+  },
+  "model_input_target": {
+    "n": 1932700,
+    "mean": 89.93611310483296,
+    "std": 1408.2713163097974,
+    "min": -21.6183078367172,
+    "max": 473441.69999999995
+  },
+  "master_pm25_scaled": {
+    "n": 1070203,
+    "mean": -4.974559798966254e-09,
+    "std": 1.0000000020800708,
+    "min": -1.1784733533859253,
+    "max": 5.0644378662109375
+  },
+  "elevation": {
+    "model_input_has_elevation": false,
+    "master_has_elevation": false,
+    "true": {
+      "n": 154902,
+      "mean": 891.8845721811209,
+      "std": 26.992097330430408,
+      "min": 767.0,
+      "max": 957.0
+    },
+    "true_pearson_northing": 0.26130585751131297,
+    "true_spearman_northing": 0.2259618755545251,
+    "graph": {
+      "n": 154902,
+      "mean": 892.7161417346923,
+      "std": 41.454888259316306,
+      "min": 800.0,
+      "max": 1000.0
+    },
+    "graph_pearson_northing": 0.9999999999999083,
+    "graph_pearson_srtm": 0.2613058572291289,
+    "graph_mean_absolute_difference_srtm_m": 34.46355883430658
+  },
+  "split": {
+    "train_starts": 681,
+    "val_starts": 14,
+    "distinct_train_scored_hours": 681,
+    "distinct_val_scored_hours": 14,
+    "train_first_target": "2016-03-22T05:00:00+00:00",
+    "train_last_target": "2026-02-24T21:00:00+00:00",
+    "val_first_target": "2026-03-02T15:00:00+00:00",
+    "val_last_target": "2026-03-15T15:00:00+00:00",
+    "scored_train_rows_nonzero": 14969,
+    "scored_val_rows_nonzero": 308
+  },
+  "master_pm25_tiers": {
+    "C": 239256,
+    "A": 55089,
+    "B": 9510
+  },
+  "master_pm25_imputed_fraction": 0.8186997087426569,
+  "confirmed_observed_scored_hours": {
+    "train": 392,
+    "validation": 63
+  },
+  "routing_snapshot": {
+    "path": "data/processed/evaluations/routing_snapshot.graphml",
+    "concentrations_ug_m3": {
+      "n": 3459,
+      "mean": 1.3229169252757162,
+      "std": 0.050122271044699594,
+      "min": 1.2825158511768096,
+      "max": 1.6286018280230463
+    }
+  },
+  "runtime_seconds": 2.107801049016416
+}

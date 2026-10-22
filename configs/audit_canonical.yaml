@@ -1,0 +1,7 @@
+phase: A0_A
+seed: 42
+canonical_notebook: notebooks/production/evaluated_wind_advection.ipynb
+checkpoint: citywide_stpignn_best.pt
+replay_cells: [0, 2, 5, 7, 9, 11, 20, 24]
+source_commit: 22a0f5ac5a0527bf173e97692e22c20a245bc6a7
+output_directory: results

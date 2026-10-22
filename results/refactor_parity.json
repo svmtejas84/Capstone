@@ -1,0 +1,15 @@
+{
+  "timestamp_utc": "2026-10-22T20:44:03.483334+00:00",
+  "source_git_commit": "22a0f5ac5a0527bf173e97692e22c20a245bc6a7",
+  "seed": 42,
+  "config": {
+    "window": 12,
+    "stride": 4,
+    "toy_nodes": 3
+  },
+  "fixed_batch_samples": 2,
+  "mask_equal": true,
+  "penalty_equal": true,
+  "metrics_equal": true,
+  "dataset_equal": true
+}
