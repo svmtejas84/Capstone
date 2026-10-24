@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "2026-10-24T18:21:10.545079+00:00",
+  "source_git_commit": "e90fd05d7837bea5f99d9c91d3d3758649710386",
+  "script": "scripts/evaluate_loso_v2.py",
+  "config": "configs/loso_v2.yaml",
+  "seeds": [
+    11,
+    23,
+    37
+  ],
+  "folds_considered": 15,
+  "folds_scored": 11,
+  "unscored_station_ids": [
+    5547,
+    5548,
+    6975,
+    2498781
+  ],
+  "n_scored_pairs_per_method": 14583,
+  "best_spatial_baseline": "ordinary_kriging",
+  "paired_utc_day_bootstrap_replicates": 2000,
+  "mae_difference_stpignn_minus_best": -0.30505583289867744,
+  "r2_difference_stpignn_minus_best": 0.14748864008157203,
+  "mae_difference_ci": [
+    -1.1637136106656445,
+    0.607623369948782
+  ],
+  "r2_difference_ci": [
+    0.09826227958974201,
+    0.19233388385008252
+  ],
+  "wilcoxon_p_over_stations": 0.2783203125,
+  "verdict": "TIE",
+  "runtime_seconds": 3284.7085646828637,
+  "hardware": "cuda"
+}

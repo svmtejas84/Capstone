@@ -229,3 +229,21 @@ The old gap-fill path dropped null rows and averaged station-hour duplicates but
 ### Step 4b-B — cleaned h=1 persistence gate
 
 On the same 14,583 observed test station-hours, persistence MAE/R² is 8.116095 µg/m³ / 0.532089; IDW is 22.698642 / −0.205856; validation-selected corrected ST-PIGNN (short budget, seed 23) is 20.613632 / 0.001594. The five-seed short-budget corrected ST-PIGNN mean±SD MAE is 20.723163±0.131595 µg/m³; the separate five-seed 20-epoch diagnostic mean±SD is 20.689290±0.219278. Paired UTC-day bootstrap (2,000 replicates) for selected short ST-PIGNN minus persistence gives MAE +12.497537 µg/m³ [11.797404,13.163366] and R² −0.530495 [−0.595027,−0.466313]; versus IDW it gives MAE −2.085010 [−3.013297,−1.192179] and R² +0.207449 [0.153649,0.261566]. Thus the primary matched-budget model beats IDW but not persistence on both test MAE and R². Ridge used only weather/static feature indices 5–12. Full five-seed and longer-budget rows, curves, and paired results are in `results/gate_v2b.csv`, `results/gate_v2b.md`, `results/neural_curves_v2b.csv`, and `results/gate_v2b_bootstrap.json`. Source: `scripts/evaluate_baselines_v2.py`, `scripts/train_gate_v2.py`, `scripts/summarize_gate_v2b.py`; configs `configs/data_v2.yaml` and `configs/gate_v2b.yaml`; seeds 11/23/37/51/79, bootstrap seed 4301; neural source commit `4261e2e` and baseline/summary source commit `3688c6e`, UTC summary timestamp 2026-10-24 16:42:58. Prior uncleaned Step 4 files were not overwritten.
+
+### Step 4b-C: cleaned LOSO (2026-10-24 18:21:10 UTC)
+
+Source: `scripts/evaluate_loso_v2.py`, `configs/loso_v2.yaml`, seeds 11/23/37, source commit `e90fd05d7837bea5f99d9c91d3d3758649710386`; raw outputs `results/loso_summary_v2.csv`, `results/loso_per_station_v2.csv`, `results/loso_decision_v2.json`, `results/loso_fallbacks_v2.csv`, `results/loso_predictions_v2.parquet`. Each method scored the same 14,583 observed held-out (station,hour) pairs in 11 scorable folds. Four of 15 mapped stations (5547, 5548, 6975, 2498781) had zero observed test targets and could not be scored. Fold-specific imputation and scaling excluded the held-out station. Neural entries below average predictions across the three fixed seeds per pair.
+
+| Method | Pooled MAE (µg/m³) | Pooled R² |
+|---|---:|---:|
+| ST-PIGNN, known-station lagged readings | 22.283 | -0.050 |
+| ST-PIGNN, weather/static only | 21.215 | -0.065 |
+| GRU-only | 21.271 | -0.073 |
+| IDW | 22.633 | -0.204 |
+| GP with fixed RBF kernel | 24.123 | -0.227 |
+| Ordinary kriging, per-hour fitted spherical variogram | 22.588 | -0.197 |
+| Nearest-known-station persistence | 26.604 | -0.518 |
+| Pooled known-station train mean | 20.634 | -0.085 |
+| Ridge, weather/static only | 20.594 | 0.073 |
+
+The predeclared known-station ST-PIGNN versus best spatial baseline (ordinary kriging) comparison is TIE: paired UTC-day bootstrap (2,000 replicates) MAE difference -0.305 µg/m³, 95% CI [-1.164, 0.608]; R² difference +0.147, 95% CI [0.098, 0.192]; station Wilcoxon p=0.278 over 11 scored stations. Ordinary kriging used its train-mean fallback on 5,163/14,583 pairs, GP on 2,428, and IDW on 1,037. The four absent test folds and these fallback rates limit the spatial-generalization claim. No LOSO hyperparameter was changed after test scores.
