@@ -1,0 +1,81 @@
+{
+  "timestamp_utc": "2026-10-24T14:12:44.402628+00:00",
+  "source_git_commit": "f67653e1a2df6c9733cfa3f17d6f5b1a66cf2943",
+  "script": "scripts/build_data_v2.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "requested_boundaries": {
+    "train_start_utc": "2022-01-01T00:00:00Z",
+    "train_end_utc": "2025-06-29T23:00:00Z",
+    "validation_start_utc": "2025-07-01T00:00:00Z",
+    "validation_end_utc": "2025-09-21T23:00:00Z",
+    "test_start_utc": "2025-09-23T00:00:00Z",
+    "test_end_utc": "2026-03-28T23:00:00Z"
+  },
+  "horizons": {
+    "1": {
+      "train": {
+        "scored_target_hours": 14210,
+        "scored_pairs": 32867,
+        "first_scored_utc": "2022-01-01T13:00:00+00:00",
+        "last_scored_utc": "2025-06-29T16:00:00+00:00"
+      },
+      "validation": {
+        "scored_target_hours": 1961,
+        "scored_pairs": 7204,
+        "first_scored_utc": "2025-07-01T00:00:00+00:00",
+        "last_scored_utc": "2025-09-21T23:00:00+00:00"
+      },
+      "test": {
+        "scored_target_hours": 4063,
+        "scored_pairs": 14623,
+        "first_scored_utc": "2025-09-23T00:00:00+00:00",
+        "last_scored_utc": "2026-03-28T23:00:00+00:00"
+      }
+    },
+    "6": {
+      "train": {
+        "scored_target_hours": 14206,
+        "scored_pairs": 32860,
+        "first_scored_utc": "2022-01-01T17:00:00+00:00",
+        "last_scored_utc": "2025-06-29T16:00:00+00:00"
+      },
+      "validation": {
+        "scored_target_hours": 1961,
+        "scored_pairs": 7204,
+        "first_scored_utc": "2025-07-01T00:00:00+00:00",
+        "last_scored_utc": "2025-09-21T23:00:00+00:00"
+      },
+      "test": {
+        "scored_target_hours": 4063,
+        "scored_pairs": 14623,
+        "first_scored_utc": "2025-09-23T00:00:00+00:00",
+        "last_scored_utc": "2026-03-28T23:00:00+00:00"
+      }
+    },
+    "24": {
+      "train": {
+        "scored_target_hours": 14190,
+        "scored_pairs": 32832,
+        "first_scored_utc": "2022-01-02T11:00:00+00:00",
+        "last_scored_utc": "2025-06-29T16:00:00+00:00"
+      },
+      "validation": {
+        "scored_target_hours": 1961,
+        "scored_pairs": 7204,
+        "first_scored_utc": "2025-07-01T00:00:00+00:00",
+        "last_scored_utc": "2025-09-21T23:00:00+00:00"
+      },
+      "test": {
+        "scored_target_hours": 4063,
+        "scored_pairs": 14623,
+        "first_scored_utc": "2025-09-23T00:00:00+00:00",
+        "last_scored_utc": "2026-03-28T23:00:00+00:00"
+      }
+    }
+  },
+  "gap_hours": {
+    "train_to_validation": 24.0,
+    "validation_to_test": 24.0
+  }
+}

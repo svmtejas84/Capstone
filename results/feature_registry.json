@@ -1,0 +1,139 @@
+{
+  "timestamp_utc": "2026-10-24T14:12:44.402628+00:00",
+  "source_git_commit": "f67653e1a2df6c9733cfa3f17d6f5b1a66cf2943",
+  "script": "scripts/build_data_v2.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "channels": [
+    {
+      "order": 0,
+      "name": "pm25_lagged",
+      "source": "raw station pm25; train-only fill",
+      "units": "\u00b5g/m\u00b3",
+      "status": "available"
+    },
+    {
+      "order": 1,
+      "name": "pm10",
+      "source": "raw station pm10; train-only fill",
+      "units": "\u00b5g/m\u00b3",
+      "status": "available"
+    },
+    {
+      "order": 2,
+      "name": "no2",
+      "source": "raw station no2; train-only fill",
+      "units": "ppb",
+      "status": "available"
+    },
+    {
+      "order": 3,
+      "name": "so2",
+      "source": "raw station so2; train-only fill",
+      "units": "ppb",
+      "status": "available"
+    },
+    {
+      "order": 4,
+      "name": "co",
+      "source": "raw station co; train-only fill",
+      "units": "ppb",
+      "status": "available"
+    },
+    {
+      "order": 5,
+      "name": "wind_speed",
+      "source": "raw weather wind_speed_10m",
+      "units": "m/s",
+      "status": "available"
+    },
+    {
+      "order": 6,
+      "name": "wind_gusts",
+      "source": "raw weather wind_gusts_10m",
+      "units": "m/s",
+      "status": "available"
+    },
+    {
+      "order": 7,
+      "name": "temperature",
+      "source": "raw weather temperature_2m",
+      "units": "\u00b0C",
+      "status": "available"
+    },
+    {
+      "order": 8,
+      "name": "humidity",
+      "source": "raw weather relative_humidity_2m",
+      "units": "%",
+      "status": "available"
+    },
+    {
+      "order": 9,
+      "name": "surface_pressure",
+      "source": "raw weather surface_pressure",
+      "units": "hPa",
+      "status": "available"
+    },
+    {
+      "order": 10,
+      "name": "wind_direction_sin",
+      "source": "sin(raw weather wind_direction_10m degrees)",
+      "units": "unitless",
+      "status": "available"
+    },
+    {
+      "order": 11,
+      "name": "wind_direction_cos",
+      "source": "cos(raw weather wind_direction_10m degrees)",
+      "units": "unitless",
+      "status": "available"
+    },
+    {
+      "order": 12,
+      "name": "srtm_elevation",
+      "source": "data/processed/graph/nodes_elevation_true.parquet:elevation_true",
+      "units": "m",
+      "status": "available"
+    },
+    {
+      "order": null,
+      "name": "pblh",
+      "source": null,
+      "units": null,
+      "status": "missing",
+      "reason": "No boundary-layer-height column or file in raw weather sources"
+    },
+    {
+      "order": null,
+      "name": "population_density",
+      "source": null,
+      "units": null,
+      "status": "missing",
+      "reason": "No population raster or node-level population source"
+    },
+    {
+      "order": null,
+      "name": "road_proximity",
+      "source": null,
+      "units": null,
+      "status": "missing",
+      "reason": "No precomputed distance-to-road source; OSM graph nodes lie on roads"
+    },
+    {
+      "order": null,
+      "name": "traffic_index",
+      "source": null,
+      "units": null,
+      "status": "missing",
+      "reason": "No time-indexed traffic or emissions source"
+    }
+  ],
+  "physical_wind_tensor": {
+    "source": "raw weather wind_direction_10m",
+    "units": "degrees FROM north, clockwise",
+    "shape": [
+      37152
+    ]
+  }
+}
