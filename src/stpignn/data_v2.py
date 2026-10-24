@@ -182,8 +182,9 @@ def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids, coordinates=No
         idw_mask = missing & np.isfinite(idw)
         out[idw_mask] = idw[idw_mask]
         tier[idw_mask] = "I"
+    keys = (times.hour * 7 + times.dayofweek).to_numpy()
+    for station in range(pm25.shape[1]):
         missing = ~np.isfinite(out[:, station])
-        keys = (times.hour * 7 + times.dayofweek).to_numpy()
         climat = table[keys, station]
         cmask = missing & np.isfinite(climat)
         out[cmask, station] = climat[cmask]
@@ -192,6 +193,8 @@ def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids, coordinates=No
         fill = station_median[station] if np.isfinite(station_median[station]) else global_median
         out[missing, station] = fill
         tier[missing, station] = "D"
+    if not np.isfinite(out).all() or np.any(tier == "M"):
+        raise AssertionError("PM2.5 imputation left unclassified or missing values")
     return out, tier, {"ratio_by_station": dict(zip(station_ids.astype(str), ratio.tolist())),
                        "climatology": table.tolist(), "station_median": station_median.tolist(),
                        "global_median": global_median, "idw_power": float(idw_power),

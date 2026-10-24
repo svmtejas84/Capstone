@@ -48,3 +48,14 @@ def test_imputation_fit_ignores_validation_and_test_rows():
     assert first["station_median"] == second["station_median"]
     assert first["global_median"] == second["global_median"]
     assert np.allclose(first["climatology"], second["climatology"], equal_nan=True)
+
+
+def test_imputation_classifies_every_missing_station_hour():
+    times = pd.date_range("2025-01-01", periods=6, freq="h", tz="UTC")
+    pm25 = np.array([[1., np.nan], [np.nan, 3.], [np.nan, np.nan],
+                     [4., np.nan], [np.nan, np.nan], [np.nan, np.nan]], dtype=np.float32)
+    pm10 = np.full_like(pm25, np.nan)
+    filled, tier, _ = _fit_imputed_pm25(pm25, pm10, times, np.array([True] * 4 + [False] * 2),
+                                       np.array([1, 2]), coordinates=np.array([[0., 0.], [1000., 0.]]))
+    assert np.isfinite(filled).all()
+    assert not np.any(tier == "M")
