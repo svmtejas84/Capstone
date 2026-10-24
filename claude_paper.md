@@ -6,6 +6,8 @@ Phase A0/A audit branch: `audit/canonical-notebook-20261023`. Base source commit
 
 Evidence key A: `results/audit_canonical.json`, produced by `scripts/audit_canonical.py`, fixed config matching notebook cell 0, seed 42, source commit above, run 2026-10-22 20:53 UTC. Evidence key R: `results/replay_canonical.json` and `.log`, produced by `scripts/replay_canonical.py`, notebook cells 0, 2, 5, 7, 9, 11, 20, 24, seed 42, checkpoint `citywide_stpignn_best.pt`, source commit above, run timestamp and runtime in that JSON. Evidence key P: `results/refactor_parity.json`, produced by `scripts/check_canonical_refactor_parity.py`, seed 42, fixed 3-node/12-step toy batch, source commit above, run 2026-10-22 20:44 UTC. All values in this document are direct code measurements or exact constants from the named source. Stored notebook output is identified separately from an independent rerun.
 
+Step 1 refactor run: `scripts/replay_canonical.py --deterministic-fp32` from base commit `f84633e0f675245d9b9bdc1d0696fc61d4f9d96f`, seed 42, timestamp in `results/replay_rewired_fp32.json`, Tesla V100-PCIE-32GB, 77.06 seconds on first replay. `scripts/check_full_replay_parity.py` used tolerances MAE 0.01 µg/m³, RMSE 0.03 µg/m³ and PVR 0.002 percentage points, run 2026-10-24 13:52 UTC, same base commit and seed. Exact pre-refactor notebook bytes are retained in `results/legacy_canonical_notebook.ipynb`; the checkpoint bytes remain pinned by SHA-256 in A. The Step 1 commit follows in git history.
+
 ## 1. Provenance verdicts
 
 | Item | Verdict | Evidence |
@@ -47,6 +49,8 @@ Custom cell 7:24-49 calculates source→destination bearings `atan2(dy,dx)`, rev
 
 **Routing and secondary variants.** `scripts/prepare_routing_snapshot.py` imports custom `gnn.stpignn_inference._build_temporal_x_seq`, using raw model-input fields and `graph.x` fallback rather than the notebook's scaled registry, then multiplies by 342.9356 and clips to 0–120 µg/m³. The saved 3,459-edge snapshot is 1.2825–1.6286 µg/m³ (A). The mismatch is a feature-construction difference; missing denormalization is ruled out by this code. The notebook does not define dose-A*, speed, RMV, quotas or matching; those require separate Phase F source audit. The current LOSO script uses hidden size 32, five epochs and lr 3e-4 on a station-subset variant, versus the canonical 96, 15 and 3e-6; no claim of architectural parity is justified yet. Source: A and cited scripts, seed 42, commit and timestamp in section 0.
 
+**Step 1 refactor.** `src/stpignn/legacy_canonical.py` retains the audited dataset, mask, loss, metric and baseline architecture. The notebook imports those functions/classes and `src/stpignn/explain.py`, obtains repository paths from `src/stpignn/paths.py`, and no longer changes process cwd or `sys.path`; cell 17's hard-coded fallback metrics were replaced by missing values. LOSO and ablation import `STPIGNN` from `src.stpignn`; the old routing snapshot imports a clearly marked legacy adapter. New scoring and synchronized timing functions are in `src/stpignn/evaluation.py`. Existing LOSO, ablation and routing feature builders remain legacy implementations and are excluded from the new shared-data comparisons. Source: rewired notebook, `scripts/rewire_canonical_notebook.py`, `scripts/rewire_notebook_explain.py`, and full replay files, seed 42, source commit and timestamps in section 0.
+
 **A0.2 draft-claim alignment.**
 
 | Draft item | Verdict against canonical notebook | Exact source |
@@ -77,6 +81,16 @@ Source: canonical notebook source at commit above; R confirms execution, seed 42
 
 source: `results/replay_canonical.json`, produced by `scripts/replay_canonical.py`; notebook config, seed 42, source commit and 2026-10-22 20:42:30 UTC timestamp in the JSON. The stored notebook output differs by seven PVR violations; no value was adjusted to force agreement. An earlier replay in this session counted 7,304 violations before its result file was overwritten, indicating run-to-run numerical sensitivity despite seed 42. The retained file is the source for the table.
 
+| Step 1 full replay | Value |
+|---|---:|
+| Scored pairs / active edges | 308 / 520,507 |
+| Deterministic fp32 MAE / RMSE, µg/m³ | 53.1334686 / 89.1250458 |
+| Deterministic fp32 violations / PVR | 7,304 / 1.4032472% |
+| Repeat fp32 difference in MAE, RMSE, violations | 0 / 0 / 0 |
+| Difference from retained Phase A replay, MAE / RMSE / PVR percentage points | -0.0047722 / +0.0199710 / +0.0005764 |
+
+source: `results/full_replay_parity.json`, `results/replay_rewired_fp32_run1.json`, `results/replay_rewired_fp32.json`, produced by `scripts/check_full_replay_parity.py` and `scripts/replay_canonical.py`; seed 42, fp32 and deterministic algorithms, base commit `f84633e`, 2026-10-24 13:52 UTC parity timestamp. The full-replay gate passed its stated tolerances. AMP evaluation still changes a few near-threshold PVR edge decisions; fp32 repeats were identical.
+
 Main comparisons, five-seed LOSO, ablations, PVR/smoothness thresholds, hyperparameter sweep, routing outcomes, corrected IG, and calibration diagnostics have **no Phase A measured result**. Stored untrained baseline output is documented in section 1, not inserted into a trained-model comparison table. Later phases must use one shared evaluator, corrected observed-only masks, common splits and checkpoint lineage. Phase C's station-subset architecture and its hidden size/epoch/lr differences must be explicit in its CSV.
 
 ## 5. Figures
@@ -106,7 +120,7 @@ source: A and R, produced by scripts in section 0, seed 42, source commit and ti
 
 ## 7. Open issues and BLOCKERS
 
-1. **A0.4 incomplete:** `src/stpignn/` now contains importable direct ports of canonical model, dataset, mask, penalty and scoring. Fixed-batch parity passes (`results/refactor_parity.json`, P). The notebook and all secondary scripts have **not** yet been rewired to import it, so a unified end-to-end refactor has not been verified. Later phases must not begin training until wiring and full replay parity are complete. The existing `gnn.model` architecture is already importable.
+1. **A0.4 legacy boundary:** The notebook now imports the extracted legacy methods, and repeated deterministic fp32 full replay passes parity (`results/full_replay_parity.json`). Existing secondary LOSO, ablation and routing data builders remain different and must not be pooled with data_v2 results. All new experiments must use `src/stpignn/data_v2.py` and `src/stpignn/evaluation.py`. The architecture remains custom `gnn.model.STPIGNN`, re-exported through `src.stpignn`.
 2. Canonical notebook side effects: cell 0 changes cwd and `sys.path`, seeds global RNGs and selects global device; cells 2/5/7/9 mutate global partitions and feature registries, read full-period hard-coded Parquets, and use nearest-node timeline substitution; cell 13 overwrites stable and best checkpoints on training or interrupt; cell 14 sets model weights `requires_grad=False`; cells 16/17/18/19/21 write CSVs or figures outside `results/`; cell 17 hard-codes fallback metrics. `scripts/replay_canonical.py` executes only setup and evaluation cells and writes to `results/`, avoiding notebook training/output side effects. Explicit data-context arguments in `src/stpignn/canonical.py` remove globals from the extracted dataset. Remaining side effects await full wiring.
 3. The checkpoint stores config, epoch and a June embedded timestamp, but no elevation source, Q flag, fit interval, split dates or raw-data hash. Filesystem mtime is 2026-10-16 17:35 UTC, not the embedded run time. It cannot prove the exact original data artifact from metadata alone. Source: A, seed 42, source commit and timestamp in section 0.
 4. The master Parquet contains full-period derived imputation, including bidirectional interpolation and full-period climatology; no train-only fit is documented. The fixed 342.9356 scale has no recorded fitting source. The canonical cell's `pm2_5_scaled` input is not time-aligned to global scored timestamps by a join. These defects block leak-free scientific claims until Phase B rebuilds data.

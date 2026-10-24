@@ -20,7 +20,6 @@ import gzip
 import os
 from pathlib import Path
 import shutil
-import sys
 from tempfile import TemporaryDirectory
 from urllib.request import urlretrieve
 
@@ -32,9 +31,8 @@ from torch.amp import GradScaler, autocast
 from torch.utils.data import DataLoader, Dataset
 from torch_geometric.nn import GCNConv
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from gnn.model import STPIGNN  # noqa: E402
+from src.stpignn import STPIGNN
+from src.stpignn.paths import REPO_ROOT as ROOT
 
 BANGALORE_BOUNDS = (77.45, 12.80, 77.80, 13.15)  # W,S,E,N in EPSG:4326
 REPORT_NAME = "ST_PIGNN_Ablation_Results_Nov2026.md"
@@ -177,6 +175,7 @@ class GraphSample:
     edge_bearings: torch.Tensor  # degrees [E]
     is_imputed: bool | torch.Tensor  # item flag or per-node target provenance
     wind_degrees: float | None = None
+    target_time: pd.Timestamp | None = None
 
 
 class GraphSamples(Dataset):
@@ -285,6 +284,7 @@ def real_station_samples(train_count: int = 64, validation_count: int = 24):
                 edge_attr=attrs, edge_bearings=bearings_t,
                 is_imputed=torch.from_numpy((~observed[i]).copy()),
                 wind_degrees=float(np.nanmedian(wind[i])) % 360.0,
+                target_time=pd.Timestamp(times[i]),
             ))
         return samples, (str(times[selected[0]]), str(times[selected[-1]]))
 

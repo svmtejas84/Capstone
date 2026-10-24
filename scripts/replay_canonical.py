@@ -4,8 +4,10 @@ This deliberately preserves the notebook's original global state and data path s
 that an independent reproduction attempt can test its saved headline numbers.
 """
 import contextlib
+import argparse
 import datetime as dt
 import json
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -17,15 +19,25 @@ OUT.mkdir(exist_ok=True)
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--deterministic-fp32", action="store_true")
+    args = parser.parse_args()
+    if args.deterministic_fp32:
+        os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
     book = json.loads(NOTEBOOK.read_text())
     scope = {"__name__": "__main__"}
     cells = [0, 2, 5, 7, 9, 11, 20, 24]
     began = time.perf_counter()
-    with (OUT / "replay_canonical.log").open("w") as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
+    stem = "replay_rewired_fp32" if args.deterministic_fp32 else "replay_rewired_amp"
+    with (OUT / f"{stem}.log").open("w") as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
         for number in cells:
             print(f"BEGIN CELL {number}", flush=True)
             code = "".join(book["cells"][number]["source"])
             exec(compile(code, f"{NOTEBOOK.name}:cell_{number}", "exec"), scope)
+            if args.deterministic_fp32 and number == 0:
+                scope["torch"].use_deterministic_algorithms(True)
+            if args.deterministic_fp32 and number == 11:
+                scope["amp_enabled"] = False
             print(f"END CELL {number}", flush=True)
         result = {
             "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -34,6 +46,7 @@ def main():
             "checkpoint": "citywide_stpignn_best.pt",
             "hardware": scope["gpu_name"] if scope["device"].type == "cuda" else "CPU",
             "config": scope["GLOBAL_CFG"],
+            "deterministic_fp32": args.deterministic_fp32,
             "cells": cells,
             "runtime_seconds": time.perf_counter() - began,
             "mae": scope.get("global_mae"),
@@ -55,7 +68,7 @@ def main():
         import numpy as np
         result["correlation"] = float(np.corrcoef(scope["final_preds"], scope["final_targets"])[0, 1])
         print(json.dumps(result, indent=2), flush=True)
-    (OUT / "replay_canonical.json").write_text(json.dumps(result, indent=2) + "\n")
+    (OUT / f"{stem}.json").write_text(json.dumps(result, indent=2) + "\n")
 
 
 if __name__ == "__main__":

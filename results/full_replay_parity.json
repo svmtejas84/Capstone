@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "2026-10-24T13:52:20.934810+00:00",
+  "script": "scripts/check_full_replay_parity.py",
+  "seed": 42,
+  "source_git_commit": "f84633e0f675245d9b9bdc1d0696fc61d4f9d96f",
+  "baseline": {
+    "mae": 53.138240814208984,
+    "rmse": 89.1050748019929,
+    "pvr_percent": 1.4026708574524456,
+    "violations": 7301,
+    "active_edges": 520507,
+    "scored_pairs": 308
+  },
+  "rewired_fp32": {
+    "mae": 53.13346862792969,
+    "rmse": 89.12504577636719,
+    "pvr_percent": 1.4032472185772717,
+    "violations": 7304,
+    "active_edges": 520507,
+    "scored_pairs": 308
+  },
+  "tolerance": {
+    "mae": 0.01,
+    "rmse": 0.03,
+    "pvr_percent": 0.002
+  },
+  "checks": {
+    "mae": true,
+    "rmse": true,
+    "pvr_percent": true,
+    "scored_pairs": true,
+    "active_edges": true,
+    "fp32_repeat_identical": true
+  },
+  "pass": true
+}

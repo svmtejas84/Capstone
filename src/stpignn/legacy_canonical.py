@@ -1,4 +1,4 @@
-"""Pure ports of the executed notebook's dataset, mask, loss, and scoring rules.
+"""Pure ports of the audited notebook's dataset, mask, loss, and scoring rules.
 
 The original functions are in evaluated_wind_advection.ipynb cells 7, 9, 13.
 The explicit arguments here replace notebook global variables without changing
@@ -11,6 +11,22 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset
+from torch import nn
+from torch_geometric.nn import GCNConv
+
+
+class SpatialPartition:
+    """Notebook cell 2 partition container, retained for checkpoint audit."""
+
+    def __init__(self, cid, node_ids, edge_index, edge_attr, train_mask):
+        self.cid = int(cid)
+        self.n_id = torch.as_tensor(node_ids, dtype=torch.long)
+        self.edge_index = edge_index.long()
+        self.edge_attr = edge_attr.float()
+        self.train_mask = train_mask.bool()
+        self.val_mask = None
+        self.upwind_edge_mask = torch.zeros(edge_index.shape[1], dtype=torch.bool)
+        self.x = None
 
 
 def compute_dynamic_upwind_mask_vectorized(edge_bearings, current_wind_dir_deg, cone_angle_deg=75.0):
@@ -47,6 +63,50 @@ def masked_mae_rmse_vectorized(pred, target, mask):
         return zero_tensor, zero_tensor
     errors = pred_1d[mask_1d] - target_1d[mask_1d]
     return torch.mean(torch.abs(errors)), torch.sqrt(torch.mean(errors * errors))
+
+
+def legacy_global_metrics(preds, targets, target_scale):
+    """Notebook cell 24 pair-weighted statistics, without side effects."""
+    p = torch.cat(preds).numpy() * target_scale
+    t = torch.cat(targets).numpy() * target_scale
+    error = p - t
+    return p, t, float(np.mean(np.abs(error))), float(np.sqrt(np.mean(error ** 2))), float(np.median(np.abs(error)))
+
+
+class VanillaGCN(nn.Module):
+    """Notebook cell 22 baseline architecture; training is external."""
+
+    def __init__(self, in_channels, hidden_dim, out_channels=1):
+        super().__init__()
+        self.conv1 = GCNConv(in_channels, hidden_dim)
+        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.regression_head = nn.Linear(hidden_dim, out_channels)
+
+    def forward(self, x_seq, edge_index, edge_attr=None):
+        x = x_seq.squeeze(0)[-1]
+        x = torch.relu(self.conv1(x, edge_index))
+        x = torch.relu(self.conv2(x, edge_index))
+        return self.regression_head(x)
+
+
+class ST_GRUGCN(nn.Module):
+    """Notebook cell 22 baseline architecture; training is external."""
+
+    def __init__(self, in_channels, hidden_dim, out_channels=1):
+        super().__init__()
+        self.spatial_conv = GCNConv(in_channels, hidden_dim)
+        self.gru = nn.GRUCell(hidden_dim, hidden_dim)
+        self.regression_head = nn.Linear(hidden_dim, out_channels)
+        self.hidden_dim = hidden_dim
+
+    def forward(self, x_seq, edge_index, edge_attr=None):
+        x_seq = x_seq.squeeze(0)
+        steps, nodes, _ = x_seq.shape
+        h = torch.zeros(nodes, self.hidden_dim, device=x_seq.device)
+        for t in range(steps):
+            spatial_feats = torch.relu(self.spatial_conv(x_seq[t], edge_index))
+            h = self.gru(spatial_feats, h)
+        return self.regression_head(h)
 
 
 class TierAwareClusterDatasetV3(Dataset):

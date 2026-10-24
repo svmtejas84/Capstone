@@ -3,7 +3,6 @@ import ast
 import datetime as dt
 import json
 import subprocess
-import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -12,11 +11,10 @@ import torch
 import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 from src.stpignn import (TierAwareClusterDatasetV3, compute_dynamic_upwind_mask_vectorized,
                          compute_wind_advection_penalty, masked_mae_rmse_vectorized)
 
-book = json.loads((ROOT / "notebooks/production/evaluated_wind_advection.ipynb").read_text())
+book = json.loads((ROOT / "results/legacy_canonical_notebook.ipynb").read_text())
 
 
 def original(cell, name, globals_):
