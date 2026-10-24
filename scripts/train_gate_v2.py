@@ -28,7 +28,17 @@ from src.stpignn.physics_v2 import batched_penalty
 from src.stpignn.station_graph import directed_knn_graph
 
 MODELS = ["gru_only", "vanilla_gcn", "st_gru_gcn", "stpignn_legacy",
-          "stpignn_corrected", "stpignn_laplacian", "stpignn_corrected_imputed"]
+          "stpignn_corrected", "stpignn_laplacian", "stpignn_corrected_imputed",
+          "stpignn_no_own_pm25"]
+
+
+def model_inputs(x, name):
+    """Suppress each node's lagged PM2.5 history for the spatial-only control."""
+    if name != "stpignn_no_own_pm25":
+        return x
+    masked = x.clone()
+    masked[..., 0] = 0.0
+    return masked
 
 
 def seed_all(seed):
@@ -138,7 +148,7 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
         loss_sum, weight_sum = 0.0, 0
         for _, x, raw_y, observed_mask, imputed, corrected_mask, legacy_mask in ctx.batches("train", batch_size, seed * 1000 + epoch):
             optimizer.zero_grad(set_to_none=True)
-            pred = model(x, ctx.edge_index, ctx.edge_attr)
+            pred = model(model_inputs(x, name), ctx.edge_index, ctx.edge_attr)
             if name == "stpignn_corrected_imputed":
                 weights = torch.where(observed_mask, 1.0, float(cfg["imputed_target_weight"]))
                 target_y = imputed
@@ -162,7 +172,7 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
             optimizer.step()
             loss_sum += float(loss.detach()) * len(x)
             weight_sum += len(x)
-        val_mae = evaluate_split(ctx, model, scaler, mean, std, "validation", collect=False)["mae"]
+        val_mae = evaluate_split(ctx, model, name, scaler, mean, std, "validation", collect=False)["mae"]
         curves.append({"model": name, "scaler": scaler, "lr": float(lr), "seed": seed,
                        "epoch": epoch, "train_loss": loss_sum / weight_sum, "val_mae_ug_m3": val_mae,
                        "physics_lambda": physics_lambda})
@@ -178,7 +188,7 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
               "best_val_mae_ug_m3": best_val, "best_epoch": best_epoch}
     predictions = None
     if test_after:
-        predictions = evaluate_split(ctx, model, scaler, mean, std, "test", collect=True)
+        predictions = evaluate_split(ctx, model, name, scaler, mean, std, "test", collect=True)
         result.update({k: predictions[k] for k in ("mae", "rmse", "r2", "bias", "nmae", "median_ae", "n")})
         checkpoint = REPO_ROOT / "results/checkpoints_v2" / f"{name}_{scaler}_seed{seed}.pt"
         checkpoint.parent.mkdir(exist_ok=True)
@@ -189,12 +199,12 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
     return result, curves, predictions
 
 
-def evaluate_split(ctx, model, scaler, mean, std, split, collect):
+def evaluate_split(ctx, model, name, scaler, mean, std, split, collect):
     model.eval()
     pred_all, truth_all, station_all, time_all = [], [], [], []
     with torch.no_grad():
         for target_idx, x, raw_y, mask, _, _, _ in ctx.batches(split, int(ctx.cfg["neural_batch_size"])):
-            pred = inverse_y(model(x, ctx.edge_index, ctx.edge_attr), scaler, mean, std)
+            pred = inverse_y(model(model_inputs(x, name), ctx.edge_index, ctx.edge_attr), scaler, mean, std)
             selected = mask.cpu().numpy()
             pred_np = pred.cpu().numpy()
             truth_np = raw_y.cpu().numpy()
