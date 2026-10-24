@@ -240,12 +240,14 @@ def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids, coordinates=No
                        "idw_coordinates_static": coordinates is not None}
 
 
-def _causal_fill(values: np.ndarray, train_mask: np.ndarray, max_forward: int):
+def _causal_fill(values: np.ndarray, train_mask: np.ndarray, max_forward: int, fit_station_mask=None):
     shape = values.shape
     out = values.copy()
     train_medians = np.empty(shape[2], dtype=np.float32)
     for feature in range(shape[2]):
         train = values[train_mask, :, feature]
+        if fit_station_mask is not None:
+            train = train[:, fit_station_mask]
         finite = train[np.isfinite(train)]
         if len(finite) == 0:
             raise ValueError(f"Feature {feature} has no training values")
@@ -256,7 +258,7 @@ def _causal_fill(values: np.ndarray, train_mask: np.ndarray, max_forward: int):
     return out, train_medians
 
 
-def build(config_path: Path) -> tuple[DataV2, dict]:
+def build(config_path: Path, excluded_station_id: int | None = None) -> tuple[DataV2, dict]:
     cfg = yaml.safe_load(Path(config_path).read_text())
     times = pd.date_range(cfg["train_start_utc"], cfg["test_end_utc"], freq="h", tz="UTC")
     if not times.is_monotonic_increasing or not times.is_unique or np.any(np.diff(times.asi8) != 3_600_000_000_000):
@@ -283,7 +285,17 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
     observed = {p: _station_values(raw, times, station_ids, p) for p in POLLUTANTS}
     target = observed["pm25"]
     observed_mask = np.isfinite(target)
-    imputed, tier, impute_fit = _fit_imputed_pm25(target, observed["pm10"], times, splits["train"], station_ids,
+    fit_station_mask = np.ones(n, dtype=bool)
+    if excluded_station_id is not None:
+        matches = np.flatnonzero(station_ids == int(excluded_station_id))
+        if len(matches) != 1:
+            raise ValueError(f"LOSO station absent: {excluded_station_id}")
+        fit_station_mask[matches[0]] = False
+    input_observed = {p: values.copy() for p, values in observed.items()}
+    if excluded_station_id is not None:
+        for values in input_observed.values():
+            values[:, ~fit_station_mask] = np.nan
+    imputed, tier, impute_fit = _fit_imputed_pm25(input_observed["pm25"], input_observed["pm10"], times, splits["train"], station_ids,
                                                   coordinates=station[["utm_x", "utm_y"]].to_numpy(),
                                                   idw_power=cfg["spatial_idw_power"])
 
@@ -303,7 +315,7 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
                          "status": "available"})
 
     for pollutant, (name, units) in POLLUTANTS.items():
-        values = imputed if pollutant == "pm25" else observed[pollutant]
+        values = imputed if pollutant == "pm25" else input_observed[pollutant]
         add(name, f"raw station {pollutant}; train-only fill", units, values)
     for raw_name, (name, units) in WEATHER.items():
         values = weather[raw_name].to_numpy(dtype=np.float32)[:, None].repeat(n, axis=1)
@@ -316,13 +328,13 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
         registry.append({"order": None, "name": name, "source": None, "units": None,
                          "status": "missing", "reason": reason})
     raw_values = np.stack(channels, axis=2)
-    filled, fill_medians = _causal_fill(raw_values, splits["train"], int(cfg["feature_forward_fill_limit_hours"]))
-    train_values = filled[splits["train"]]
+    filled, fill_medians = _causal_fill(raw_values, splits["train"], int(cfg["feature_forward_fill_limit_hours"]), fit_station_mask)
+    train_values = filled[splits["train"]][:, fit_station_mask]
     means = train_values.mean(axis=(0, 1))
     stds = train_values.std(axis=(0, 1))
     stds[stds == 0] = 1.0
     features = ((filled - means) / stds).astype(np.float32)
-    pm_train = target[splits["train"]]
+    pm_train = target[splits["train"]][:, fit_station_mask]
     pm_train = pm_train[np.isfinite(pm_train)]
     target_mean = float(pm_train.mean())
     target_std = float(pm_train.std())
@@ -332,7 +344,8 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
            "target_standard_mean": target_mean, "target_standard_std": target_std,
            "target_log1p_mean": float(log_train.mean()), "target_log1p_std": float(log_train.std()),
            "legacy_342_9356_ratio_to_train_std": 342.9356 / target_std,
-           "imputation": impute_fit}
+           "imputation": impute_fit, "excluded_station_id": excluded_station_id,
+           "fitted_station_ids": station_ids[fit_station_mask].astype(int).tolist()}
     data = DataV2(times, station_ids, station.node_index.to_numpy(dtype=np.int64),
                   station[["utm_x", "utm_y"]].to_numpy(dtype=np.float32),
                   station.elevation_true.to_numpy(dtype=np.float32), raw_values, features,

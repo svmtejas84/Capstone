@@ -1,0 +1,20 @@
+data_config: configs/data_v2.yaml
+horizon_hours: 1
+history_hours: 12
+seeds: [11, 23, 37]
+seed_reduction_reason: "Three seeds selected before LOSO scores because 15 folds x 3 neural methods x 20 epochs plus per-hour GP/kriging must fit the remaining run quota."
+max_epochs: 20
+patience: 4
+learning_rate: 0.0001
+target_scaler: log1p
+hidden_dim: 96
+batch_size: 512
+weight_decay: 0.01
+physics_weight: 0.06
+station_graph_neighbours: 4
+idw_power: 2.0
+bootstrap_replicates: 2000
+bootstrap_seed: 4302
+gp_length_scale_m: 10000.0
+gp_noise_variance: 25.0
+kriging_variogram_model: spherical
