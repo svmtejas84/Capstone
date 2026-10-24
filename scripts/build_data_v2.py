@@ -77,7 +77,7 @@ def main():
         for year in np.unique(years[time_mask]):
             ym = time_mask & (years == year)
             for j, station_id in enumerate(data.station_ids):
-                for tier in ("O", "R", "C", "D"):
+                for tier in ("O", "R", "I", "C", "D"):
                     count = int(np.sum(data.imputation_tier[ym, j] == tier))
                     if count:
                         breakdown.append({"split": name, "year": int(year), "station_id": int(station_id),

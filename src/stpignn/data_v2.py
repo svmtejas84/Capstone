@@ -90,7 +90,7 @@ class DataV2:
     observed_target: np.ndarray  # [T,N], NaN for missing raw observation
     observed_mask: np.ndarray  # [T,N]
     imputed_target: np.ndarray  # [T,N], train-only-fitted, never evaluation truth
-    imputation_tier: np.ndarray  # [T,N], O/R/C/D/M
+    imputation_tier: np.ndarray  # [T,N], O/R/I/C/D/M
     split_masks: dict[str, np.ndarray]
     feature_registry: list[dict]
     fit: dict
@@ -153,7 +153,7 @@ def _train_climatology(values: np.ndarray, times: pd.DatetimeIndex, train_mask: 
     return table, station_median, global_median
 
 
-def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids):
+def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids, coordinates=None, idw_power=2.0):
     table, station_median, global_median = _train_climatology(pm25, times, train_mask)
     ratio = np.full(pm25.shape[1], np.nan, dtype=np.float32)
     for station in range(pm25.shape[1]):
@@ -169,6 +169,19 @@ def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids):
             rmask = missing & np.isfinite(pm10[:, station])
             out[rmask, station] = pm10[rmask, station] * ratio[station]
             tier[rmask, station] = "R"
+    if coordinates is not None:
+        coordinate = np.asarray(coordinates, dtype=np.float64)
+        distance = np.linalg.norm(coordinate[:, None, :] - coordinate[None, :, :], axis=-1)
+        weight = 1.0 / np.maximum(distance, 1.0) ** float(idw_power)
+        np.fill_diagonal(weight, 0.0)
+        observed_weight = np.isfinite(pm25).astype(np.float64) @ weight.T
+        observed_sum = np.nan_to_num(pm25, nan=0.0).astype(np.float64) @ weight.T
+        idw = np.divide(observed_sum, observed_weight, out=np.full_like(observed_sum, np.nan),
+                        where=observed_weight > 0)
+        missing = ~np.isfinite(out)
+        idw_mask = missing & np.isfinite(idw)
+        out[idw_mask] = idw[idw_mask]
+        tier[idw_mask] = "I"
         missing = ~np.isfinite(out[:, station])
         keys = (times.hour * 7 + times.dayofweek).to_numpy()
         climat = table[keys, station]
@@ -181,7 +194,8 @@ def _fit_imputed_pm25(pm25, pm10, times, train_mask, station_ids):
         tier[missing, station] = "D"
     return out, tier, {"ratio_by_station": dict(zip(station_ids.astype(str), ratio.tolist())),
                        "climatology": table.tolist(), "station_median": station_median.tolist(),
-                       "global_median": global_median}
+                       "global_median": global_median, "idw_power": float(idw_power),
+                       "idw_coordinates_static": coordinates is not None}
 
 
 def _causal_fill(values: np.ndarray, train_mask: np.ndarray, max_forward: int):
@@ -227,7 +241,9 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
     observed = {p: _station_values(raw, times, station_ids, p) for p in POLLUTANTS}
     target = observed["pm25"]
     observed_mask = np.isfinite(target)
-    imputed, tier, impute_fit = _fit_imputed_pm25(target, observed["pm10"], times, splits["train"], station_ids)
+    imputed, tier, impute_fit = _fit_imputed_pm25(target, observed["pm10"], times, splits["train"], station_ids,
+                                                  coordinates=station[["utm_x", "utm_y"]].to_numpy(),
+                                                  idw_power=cfg["spatial_idw_power"])
 
     weather_raw, weather_paths = _load_raw_table(cfg["raw_weather_glob"])
     weather_raw["time_utc"] = utc_hour(weather_raw.time, assume_naive_utc=True)

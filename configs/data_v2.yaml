@@ -10,6 +10,7 @@ test_start_utc: '2025-09-23T00:00:00Z'
 test_end_utc: '2026-03-28T23:00:00Z'
 minimum_gap_hours: 24
 feature_forward_fill_limit_hours: 24
+spatial_idw_power: 2.0
 station_graph_neighbours: 4
 imputed_target_weight: 0.25
 target_scalers: [standard, log1p]

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.stpignn.data_v2 import assert_input_cutoff, split_masks, train_only_mean_std
+from src.stpignn.data_v2 import assert_input_cutoff, split_masks, train_only_mean_std, _fit_imputed_pm25
 
 
 def test_input_must_end_at_forecast_cutoff():
@@ -32,3 +32,19 @@ def test_fitted_statistic_ignores_validation_and_test():
     before = train_only_mean_std(x, train)
     x[~train] = -999999.0
     assert before == train_only_mean_std(x, train)
+
+
+def test_imputation_fit_ignores_validation_and_test_rows():
+    times = pd.date_range("2025-01-01", periods=12, freq="h", tz="UTC")
+    train = np.array([True] * 8 + [False] * 4)
+    pm25 = np.array([[10.], [20.], [30.], [40.], [50.], [60.], [70.], [80.],
+                     [90.], [100.], [110.], [120.]], dtype=np.float32)
+    pm10 = 2 * pm25
+    _, _, first = _fit_imputed_pm25(pm25, pm10, times, train, np.array([1]))
+    pm25[~train] = 1_000_000
+    pm10[~train] = 1_000_000
+    _, _, second = _fit_imputed_pm25(pm25, pm10, times, train, np.array([1]))
+    assert first["ratio_by_station"] == second["ratio_by_station"]
+    assert first["station_median"] == second["station_median"]
+    assert first["global_median"] == second["global_median"]
+    assert np.allclose(first["climatology"], second["climatology"], equal_nan=True)
