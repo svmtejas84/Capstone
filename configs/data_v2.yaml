@@ -1,0 +1,23 @@
+seed: 42
+history_hours: 12
+horizons_hours: [1, 6, 24]
+primary_horizon_hours: 1
+train_start_utc: '2022-01-01T00:00:00Z'
+train_end_utc: '2025-06-29T23:00:00Z'
+validation_start_utc: '2025-07-01T00:00:00Z'
+validation_end_utc: '2025-09-21T23:00:00Z'
+test_start_utc: '2025-09-23T00:00:00Z'
+test_end_utc: '2026-03-28T23:00:00Z'
+minimum_gap_hours: 24
+feature_forward_fill_limit_hours: 24
+station_graph_neighbours: 4
+imputed_target_weight: 0.25
+target_scalers: [standard, log1p]
+selected_target_scaler: standard
+raw_stations_glob: data/raw/stations/*.parquet
+raw_weather_glob: data/raw/weather/*.parquet
+station_metadata: data/raw/stations/meta.parquet
+station_to_node: data/processed/graph/station_to_topology_node_map.parquet
+node_index_map: data/processed/graph/topology_nodeid_to_index_map.parquet
+true_elevation: data/processed/graph/nodes_elevation_true.parquet
+output_npz: results/data_v2_arrays.npz
