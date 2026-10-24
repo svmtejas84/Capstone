@@ -5,3 +5,4 @@
 - 2026-10-24 15:55 UTC DONE Gate A analysis: old-v2 comparison completed; 887 raw train PM2.5 rows above 500 rejected; h=1 scored pairs 32,628/7,203/14,583; train observed max 493.0 µg/m³; 10 tests passed. Source commit `7484720`, config `configs/data_v2.yaml`, seed 42; raw logs in `runs/gate_a_*`.
 - 2026-10-24 15:58 UTC DONE Gate A: result commit `e7dbbcd` pushed to `origin/audit/canonical-notebook-20261023`; RESUME.md updated for Gate B. No Gate B job was started.
 - 2026-10-24 16:07:40 UTC START Gate B: cleaned h=1 baselines and five-seed neural comparison. Starting commit `7233414cad3a47662a1c03b19bf2d66d42da4932`.
+- 2026-10-24 16:49 UTC DONE Gate B analysis: cleaned h=1 five-seed short and longer diagnostics, baselines, paired UTC-day bootstrap. Primary gate fails against persistence; raw outputs in `results/gate_v2b.*` and `runs/gate_b_*.log`. Neural source commit `4261e2e`, baseline/summary source commit `3688c6e`.

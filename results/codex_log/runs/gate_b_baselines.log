@@ -1,0 +1,39 @@
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_baselines_v2.py:27: RuntimeWarning: All-NaN slice encountered
+  table[key] = np.nanmedian(arr, axis=0)
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_baselines_v2.py:28: RuntimeWarning: Mean of empty slice
+  station_means = np.nanmean(target[train_mask], axis=0)
+                  method  scope  station_id     n       mae      rmse        r2       bias     nmae  median_ae
+             persistence pooled         NaN 14583  8.116095 25.357742  0.532089  -0.009588 0.182689   2.467499
+     climatology_hod_dow pooled         NaN 14583 21.468647 38.746251 -0.092450 -12.770357 0.483249  13.864132
+      station_train_mean pooled         NaN 14583 20.964647 37.336416 -0.014396 -10.674144 0.471904  13.653133
+          idw_known_at_t pooled         NaN 14583 22.698642 40.707692 -0.205856  -4.476241 0.510936  14.281410
+ridge_meteorology_static pooled         NaN 14583 20.538666 35.881305  0.063131  -4.315461 0.462316  14.954132
+{
+  "timestamp_utc": "2026-10-24T16:10:33.213755+00:00",
+  "script": "scripts/evaluate_baselines_v2.py",
+  "config": "configs/gate_v2b.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "4261e2ed44e5c7bd0cd623d38bcadaa2513a8652",
+  "horizon_hours": 1,
+  "test_pairs": 14583,
+  "train_pairs_for_regression": 32628,
+  "persistence_fallback_pairs": 6,
+  "idw_fallback_pairs": 1037,
+  "train_target_mean": 34.1395263671875,
+  "regression_coefficients": [
+    -0.05535506084561348,
+    0.3682064116001129,
+    0.013521806336939335,
+    -0.14688460528850555,
+    -1.576572299003601,
+    -0.972757875919342,
+    -4.332169532775879,
+    -7.1045613288879395,
+    0.43219634890556335,
+    3.1501755714416504,
+    1.4029242992401123,
+    -4.479708671569824
+  ],
+  "runtime_seconds": 0.5534189399331808
+}

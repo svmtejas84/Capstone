@@ -1,11 +1,12 @@
 # Resume
 
 - Last completed gate: A CLEANING. Gate A result commit `e7dbbcd` was pushed to `origin/audit/canonical-notebook-20261023`.
-- Next gate: B CLEANED GATE, h=1 only. NOT RUN. Gate C LOSO is NOT RUN.
+- Current gate: B CLEANED GATE, h=1; STARTED 2026-10-24 16:07:40 UTC. Gate C LOSO is NOT RUN.
+- Next gate: C LOSO, after Gate B is committed and pushed.
 - Branch: `audit/canonical-notebook-20261023`.
-- Commit: Gate A result `e7dbbcd`; a separate handoff-log commit may follow. Use `git rev-parse HEAD` for the latest branch commit.
-- Running job: none (PID: none; log path: none). All Gate A raw job output is in `results/codex_log/runs/gate_a_*.log`.
-- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && sed -n '1,330p' scripts/train_gate_v2.py && sed -n '1,240p' scripts/evaluate_baselines_v2.py`.
+- Commit: Gate B code commits `4261e2e` and `3688c6e`; use `git rev-parse HEAD` for latest branch commit.
+- Running job: Gate B summary/bootstrap PID `2881113`, log `results/codex_log/runs/gate_b_summary.log`. Baselines, validation selection, five-seed short final and five-seed longer diagnostics completed; raw logs `results/codex_log/runs/gate_b_*.log`.
+- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && ps -p 2881113 -o pid=,stat= && cat results/codex_log/runs/gate_b_summary.log && cat results/gate_v2b.md`.
 
 ## Gate A state and evidence
 

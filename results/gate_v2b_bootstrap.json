@@ -1,0 +1,107 @@
+{
+  "script": "scripts/summarize_gate_v2b.py",
+  "config": "configs/gate_v2b.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "neural_seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "bootstrap_seed": 4301,
+  "timestamp_utc": "2026-10-24T16:42:58.418771+00:00",
+  "source_git_commit": "3688c6e2e0dea2631150a7c3f9a4ccf7ec07341d",
+  "test_pairs": 14583,
+  "selections": {
+    "short": {
+      "model": "stpignn_corrected",
+      "seed": 23,
+      "lr": 0.0003,
+      "scaler": "log1p",
+      "best_val_mae_ug_m3": 7.700625771865834,
+      "test_mae_ug_m3": 20.613631897141094,
+      "test_r2": 0.0015936948853365,
+      "comparisons": {
+        "persistence": {
+          "mae_difference_ug_m3": 12.497536799416682,
+          "mae_ci95": [
+            11.797403913660958,
+            13.163365586339317
+          ],
+          "r2_difference": -0.5304950599597528,
+          "r2_ci95": [
+            -0.5950266470512794,
+            -0.4663126249095167
+          ],
+          "bootstrap_unit": "UTC calendar day",
+          "distinct_days": 177,
+          "replicates": 2000,
+          "seed": 4301
+        },
+        "idw_known_at_t": {
+          "mae_difference_ug_m3": -2.085009669355099,
+          "mae_ci95": [
+            -3.0132970182587533,
+            -1.1921793745966525
+          ],
+          "r2_difference": 0.20744921837879327,
+          "r2_ci95": [
+            0.1536485089664669,
+            0.26156606746716693
+          ],
+          "bootstrap_unit": "UTC calendar day",
+          "distinct_days": 177,
+          "replicates": 2000,
+          "seed": 4301
+        }
+      }
+    },
+    "longer": {
+      "model": "stpignn_corrected",
+      "seed": 37,
+      "lr": 0.0003,
+      "scaler": "log1p",
+      "best_val_mae_ug_m3": 6.741038167938398,
+      "test_mae_ug_m3": 20.54010045341317,
+      "test_r2": -0.028360475469342,
+      "comparisons": {
+        "persistence": {
+          "mae_difference_ug_m3": 12.42400535568876,
+          "mae_ci95": [
+            11.693314820624167,
+            13.134217315445644
+          ],
+          "r2_difference": -0.5604492303144314,
+          "r2_ci95": [
+            -0.6241617956490212,
+            -0.4969246494096259
+          ],
+          "bootstrap_unit": "UTC calendar day",
+          "distinct_days": 177,
+          "replicates": 2000,
+          "seed": 4301
+        },
+        "idw_known_at_t": {
+          "mae_difference_ug_m3": -2.1585411130830217,
+          "mae_ci95": [
+            -3.08033793788652,
+            -1.2335236006135897
+          ],
+          "r2_difference": 0.17749504802411464,
+          "r2_ci95": [
+            0.12579351734341726,
+            0.2330929820311316
+          ],
+          "bootstrap_unit": "UTC calendar day",
+          "distinct_days": 177,
+          "replicates": 2000,
+          "seed": 4301
+        }
+      }
+    }
+  },
+  "primary_point_gate_pass": false,
+  "primary_ci_gate_pass": false
+}

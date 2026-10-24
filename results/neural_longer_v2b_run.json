@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "2026-10-24T16:33:04.168867+00:00",
+  "script": "scripts/train_gate_v2.py --stage longer",
+  "config": "configs/gate_v2b.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "4261e2ed44e5c7bd0cd623d38bcadaa2513a8652",
+  "hardware": "Tesla V100-PCIE-32GB",
+  "runtime_seconds": 349.0612858934328,
+  "selected_scaler": "log1p",
+  "q_variant_status": "BLOCKED: no measured traffic index"
+}
