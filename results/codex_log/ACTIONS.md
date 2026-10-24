@@ -12,3 +12,5 @@
 - 2026-10-24 17:26 UTC: Gate C second detached shell also exited without a Python result or exit code. Started persistent `nohup python -u -m scripts.evaluate_loso_v2` command session 22017; Python PID 2883868; same raw log. No metric was produced by either detached launch.
 - 2026-10-24 18:21:10 UTC DONE Gate C analysis: persistent LOSO process exit code 0; 15 folds considered, 11 scored, 14,583 observed held-out pairs per method, nine methods; predeclared decision TIE. Source commit `e90fd05`, config `configs/loso_v2.yaml`, seeds 11/23/37. Result commit and push pending.
 - 2026-10-24 18:30:14 UTC DONE Gate C: result commit `a08e1e8` and seed/handoff commit `4b6eb39` pushed to `origin/audit/canonical-notebook-20261023`; no running job and no queued phase started.
+- 2026-10-25 UTC START checkpoint commit: record Gates A-C complete and queue S1-S4; no diagnostic, revision, training, or evaluation run.
+- 2026-10-25 UTC DONE checkpoint commit preparation: ACTIONS, DECISIONS, QUOTA, and RESUME updated; commit/push command follows.
