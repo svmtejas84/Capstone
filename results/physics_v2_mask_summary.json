@@ -1,0 +1,18 @@
+{
+  "timestamp_utc": "2026-10-24T14:10:11.885576+00:00",
+  "script": "scripts/analyze_physics_v2.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "71befda9422bf553b3941726825488ac7aa00018",
+  "station_nodes": 15,
+  "directed_edges": 60,
+  "hours": 1961,
+  "legacy_direction_slope": 0.010787811772204735,
+  "legacy_direction_intercept": -1.9918484120500504,
+  "corrected_fraction_mean": 0.25447901260831535,
+  "legacy_fraction_mean": 0.2666666805744171,
+  "disagreement_fraction_mean": 0.5196838385070741,
+  "jaccard_mean": 0.002414880895192626,
+  "traffic_index_available": false,
+  "q_variant_status": "BLOCKED: no traffic index source"
+}
