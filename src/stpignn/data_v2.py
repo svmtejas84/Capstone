@@ -19,9 +19,9 @@ from .paths import REPO_ROOT
 POLLUTANTS = {
     "pm25": ("pm25_lagged", "µg/m³"),
     "pm10": ("pm10", "µg/m³"),
-    "no2": ("no2", "µg/m³"),
-    "so2": ("so2", "µg/m³"),
-    "co": ("co", "µg/m³"),
+    "no2": ("no2", "ppb"),
+    "so2": ("so2", "ppb"),
+    "co": ("co", "ppb"),
 }
 WEATHER = {
     "wind_speed_10m": ("wind_speed", "m/s"),

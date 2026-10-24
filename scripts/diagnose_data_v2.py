@@ -2,6 +2,7 @@
 import datetime as dt
 import json
 import subprocess
+import pyarrow.parquet as pq
 
 import numpy as np
 import pandas as pd
@@ -19,6 +20,11 @@ def main():
               "script": "scripts/diagnose_data_v2.py", "config": "configs/data_v2.yaml", "seed": 42,
               "source_git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip(),
               "year_counts": {}, "split_tails": {}}
+    report["raw_station_source_rows"] = {
+        path.name: pq.ParquetFile(path).metadata.num_rows
+        for path in sorted((REPO_ROOT / "data/raw/stations").glob("*.parquet"))
+        if path.name != "meta.parquet"
+    }
     for year in np.unique(times.year):
         report["year_counts"][str(year)] = int(mask[times.year == year].sum())
     for name in ("train", "validation", "test"):
