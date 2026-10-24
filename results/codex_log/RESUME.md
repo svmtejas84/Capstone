@@ -1,12 +1,12 @@
 # Resume
 
-- Last completed gate: B CLEANED GATE, h=1. Gate B result commit `46924c5` was pushed to `origin/audit/canonical-notebook-20261023`.
-- Current gate: C LOSO, running from source commit `e90fd05`.
-- Next gate: finish C LOSO; then D h=6/h=24 (NOT RUN).
+- Last completed gate: C LOSO. Source commit `e90fd05`, result commit `a08e1e8`; final per-seed and handoff commit follows.
+- Current gate: none. Gate C is DONE; no more Gate B/C work is pending.
+- Next gate: D h=6 and h=24 cleaned gate (NOT RUN; outside the current user request).
 - Branch: `audit/canonical-notebook-20261023`.
-- Commit: `e90fd05` (Gate C source). Use `git rev-parse HEAD` for latest branch commit.
-- Running job: Python PID 2883868; command session 22017; log `results/codex_log/runs/gate_c_loso.log`; command `nohup python -u -m scripts.evaluate_loso_v2 >> results/codex_log/runs/gate_c_loso.log 2>&1`. Poll at most once per five minutes from the 17:26 UTC persistent-session launch.
-- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && cat results/codex_log/runs/gate_c_loso.pid && tail -30 results/codex_log/runs/gate_c_loso.log`.
+- Commit: `a08e1e8` is the Gate C result commit; run `git rev-parse HEAD` for the final handoff commit.
+- Running job: none (PID: none; log path: `results/codex_log/runs/gate_c_loso.log` is complete).
+- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git status --short && cat results/loso_decision_v2.json`.
 
 ## Gate A state and evidence
 
@@ -25,11 +25,13 @@
 
 - The fixed short budget and separate longer diagnostics used `configs/gate_v2b.yaml`, `scripts/train_gate_v2.py`, and `scripts/evaluate_baselines_v2.py`; selection used validation only. The paired UTC-day bootstrap used 2,000 replicates. The predeclared primary gate and Ridge information-set correction are recorded in DECISIONS.md.
 
-## Gate C instructions (RUNNING)
+## Gate C result (DONE)
 
-- Fifteen LOSO folds, five seeds (three only if quota tight, logged), all valid windows, held-out station excluded from training, imputation and fitted statistics. Methods: ST-PIGNN known-station lagged PM2.5 with hidden station suppressed; ST-PIGNN weather/static only; GRU-only; IDW; gp_rbf; pykrige ordinary kriging with fitted variogram; nearest-known-station persistence; station train mean; Ridge weather/static. Record information set per row. Output `results/loso_per_station_v2.csv`, `results/loso_summary_v2.csv`, pooled/per-station MAE/RMSE/R², paired bootstrap CIs and Wilcoxon over stations.
-- Predeclared decision: WIN iff ST-PIGNN known-stations pooled MAE is below the best IDW/GP/kriging, paired bootstrap CI excludes zero and R² is higher; TIE iff CI includes zero; LOSS otherwise. Write result to DECISIONS.md without changing rule after scores. Append Step 4b-C, commit/push, update this file.
-- Fold-isolated builder is `src/stpignn/data_v2.py:build(excluded_station_id=...)`; runner `scripts/evaluate_loso_v2.py`, config `configs/loso_v2.yaml`. Three seeds were chosen before LOSO scores due to quota; see DECISIONS.md. Four stations have zero observed test targets and will be recorded as unscored, leaving 11 scored folds. `pykrige==1.7.3` was installed.
+- Fifteen folds were considered with three fixed seeds, all valid observed windows, and the held-out station excluded from training, imputation and fitted statistics. Methods: ST-PIGNN known-station lagged PM2.5 with hidden station suppressed; ST-PIGNN weather/static only; GRU-only; IDW; gp_rbf; pykrige ordinary kriging with fitted variogram; nearest-known-station persistence; pooled known-station train mean; Ridge weather/static. The information set is recorded per method in the result CSV.
+- Predeclared decision rule: WIN iff known-station ST-PIGNN pooled MAE is below the best IDW/GP/kriging, paired bootstrap CI excludes zero and R² is higher; TIE iff CI includes zero; LOSS otherwise. Result TIE is in DECISIONS.md.
+- Fold-isolated builder: `src/stpignn/data_v2.py:build(excluded_station_id=...)`; runner `scripts/evaluate_loso_v2.py`; config `configs/loso_v2.yaml`. Three seeds were chosen before scores due to quota. Four stations had zero observed test targets and were recorded as unscored. `pykrige==1.7.3` was installed.
+- Gate C run finished at 2026-10-24 18:21:10 UTC, exit 0, source commit `e90fd05`, runtime 3,284.709 seconds on CUDA. Nine methods each scored 14,583 observed held-out pairs in 11 folds; four mapped stations had zero observed test targets. Outputs: `results/loso_summary_v2.csv`, `results/loso_per_station_v2.csv`, `results/loso_seed_summary_v2.csv`, `results/loso_predictions_v2.parquet`, `results/loso_decision_v2.json`, `results/loso_fallbacks_v2.csv`, `results/loso_unscored_folds_v2.csv`, `results/loso_curves_v2.csv`.
+- Predeclared verdict: TIE. Known-station ST-PIGNN MAE/R² 22.282968/-0.049766; best spatial baseline ordinary kriging 22.588024/-0.197255. Paired UTC-day bootstrap MAE difference -0.305056 µg/m³, CI [-1.163714, 0.607623] includes zero; Wilcoxon p=0.278320 over 11 scored stations. Kriging used known-station train-mean fallback on 5,163/14,583 pairs. Step 4b-C is appended to `claude_paper.md`.
 
 ## Remaining queue (NOT RUN, in order)
 

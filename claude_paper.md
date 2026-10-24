@@ -247,3 +247,5 @@ Source: `scripts/evaluate_loso_v2.py`, `configs/loso_v2.yaml`, seeds 11/23/37, s
 | Ridge, weather/static only | 20.594 | 0.073 |
 
 The predeclared known-station ST-PIGNN versus best spatial baseline (ordinary kriging) comparison is TIE: paired UTC-day bootstrap (2,000 replicates) MAE difference -0.305 µg/m³, 95% CI [-1.164, 0.608]; R² difference +0.147, 95% CI [0.098, 0.192]; station Wilcoxon p=0.278 over 11 scored stations. Ordinary kriging used its train-mean fallback on 5,163/14,583 pairs, GP on 2,428, and IDW on 1,037. The four absent test folds and these fallback rates limit the spatial-generalization claim. No LOSO hyperparameter was changed after test scores.
+
+Individual-seed pooled metrics are in `results/loso_seed_summary_v2.csv`, produced by `scripts/summarize_loso_seeds_v2.py` at 2026-10-24 18:27:49 UTC from `configs/loso_v2.yaml` seeds 11/23/37 and source commit `a08e1e8`; this is distinct from the equal-seed-mean predictions in the table above.
