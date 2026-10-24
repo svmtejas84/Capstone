@@ -1,10 +1,10 @@
 # Resume
 
-- Last completed gate: C LOSO. Source commit `e90fd05`, result commit `a08e1e8`; final per-seed and handoff commit follows.
+- Last completed gate: C LOSO. Source commit `e90fd05`, result commit `a08e1e8`, seed/handoff commit `4b6eb39`; all pushed to `origin/audit/canonical-notebook-20261023` at 2026-10-24 18:30:14 UTC.
 - Current gate: none. Gate C is DONE; no more Gate B/C work is pending.
 - Next gate: D h=6 and h=24 cleaned gate (NOT RUN; outside the current user request).
 - Branch: `audit/canonical-notebook-20261023`.
-- Commit: `a08e1e8` is the Gate C result commit; run `git rev-parse HEAD` for the final handoff commit.
+- Commit: `4b6eb39` is the Gate C seed/handoff commit; this log-status commit follows. Use `git rev-parse HEAD` for the latest branch commit.
 - Running job: none (PID: none; log path: `results/codex_log/runs/gate_c_loso.log` is complete).
 - Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git status --short && cat results/loso_decision_v2.json`.
 
