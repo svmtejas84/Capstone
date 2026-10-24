@@ -1,0 +1,22 @@
+seed: 42
+horizon_hours: 1
+non_neural_regression_alpha: 1.0
+idw_power: 2.0
+persistence_missing_fallback: train_station_mean
+idw_missing_fallback: train_station_mean
+bootstrap_replicates: 2000
+bootstrap_seed: 4301
+neural_seeds: [11, 23, 37, 51, 79]
+neural_hidden_dim: 96
+neural_batch_size: 512
+neural_selection_epochs: 2
+neural_max_epochs: 5
+neural_early_stopping_patience: 2
+longer_max_epochs: 20
+longer_patience: 4
+neural_lr_grid: [3.0e-6, 1.0e-5, 3.0e-5, 1.0e-4, 3.0e-4]
+neural_weight_decay: 0.01
+neural_physics_weight: 0.06
+imputed_target_weight: 0.25
+target_scaler_grid: [standard, log1p]
+station_graph_neighbours: 4

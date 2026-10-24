@@ -84,8 +84,10 @@ def aligned_mask_arrays(raw_wind, xy, edge_index, legacy_slope, legacy_intercept
 
 
 class Context:
-    def __init__(self):
-        self.cfg = yaml.safe_load((REPO_ROOT / "configs/gate_v2.yaml").read_text())
+    def __init__(self, config_path="configs/gate_v2.yaml", output_prefix="v2"):
+        self.config_path = config_path
+        self.output_prefix = output_prefix
+        self.cfg = yaml.safe_load((REPO_ROOT / config_path).read_text())
         self.data_cfg = yaml.safe_load((REPO_ROOT / "configs/data_v2.yaml").read_text())
         self.z = np.load(REPO_ROOT / "results/data_v2_arrays.npz")
         self.fit = json.loads((REPO_ROOT / "results/data_v2_fit.json").read_text())["fit"]
@@ -133,7 +135,8 @@ class Context:
             yield target_idx, x, raw_y, mask, imputed, cmask, lmask
 
 
-def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
+def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patience=None,
+              budget="short"):
     seed_all(seed)
     cfg = ctx.cfg
     model = make_model(name, ctx.features.shape[-1], int(cfg["neural_hidden_dim"]), ctx.edge_attr.shape[1]).to(ctx.device)
@@ -173,7 +176,7 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
             loss_sum += float(loss.detach()) * len(x)
             weight_sum += len(x)
         val_mae = evaluate_split(ctx, model, name, scaler, mean, std, "validation", collect=False)["mae"]
-        curves.append({"model": name, "scaler": scaler, "lr": float(lr), "seed": seed,
+        curves.append({"model": name, "scaler": scaler, "lr": float(lr), "seed": seed, "budget": budget,
                        "epoch": epoch, "train_loss": loss_sum / weight_sum, "val_mae_ug_m3": val_mae,
                        "physics_lambda": physics_lambda})
         if val_mae < best_val:
@@ -181,20 +184,22 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False):
             best_state = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
         else:
             bad += 1
-            if bad >= int(cfg["neural_early_stopping_patience"]):
+            if bad >= int(patience if patience is not None else cfg["neural_early_stopping_patience"]):
                 break
     model.load_state_dict(best_state)
-    result = {"model": name, "scaler": scaler, "lr": float(lr), "seed": seed,
+    result = {"model": name, "scaler": scaler, "lr": float(lr), "seed": seed, "budget": budget,
               "best_val_mae_ug_m3": best_val, "best_epoch": best_epoch}
     predictions = None
     if test_after:
         predictions = evaluate_split(ctx, model, name, scaler, mean, std, "test", collect=True)
         result.update({k: predictions[k] for k in ("mae", "rmse", "r2", "bias", "nmae", "median_ae", "n")})
-        checkpoint = REPO_ROOT / "results/checkpoints_v2" / f"{name}_{scaler}_seed{seed}.pt"
+        checkpoint = REPO_ROOT / f"results/checkpoints_{ctx.output_prefix}" / f"{budget}_{name}_{scaler}_seed{seed}.pt"
         checkpoint.parent.mkdir(exist_ok=True)
         torch.save({"state_dict": best_state, "model": name, "scaler": scaler, "lr": float(lr),
                     "seed": seed, "best_epoch": best_epoch, "val_mae_ug_m3": best_val,
-                    "data_config": "configs/data_v2.yaml", "train_config": "configs/gate_v2.yaml"}, checkpoint)
+                    "data_config": "configs/data_v2.yaml", "train_config": ctx.config_path,
+                    "budget": budget, "max_epochs": max_epochs,
+                    "patience": patience if patience is not None else cfg["neural_early_stopping_patience"]}, checkpoint)
         result["checkpoint"] = str(checkpoint.relative_to(REPO_ROOT))
     return result, curves, predictions
 
@@ -225,9 +230,9 @@ def evaluate_split(ctx, model, name, scaler, mean, std, split, collect):
     return metrics
 
 
-def metadata(script, cfg, began):
+def metadata(script, cfg, began, config_path):
     return {"timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(), "script": script,
-            "config": "configs/gate_v2.yaml", "data_config": "configs/data_v2.yaml",
+            "config": config_path, "data_config": "configs/data_v2.yaml",
             "seed": cfg["seed"], "source_git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip(),
             "hardware": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU",
             "runtime_seconds": time.perf_counter() - began}
@@ -235,14 +240,16 @@ def metadata(script, cfg, began):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("selection", "final"), required=True)
+    parser.add_argument("--stage", choices=("selection", "final", "longer"), required=True)
     parser.add_argument("--models", nargs="*", default=None)
+    parser.add_argument("--config", default="configs/gate_v2.yaml")
+    parser.add_argument("--output-prefix", default="v2")
     args = parser.parse_args()
     began = time.perf_counter()
-    ctx = Context()
+    ctx = Context(args.config, args.output_prefix)
     models = args.models or MODELS
-    selection_path = REPO_ROOT / "results/neural_selection_v2.csv"
-    curves_path = REPO_ROOT / "results/neural_curves_v2.csv"
+    selection_path = REPO_ROOT / f"results/neural_selection_{ctx.output_prefix}.csv"
+    curves_path = REPO_ROOT / f"results/neural_curves_{ctx.output_prefix}.csv"
     if args.stage == "selection":
         existing = pd.read_csv(selection_path) if selection_path.exists() else pd.DataFrame()
         rows = existing.to_dict("records")
@@ -262,24 +269,27 @@ def main():
                     if not existing.empty and ((existing.model == name) & (existing.scaler == scaler) & (existing.lr == float(lr))).any():
                         continue
                     result, track, _ = run_model(ctx, name, scaler, lr, int(ctx.cfg["neural_seeds"][0]),
-                                                 int(ctx.cfg["neural_selection_epochs"]))
+                                                 int(ctx.cfg["neural_selection_epochs"]), budget="selection")
                     rows.append(result)
                     curves.extend(track)
                     pd.DataFrame(rows).to_csv(selection_path, index=False)
                     pd.DataFrame(curves).to_csv(curves_path, index=False)
                     print("SELECT", result, flush=True)
-        summary = metadata("scripts/train_gate_v2.py --stage selection", ctx.cfg, began)
-        (REPO_ROOT / "results/neural_selection_run.json").write_text(json.dumps(summary, indent=2) + "\n")
+        summary = metadata("scripts/train_gate_v2.py --stage selection", ctx.cfg, began, ctx.config_path)
+        (REPO_ROOT / f"results/neural_selection_{ctx.output_prefix}_run.json").write_text(json.dumps(summary, indent=2) + "\n")
         return
 
     choices = pd.read_csv(selection_path)
     corrected = choices[choices.model == "stpignn_corrected"].sort_values("best_val_mae_ug_m3").iloc[0]
     selected_scaler = corrected.scaler
-    existing = pd.read_csv(REPO_ROOT / "results/neural_final_v2.csv") if (REPO_ROOT / "results/neural_final_v2.csv").exists() else pd.DataFrame()
+    label = "neural_longer" if args.stage == "longer" else "neural_final"
+    final_path = REPO_ROOT / f"results/{label}_{ctx.output_prefix}.csv"
+    existing = pd.read_csv(final_path) if final_path.exists() else pd.DataFrame()
     rows = existing.to_dict("records")
     curves = pd.read_csv(curves_path).to_dict("records") if curves_path.exists() else []
     prediction_frames = []
-    pred_path = REPO_ROOT / "results/neural_predictions_v2.parquet"
+    pred_name = "neural_longer_predictions" if args.stage == "longer" else "neural_predictions"
+    pred_path = REPO_ROOT / f"results/{pred_name}_{ctx.output_prefix}.parquet"
     if pred_path.exists():
         prediction_frames.append(pd.read_parquet(pred_path))
     for name in models:
@@ -291,7 +301,10 @@ def main():
             if not existing.empty and ((existing.model == name) & (existing.seed == int(seed))).any():
                 continue
             result, track, predictions = run_model(ctx, name, selected_scaler, float(selected.lr), int(seed),
-                                                   int(ctx.cfg["neural_max_epochs"]), test_after=True)
+                                                   int(ctx.cfg["longer_max_epochs"] if args.stage == "longer" else ctx.cfg["neural_max_epochs"]),
+                                                   test_after=True,
+                                                   patience=int(ctx.cfg["longer_patience"]) if args.stage == "longer" else None,
+                                                   budget=args.stage)
             rows.append(result)
             curves.extend(track)
             frame = pd.DataFrame({"model": name, "scaler": selected_scaler, "seed": seed,
@@ -300,14 +313,14 @@ def main():
                                   "target_ug_m3": predictions["target"],
                                   "prediction_ug_m3": predictions["prediction"]})
             prediction_frames.append(frame)
-            pd.DataFrame(rows).to_csv(REPO_ROOT / "results/neural_final_v2.csv", index=False)
+            pd.DataFrame(rows).to_csv(final_path, index=False)
             pd.DataFrame(curves).to_csv(curves_path, index=False)
             pd.concat(prediction_frames, ignore_index=True).to_parquet(pred_path, index=False)
             print("FINAL", {k: v for k, v in result.items() if k != "checkpoint"}, flush=True)
-    summary = metadata("scripts/train_gate_v2.py --stage final", ctx.cfg, began)
+    summary = metadata(f"scripts/train_gate_v2.py --stage {args.stage}", ctx.cfg, began, ctx.config_path)
     summary["selected_scaler"] = selected_scaler
     summary["q_variant_status"] = "BLOCKED: no measured traffic index"
-    (REPO_ROOT / "results/neural_final_run.json").write_text(json.dumps(summary, indent=2) + "\n")
+    (REPO_ROOT / f"results/{label}_{ctx.output_prefix}_run.json").write_text(json.dumps(summary, indent=2) + "\n")
 
 
 if __name__ == "__main__":

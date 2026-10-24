@@ -1,6 +1,7 @@
 """Observed-only, common-mask non-neural forecast baselines for persistence gate."""
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import json
 import subprocess
@@ -38,7 +39,11 @@ def _pairs(target, mask, time_mask, history, horizon):
 
 def main():
     started = time.perf_counter()
-    cfg = yaml.safe_load((REPO_ROOT / "configs/gate_v2.yaml").read_text())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", default="configs/gate_v2.yaml")
+    parser.add_argument("--output-prefix", default="v2")
+    args = parser.parse_args()
+    cfg = yaml.safe_load((REPO_ROOT / args.config).read_text())
     data_cfg = yaml.safe_load((REPO_ROOT / "configs/data_v2.yaml").read_text())
     z = np.load(REPO_ROOT / "results/data_v2_arrays.npz")
     times = pd.DatetimeIndex(pd.to_datetime(z["times_ns"], utc=True))
@@ -95,7 +100,7 @@ def main():
                           "target_ug_m3": truth})
     for method, values in pred.items():
         frame[method + "_ug_m3"] = values
-    frame.to_parquet(REPO_ROOT / "results/baselines_v2_predictions.parquet", index=False)
+    frame.to_parquet(REPO_ROOT / f"results/baselines_{args.output_prefix}_predictions.parquet", index=False)
 
     rows = []
     for method, values in pred.items():
@@ -106,9 +111,9 @@ def main():
             if selected.any():
                 metric = evaluate_arrays(values[selected], truth[selected], np.ones(selected.sum(), dtype=bool))
                 rows.append({"method": method, "scope": "station", "station_id": int(station_id), **metric})
-    pd.DataFrame(rows).to_csv(REPO_ROOT / "results/baselines_v2_metrics.csv", index=False)
+    pd.DataFrame(rows).to_csv(REPO_ROOT / f"results/baselines_{args.output_prefix}_metrics.csv", index=False)
     report = {"timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
-              "script": "scripts/evaluate_baselines_v2.py", "config": "configs/gate_v2.yaml",
+              "script": "scripts/evaluate_baselines_v2.py", "config": args.config,
               "data_config": "configs/data_v2.yaml", "seed": cfg["seed"],
               "source_git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip(),
               "horizon_hours": horizon, "test_pairs": len(truth),
@@ -118,7 +123,7 @@ def main():
               "train_target_mean": float(np.mean(y_train)),
               "regression_coefficients": regression.coef_.tolist(),
               "runtime_seconds": time.perf_counter() - started}
-    (REPO_ROOT / "results/baselines_v2_run.json").write_text(json.dumps(report, indent=2) + "\n")
+    (REPO_ROOT / f"results/baselines_{args.output_prefix}_run.json").write_text(json.dumps(report, indent=2) + "\n")
     print(pd.DataFrame(rows).query('scope == "pooled"').to_string(index=False))
     print(json.dumps(report, indent=2))
 
