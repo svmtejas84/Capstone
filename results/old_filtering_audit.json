@@ -1,0 +1,13 @@
+{
+  "script": "scripts/audit_old_cleaning.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "timestamp_utc": "2026-10-24T15:42:28.785193+00:00",
+  "source_git_commit": "748472042a59e910aa8924185638fab2cc236894",
+  "raw_hour_pairs": 55228,
+  "raw_train_gt_10000_pairs": 212,
+  "raw_train_gt_10000_old_observed": 208,
+  "raw_train_gt_10000_old_absent": 0,
+  "raw_train_gt_10000_old_imputed": 4,
+  "raw_train_gt_10000_old_y_clean_max": 250.0
+}

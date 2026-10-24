@@ -1,6 +1,6 @@
 {
-  "timestamp_utc": "2026-10-24T14:12:44.402628+00:00",
-  "source_git_commit": "f67653e1a2df6c9733cfa3f17d6f5b1a66cf2943",
+  "timestamp_utc": "2026-10-24T15:42:27.442863+00:00",
+  "source_git_commit": "748472042a59e910aa8924185638fab2cc236894",
   "script": "scripts/build_data_v2.py",
   "config": "configs/data_v2.yaml",
   "seed": 42,

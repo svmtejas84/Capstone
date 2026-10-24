@@ -1,0 +1,18 @@
+{
+  "script": "scripts/summarize_cleaning_v2.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "timestamp_utc": "2026-10-24T15:53:48.657221+00:00",
+  "source_git_commit": "748472042a59e910aa8924185638fab2cc236894",
+  "overlap_raw_station_hours": 55034,
+  "old_y_clean_present": 54649,
+  "v2_observed_present_on_overlap": 54593,
+  "both_present": 54210,
+  "old_y_clean_vs_v2_observed_disagreements": 41290,
+  "old_observed_tier_vs_v2_disagreements": 40749,
+  "train_old_y_clean_vs_v2_disagreements": 21475,
+  "train_observed_mean_ug_m3": 34.135868072509766,
+  "train_observed_sd_ug_m3": 22.99373435974121,
+  "train_observed_max_ug_m3": 493.0,
+  "train_pm25_rows_rejected_above_500": 887
+}

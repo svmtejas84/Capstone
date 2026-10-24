@@ -1,0 +1,116 @@
+{
+  "split_report": {
+    "timestamp_utc": "2026-10-24T15:34:04.161147+00:00",
+    "source_git_commit": "7d8e7d27a46d554da5284edea68f227d8d246383",
+    "script": "scripts/build_data_v2.py",
+    "config": "configs/data_v2.yaml",
+    "seed": 42,
+    "requested_boundaries": {
+      "train_start_utc": "2022-01-01T00:00:00Z",
+      "train_end_utc": "2025-06-29T23:00:00Z",
+      "validation_start_utc": "2025-07-01T00:00:00Z",
+      "validation_end_utc": "2025-09-21T23:00:00Z",
+      "test_start_utc": "2025-09-23T00:00:00Z",
+      "test_end_utc": "2026-03-28T23:00:00Z"
+    },
+    "horizons": {
+      "1": {
+        "train": {
+          "scored_target_hours": 14210,
+          "scored_pairs": 32628,
+          "first_scored_utc": "2022-01-01T13:00:00+00:00",
+          "last_scored_utc": "2025-06-29T16:00:00+00:00"
+        },
+        "validation": {
+          "scored_target_hours": 1961,
+          "scored_pairs": 7203,
+          "first_scored_utc": "2025-07-01T00:00:00+00:00",
+          "last_scored_utc": "2025-09-21T23:00:00+00:00"
+        },
+        "test": {
+          "scored_target_hours": 4063,
+          "scored_pairs": 14583,
+          "first_scored_utc": "2025-09-23T00:00:00+00:00",
+          "last_scored_utc": "2026-03-28T23:00:00+00:00"
+        }
+      },
+      "6": {
+        "train": {
+          "scored_target_hours": 14206,
+          "scored_pairs": 32621,
+          "first_scored_utc": "2022-01-01T17:00:00+00:00",
+          "last_scored_utc": "2025-06-29T16:00:00+00:00"
+        },
+        "validation": {
+          "scored_target_hours": 1961,
+          "scored_pairs": 7203,
+          "first_scored_utc": "2025-07-01T00:00:00+00:00",
+          "last_scored_utc": "2025-09-21T23:00:00+00:00"
+        },
+        "test": {
+          "scored_target_hours": 4063,
+          "scored_pairs": 14583,
+          "first_scored_utc": "2025-09-23T00:00:00+00:00",
+          "last_scored_utc": "2026-03-28T23:00:00+00:00"
+        }
+      },
+      "24": {
+        "train": {
+          "scored_target_hours": 14190,
+          "scored_pairs": 32593,
+          "first_scored_utc": "2022-01-02T11:00:00+00:00",
+          "last_scored_utc": "2025-06-29T16:00:00+00:00"
+        },
+        "validation": {
+          "scored_target_hours": 1961,
+          "scored_pairs": 7203,
+          "first_scored_utc": "2025-07-01T00:00:00+00:00",
+          "last_scored_utc": "2025-09-21T23:00:00+00:00"
+        },
+        "test": {
+          "scored_target_hours": 4063,
+          "scored_pairs": 14583,
+          "first_scored_utc": "2025-09-23T00:00:00+00:00",
+          "last_scored_utc": "2026-03-28T23:00:00+00:00"
+        }
+      }
+    },
+    "gap_hours": {
+      "train_to_validation": 24.0,
+      "validation_to_test": 24.0
+    }
+  },
+  "provenance": {
+    "station_sources": [
+      "data/raw/stations/2022.parquet",
+      "data/raw/stations/2023.parquet",
+      "data/raw/stations/2024.parquet",
+      "data/raw/stations/2025.parquet",
+      "data/raw/stations/2026_partial.parquet"
+    ],
+    "weather_sources": [
+      "data/raw/weather/2022.parquet",
+      "data/raw/weather/2023.parquet",
+      "data/raw/weather/2024.parquet",
+      "data/raw/weather/2025.parquet",
+      "data/raw/weather/2026_partial.parquet"
+    ],
+    "raw_rows": 853189,
+    "observed_pm25_pairs": 54593,
+    "timeline_hours": 37152,
+    "missing_weather_direction_hours": 0,
+    "missing_requested_channels": {
+      "pblh": "No boundary-layer-height column or file in raw weather sources",
+      "population_density": "No population raster or node-level population source",
+      "road_proximity": "No precomputed distance-to-road source; OSM graph nodes lie on roads",
+      "traffic_index": "No time-indexed traffic or emissions source"
+    }
+  },
+  "target_fit": {
+    "target_standard_mean": 34.135868072509766,
+    "target_standard_std": 22.99373435974121,
+    "target_log1p_mean": 3.380091905593872,
+    "target_log1p_std": 0.6390002965927124,
+    "legacy_342_9356_ratio_to_train_std": 14.914306420814878
+  }
+}

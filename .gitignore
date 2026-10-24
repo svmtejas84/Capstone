@@ -54,3 +54,5 @@ data/processed/graph/*.pkl
 
 # Gate continuation: keep generated data and oversized graph tensors out of new commits.
 /data/
+!results/old_filtering_audit.json
+!results/cleaning_compare_v2.json
