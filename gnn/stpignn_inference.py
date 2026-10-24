@@ -65,7 +65,7 @@ def _load_static_artifacts(
 	node_map = pd.read_parquet(node_map_path)
 	node_to_index = {
 		int(node_id): int(node_index)
-		for node_id, node_index in zip(node_map["node_id"].values, node_map["node_index"].values, strict=False)
+		for node_id, node_index in zip(node_map["node_id"].values, node_map["node_index"].values)
 	}
 	return model, graph, node_to_index
 
@@ -75,7 +75,7 @@ def _load_node_id_map(node_map_path: str = str(DEFAULT_NODE_MAP_PATH)) -> dict[i
 	node_map = pd.read_parquet(node_map_path)
 	return {
 		int(node_index): int(node_id)
-		for node_id, node_index in zip(node_map["node_id"].values, node_map["node_index"].values, strict=False)
+		for node_id, node_index in zip(node_map["node_id"].values, node_map["node_index"].values)
 	}
 
 
