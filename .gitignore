@@ -56,3 +56,11 @@ data/processed/graph/*.pkl
 /data/
 !results/old_filtering_audit.json
 !results/cleaning_compare_v2.json
+!results/baselines_v2b_predictions.parquet
+!results/neural_predictions_v2b.parquet
+!results/neural_longer_predictions_v2b.parquet
+!results/baselines_v2b_run.json
+!results/neural_selection_v2b_run.json
+!results/neural_final_v2b_run.json
+!results/neural_longer_v2b_run.json
+!results/gate_v2b_bootstrap.json

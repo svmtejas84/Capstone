@@ -61,10 +61,11 @@ def main():
     train_i, train_j = _pairs(target, observed, train_mask, history, horizon)
     test_i, test_j = _pairs(target, observed, test_mask, history, horizon)
     y_train = target[train_i, train_j]
-    x_train = features[train_i - horizon, train_j, 1:]  # own PM2.5 excluded
+    regression_first_feature = 5 if cfg.get("ridge_weather_static_only", False) else 1
+    x_train = features[train_i - horizon, train_j, regression_first_feature:]
     regression = Ridge(alpha=float(cfg["non_neural_regression_alpha"]))
     regression.fit(x_train, y_train)
-    x_test = features[test_i - horizon, test_j, 1:]
+    x_test = features[test_i - horizon, test_j, regression_first_feature:]
     regression_pred = regression.predict(x_test)
 
     cutoff = test_i - horizon
@@ -121,6 +122,7 @@ def main():
               "persistence_fallback_pairs": int(persistence_fallback.sum()),
               "idw_fallback_pairs": int(idw_fallback.sum()),
               "train_target_mean": float(np.mean(y_train)),
+              "regression_feature_indices": list(range(regression_first_feature, features.shape[-1])),
               "regression_coefficients": regression.coef_.tolist(),
               "runtime_seconds": time.perf_counter() - started}
     (REPO_ROOT / f"results/baselines_{args.output_prefix}_run.json").write_text(json.dumps(report, indent=2) + "\n")

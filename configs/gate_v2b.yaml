@@ -1,6 +1,7 @@
 seed: 42
 horizon_hours: 1
 non_neural_regression_alpha: 1.0
+ridge_weather_static_only: true
 idw_power: 2.0
 persistence_missing_fallback: train_station_mean
 idw_missing_fallback: train_station_mean
