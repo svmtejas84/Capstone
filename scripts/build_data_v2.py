@@ -57,6 +57,10 @@ def main():
                     physical_wind_tensor={"source": "raw weather wind_direction_10m", "units": "degrees FROM north, clockwise",
                                           "shape": list(data.raw_wind_degrees.shape)})
     (out / "feature_registry.json").write_text(json.dumps(registry, indent=2) + "\n")
+    cleaning_counts = extra["cleaning_counts"].copy()
+    for key, value in meta.items():
+        cleaning_counts[key] = value
+    cleaning_counts.to_csv(out / "cleaning_counts_v2.csv", index=False)
 
     station = extra["station_table"].copy()
     prior = out / "stations.csv"

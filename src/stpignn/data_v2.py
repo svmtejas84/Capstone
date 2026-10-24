@@ -125,6 +125,45 @@ def _load_raw_table(pattern: str, skip_meta=False):
     return pd.concat(frames, ignore_index=True), [str(p.relative_to(REPO_ROOT)) for p in paths]
 
 
+def _clean_rows(frame: pd.DataFrame, cfg: dict, source: str, time_column: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Apply documented per-row bounds before aggregation or any fitted statistic."""
+    clean = cfg["cleaning"]
+    if not clean["reject_instead_of_legacy_clip"]:
+        raise ValueError("The observed-only cleaning policy must reject, not clip")
+    work = frame.copy()
+    value_columns = ["value"] if source == "station" else ["relative_humidity_2m", "temperature_2m"]
+    rejected = []
+    for column in value_columns:
+        value = pd.to_numeric(work[column], errors="coerce")
+        reason = pd.Series("kept", index=work.index, dtype=object)
+        reason[~np.isfinite(value)] = "nonfinite"
+        if source == "station":
+            reason[np.isfinite(value) & (value < 0)] = "negative"
+            pm25 = work.parameter.eq("pm25")
+            reason[pm25 & np.isfinite(value) & (value > clean["pm25_max_ug_m3"])] = "pm25_above_old_graph_cap"
+        elif column == "relative_humidity_2m":
+            reason[np.isfinite(value) & ((value < clean["humidity_min_percent"]) | (value > clean["humidity_max_percent"]))] = "humidity_out_of_old_graph_range"
+        else:
+            reason[np.isfinite(value) & ((value < clean["temperature_min_c"]) | (value > clean["temperature_max_c"]))] = "temperature_out_of_old_graph_range"
+        selected = reason.ne("kept")
+        counts = pd.DataFrame({"source": source, "field": column,
+                               "parameter": work.parameter if source == "station" else column,
+                               "time_utc": work[time_column], "reason": reason})
+        rejected.append(counts)
+        work[column] = value.mask(selected)
+    evidence = pd.concat(rejected, ignore_index=True)
+    evidence["year"] = pd.DatetimeIndex(evidence.time_utc).year
+    boundaries = {name: (pd.Timestamp(cfg[f"{name}_start_utc"]), pd.Timestamp(cfg[f"{name}_end_utc"]))
+                  for name in ("train", "validation", "test")}
+    evidence["split"] = "outside"
+    for name, (start, end) in boundaries.items():
+        evidence.loc[evidence.time_utc.between(start, end), "split"] = name
+    summary = evidence.groupby(["source", "split", "year", "parameter", "field", "reason"], observed=True).size().rename("rows").reset_index()
+    if source == "station":
+        work = work.loc[work.value.notna()]
+    return work, summary
+
+
 def _station_values(raw: pd.DataFrame, times: pd.DatetimeIndex, station_ids: np.ndarray, parameter: str) -> np.ndarray:
     subset = raw.loc[raw.parameter.eq(parameter), ["station_id", "time_utc", "value"]]
     subset = subset[np.isfinite(pd.to_numeric(subset.value, errors="coerce"))]
@@ -227,7 +266,7 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
     raw["time_utc"] = utc_hour(raw["time"])
     raw["value"] = pd.to_numeric(raw.value, errors="coerce")
     raw = raw.loc[raw.station_id.notna() & raw.parameter.isin(POLLUTANTS)]
-    raw = raw.loc[np.isfinite(raw.value) & (raw.value >= 0)]
+    raw, station_cleaning = _clean_rows(raw, cfg, "station", "time_utc")
     station_ids = np.sort(raw.loc[raw.parameter.eq("pm25"), "station_id"].unique()).astype(np.int64)
     station_map = pd.read_parquet(REPO_ROOT / cfg["station_to_node"])
     node_map = pd.read_parquet(REPO_ROOT / cfg["node_index_map"])
@@ -250,6 +289,7 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
 
     weather_raw, weather_paths = _load_raw_table(cfg["raw_weather_glob"])
     weather_raw["time_utc"] = utc_hour(weather_raw.time, assume_naive_utc=True)
+    weather_raw, weather_cleaning = _clean_rows(weather_raw, cfg, "weather", "time_utc")
     weather = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True).reindex(times)
     wind_raw = weather["wind_direction_10m"].to_numpy(dtype=np.float32)
     # Direction is a circular measurement; retain raw degrees for physics.
@@ -301,4 +341,6 @@ def build(config_path: Path) -> tuple[DataV2, dict]:
                   "raw_rows": len(raw), "observed_pm25_pairs": int(observed_mask.sum()),
                   "timeline_hours": len(times), "missing_weather_direction_hours": int(np.isnan(wind_raw).sum()),
                   "missing_requested_channels": REQUESTED_MISSING}
-    return data, {"station_table": station, "provenance": provenance}
+    cleaning_counts = pd.concat([station_cleaning, weather_cleaning], ignore_index=True)
+    return data, {"station_table": station, "provenance": provenance,
+                  "cleaning_counts": cleaning_counts}
