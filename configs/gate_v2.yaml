@@ -8,7 +8,8 @@ bootstrap_replicates: 2000
 bootstrap_seed: 4301
 neural_seeds: [11, 23, 37, 51, 79]
 neural_hidden_dim: 96
-neural_batch_size: 256
+neural_batch_size: 512
+neural_selection_epochs: 2
 neural_max_epochs: 5
 neural_early_stopping_patience: 2
 neural_lr_grid: [3.0e-6, 1.0e-5, 3.0e-5, 1.0e-4, 3.0e-4]

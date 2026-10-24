@@ -75,6 +75,27 @@ def penalty(pred_norm: torch.Tensor, edge_index: torch.Tensor, mask: torch.Tenso
     return torch.mean(F.relu(diff * resistance) ** 2)
 
 
+def batched_penalty(pred_norm: torch.Tensor, edge_index: torch.Tensor, masks: torch.Tensor,
+                    edge_attr: torch.Tensor, variant: str) -> torch.Tensor:
+    """Differentiable batch penalty; pred_norm is physical PM2.5 / train target SD."""
+    if pred_norm.ndim != 2 or masks.ndim != 2:
+        raise ValueError("Expected predictions [B,N] and wind masks [B,E]")
+    src, dst = edge_index
+    if len(src) == 0:
+        return pred_norm.new_tensor(0.0)
+    diff = pred_norm[:, dst] - pred_norm[:, src]
+    if variant == "laplacian":
+        return torch.mean(diff ** 2)
+    if variant == "legacy":
+        resistance = torch.sigmoid(edge_attr.sum(dim=-1) / 1000.0)
+    elif variant == "corrected_mask":
+        resistance = torch.sigmoid(edge_attr[:, 0] / 1000.0)
+    else:
+        raise ValueError(variant)
+    masked = F.relu(diff * resistance[None, :]) ** 2
+    return (masked * masks.float()).sum() / masks.float().sum().clamp(min=1)
+
+
 def pvr_statistics(pred_norm: torch.Tensor, edge_index: torch.Tensor, mask: torch.Tensor,
                    target_scale_ug_m3: float, thresholds=(0.0, 0.01, 0.05, 0.1),
                    q_norm: torch.Tensor | None = None) -> list[dict]:
