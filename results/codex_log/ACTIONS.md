@@ -6,3 +6,4 @@
 - 2026-10-24 15:58 UTC DONE Gate A: result commit `e7dbbcd` pushed to `origin/audit/canonical-notebook-20261023`; RESUME.md updated for Gate B. No Gate B job was started.
 - 2026-10-24 16:07:40 UTC START Gate B: cleaned h=1 baselines and five-seed neural comparison. Starting commit `7233414cad3a47662a1c03b19bf2d66d42da4932`.
 - 2026-10-24 16:49 UTC DONE Gate B analysis: cleaned h=1 five-seed short and longer diagnostics, baselines, paired UTC-day bootstrap. Primary gate fails against persistence; raw outputs in `results/gate_v2b.*` and `runs/gate_b_*.log`. Neural source commit `4261e2e`, baseline/summary source commit `3688c6e`.
+- 2026-10-24 16:51 UTC DONE Gate B: result commit `46924c5` pushed to `origin/audit/canonical-notebook-20261023`; RESUME.md set to Gate C with no running job.

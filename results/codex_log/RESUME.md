@@ -1,12 +1,12 @@
 # Resume
 
-- Last completed gate: A CLEANING. Gate A result commit `e7dbbcd` was pushed to `origin/audit/canonical-notebook-20261023`.
-- Current gate: B CLEANED GATE, h=1; STARTED 2026-10-24 16:07:40 UTC. Gate C LOSO is NOT RUN.
-- Next gate: C LOSO, after Gate B is committed and pushed.
+- Last completed gate: B CLEANED GATE, h=1. Gate B result commit `46924c5` was pushed to `origin/audit/canonical-notebook-20261023`.
+- Current gate: none; Gate C LOSO is NOT RUN.
+- Next gate: C LOSO.
 - Branch: `audit/canonical-notebook-20261023`.
-- Commit: Gate B code commits `4261e2e` and `3688c6e`; use `git rev-parse HEAD` for latest branch commit.
-- Running job: Gate B summary/bootstrap PID `2881113`, log `results/codex_log/runs/gate_b_summary.log`. Baselines, validation selection, five-seed short final and five-seed longer diagnostics completed; raw logs `results/codex_log/runs/gate_b_*.log`.
-- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && ps -p 2881113 -o pid=,stat= && cat results/codex_log/runs/gate_b_summary.log && cat results/gate_v2b.md`.
+- Commit: Gate B result `46924c5`; a handoff-log commit follows. Use `git rev-parse HEAD` for latest branch commit.
+- Running job: none (PID: none; log path: none). Gate B raw logs are `results/codex_log/runs/gate_b_*.log`.
+- Exact command to continue: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && sed -n '1,240p' scripts/evaluate_station_lso.py && sed -n '1,350p' src/stpignn/data_v2.py`.
 
 ## Gate A state and evidence
 
@@ -16,11 +16,14 @@
 - `results/cleaning_counts_v2.csv` is correct: `source` values `station`, `weather`; station train PM2.5 above-cap rows 887. Ten tests passed (`results/codex_log/runs/gate_a_tests.log`).
 - Step 4b-A was appended to `claude_paper.md`; do not reread it in full.
 
-## Gate B instructions (NOT RUN)
+## Gate B result (DONE)
 
-- Append `START Gate B` to ACTIONS.md and start time to QUOTA.md before work. Preserve old Step 4 artifacts; write new `results/gate_v2b.csv`, `results/gate_v2b.md`, curves and run metadata with new names.
-- Use cleaned `results/data_v2_arrays.npz` and identical observed masks. Baselines: persistence, hour×day-of-week climatology, IDW and Ridge. Neural: GRU-only, Vanilla GCN, ST GRU-GCN, corrected observed-only ST-PIGNN, Laplacian control; five seeds, validation-only LR grid 3e-6/1e-5/3e-5/1e-4/3e-4, same short budget as Step 4. Add one longer 20-epoch/patience-4 row for corrected ST-PIGNN and GRU-only.
-- Paired UTC-day bootstrap, 2,000 replicates, selected ST-PIGNN versus persistence and IDW for MAE and R². Report test results even if unfavorable. Run long jobs with nohup and record PID/log; poll no more than every five minutes. Append short Step 4b-B only. Finish with `git add -A` (no data/ or >90 MB), commit, push, then update this file and push its handoff commit.
+- Cleaned h=1 test pairs: 14,583. Persistence MAE/R² 8.116095/0.532089; IDW 22.698642/-0.205856. Validation-selected corrected ST-PIGNN short seed 23 MAE/R² 20.613632/0.001594. Matched-budget primary gate fails against persistence; paired bootstrap details in `results/gate_v2b.md`.
+- Five-seed neural and longer rows, raw predictions and curves are in `results/gate_v2b.csv`, `results/neural_final_v2b.csv`, `results/neural_longer_v2b.csv`, and `results/neural_curves_v2b.csv`. Earlier Step 4 outputs were preserved.
+
+## Gate B protocol (DONE)
+
+- The fixed short budget and separate longer diagnostics used `configs/gate_v2b.yaml`, `scripts/train_gate_v2.py`, and `scripts/evaluate_baselines_v2.py`; selection used validation only. The paired UTC-day bootstrap used 2,000 replicates. The predeclared primary gate and Ridge information-set correction are recorded in DECISIONS.md.
 
 ## Gate C instructions (NOT RUN)
 
