@@ -10,6 +10,8 @@ Step 1 refactor run: `scripts/replay_canonical.py --deterministic-fp32` from bas
 
 Step 2 data run: `scripts/build_data_v2.py`, `configs/data_v2.yaml`, seed 42, source commit `f67653e` for the final registry rerun (exact commit and runtime in `results/data_v2_fit.json`), run 2026-10-24. `scripts/diagnose_data_v2.py`, same config/seed, source commit `3802c23651777bb5cd472d748d590ca30fdb14d6`, run 2026-10-24 14:16 UTC. Step 3 mask run: `scripts/analyze_physics_v2.py`, same config/seed and source commit `71befda`, run 2026-10-24 14:10 UTC. Code assertions and toy tests: `python -m pytest tests/test_data_v2.py tests/test_physics_v2.py`, 8 passed at that run.
 
+Step 4 baseline run: `scripts/evaluate_baselines_v2.py`, configs `gate_v2.yaml` and `data_v2.yaml`, seed 42, source commit `3802c23651777bb5cd472d748d590ca30fdb14d6`, 2026-10-24 14:15 UTC (`results/baselines_v2_run.json`). Initial validation sweep: `scripts/train_gate_v2.py --stage selection`, seed 11, source commit `9478b047933df327debe22af2954c8d954008f57`, 2026-10-24 14:40:41 UTC, 248.05 seconds (`results/neural_selection_initial_run.json`); masked-history sweep from commit `89a6d6ef653e9a086ad667c188a6562b1744814a`, timestamp in `results/neural_selection_run.json`. Final five-seed training: same script `--stage final`, config `configs/gate_v2.yaml`, seeds 11/23/37/51/79, commit `89a6d6e`, 2026-10-24 14:54:47 UTC, 615.87 seconds on Tesla V100-PCIE-32GB (`results/neural_final_run.json`). The legacy checkpoint adapter ran from `89a6d6e` at 2026-10-24 14:55:52 UTC (`results/legacy_checkpoint_v2_run.json`). The paired gate ran from `89a6d6e` at 2026-10-24 14:55:29 UTC, bootstrap seed 4301 (`results/gate_bootstrap_v2.json`). Test PVR ran from `57f3e8036649342413593760198eebfec46d77a4` at 2026-10-24 14:56:38 UTC, seeds 11/23/37/51/79 (`results/pvr_gate_v2_run.json`).
+
 ## 1. Provenance verdicts
 
 | Item | Verdict | Evidence |
@@ -62,6 +64,10 @@ Custom cell 7:24-49 calculates source→destination bearings `atan2(dy,dx)`, rev
 **Step 2 feature and forecast definition.** The available network channels in order are lagged PM2.5, PM10, NO2, SO2, CO, wind speed, gusts, temperature, humidity, surface pressure, sine of wind direction, cosine of wind direction, and SRTM elevation. `results/feature_registry.json` gives raw source column and units for each. Raw meteorological wind FROM direction remains a separate unscaled degree tensor. PBLH, population density, road proximity and traffic index have no input sources and were omitted, with reasons in the registry. `DataV2.window` predicts observed PM2.5 at hour `target_index` from `history_hours=12` ending at `target_index-horizon`; it asserts no input index is later than this cutoff. Own-station lagged PM2.5 is allowed, and `mask_own_history=True` zeroes that channel for the spatial/weather-only variant. Raw observations are the target mask; no nonzero-value proxy or modulo indexing is used. Source: `src/stpignn/data_v2.py`, `results/feature_registry.json`, `configs/data_v2.yaml`, seed 42, source commit and timestamp in section 0.
 
 **Step 3 physics options.** `src/stpignn/physics_v2.py` defines compass bearing clockwise from north for UTM source→destination vectors. Wind FROM 270° transports TO 90°; the toy test selects only an eastbound edge. The corrected mask compares that transport bearing to each edge using a 37.5° half-angle. Legacy mask/penalty remain available as a separate option. The corrected penalty applies `sigmoid(edge_length_m/1000)` only, with no one-hot road flags in the sum; graph Laplacian is a separate squared-gradient control. Q is defined as `max(0, coefficient_ug_m3_per_index) * max(0, traffic_index) / target_scale_ug_m3` in normalized units, but the Q variant raises `MissingTrafficIndex` because no traffic-index source exists. `pvr_statistics` uses the same selected edges and optional Q margin at normalized thresholds 0, 0.01, 0.05 and 0.1, and reports their µg/m³ equivalents from the active train-fitted target scale. The corrected and legacy aligned-hour masks disagree on 51.9684% of the directed station edges on average over 1,961 validation target hours; mean selected fractions are 25.4479% and 26.6667%, respectively. The legacy comparison reconstructs the master feature's scaled wind direction by a fitted linear conversion; it is not an exact replay of the notebook's modulo-misaligned time inputs. Source: `results/physics_v2_mask_summary.json`, `results/wind_mask_coverage_v2.csv`, `scripts/analyze_physics_v2.py`, `configs/data_v2.yaml`, seed 42, source commit and 2026-10-24 14:10 UTC timestamp.
+
+**Step 4 trained comparison.** Custom `src/stpignn/models_v2.py` wraps the canonical `gnn.model.STPIGNN` as a 13-input, 96-hidden, two-GINE-layer plus GRU model on a 15-station directed four-nearest-neighbour graph. It also defines library `torch_geometric.nn.GCNConv` two-layer Vanilla GCN (last input hour), GCN plus `torch.nn.GRUCell` on each of 12 input hours, and a graph-free `torch.nn.GRU`. `scripts/train_gate_v2.py` uses library AdamW, 0.01 weight decay, 512 target-hour batches, gradient clip 0.3, fp32 deterministic algorithms, 2-epoch validation-only LR/target-transform sweep and at most 5 final epochs with patience 2. The LR grid is 3e-6, 1e-5, 3e-5, 1e-4 and 3e-4. All final runs use train-fitted log1p targets; corrected, legacy-mask and Laplacian penalties use `lambda=0.06*min(1,epoch/25)`. At epoch 5 this is 0.012. The imputed-target variant weights non-observed training targets at 0.25 but is evaluated only on raw observed targets. The no-own-PM2.5 variant zeros channel 0 throughout the input history. All models use the same observed validation/test pairs. This is station-subgraph training, not a full 154,902-node citywide retrain; five epochs do not establish convergence. Validation-selected rates are in `results/neural_selection_v2.csv`, per-epoch training/validation curves in `results/neural_curves_v2.csv`, and checkpoints in `results/checkpoints_v2/`. Source: these results, `scripts/train_gate_v2.py`, configs, seeds, commits and timestamps in section 0.
+
+Custom `scripts/evaluate_baselines_v2.py` computes last-observed own-station persistence, train-fitted hour-of-day × day-of-week climatology, station train mean, inverse-square IDW from other stations at input time, and library scikit-learn 1.6.1 `Ridge` on meteorology/static inputs. `src/stpignn/evaluation.py:evaluate_arrays` computes pooled and station MAE, RMSE, R², bias, nMAE and median AE on the same observed-target mask. `scripts/evaluate_legacy_checkpoint_v2.py` separately maps the 13 rebuilt features to the legacy checkpoint's 16 slots using full-period master scaling and a 15-node station graph with zero road flags. This is a diagnostic adapter with changed graph/features; its metric is not a like-for-like citywide checkpoint evaluation. `scripts/summarize_gate_v2.py` selects one ST-PIGNN variant and seed on validation MAE, then applies a paired 2,000-replicate UTC-day bootstrap on the test pairs. Source: result files and run metadata listed in section 0.
 
 **A0.2 draft-claim alignment.**
 
@@ -122,7 +128,37 @@ source: `results/splits_v2.json`, `results/data_v2_diagnostics.json`, produced b
 
 source: `results/baselines_v2_metrics.csv`, produced by `scripts/evaluate_baselines_v2.py`; config `configs/gate_v2.yaml` and `configs/data_v2.yaml`, seed 42, source commit `3802c23651777bb5cd472d748d590ca30fdb14d6`, run 2026-10-24 14:15 UTC. Full pair predictions are in `results/baselines_v2_predictions.parquet`, per-station rows in the metrics CSV. Persistence used its fixed train-mean fallback for 6 pairs, IDW for 1,037 pairs (`results/baselines_v2_run.json`). This is the required baseline report before neural training; the gate verdict awaits trained models.
 
-Main comparisons, five-seed LOSO, ablations, PVR/smoothness thresholds, hyperparameter sweep, routing outcomes, corrected IG, and calibration diagnostics have **no Phase A measured result**. Stored untrained baseline output is documented in section 1, not inserted into a trained-model comparison table. Later phases must use one shared evaluator, corrected observed-only masks, common splits and checkpoint lineage. Phase C's station-subset architecture and its hidden size/epoch/lr differences must be explicit in its CSV.
+| Step 4 trained model, same 14,623 observed test pairs | Seeds | MAE mean±SD, µg/m³ | RMSE mean±SD, µg/m³ | R² mean±SD |
+|---|---:|---:|---:|---:|
+| GRU only | 5 | 30.127329±0.143700 | 162.103406±0.398411 | 0.003758±0.004902 |
+| Vanilla GCN | 5 | 30.097257±0.218846 | 162.660735±0.058575 | -0.003100±0.000722 |
+| ST GRU-GCN | 5 | 31.369975±0.964364 | 162.793239±0.357185 | -0.004738±0.004413 |
+| ST-PIGNN legacy mask/loss | 5 | 30.235636±0.161479 | 161.679976±0.234212 | 0.008959±0.002872 |
+| ST-PIGNN corrected mask/loss, observed only | 5 | 30.214535±0.315297 | 161.668441±0.413062 | 0.009097±0.005068 |
+| ST-PIGNN Laplacian control | 5 | 30.240379±0.184926 | 161.585571±0.388508 | 0.010113±0.004755 |
+| ST-PIGNN corrected plus 0.25-weight imputed training targets | 5 | 31.055491±0.677617 | 161.057199±0.276106 | 0.016578±0.003372 |
+| ST-PIGNN corrected, own PM2.5 history zeroed | 5 | 31.298549±0.273053 | 162.262725±0.145603 | 0.001803±0.001792 |
+
+source: `results/neural_summary_v2.csv`, `results/neural_final_v2.csv`, produced by `scripts/train_gate_v2.py` and `scripts/summarize_gate_v2.py`; `configs/gate_v2.yaml` and `configs/data_v2.yaml`, seeds 11/23/37/51/79, source commit `89a6d6e`, 2026-10-24 14:54:47 UTC final-run timestamp. Per-station rows are in `results/neural_per_station_v2.csv`; per-pair outputs and curves are also retained.
+
+| Validation-selected ST-PIGNN gate, 14,623 test pairs | MAE, µg/m³ | RMSE, µg/m³ | R² |
+|---|---:|---:|---:|
+| Persistence | 21.261102 | 177.317266 | -0.192012 |
+| Hour/day climatology | 392.031114 | 536.533600 | -9.913710 |
+| Corrected plus imputed targets, seed 37 | 30.584854 | 161.285796 | 0.013787 |
+
+Paired ST-PIGNN minus persistence MAE difference is +9.323752 µg/m³, 95% UTC-day bootstrap CI [+7.535600,+10.784741]; R² difference +0.205799, CI [+0.047942,+0.419453]. The model beats climatology on MAE and R², but it does not beat persistence on MAE; the specified gate **FAILS**. The legacy checkpoint diagnostic adapter scores MAE 39.415929, RMSE 167.628466, R² -0.065305 on these pairs. Source: `results/gate_persistence.md`, `results/gate_bootstrap_v2.json`, `results/legacy_checkpoint_v2_metrics.csv`; produced by `scripts/summarize_gate_v2.py` and `scripts/evaluate_legacy_checkpoint_v2.py`, configs, seed/commit/timestamps in section 0.
+
+| Corrected-mask test PVR, threshold | Corrected ST-PIGNN mean±SD | GRU-only mean±SD | ST GRU-GCN mean±SD |
+|---|---:|---:|---:|
+| 0 normalized / 0 µg/m³ | 45.48484±1.03588% | 45.33400±0.72124% | 47.06217±3.66755% |
+| 0.01 / 102.3727 µg/m³ | 0% | 0% | 0% |
+| 0.05 / 511.8636 µg/m³ | 0% | 0% | 0% |
+| 0.1 / 1,023.7271 µg/m³ | 0% | 0% | 0% |
+
+source: `results/pvr_gate_v2.csv`, produced by `scripts/evaluate_pvr_gate_v2.py`; `configs/gate_v2.yaml` and `configs/data_v2.yaml`, seeds 11/23/37/51/79, commit `57f3e80`, 2026-10-24 14:56:38 UTC. Corrected test mask has 58,339 active directed edge-hours among 243,780 candidate edge-hours. The train-fitted normalization is 10,237.2715 µg/m³, so the legacy normalized 0.05 threshold is 511.8636 µg/m³ here, not 17.1. Full legacy/corrected masks, all models and thresholds, exact counts and positive-gradient statistics are in the CSV. Q rows cannot be calculated without a measured traffic index.
+
+LOSO, full ablation, routing, corrected IG, calibration diagnostics and figures remain unrun pending the user's Step 5 instruction. Stored untrained notebook baseline output remains documented in section 1 and is not substituted into this table.
 
 ## 5. Figures
 
@@ -135,11 +171,11 @@ No Phase A figure was generated. The notebook's existing PNG figure cells are no
 | C1 SRTM elevation in training and IG | CONTRADICTED | No elevation among 16 training inputs; channel 5 is wind speed. |
 | C2 Q in training loss | CONTRADICTED | No Q in cell 13 penalty. |
 | C3 chronological and leak-free | CONTRADICTED | Full-period feature preprocessing, modulo indexing, target-step PM2.5 input. |
-| C4 physics improves accuracy by 15.0% | UNTESTED | Baseline is untrained in canonical notebook. |
-| C5 physics improves PVR | UNTESTED | No trained matched no-physics control. |
+| C4 physics improves accuracy by 15.0% | CONTRADICTED for Step 4 comparison | Corrected ST-PIGNN mean MAE 30.214535 vs trained GRU-GCN 31.369975 and GRU-only 30.127329; no 15.0% gain. |
+| C5 physics improves PVR | UNTESTED as a causal claim | At zero threshold corrected ST-PIGNN 45.48484% vs GRU-only 45.33400%; no matched no-physics ST-PIGNN control in this gate. |
 | C6 higher PVR due to baseline over-smoothing | UNTESTED | No gradient/smoothness controls. |
 | C7 each ablation component necessary | UNTESTED | Canonical checkpoint and ablation are not matched. |
-| C8 inductive spatial generalization | CONTRADICTED for cited MAE | All 308 scored pairs are at mapped station nodes. |
+| C8 inductive spatial generalization | CONTRADICTED for cited MAE; UNTESTED on rebuilt model | Canonical 308 pairs and Step 4's 14,623 test pairs are at mapped training stations, not held-out locations. |
 | C9 worst-cluster calibration fault | UNTESTED | No fault diagnostics. |
 | C10 elevation attribution is terrain | CONTRADICTED | IG's elevation label maps to wind speed channel. |
 | C11 routing dose/time benefit | UNTESTED | Saved routing field is 1.2825–1.6286 µg/m³; no independent rerun. |
@@ -147,17 +183,18 @@ No Phase A figure was generated. The notebook's existing PNG figure cells are no
 | C13 ST-PIGNN lower inference latency | UNTESTED | Baseline timers use unsynchronized CUDA calls and untrained models. |
 | C14 23 stations, 15 mapped nodes, 15 clusters consistent | CONTRADICTED | Graph mask 23, model-input mapped nodes 22, populated clusters 15. |
 
-source: A and R, produced by scripts in section 0, seed 42, source commit and timestamps there.
+source: A and R for canonical claims, plus `results/neural_summary_v2.csv`, `results/pvr_gate_v2.csv`, and `results/gate_bootstrap_v2.json` for Step 4 claims; producing scripts, configs, seeds, source commits and UTC timestamps are in section 0 and beside the section 4 tables.
 
 ## 7. Open issues and BLOCKERS
 
-1. **A0.4 legacy boundary:** The notebook now imports the extracted legacy methods, and repeated deterministic fp32 full replay passes parity (`results/full_replay_parity.json`). Existing secondary LOSO, ablation and routing data builders remain different and must not be pooled with data_v2 results. All new experiments must use `src/stpignn/data_v2.py` and `src/stpignn/evaluation.py`. The architecture remains custom `gnn.model.STPIGNN`, re-exported through `src.stpignn`.
+1. **A0.4 legacy boundary remains partial:** The notebook imports the extracted legacy methods, and repeated deterministic fp32 full replay passes parity (`results/full_replay_parity.json`). Existing secondary LOSO, ablation and routing data builders remain different and must not be pooled with data_v2 results. The notebook still contains relative `citywide_stpignn_best.pt` literals, and `src.stpignn` re-exports custom `gnn.model.STPIGNN` rather than owning its class source. All new Step 2–4 experiments use `src/stpignn/data_v2.py`, `src/stpignn/models_v2.py` and `src/stpignn/evaluation.py`; full Step 1.1 unification of secondary scripts is unfinished. Source: `rg` audit of notebook and named scripts, source commit `57f3e80`, 2026-10-24; see reproduction command in section 8.
 2. Canonical notebook side effects: cell 0 changes cwd and `sys.path`, seeds global RNGs and selects global device; cells 2/5/7/9 mutate global partitions and feature registries, read full-period hard-coded Parquets, and use nearest-node timeline substitution; cell 13 overwrites stable and best checkpoints on training or interrupt; cell 14 sets model weights `requires_grad=False`; cells 16/17/18/19/21 write CSVs or figures outside `results/`; cell 17 hard-codes fallback metrics. `scripts/replay_canonical.py` executes only setup and evaluation cells and writes to `results/`, avoiding notebook training/output side effects. Explicit data-context arguments in `src/stpignn/canonical.py` remove globals from the extracted dataset. Remaining side effects await full wiring.
 3. The checkpoint stores config, epoch and a June embedded timestamp, but no elevation source, Q flag, fit interval, split dates or raw-data hash. Filesystem mtime is 2026-10-16 17:35 UTC, not the embedded run time. It cannot prove the exact original data artifact from metadata alone. Source: A, seed 42, source commit and timestamp in section 0.
 4. The master Parquet contains full-period derived imputation, including bidirectional interpolation and full-period climatology; no train-only fit is documented. The fixed 342.9356 scale has no recorded fitting source. The canonical cell's `pm2_5_scaled` input is not time-aligned to global scored timestamps by a join. These defects block leak-free scientific claims until Phase B rebuilds data.
 5. The routing input builder and notebook have different input schemas and scale regimes. Routing code already multiplies by 342.9356 and clips at 120; concentration range cannot be repaired by applying that multiplier again. Phase F must wait for a validated feature-equivalent inference path.
 6. Table-1 row counts 60,752 and 594,974 are now identified as raw all-pollutant rows in 2022 and 2025; the derived-gapfill count 1,073,807 and master count 1,070,203 still differ, and the transformation responsible for 3,604 rows has not been proven.
 7. Step 2 has no PBLH, population-density, road-proximity or traffic-index source. These channels are absent rather than duplicated. The corrected-Q training variant cannot run until traffic data with documented units exists; its code raises an explicit error. Raw train PM2.5 includes 212 values above 10,000 µg/m³ and a maximum of 647,953; their validity has not been established, and all unfiltered metrics must be interpreted as calculations on those raw observations. Source: `results/feature_registry.json`, `results/data_v2_diagnostics.json`, scripts/config/seed/commit/timestamps in section 0.
+8. Step 4 trained only the 15-station subgraph for up to five epochs. There is no full-city retraining or demonstrated convergence. All five-seed corrected ST-PIGNN variants missed persistence on test MAE. The Q penalty and with-Q PVR remain blocked by missing measured traffic. The large train-only target SD makes normalized thresholds 0.01/0.05/0.1 correspond to 102.37/511.86/1,023.73 µg/m³ and yields nearly all-zero thresholded PVR despite 45% zero-threshold positive gradients. Source: `results/neural_final_v2.csv`, `results/pvr_gate_v2.csv`, run metadata, scripts/configs/seeds/commits/timestamps in section 0.
 
 ## 8. Reproduction commands
 
@@ -172,7 +209,15 @@ python -m scripts.check_full_replay_parity
 python -m scripts.build_data_v2
 python -m scripts.diagnose_data_v2
 python -m scripts.analyze_physics_v2
+python -m scripts.evaluate_baselines_v2
+python -m scripts.train_gate_v2 --stage selection
+python -m scripts.train_gate_v2 --stage selection --models stpignn_no_own_pm25
+python -m scripts.train_gate_v2 --stage final
+python -m scripts.evaluate_legacy_checkpoint_v2
+python -m scripts.summarize_gate_v2
+python -m scripts.evaluate_pvr_gate_v2
 python -m pytest tests/test_data_v2.py tests/test_physics_v2.py
+rg -n 'os\.chdir|sys\.path|/home/jupyter|citywide_stpignn_best|STPIGNN|from gnn' scripts/evaluate_station_lso.py scripts/stpignn_ablation_dem.py scripts/prepare_routing_snapshot.py scripts/evaluate_routing_gs.py src/stpignn notebooks/production/evaluated_wind_advection.ipynb
 ```
 
-The scripts write `results/audit_canonical.json`, `results/stations.csv`, `results/audit_imputation_tiers.csv`, `results/refactor_parity.json`, `results/replay_canonical.json` and `results/replay_canonical.log`. Phase A ends here. Phases B–I require the full A0.4 wiring and data/split repairs above before their requested experiments can be compared with this checkpoint.
+The scripts write the artifacts named beside each table. Step 4's persistence gate failed; Steps 5 onward have not been run.

@@ -1,0 +1,29 @@
+{
+  "timestamp_utc": "2026-10-24T14:15:06.277291+00:00",
+  "script": "scripts/evaluate_baselines_v2.py",
+  "config": "configs/gate_v2.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "3802c23651777bb5cd472d748d590ca30fdb14d6",
+  "horizon_hours": 1,
+  "test_pairs": 14623,
+  "train_pairs_for_regression": 32867,
+  "persistence_fallback_pairs": 6,
+  "idw_fallback_pairs": 1037,
+  "train_target_mean": 746.9292602539062,
+  "regression_coefficients": [
+    189.90650939941406,
+    9.396684646606445,
+    21.033029556274414,
+    -101.36951446533203,
+    -572.6144409179688,
+    402.20343017578125,
+    -655.185302734375,
+    -683.44677734375,
+    332.7375183105469,
+    60.058284759521484,
+    -17.26936149597168,
+    550.0833129882812
+  ],
+  "runtime_seconds": 0.5473225452005863
+}

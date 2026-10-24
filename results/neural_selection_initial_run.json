@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "2026-10-24T14:43:45.323292+00:00",
+  "script": "scripts/train_gate_v2.py --stage selection",
+  "config": "configs/gate_v2.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "89a6d6ef653e9a086ad667c188a6562b1744814a",
+  "hardware": "Tesla V100-PCIE-32GB",
+  "runtime_seconds": 41.60632759146392
+}

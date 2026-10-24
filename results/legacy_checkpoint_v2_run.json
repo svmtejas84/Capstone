@@ -1,0 +1,59 @@
+{
+  "timestamp_utc": "2026-10-24T14:55:52.491339+00:00",
+  "script": "scripts/evaluate_legacy_checkpoint_v2.py",
+  "config": "configs/data_v2.yaml",
+  "gate_config": "configs/gate_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "89a6d6ef653e9a086ad667c188a6562b1744814a",
+  "checkpoint": "citywide_stpignn_best.pt",
+  "checkpoint_epoch": 2,
+  "adapter": "13 train-only-scaled station channels -> legacy 16 full-period-scaled slots; 15-node kNN graph with length and zero road flags; strictly lagged input",
+  "feature_linear_maps": {
+    "pm2_5": {
+      "slope": 0.06698402557972867,
+      "intercept": -1.2186637497954032
+    },
+    "pm10": {
+      "slope": 0.030369280173545253,
+      "intercept": -1.1900158272838242
+    },
+    "nitrogen_dioxide": {
+      "slope": 0.0673248161462005,
+      "intercept": -0.9980965567630314
+    },
+    "sulphur_dioxide": {
+      "slope": 0.1943480280452569,
+      "intercept": -1.3827570827771665
+    },
+    "carbon_monoxide": {
+      "slope": 0.004573397616887653,
+      "intercept": -1.7225230289906508
+    },
+    "wind_speed_10m": {
+      "slope": 0.6948309598369786,
+      "intercept": -2.1976638010707825
+    },
+    "wind_direction_10m": {
+      "slope": 0.010787811772204735,
+      "intercept": -1.9918484120500504
+    },
+    "wind_gusts_10m": {
+      "slope": 0.33078620637085077,
+      "intercept": -2.4487748311761854
+    },
+    "temperature_2m": {
+      "slope": 0.24273254370662634,
+      "intercept": -5.7294729080261995
+    },
+    "relative_humidity_2m": {
+      "slope": 0.043657351838027915,
+      "intercept": -3.048479453479779
+    },
+    "surface_pressure": {
+      "slope": 0.37128315803492745,
+      "intercept": -338.3885741204228
+    }
+  },
+  "test_pairs": 14623,
+  "runtime_seconds": 1.9691169876605272
+}

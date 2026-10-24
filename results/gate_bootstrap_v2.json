@@ -1,0 +1,53 @@
+{
+  "timestamp_utc": "2026-10-24T14:55:29.798875+00:00",
+  "script": "scripts/summarize_gate_v2.py",
+  "config": "configs/gate_v2.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seed": 42,
+  "source_git_commit": "89a6d6ef653e9a086ad667c188a6562b1744814a",
+  "selected_by_validation": {
+    "model": "stpignn_corrected_imputed",
+    "seed": 37,
+    "scaler": "log1p",
+    "lr": 0.0003,
+    "best_val_mae_ug_m3": 7.961224509900573
+  },
+  "intervals": {
+    "persistence": {
+      "mae_difference_ug_m3": 9.323752193160342,
+      "mae_ci95": [
+        7.535599591258899,
+        10.784740622778772
+      ],
+      "r2_difference": 0.2057987786070592,
+      "r2_ci95": [
+        0.04794228448944913,
+        0.4194531534851049
+      ],
+      "bootstrap_unit": "UTC calendar day",
+      "distinct_days": 177,
+      "replicates": 2000,
+      "seed": 4301
+    },
+    "climatology_hod_dow": {
+      "mae_difference_ug_m3": -361.4462599141616,
+      "mae_ci95": [
+        -381.05816051512267,
+        -341.263091697706
+      ],
+      "r2_difference": 9.92749692075005,
+      "r2_ci95": [
+        6.25704520248787,
+        20.14630196045358
+      ],
+      "bootstrap_unit": "UTC calendar day",
+      "distinct_days": 177,
+      "replicates": 2000,
+      "seed": 4301
+    }
+  },
+  "point_gate_pass": false,
+  "ci_gate_pass": false,
+  "test_pairs": 14623,
+  "q_variant_status": "BLOCKED: no measured traffic index"
+}

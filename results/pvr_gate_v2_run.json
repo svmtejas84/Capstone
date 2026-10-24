@@ -1,0 +1,16 @@
+{
+  "script": "scripts/evaluate_pvr_gate_v2.py",
+  "config": "configs/gate_v2.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "timestamp_utc": "2026-10-24T14:56:38.788548+00:00",
+  "source_git_commit": "57f3e8036649342413593760198eebfec46d77a4",
+  "seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "target_scale_ug_m3": 10237.271484375,
+  "q_status": "BLOCKED: measured traffic index absent; with-Q PVR cannot be evaluated"
+}
