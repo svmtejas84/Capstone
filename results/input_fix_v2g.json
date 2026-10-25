@@ -1,0 +1,51 @@
+{
+  "timestamp_utc": "2026-10-25T08:29:06.894679+00:00",
+  "source_commit": "006ba94e12345c58a8b028a94fefb8062159b75b",
+  "script": "scripts/input_fix_v2g.py",
+  "config": "configs/data_v2.yaml",
+  "seed": 42,
+  "horizon_hours": 1,
+  "train_pairs": 32628,
+  "test_pairs": 14583,
+  "cap_ug_m3": 500,
+  "channels": [
+    {
+      "channel": "pm25_lag",
+      "train_mean_ug_m3": 33.41880416870117,
+      "train_sd_ug_m3": 17.420804977416992,
+      "train_max_ug_m3": 500.0,
+      "log1p_mean": 3.380091905593872,
+      "log1p_sd": 0.6390002965927124,
+      "train_above_500": 0
+    },
+    {
+      "channel": "pm10_lag",
+      "train_mean_ug_m3": 69.12975311279297,
+      "train_sd_ug_m3": 27.378576278686523,
+      "train_max_ug_m3": 500.0,
+      "log1p_mean": 4.216259479522705,
+      "log1p_sd": 0.25753334164619446,
+      "train_above_500": 0
+    }
+  ],
+  "ar_with_lag": {
+    "n": 14583,
+    "mae": 11.894098604743368,
+    "rmse": 29.32533364020751,
+    "r2": 0.37421054233587525,
+    "bias": -4.454506644673213,
+    "nmae": 0.2677305405415865,
+    "median_ae": 5.352962493896484
+  },
+  "persistence": {
+    "n": 14583,
+    "mae": 8.116094094283508,
+    "rmse": 25.35774123071308,
+    "r2": 0.5320887897950328,
+    "bias": -0.009586093700905686,
+    "nmae": 0.18268944382908833,
+    "median_ae": 2.467498779296875
+  },
+  "ar_to_persistence_mae_ratio": 1.4654954053725007,
+  "alignment_bug_possible": true
+}

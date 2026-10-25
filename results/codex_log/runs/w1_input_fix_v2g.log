@@ -1,0 +1,7 @@
+2026-10-25T08:27:15Z START W1; S4 already at pushed commit 006ba94.
+Command: python -m scripts.input_fix_v2g
+2026-10-25T08:29:06Z EXIT 0; source commit 006ba94; config configs/data_v2.yaml; seed 42.
+Train input PM2.5 mean/SD/max: 33.418804/17.420805/500.000000 µg/m³.
+Train input PM10 mean/SD/max: 69.129753/27.378576/500.000000 µg/m³.
+AR-with-lag test MAE/R²: 11.894099/0.374211; persistence: 8.116094/0.532089; n=14583.
+STOP: AR MAE 46.5% above persistence; possible alignment bug. W2–W8 not started.

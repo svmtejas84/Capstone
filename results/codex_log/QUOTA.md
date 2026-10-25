@@ -16,3 +16,4 @@
 - S3 started 2026-10-25 UTC after S2 push. About 1 hour 25 minutes elapsed since S1 start; five-hour limit not near. Commit/push S3 before S4.
 - S3 analysis completed 2026-10-25 04:10:26 UTC, about 7 minutes after start. Commit/push S3 before S4; five-hour limit not near.
 - S4 started 2026-10-25 UTC after S3 push. Roughly 1 hour 35 minutes elapsed since S1 start; allow the long LOSO run, then append Step 4c, commit/push and stop. Do not start D-M.
+- 2026-10-25 08:27 UTC: new W1–W8 round begins with an approximately five-hour ceiling. S4 is already pushed. W1 ended at 08:29 UTC with the user-specified AR stop condition, well before the time ceiling. No W2–W8 job was launched.

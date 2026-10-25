@@ -249,3 +249,19 @@ Source: `scripts/evaluate_loso_v2.py`, `configs/loso_v2.yaml`, seeds 11/23/37, s
 The predeclared known-station ST-PIGNN versus best spatial baseline (ordinary kriging) comparison is TIE: paired UTC-day bootstrap (2,000 replicates) MAE difference -0.305 µg/m³, 95% CI [-1.164, 0.608]; R² difference +0.147, 95% CI [0.098, 0.192]; station Wilcoxon p=0.278 over 11 scored stations. Ordinary kriging used its train-mean fallback on 5,163/14,583 pairs, GP on 2,428, and IDW on 1,037. The four absent test folds and these fallback rates limit the spatial-generalization claim. No LOSO hyperparameter was changed after test scores.
 
 Individual-seed pooled metrics are in `results/loso_seed_summary_v2.csv`, produced by `scripts/summarize_loso_seeds_v2.py` at 2026-10-24 18:27:49 UTC from `configs/loso_v2.yaml` seeds 11/23/37 and source commit `a08e1e8`; this is distinct from the equal-seed-mean predictions in the table above.
+
+## Step 4g: bounded final round, W1 stop (2026-10-25 08:29 UTC)
+
+Source: `scripts/input_fix_v2g.py`, `configs/data_v2.yaml`, seed 42, source commit `006ba94`, run 2026-10-25T08:29:06 UTC; data and scores in `results/data_v2g_arrays.npz`, `results/input_channels_v2g.csv`, and `results/input_fix_v2g.json`. The imputed PM2.5 and lag PM10 channels were capped at 500 µg/m³. The PM2.5 lag uses the target's training-fitted log1p mean and SD. PM10 uses its own training-fitted log1p mean and SD.
+
+| Train input channel | Mean (µg/m³) | SD (µg/m³) | Max (µg/m³) |
+|---|---:|---:|---:|
+| PM2.5 lag | 33.418804 | 17.420805 | 500.000000 |
+| PM10 lag | 69.129753 | 27.378576 | 500.000000 |
+
+| h=1 test method | MAE (µg/m³) | R² |
+|---|---:|---:|
+| Train-only AR-with-lag | 11.894099 | 0.374211 |
+| Persistence | 8.116094 | 0.532089 |
+
+AR-with-lag has 46.5% higher MAE than persistence after the input repair. This triggers the fixed W1 stop rule; a remaining alignment bug is possible. W2–W8 were not run, and no additional horizons, model comparisons, or criteria are claimed. S4 was already completed and pushed at `006ba94`; its known-station ST-PIGNN MAE/R² is 24.766141/-0.328158 versus ordinary kriging 22.588024/-0.197255, verdict LOSS (`scripts/evaluate_loso_v2c.py`, `configs/loso_v2.yaml`, seeds 11/23/37, source commit `1e4c78d`, `results/loso_summary_v2c.csv`).
