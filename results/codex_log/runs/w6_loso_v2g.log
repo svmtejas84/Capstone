@@ -1,0 +1,344 @@
+fold 1 station 5547 unscored
+fold 2 station 5548 unscored
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=11 n=1620
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=23 n=1620
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=37 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=11 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=23 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=37 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=11 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=23 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=37 n=1620
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=11 n=302
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=23 n=302
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=37 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=11 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=23 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=37 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=11 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=23 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=37 n=302
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=11 n=8
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=23 n=8
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=37 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=11 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=23 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=37 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=11 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=23 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=37 n=8
+fold 6 station 6975 unscored
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=11 n=1901
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=23 n=1901
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=37 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=11 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=23 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=37 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=11 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=23 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=37 n=1901
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=11 n=1877
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=23 n=1877
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=37 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=11 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=23 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=37 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=11 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=23 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=37 n=1877
+fold 9 station 2498781 unscored
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=11 n=2113
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=23 n=2113
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=37 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=11 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=23 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=37 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=11 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=23 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=37 n=2113
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=11 n=2243
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=23 n=2243
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=37 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=11 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=23 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=37 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=11 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=23 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=37 n=2243
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=11 n=2207
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=23 n=2207
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=37 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=11 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=23 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=37 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=11 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=23 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=37 n=2207
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=11 n=845
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=23 n=845
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=37 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=11 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=23 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=37 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=11 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=23 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=37 n=845
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=11 n=212
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=23 n=212
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=37 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=11 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=23 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=37 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=11 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=23 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=37 n=212
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=11 n=1255
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=23 n=1255
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=37 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=11 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=23 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=37 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=11 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=23 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=37 n=1255
+{
+  "top_two_by_validation": [
+    "adaptive_graph_st",
+    "gine_gru_wind"
+  ],
+  "decisions": [
+    {
+      "anchor": "train_mean",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 0.7587299174713529,
+      "mae_ci_low": 0.3232317053806977,
+      "mae_ci_high": 1.1676508268690797,
+      "delta_r2": -0.18863626588647842
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.07834045937512002,
+      "mae_ci_low": -0.44738306534512595,
+      "mae_ci_high": 0.5888060173267186,
+      "delta_r2": -0.18440996990878733
+    },
+    {
+      "anchor": "train_mean",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 1.416278047859631,
+      "mae_ci_low": 0.8972272018749307,
+      "mae_ci_high": 1.9423739957008301,
+      "delta_r2": -0.27325378015234913
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.20736138388868852,
+      "mae_ci_low": -0.24526284654711378,
+      "mae_ci_high": 0.6525202419845311,
+      "delta_r2": -0.18081040078103738
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.4236184102216001,
+      "mae_ci_low": -0.12030176609594952,
+      "mae_ci_high": 0.9759356544929773,
+      "delta_r2": -0.1904668375318257
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 1.0032749619412336,
+      "mae_ci_low": 0.48962437272435694,
+      "mae_ci_high": 1.501620855150058,
+      "delta_r2": -0.24168455867159389
+    },
+    {
+      "anchor": "train_mean",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": -0.3233088285648016,
+      "mae_ci_low": -0.7404932114068596,
+      "mae_ci_high": 0.11493722514514151,
+      "delta_r2": -0.18094221356486062
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -0.8271344862170977,
+      "mae_ci_low": -1.3386316892598806,
+      "mae_ci_high": -0.33696615697447097,
+      "delta_r2": -0.17219205647548885
+    },
+    {
+      "anchor": "train_mean",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": -0.14311287659361582,
+      "mae_ci_low": -0.7935134850011681,
+      "mae_ci_high": 0.5372414818685037,
+      "delta_r2": -0.24189881256113877
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -0.931899967622094,
+      "mae_ci_low": -1.4363064555408651,
+      "mae_ci_high": -0.4350058514284229,
+      "delta_r2": -0.16994249335836598
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -0.7119729647954713,
+      "mae_ci_low": -1.2585055845677053,
+      "mae_ci_high": -0.174702950349037,
+      "delta_r2": -0.17521785472892848
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": -0.4632398169713703,
+      "mae_ci_low": -1.1506371503335198,
+      "mae_ci_high": 0.23163584866747097,
+      "delta_r2": -0.2180255189690128
+    }
+  ],
+  "source_commit": "3a1a8c3ed8922b411d7e5775632e2693516ab790",
+  "timestamp_utc": "2026-10-25T13:14:27.507000+00:00"
+}

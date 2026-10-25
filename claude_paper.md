@@ -325,3 +325,16 @@ Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, config
 | 3 | Original penalty ST-PIGNN | 12.310651 | 0.303082 |
 
 A and B meet the fixed win rule at h=3; C does not meet the physics-in-architecture criterion. h=12 remains queued.
+
+### Step 4g W6 LOSO (2026-10-25 13:14 UTC)
+
+Source: `scripts/evaluate_loso_v2g.py`, `configs/gate_v2c.yaml`, Gate C seeds [11,23,37], source commit `3a1a8c3`. Both neural anchors use fold-isolated training and last-30-train-day blend/bias fits. Full paired UTC-day bootstrap intervals and per-fold rows are in `results/loso_summary_v2g.csv`, `results/loso_decision_v2g.csv`, and `results/loso_per_station_v2g.csv`. S4 LOSO LOSS is retained unchanged.
+
+| Anchor | Adaptive graph ST | GINE+GRU+wind | Original ST-PIGNN |
+|---|---|---|---|
+| Train-fold mean | LOSS | TIE | LOSS |
+| Train-mean/IDW blend | TIE | TIE | LOSS |
+| Train-fold mean, train-tail bias adjusted | TIE | LOSS | TIE |
+| Blend, train-tail bias adjusted | LOSS | LOSS | TIE |
+
+No neural method meets the fixed LOSO WIN rule. Lower test R² than the best baseline blocks WIN for the bias-adjusted methods even where paired MAE improves.
