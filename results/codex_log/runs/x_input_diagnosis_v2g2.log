@@ -1,0 +1,6 @@
+2026-10-25T08:49:11Z START X1-X5 input-pipeline diagnostic; source commit d935f64; config configs/data_v2.yaml; seed 42.
+Command: python -m scripts.input_diagnosis_v2g2
+2026-10-25T08:50:10Z EXIT 0; report results/input_diagnosis_v2g2.md.
+Train observed/imputed lag pairs 30974/1654; validation 6965/238; test 14079/504. Above-cap lag count zero in every split. Sampled 20 timestamps passed target-minus-one-hour assertion; observed lag raw-value checks and five shared-transform checks passed.
+All-test MAE/R2: AR all pairs 8.732860/0.560450; AR observed-lag train 8.509631/0.559943; AR indicator 8.714856/0.560546; persistence 8.116095/0.532089.
+Cause: transform mismatch in W1 AR fitting. W1 PASSED by fixed margin via observed-lag-only training. No neural model training, W2, or test-based tuning.
