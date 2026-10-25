@@ -2,10 +2,10 @@
 
 - Last completed step: S1 diagnosis. Source commit `38f477f`, final S1 result commit `62132eb` pushed. S1 identified an imputed-lag and scaling defect. Original Gates B/C remain unchanged and final.
 - Branch: `audit/canonical-notebook-20261023`.
-- Latest commit: `7aa04df` (both 35-trial selections and summary code); use `git rev-parse HEAD` for any later commit.
-- Running job: PID 2909348, command session 29195, log `results/codex_log/runs/s2_validation_final.log`; `nohup python -u -m scripts.train_gate_v2 --stage final --config configs/gate_v2c.yaml --output-prefix v2c --models gru_only vanilla_gcn st_gru_gcn stpignn_corrected stpignn_laplacian`. Poll no more than once per five minutes.
-- Current step: S2 validation-selected five-seed final RUNNING. Both validation and train-tail selections completed 35/35 LR trials. Next: train-tail-selected five-seed final, summary/bootstrap. S3 physics and S4 LOSO remain NOT RUN. S4 is required under the user's rule because S1 found a defect.
-- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && tail -30 results/codex_log/runs/s2_validation_final.log && git status --short`.
+- Latest commit: `9ed2397` (25 validation-selected checkpoints and S3 runner); use `git rev-parse HEAD` for any later commit.
+- Running job: PID 2910348, command session 84293, log `results/codex_log/runs/s2_tail_final.log`; `nohup python -u -m scripts.train_gate_v2 --stage tail_final --config configs/gate_v2c.yaml --output-prefix v2c --models gru_only vanilla_gcn st_gru_gcn stpignn_corrected stpignn_laplacian`. Poll no more than once per five minutes.
+- Current step: S2 train-tail-selected five-seed final RUNNING. Both LR selections and the 25 validation-selected final runs completed. Next: S2 summary/bootstrap, commit/push; then S3 physics and S4 LOSO. S4 is required because S1 found a defect.
+- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && tail -30 results/codex_log/runs/s2_tail_final.log && git status --short`.
 
 ## Completed S1 evidence
 

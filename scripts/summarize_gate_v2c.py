@@ -80,6 +80,12 @@ def main():
                          "rmse_mean": float(group.rmse.mean()), "rmse_sd": float(group.rmse.std())})
         st = frame.loc[frame.model.eq("stpignn_corrected")]
         selected = st.sort_values("best_val_mae_ug_m3").iloc[0] if selection == "validation" else st.loc[st.seed.eq(cfg["neural_seeds"][0])].iloc[0]
+        selection_mae = float(selected.best_val_mae_ug_m3)
+        if selection == "train_tail":
+            tail_grid = pd.read_csv(results / "neural_selection_train_tail_v2c.csv")
+            matched = tail_grid.loc[(tail_grid.model.eq("stpignn_corrected")) &
+                                    (tail_grid.lr.eq(float(selected.lr)))].iloc[0]
+            selection_mae = float(matched.best_val_mae_ug_m3)
         choice = predictions.loc[(predictions.model == "stpignn_corrected") & (predictions.seed == selected.seed)]
         merged = base.merge(choice[["station_id", "target_time_utc", "target_ug_m3", "prediction_ug_m3"]],
                             on=["station_id", "target_time_utc"], suffixes=("_base", "_neural"), validate="one_to_one")
@@ -94,7 +100,9 @@ def main():
                                                               int(cfg["bootstrap_replicates"]), int(cfg["bootstrap_seed"]))
         choices[selection] = {"seed": int(selected.seed), "lr": float(selected.lr),
                               "test_mae": float(selected.mae), "test_r2": float(selected.r2),
-                              "selection_mae": float(selected.best_val_mae_ug_m3), "comparisons": comparisons}
+                              "selection_mae": selection_mae,
+                              "external_validation_diagnostic_mae": float(selected.best_val_mae_ug_m3) if selection == "train_tail" else None,
+                              "comparisons": comparisons}
     table = pd.DataFrame(rows)
     table.to_csv(results / "gate_v2c.csv", index=False)
     primary = choices["validation"]["comparisons"]["persistence"]
@@ -120,7 +128,10 @@ def main():
     for row in classic.itertuples(index=False):
         lines.append(f"| {row.method} | {row.validation_pairs} | {row.validation_mae:.6f} | {row.validation_r2:.6f} |")
     for name, choice in choices.items():
-        lines += ["", f"Corrected ST-PIGNN selected by {name}: seed {choice['seed']}, LR {choice['lr']}, selection/diagnostic MAE {choice['selection_mae']:.6f}, test MAE {choice['test_mae']:.6f}, R² {choice['test_r2']:.6f}."]
+        description = f"Corrected ST-PIGNN selected by {name}: seed {choice['seed']}, LR {choice['lr']}, selection MAE {choice['selection_mae']:.6f}, test MAE {choice['test_mae']:.6f}, R² {choice['test_r2']:.6f}."
+        if choice["external_validation_diagnostic_mae"] is not None:
+            description += f" Original July–September validation MAE (diagnostic only): {choice['external_validation_diagnostic_mae']:.6f}."
+        lines += ["", description]
         if choice["comparisons"]:
             lines += ["", "| ST-PIGNN minus reference | MAE difference [95% UTC-day CI] | R² difference [95% UTC-day CI] |",
                       "|---|---:|---:|"]

@@ -1,0 +1,4 @@
+method,validation_pairs,validation_mae,validation_r2
+climatology_hod_dow,7203,9.305323734227839,0.07333369583922034
+ridge_meteorology_static,7203,10.367326425973134,-0.0574925020280308
+idw_known_at_t,7203,12.64572620292546,-0.522832056859901
