@@ -1,0 +1,173 @@
+fold=1/15 station=5547 unscored
+fold=2/15 station=5548 unscored
+fold=3/15 station=5607 method=stpignn_known seed=11 n=1620 mae=19.269108
+fold=3/15 station=5607 method=stpignn_known seed=23 n=1620 mae=19.517607
+fold=3/15 station=5607 method=stpignn_known seed=37 n=1620 mae=19.467611
+fold=3/15 station=5607 method=stpignn_weather_static seed=11 n=1620 mae=14.281589
+fold=3/15 station=5607 method=stpignn_weather_static seed=23 n=1620 mae=10.973086
+fold=3/15 station=5607 method=stpignn_weather_static seed=37 n=1620 mae=13.958584
+fold=3/15 station=5607 method=gru_only seed=11 n=1620 mae=18.010643
+fold=3/15 station=5607 method=gru_only seed=23 n=1620 mae=18.044596
+fold=3/15 station=5607 method=gru_only seed=37 n=1620 mae=18.683008
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=3/15 baselines done
+fold=4/15 station=6973 method=stpignn_known seed=11 n=302 mae=19.866770
+fold=4/15 station=6973 method=stpignn_known seed=23 n=302 mae=21.101343
+fold=4/15 station=6973 method=stpignn_known seed=37 n=302 mae=20.114229
+fold=4/15 station=6973 method=stpignn_weather_static seed=11 n=302 mae=11.611828
+fold=4/15 station=6973 method=stpignn_weather_static seed=23 n=302 mae=12.759680
+fold=4/15 station=6973 method=stpignn_weather_static seed=37 n=302 mae=9.790490
+fold=4/15 station=6973 method=gru_only seed=11 n=302 mae=17.994570
+fold=4/15 station=6973 method=gru_only seed=23 n=302 mae=17.121750
+fold=4/15 station=6973 method=gru_only seed=37 n=302 mae=17.838713
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=4/15 baselines done
+fold=5/15 station=6974 method=stpignn_known seed=11 n=8 mae=4.776996
+fold=5/15 station=6974 method=stpignn_known seed=23 n=8 mae=4.749387
+fold=5/15 station=6974 method=stpignn_known seed=37 n=8 mae=4.911300
+fold=5/15 station=6974 method=stpignn_weather_static seed=11 n=8 mae=9.746677
+fold=5/15 station=6974 method=stpignn_weather_static seed=23 n=8 mae=9.872612
+fold=5/15 station=6974 method=stpignn_weather_static seed=37 n=8 mae=8.798285
+fold=5/15 station=6974 method=gru_only seed=11 n=8 mae=12.121691
+fold=5/15 station=6974 method=gru_only seed=23 n=8 mae=13.941786
+fold=5/15 station=6974 method=gru_only seed=37 n=8 mae=13.453920
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=5/15 baselines done
+fold=6/15 station=6975 unscored
+fold=7/15 station=6983 method=stpignn_known seed=11 n=1901 mae=22.634190
+fold=7/15 station=6983 method=stpignn_known seed=23 n=1901 mae=23.641956
+fold=7/15 station=6983 method=stpignn_known seed=37 n=1901 mae=23.750181
+fold=7/15 station=6983 method=stpignn_weather_static seed=11 n=1901 mae=17.336140
+fold=7/15 station=6983 method=stpignn_weather_static seed=23 n=1901 mae=17.805468
+fold=7/15 station=6983 method=stpignn_weather_static seed=37 n=1901 mae=16.634760
+fold=7/15 station=6983 method=gru_only seed=11 n=1901 mae=15.832299
+fold=7/15 station=6983 method=gru_only seed=23 n=1901 mae=16.237297
+fold=7/15 station=6983 method=gru_only seed=37 n=1901 mae=16.100563
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=7/15 baselines done
+fold=8/15 station=6984 method=stpignn_known seed=11 n=1877 mae=27.204737
+fold=8/15 station=6984 method=stpignn_known seed=23 n=1877 mae=27.034029
+fold=8/15 station=6984 method=stpignn_known seed=37 n=1877 mae=27.095015
+fold=8/15 station=6984 method=stpignn_weather_static seed=11 n=1877 mae=23.879910
+fold=8/15 station=6984 method=stpignn_weather_static seed=23 n=1877 mae=25.513805
+fold=8/15 station=6984 method=stpignn_weather_static seed=37 n=1877 mae=23.979555
+fold=8/15 station=6984 method=gru_only seed=11 n=1877 mae=21.569740
+fold=8/15 station=6984 method=gru_only seed=23 n=1877 mae=21.442150
+fold=8/15 station=6984 method=gru_only seed=37 n=1877 mae=21.168318
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=8/15 baselines done
+fold=9/15 station=2498781 unscored
+fold=10/15 station=3409385 method=stpignn_known seed=11 n=2113 mae=48.187634
+fold=10/15 station=3409385 method=stpignn_known seed=23 n=2113 mae=48.914509
+fold=10/15 station=3409385 method=stpignn_known seed=37 n=2113 mae=49.292320
+fold=10/15 station=3409385 method=stpignn_weather_static seed=11 n=2113 mae=43.328373
+fold=10/15 station=3409385 method=stpignn_weather_static seed=23 n=2113 mae=42.349274
+fold=10/15 station=3409385 method=stpignn_weather_static seed=37 n=2113 mae=41.692081
+fold=10/15 station=3409385 method=gru_only seed=11 n=2113 mae=42.819931
+fold=10/15 station=3409385 method=gru_only seed=23 n=2113 mae=42.955830
+fold=10/15 station=3409385 method=gru_only seed=37 n=2113 mae=43.220230
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=10/15 baselines done
+fold=11/15 station=3409388 method=stpignn_known seed=11 n=2243 mae=17.406713
+fold=11/15 station=3409388 method=stpignn_known seed=23 n=2243 mae=18.673969
+fold=11/15 station=3409388 method=stpignn_known seed=37 n=2243 mae=17.759865
+fold=11/15 station=3409388 method=stpignn_weather_static seed=11 n=2243 mae=7.562195
+fold=11/15 station=3409388 method=stpignn_weather_static seed=23 n=2243 mae=7.827898
+fold=11/15 station=3409388 method=stpignn_weather_static seed=37 n=2243 mae=7.342688
+fold=11/15 station=3409388 method=gru_only seed=11 n=2243 mae=6.825325
+fold=11/15 station=3409388 method=gru_only seed=23 n=2243 mae=7.204740
+fold=11/15 station=3409388 method=gru_only seed=37 n=2243 mae=7.628097
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=11/15 baselines done
+fold=12/15 station=3409393 method=stpignn_known seed=11 n=2207 mae=19.132874
+fold=12/15 station=3409393 method=stpignn_known seed=23 n=2207 mae=19.199608
+fold=12/15 station=3409393 method=stpignn_known seed=37 n=2207 mae=19.187960
+fold=12/15 station=3409393 method=stpignn_weather_static seed=11 n=2207 mae=20.429232
+fold=12/15 station=3409393 method=stpignn_weather_static seed=23 n=2207 mae=20.570189
+fold=12/15 station=3409393 method=stpignn_weather_static seed=37 n=2207 mae=20.065195
+fold=12/15 station=3409393 method=gru_only seed=11 n=2207 mae=20.767239
+fold=12/15 station=3409393 method=gru_only seed=23 n=2207 mae=20.933758
+fold=12/15 station=3409393 method=gru_only seed=37 n=2207 mae=21.463928
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=12/15 baselines done
+fold=13/15 station=6119271 method=stpignn_known seed=11 n=845 mae=23.247526
+fold=13/15 station=6119271 method=stpignn_known seed=23 n=845 mae=22.995749
+fold=13/15 station=6119271 method=stpignn_known seed=37 n=845 mae=23.214285
+fold=13/15 station=6119271 method=stpignn_weather_static seed=11 n=845 mae=21.699371
+fold=13/15 station=6119271 method=stpignn_weather_static seed=23 n=845 mae=24.611464
+fold=13/15 station=6119271 method=stpignn_weather_static seed=37 n=845 mae=21.831924
+fold=13/15 station=6119271 method=gru_only seed=11 n=845 mae=19.167425
+fold=13/15 station=6119271 method=gru_only seed=23 n=845 mae=19.303757
+fold=13/15 station=6119271 method=gru_only seed=37 n=845 mae=18.563780
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=13/15 baselines done
+fold=14/15 station=6146655 method=stpignn_known seed=11 n=212 mae=21.455853
+fold=14/15 station=6146655 method=stpignn_known seed=23 n=212 mae=21.479568
+fold=14/15 station=6146655 method=stpignn_known seed=37 n=212 mae=21.310101
+fold=14/15 station=6146655 method=stpignn_weather_static seed=11 n=212 mae=21.581497
+fold=14/15 station=6146655 method=stpignn_weather_static seed=23 n=212 mae=23.899351
+fold=14/15 station=6146655 method=stpignn_weather_static seed=37 n=212 mae=22.735769
+fold=14/15 station=6146655 method=gru_only seed=11 n=212 mae=21.320667
+fold=14/15 station=6146655 method=gru_only seed=23 n=212 mae=20.952888
+fold=14/15 station=6146655 method=gru_only seed=37 n=212 mae=20.761507
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=14/15 baselines done
+fold=15/15 station=6206921 method=stpignn_known seed=11 n=1255 mae=14.762282
+fold=15/15 station=6206921 method=stpignn_known seed=23 n=1255 mae=14.802347
+fold=15/15 station=6206921 method=stpignn_known seed=37 n=1255 mae=14.863166
+fold=15/15 station=6206921 method=stpignn_weather_static seed=11 n=1255 mae=23.283258
+fold=15/15 station=6206921 method=stpignn_weather_static seed=23 n=1255 mae=25.992552
+fold=15/15 station=6206921 method=stpignn_weather_static seed=37 n=1255 mae=22.626888
+fold=15/15 station=6206921 method=gru_only seed=11 n=1255 mae=19.081308
+fold=15/15 station=6206921 method=gru_only seed=23 n=1255 mae=19.458256
+fold=15/15 station=6206921 method=gru_only seed=37 n=1255 mae=18.860882
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=15/15 baselines done
+{
+  "timestamp_utc": "2026-10-25T04:54:10.940307+00:00",
+  "source_git_commit": "1e4c78d14232561f96fef07749cdf202c48e2443",
+  "script": "scripts/evaluate_loso_v2c.py",
+  "config": "configs/loso_v2.yaml",
+  "data_config": "configs/data_v2.yaml",
+  "seeds": [
+    11,
+    23,
+    37
+  ],
+  "folds_considered": 15,
+  "folds_scored": 11,
+  "unscored_station_ids": [
+    5547,
+    5548,
+    6975,
+    2498781
+  ],
+  "n_scored_pairs_per_method": 14583,
+  "best_spatial_baseline": "ordinary_kriging",
+  "paired_utc_day_bootstrap_replicates": 2000,
+  "mae_difference_stpignn_minus_best": 2.178117133508998,
+  "r2_difference_stpignn_minus_best": -0.1309032670906063,
+  "mae_difference_ci": [
+    1.347872927396104,
+    3.0722039982861538
+  ],
+  "r2_difference_ci": [
+    -0.21145447122490793,
+    -0.06471144873693782
+  ],
+  "wilcoxon_p_over_stations": 0.8984375,
+  "verdict": "LOSS",
+  "runtime_seconds": 2528.201200094074,
+  "hardware": "cuda"
+}

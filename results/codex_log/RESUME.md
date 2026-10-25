@@ -1,11 +1,11 @@
 # Resume
 
-- Last completed step: S3 physics controls. S1, S2 and S3 are complete; S3 result commit follows. Original Gate B/C results remain unchanged.
+- Last completed step: S3 physics controls. S1, S2 and S3 are complete; S3 result commit `1e4c78d` was pushed. Original Gate B/C results remain unchanged.
 - Branch: `audit/canonical-notebook-20261023`.
-- Latest commit: HEAD after S3 result commit; run `git rev-parse HEAD` to resolve its hash. S3 source commit `107388b`.
-- Running job: none (PID: none; `results/codex_log/runs/s3_physics_controls.log` complete).
-- NEXT: S4 LOSO residual rerun. S1 found a defect, so S4 is required by the user's rule. After S4, append factual Step 4c tables/source lines to `claude_paper.md`, commit/push, and STOP before D-M.
-- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git rev-parse HEAD && git status --short`.
+- Latest commit: `1e4c78d` (S3 result and S4 source); use `git rev-parse HEAD` for any later commit.
+- Running job: PID 2911735, command session 92343, log `results/codex_log/runs/s4_loso.log`; `nohup python -u -m scripts.evaluate_loso_v2c`. Poll no more than once per five minutes.
+- Current step: S4 LOSO residual rerun RUNNING. After it finishes, append factual Step 4c tables/source lines to `claude_paper.md`, commit/push, and STOP before D-M.
+- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && tail -30 results/codex_log/runs/s4_loso.log && git status --short`.
 
 ## Completed evidence
 

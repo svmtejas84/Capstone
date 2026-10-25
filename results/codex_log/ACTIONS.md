@@ -29,3 +29,5 @@
 - 2026-10-25 UTC START S3: matched lambda=0 training and corrected/Laplacian/zero-weight PVR and smoothness evaluation. S2 completion commit `ab81c73` was pushed before this step.
 - 2026-10-25 UTC S3 runner started from predeclared source commit `107388b`, PID 2911356, session 94474, raw log `runs/s3_physics_controls.log`; five matched lambda=0 seeds followed by full test-edge metrics.
 - 2026-10-25 04:10:26 UTC DONE S3: matched lambda=0 five-seed run and all-edge PVR/gradient/Dirichlet metrics exit 0; raw log `runs/s3_physics_controls.log`, source commit `107388b`. Predeclared verdict NO change beyond paired five-seed noise. Commit/push follows before S4.
+- 2026-10-25 UTC START S4: cleaned residual LOSO rerun, Gate C folds/seeds/decision rule, with fold-isolated fits and nearest-known-station residual anchor. S3 completion commit `1e4c78d` was pushed before this step.
+- 2026-10-25 UTC S4 residual LOSO started from source commit `1e4c78d`, PID 2911735, session 92343, raw log `runs/s4_loso.log`; fixed Gate C seeds/learning rate and predeclared WIN/TIE/LOSS rule.
