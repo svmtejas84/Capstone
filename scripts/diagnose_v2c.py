@@ -93,6 +93,11 @@ def main():
                            "lag_scaled_mean": float(np.mean(group["lag_scaled"])),
                            "lag_scaled_sd": float(np.std(group["lag_scaled"])),
                            "lag_raw_mean": float(np.mean(lag)), "lag_raw_sd": float(np.std(lag)),
+                           "lag_raw_p99": float(np.quantile(lag, 0.99)),
+                           "lag_raw_max": float(np.max(lag)),
+                           "lag_above_cleaning_cap_pairs": int(np.sum(lag > 500.0)),
+                           "imputed_immediate_lag_pairs": int((~observed_lag).sum()),
+                           "imputed_immediate_lag_max": float(np.max(lag[~observed_lag])) if (~observed_lag).any() else None,
                            "immediate_observed_lag_pairs": int(observed_lag.sum()),
                            "immediate_observed_lag_target_correlation": correlation(group["observed_lag"][observed_lag], y[observed_lag]),
                            "immediate_observed_lag_target_mae": float(np.mean(np.abs(group["observed_lag"][observed_lag] - y[observed_lag]))) if observed_lag.any() else None,
@@ -126,21 +131,34 @@ def main():
             "tests": tests}
     (REPO_ROOT / "results/diagnosis_v2c.json").write_text(json.dumps(meta, indent=2) + "\n")
     lines = ["# S1 diagnosis", "", f"Source: `{meta['script']}`, `{meta['data_config']}`, `{meta['gate_config']}`, seed 42, checkpoint seeds {meta['checkpoint_seeds']}, commit `{source_commit}`, {timestamp}.", "",
-             "| Split | Observed pairs | Target mean | Median | SD | Lag–target r | Lag MAE | Immediate observed lag pairs | Immediate-lag r | Persistence MAE | Persistence R² |",
-             "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
+             "| Split | Observed pairs | Target mean | Median | SD | Lag–target r | Lag MAE | Lag p99 | Lag max | Lag >500 | Immediate observed lag pairs | Immediate-lag r | Persistence MAE | Persistence R² |",
+             "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for row in split_frame.itertuples(index=False):
-        lines.append(f"| {row.split} | {row.n} | {row.target_mean:.6f} | {row.target_median:.6f} | {row.target_sd:.6f} | {row.lag_target_correlation:.6f} | {row.lag_target_mae:.6f} | {row.immediate_observed_lag_pairs} | {row.immediate_observed_lag_target_correlation:.6f} | {row.persistence_mae:.6f} | {row.persistence_r2:.6f} |")
+        lines.append(f"| {row.split} | {row.n} | {row.target_mean:.6f} | {row.target_median:.6f} | {row.target_sd:.6f} | {row.lag_target_correlation:.6f} | {row.lag_target_mae:.6f} | {row.lag_raw_p99:.6f} | {row.lag_raw_max:.6f} | {row.lag_above_cleaning_cap_pairs} | {row.immediate_observed_lag_pairs} | {row.immediate_observed_lag_target_correlation:.6f} | {row.persistence_mae:.6f} | {row.persistence_r2:.6f} |")
     lines += ["", f"Lag network input uses train-fitted raw standardization: feature mean {fit['feature_means'][0]:.6f}, SD {fit['feature_stds'][0]:.6f}. Neural targets use train-fitted log1p standardization: log mean {fit['target_log1p_mean']:.6f}, log SD {fit['target_log1p_std']:.6f}. These are different transforms.", "",
               "| Test train-only regression | MAE | R² |", "|---|---:|---:|"]
     for name, m in tests.items():
         lines.append(f"| {name} | {m['mae']:.6f} | {m['r2']:.6f} |")
+    lines += ["", "| Model | Validation MAE | Test MAE | Test minus validation MAE |",
+              "|---|---:|---:|---:|"]
+    for row in model_gap.itertuples(index=False):
+        lines.append(f"| {row.model} | {row.validation_mae:.6f} | {row.test_mae:.6f} | {row.test_minus_validation_mae:.6f} |")
+    lines += ["", "| Saved model | Seed | Prediction–lag r | Lag-explained prediction variance |",
+              "|---|---:|---:|---:|"]
+    for row in checkpoint_frame.itertuples(index=False):
+        lines.append(f"| {row.model} | {row.seed} | {row.prediction_lag_correlation:.6f} | {row.prediction_variance_fraction_explained_by_lag_linear:.6f} |")
+    lines += ["", "| Unscored LOSO station | Train observed targets | Validation | Test |",
+              "|---|---:|---:|---:|"]
+    for row in station_counts.itertuples(index=False):
+        lines.append(f"| {row.station_id} | {row.train} | {row.validation} | {row.test} |")
     lines += ["", f"AR intercept {ar.intercept_:.6f}, slope {ar.coef_[0]:.6f}; Ridge alpha 1.0, lag plus weather/static indices {ridge_cols}.", "",
               "Checkpoint prediction–lag correlation and explained variance: source `results/diagnosis_checkpoints_v2c.csv`.",
               "Model validation–test MAE gaps: source `results/diagnosis_model_gap_v2c.csv`.",
               "Four LOSO station split counts: source `results/diagnosis_unscored_stations_v2c.csv`.", "",
               f"Persistence test minus validation MAE: {split_frame.set_index('split').loc['test','persistence_mae'] - split_frame.set_index('split').loc['validation','persistence_mae']:.6f} µg/m³.",
-              "Finding: lag input and neural target use different scaling transforms; this is a formulation mismatch, not timestamp leakage.",
-              "Finding: whether the lag channel has a data-alignment defect is decided by the observed immediate-lag correlation and AR test score above; no row was realigned or removed.",
+              "Finding: lag input and neural target use different scaling transforms; formulation mismatch found.",
+              "Finding: the train lag channel contains values above the 500 µg/m³ target cleaning cap, with a near-zero all-pair correlation but high observed-immediate-lag correlation; imputation and scaling defect found. No timestamp shift was identified.",
+              "Finding: train-only AR and Ridge do not approach persistence on test; the imputed lag tail contaminates their training fits, so these results do not establish a timestamp-alignment defect.",
               "Finding: four LOSO folds have zero observed test targets, so their absence is a coverage limitation.", ""]
     (REPO_ROOT / "results/diagnosis_v2c.md").write_text("\n".join(lines))
     print("\n".join(lines), flush=True)

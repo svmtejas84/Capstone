@@ -1,0 +1,27 @@
+# S1 diagnosis
+
+Source: `scripts/diagnose_v2c.py`, `configs/data_v2.yaml`, `configs/gate_v2b.yaml`, seed 42, checkpoint seeds [11, 23, 37, 51, 79], commit `72df22712440e73e0c2296954296b2b6606e79ab`, 2026-10-25T02:41:24.465151+00:00.
+
+| Split | Observed pairs | Target mean | Median | SD | Lag–target r | Lag MAE | Immediate observed lag pairs | Immediate-lag r | Persistence MAE | Persistence R² |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| train | 32628 | 34.139526 | 31.000000 | 22.995157 | 0.040120 | 9.665841 | 30974 | 0.823055 | 5.482564 | 0.624062 |
+| validation | 7203 | 24.969522 | 25.817499 | 12.810345 | 0.832708 | 3.312929 | 6965 | 0.854656 | 3.071653 | 0.699604 |
+| test | 14583 | 44.425632 | 36.340000 | 37.070534 | 0.732890 | 8.608278 | 14079 | 0.784410 | 8.116095 | 0.532089 |
+
+Lag network input uses train-fitted raw standardization: feature mean 39.169331, SD 562.017334. Neural targets use train-fitted log1p standardization: log mean 3.380092, log SD 0.639000. These are different transforms.
+
+| Test train-only regression | MAE | R² |
+|---|---:|---:|
+| ar_lag | 20.562207 | -0.073372 |
+| ridge_lag_weather_static | 20.485240 | 0.059078 |
+
+AR intercept 34.052818, slope 0.002297; Ridge alpha 1.0, lag plus weather/static indices [0, 5, 6, 7, 8, 9, 10, 11, 12].
+
+Checkpoint prediction–lag correlation and explained variance: source `results/diagnosis_checkpoints_v2c.csv`.
+Model validation–test MAE gaps: source `results/diagnosis_model_gap_v2c.csv`.
+Four LOSO station split counts: source `results/diagnosis_unscored_stations_v2c.csv`.
+
+Persistence test minus validation MAE: 5.044442 µg/m³.
+Finding: lag input and neural target use different scaling transforms; this is a formulation mismatch, not timestamp leakage.
+Finding: whether the lag channel has a data-alignment defect is decided by the observed immediate-lag correlation and AR test score above; no row was realigned or removed.
+Finding: four LOSO folds have zero observed test targets, so their absence is a coverage limitation.

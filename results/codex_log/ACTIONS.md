@@ -15,3 +15,4 @@
 - 2026-10-25 UTC START checkpoint commit: record Gates A-C complete and queue S1-S4; no diagnostic, revision, training, or evaluation run.
 - 2026-10-25 UTC DONE checkpoint commit preparation: ACTIONS, DECISIONS, QUOTA, and RESUME updated; commit/push command follows.
 - 2026-10-25 02:38:26 UTC START S1: diagnose cleaned lag/target alignment, train-only AR/Ridge, saved-checkpoint lag association, split distributions and four unscored LOSO stations. No neural training.
+- 2026-10-25 UTC S1 diagnostic refinement before gate commit: first run showed train all-pair lag r=0.040 versus observed-immediate-lag r=0.823 and train lag feature SD=562.017 µg/m³. Expanded the same S1 script to quantify above-cap imputed lag values and print all requested model/station tables; rerun overwrites only `_v2c` diagnostic outputs.

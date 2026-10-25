@@ -1,0 +1,11 @@
+model,seed,prediction_lag_correlation,prediction_variance_fraction_explained_by_lag_linear,prediction_sd,checkpoint
+stpignn_corrected,11,0.3198907464708113,0.10233008967765286,7.75435209274292,results/checkpoints_v2b/final_stpignn_corrected_log1p_seed11.pt
+stpignn_corrected,23,0.27541598572872084,0.07585396519492296,8.071048736572266,results/checkpoints_v2b/final_stpignn_corrected_log1p_seed23.pt
+stpignn_corrected,37,0.3380955312705933,0.11430858826514471,7.624845504760742,results/checkpoints_v2b/final_stpignn_corrected_log1p_seed37.pt
+stpignn_corrected,51,0.34143414997370397,0.11657727876826578,9.642624855041504,results/checkpoints_v2b/final_stpignn_corrected_log1p_seed51.pt
+stpignn_corrected,79,0.3046717513320176,0.09282487605971879,7.711930274963379,results/checkpoints_v2b/final_stpignn_corrected_log1p_seed79.pt
+gru_only,11,0.18950774937177337,0.035913187071954865,5.323243141174316,results/checkpoints_v2b/final_gru_only_log1p_seed11.pt
+gru_only,23,0.19368794333537445,0.037515019393487226,5.043452262878418,results/checkpoints_v2b/final_gru_only_log1p_seed23.pt
+gru_only,37,0.271808100013896,0.07387964323316408,8.18364143371582,results/checkpoints_v2b/final_gru_only_log1p_seed37.pt
+gru_only,51,0.26772919073869306,0.07167891957359548,8.262300491333008,results/checkpoints_v2b/final_gru_only_log1p_seed51.pt
+gru_only,79,0.28714068130817416,0.08244977086212243,8.009722709655762,results/checkpoints_v2b/final_gru_only_log1p_seed79.pt
