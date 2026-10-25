@@ -265,3 +265,18 @@ Source: `scripts/input_fix_v2g.py`, `configs/data_v2.yaml`, seed 42, source comm
 | Persistence | 8.116094 | 0.532089 |
 
 AR-with-lag has 46.5% higher MAE than persistence after the input repair. This triggers the fixed W1 stop rule; a remaining alignment bug is possible. W2–W8 were not run, and no additional horizons, model comparisons, or criteria are claimed. S4 was already completed and pushed at `006ba94`; its known-station ST-PIGNN MAE/R² is 24.766141/-0.328158 versus ordinary kriging 22.588024/-0.197255, verdict LOSS (`scripts/evaluate_loso_v2c.py`, `configs/loso_v2.yaml`, seeds 11/23/37, source commit `1e4c78d`, `results/loso_summary_v2c.csv`).
+
+### Step 4g W2 h=1 checkpoint (2026-10-25 09:30 UTC)
+
+Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], original source commit `d2ce207`, corrected reference/report source commit `aa5044c`. The fixed four-LR validation search and five-seed final runs cover all 12 neural methods at h=1. Test scoring uses all 14,583 observed targets; only training and validation selection require an observed immediate lag. Full rows, parameter counts, training time and paired UTC-day 2,000-bootstrap results are in `results/benchmark_runs_v2g.csv`, `results/horizon_curve_v2g.csv`, `results/benchmark_v2g.md` and `figures/horizon_curve.pdf`. The initial Ridge and original-penalty/Laplacian reference outputs were preserved as provisional files and corrected before this table.
+
+| h (hours) | Test method | MAE (µg/m³) | R² |
+|---:|---|---:|---:|
+| 1 | Persistence | 8.116095 | 0.532089 |
+| 1 | Same-hour-yesterday | 14.130312 | 0.283173 |
+| 1 | A: GINE+GRU+wind | 8.056366 | 0.547921 |
+| 1 | B: adaptive graph ST | 8.025968 | 0.543357 |
+| 1 | C: ST-PIGNN v2 transport+source | 9.320887 | 0.546394 |
+| 1 | Original penalty ST-PIGNN | 8.018825 | 0.585597 |
+
+At h=1, A and B meet the fixed win rule: paired UTC-day test MAE differences against persistence are -0.059730 (95% CI [-0.093491,-0.024862]) and -0.090127 ([-0.111708,-0.068875]) µg/m³, and both also beat same-hour-yesterday with intervals excluding zero. C does not meet the physics-in-architecture criterion against its four specified controls. Other horizons remain queued; this checkpoint is not the final horizon conclusion.

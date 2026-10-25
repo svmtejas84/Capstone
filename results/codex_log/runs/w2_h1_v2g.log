@@ -1,0 +1,5 @@
+2026-10-25T09:14 UTC START: python -u -m scripts.benchmark_v2g --horizon 1; initial source commit d2ce207; CUDA Tesla V100-PCIE-32GB.
+2026-10-25T09:26:35 UTC EXIT 0: 48 validation LR selections; 60 final neural runs (12 methods × 5 seeds); five references. Results checkpointed after each run in benchmark_selection_v2g.csv, benchmark_runs_v2g.csv and per-seed prediction Parquet files.
+2026-10-25T09:27 UTC Ridge reference refreshed to lag/calendar/weather/static channels after removing unintended pollutant channels 1–4.
+2026-10-25T09:30:35 UTC EXIT 0: original-penalty and Laplacian h=1 references refreshed with raw-degree 37.5-degree wind mask, exact train target SD and 25-epoch lambda warmup. Initial rows/predictions preserved in benchmark_*_provisional_h1_v2g.csv and *_provisional_v2g.parquet. Corrected source commit aa5044c.
+2026-10-25T09:31 UTC EXIT 0: python -m scripts.summarize_benchmark_v2g --horizons 1; 2,000 paired UTC-day bootstrap. A and B beat both persistence and same-hour-yesterday at h=1; C physics support not met. Other horizons not yet run.
