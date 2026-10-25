@@ -71,6 +71,9 @@ def main():
             for draw,seed in enumerate(cfg["neural_seeds"],start=1):
                 if count>len(eligible):
                     for name in methods:
+                        if any(r["horizon_hours"]==horizon and r["train_station_count"]==count and
+                               r["draw"]==draw and r["model"]==name for r in rows):
+                            continue
                         rows.append({"horizon_hours":horizon,"train_station_count":count,"draw":draw,
                                      "draw_seed":4400+count*100+draw,"model_seed":seed,"model":name,
                                      "status":f"BLOCKED: only {len(eligible)} stations have observed-lag training pairs"})

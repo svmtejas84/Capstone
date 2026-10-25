@@ -1,6 +1,6 @@
 # Benchmark v2g
 
-Source `scripts/summarize_benchmark_v2g.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], commit `a2596c8f6e33fe8a2a0ab049d1b3f6611642b674`, 2026-10-25T09:51:10.688656+00:00.
+Source `scripts/summarize_benchmark_v2g.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], commit `ac404197329d4bf1b90d08729459338f279cdec4`, 2026-10-25T10:09:23.264322+00:00.
 
 | h (hours) | Model | Test pairs | MAE (µg/m³) | R² |
 |---:|---|---:|---:|---:|
@@ -38,6 +38,23 @@ Source `scripts/summarize_benchmark_v2g.py`, `configs/benchmark_v2g.yaml`, seeds
 | 6 | stpignn_v2_source_removed | 14583 | 16.476515 | 0.057444 |
 | 6 | stpignn_v2_transport_removed | 14583 | 15.863768 | 0.117295 |
 | 6 | vanilla_gcn | 14583 | 16.496535 | -0.122987 |
+| 24 | adaptive_graph_st | 14583 | 13.657661 | 0.400369 |
+| 24 | adaptive_graph_st_fixed_knn | 14583 | 14.370825 | 0.384302 |
+| 24 | climatology_hod_dow | 14583 | 21.468647 | -0.092450 |
+| 24 | gine_gru_wind | 14583 | 14.038469 | 0.389258 |
+| 24 | gru_only | 14583 | 13.897466 | 0.374842 |
+| 24 | persistence | 14583 | 14.130312 | 0.283173 |
+| 24 | ridge_lag_calendar_weather | 14583 | 14.959888 | 0.352865 |
+| 24 | same_hour_yesterday | 14583 | 14.130312 | 0.283173 |
+| 24 | st_gru_gcn | 14583 | 13.974944 | 0.317093 |
+| 24 | station_train_mean | 14583 | 20.964647 | -0.014396 |
+| 24 | stpignn_lambda0 | 14583 | 13.842733 | 0.365441 |
+| 24 | stpignn_laplacian | 14583 | 14.181756 | 0.358410 |
+| 24 | stpignn_original | 14583 | 13.788623 | 0.374789 |
+| 24 | stpignn_v2 | 14583 | 14.754175 | 0.357254 |
+| 24 | stpignn_v2_source_removed | 14583 | 14.635956 | 0.359142 |
+| 24 | stpignn_v2_transport_removed | 14583 | 13.938333 | 0.399448 |
+| 24 | vanilla_gcn | 14583 | 14.070813 | 0.333279 |
 
 ## Fixed criteria
 
@@ -57,6 +74,14 @@ h=6, C vs stpignn_v2_source_removed: met; ΔMAE -0.070458 CI [-0.118491,-0.02190
 h=6, C vs stpignn_v2_transport_removed: not met; ΔMAE +0.542288 CI [+0.148045,+0.908441]; ΔR² -0.048384 CI [-0.081291,-0.011246].
 h=6, C vs stpignn_lambda0: not met; ΔMAE +1.470504 CI [+1.104684,+1.830290]; ΔR² -0.090921 CI [-0.127070,-0.050522].
 h=6, C vs stpignn_laplacian: not met; ΔMAE +1.511716 CI [+1.165195,+1.862495]; ΔR² -0.109973 CI [-0.141105,-0.082022].
+h=24, gine_gru_wind: not met; persistence ΔMAE -0.091843 CI [-0.542778,+0.334958]; same_hour_yesterday ΔMAE -0.091843 CI [-0.542778,+0.334958].
+h=24, adaptive_graph_st: met; persistence ΔMAE -0.472651 CI [-0.774896,-0.195378]; same_hour_yesterday ΔMAE -0.472651 CI [-0.774896,-0.195378].
+h=24, stpignn_v2: not met; persistence ΔMAE +0.623863 CI [+0.162653,+1.061427]; same_hour_yesterday ΔMAE +0.623863 CI [+0.162653,+1.061427].
+h=24, stpignn_original: not met; persistence ΔMAE -0.341689 CI [-0.846439,+0.151647]; same_hour_yesterday ΔMAE -0.341689 CI [-0.846439,+0.151647].
+h=24, C vs stpignn_v2_source_removed: not met; ΔMAE +0.118219 CI [+0.017704,+0.214421]; ΔR² -0.001888 CI [-0.006411,+0.002488].
+h=24, C vs stpignn_v2_transport_removed: not met; ΔMAE +0.815842 CI [+0.475237,+1.189460]; ΔR² -0.042194 CI [-0.075161,-0.012869].
+h=24, C vs stpignn_lambda0: not met; ΔMAE +0.911442 CI [+0.533202,+1.304417]; ΔR² -0.008188 CI [-0.049688,+0.027196].
+h=24, C vs stpignn_laplacian: not met; ΔMAE +0.572419 CI [+0.150430,+1.010616]; ΔR² -0.001157 CI [-0.042568,+0.037333].
 
 Any-model win: met.
 C physics-in-architecture support: not met.

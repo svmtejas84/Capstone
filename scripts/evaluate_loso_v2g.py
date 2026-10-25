@@ -178,8 +178,10 @@ def main():
     raw=pd.read_parquet(raw_path) if raw_path.exists() else pd.DataFrame()
     old=pd.read_parquet(out/"loso_predictions_v2c.parquet")
     old=old[(old.seed==-1)&old.method.isin(BASELINES)].copy()
+    unscored=[]
     for fold,station_id in enumerate(pd.read_csv(out/"stations_v2.csv").station_id.astype(int)):
         if not (old.station_id==station_id).any():
+            unscored.append({"station_id":station_id,"reason":"zero observed test targets"})
             print(f"fold {fold+1} station {station_id} unscored",flush=True)
             continue
         data,_=build(REPO_ROOT/"configs/data_v2.yaml",excluded_station_id=station_id)
@@ -212,38 +214,60 @@ def main():
                     raw.to_parquet(raw_path,index=False)
                     print(f"fold={fold+1}/15 station={station_id} {anchor_name} {name} seed={seed} n={len(frame)}",flush=True)
     neural=raw[raw.seed>=0].copy()
+    blend_weights=neural[neural.anchor=="train_mean_idw_blend"].groupby("station_id",as_index=False).blend_weight.first()
+    blend_weights.to_csv(out/"loso_blend_weights_v2g.csv",index=False)
     neural["bias_adjusted_prediction"]=neural.prediction-neural.train_tail_bias
     ensemble=neural.groupby(["station_id","method","anchor","target_time_utc","target"],as_index=False).agg(
         prediction=("prediction","mean"),bias_adjusted_prediction=("bias_adjusted_prediction","mean"))
     base=raw[raw.seed==-1].copy()
     base["bias_adjusted_prediction"]=base.prediction-base.train_tail_bias
     scored=pd.concat([ensemble,base],ignore_index=True)
+    expected=set(map(tuple,base[base.method=="ridge_weather_static"][["station_id","target_time_utc"]].to_numpy()))
+    for (anchor,method),part in scored.groupby(["anchor","method"]):
+        actual=set(map(tuple,part[["station_id","target_time_utc"]].to_numpy()))
+        if actual!=expected or len(part)!=len(expected):
+            raise AssertionError(f"Unequal LOSO scored pairs {anchor}/{method}")
+    pd.DataFrame(unscored).to_csv(out/"loso_unscored_folds_v2g.csv",index=False)
     rows=[]
+    per_station=[]
+    for (station_id,anchor,method),part in scored.groupby(["station_id","anchor","method"]):
+        for corrected,column in ((False,"prediction"),(True,"bias_adjusted_prediction")):
+            m=evaluate_arrays(part[column],part.target,np.ones(len(part),bool))
+            per_station.append({"station_id":station_id,"anchor":anchor,"method":method,
+                                "seasonal_bias_corrected":corrected,**m})
+    pd.DataFrame(per_station).to_csv(out/"loso_per_station_v2g.csv",index=False)
     for (anchor,method),part in scored.groupby(["anchor","method"]):
         for corrected,column in ((False,"prediction"),(True,"bias_adjusted_prediction")):
             m=evaluate_arrays(part[column],part.target,np.ones(len(part),bool))
-            rows.append({"anchor":anchor,"method":method,"seasonal_bias_corrected":corrected,**m})
+            rows.append({"anchor":anchor,"method":method,"seasonal_bias_corrected":corrected,
+                         "mean_blend_weight":float(blend_weights.blend_weight.mean()) if anchor=="train_mean_idw_blend" else 0.0,
+                         **m})
     summary=pd.DataFrame(rows)
     from scripts.evaluate_loso_v2 import paired_ci
-    baseline_summary=summary[(summary.anchor=="baseline")&(~summary.seasonal_bias_corrected)]
-    best=baseline_summary.sort_values("mae").iloc[0].method
-    b=scored[(scored.anchor=="baseline")&(scored.method==best)]
     decision=[]
-    for anchor in ("train_mean","train_mean_idw_blend"):
-        for method in methods:
-            a=scored[(scored.anchor==anchor)&(scored.method==method)]
-            ci=paired_ci(a,b,int(benchmark["bootstrap_seed"]),int(benchmark["bootstrap_replicates"]))
-            ma=summary[(summary.anchor==anchor)&(summary.method==method)&(~summary.seasonal_bias_corrected)].iloc[0]
-            mb=baseline_summary[baseline_summary.method==best].iloc[0]
-            verdict="TIE" if ci[0][0]<=0<=ci[1][0] else ("WIN" if ci[1][0]<0 and ma.r2>mb.r2 else "LOSS")
-            decision.append({"anchor":anchor,"method":method,"best_baseline":best,"verdict":verdict,
-                             "delta_mae":ma.mae-mb.mae,"mae_ci_low":ci[0][0],"mae_ci_high":ci[1][0],
-                             "delta_r2":ma.r2-mb.r2})
+    for corrected,column in ((False,"prediction"),(True,"bias_adjusted_prediction")):
+        baseline_summary=summary[(summary.anchor=="baseline")&(summary.seasonal_bias_corrected==corrected)]
+        best=baseline_summary.sort_values("mae").iloc[0].method
+        b=scored[(scored.anchor=="baseline")&(scored.method==best)].copy()
+        b["prediction"]=b[column]
+        for anchor in ("train_mean","train_mean_idw_blend"):
+            for method in methods:
+                a=scored[(scored.anchor==anchor)&(scored.method==method)].copy()
+                a["prediction"]=a[column]
+                ci=paired_ci(a,b,int(benchmark["bootstrap_seed"]),int(benchmark["bootstrap_replicates"]))
+                ma=summary[(summary.anchor==anchor)&(summary.method==method)&
+                           (summary.seasonal_bias_corrected==corrected)].iloc[0]
+                mb=baseline_summary[baseline_summary.method==best].iloc[0]
+                verdict="TIE" if ci[0][0]<=0<=ci[1][0] else ("WIN" if ci[1][0]<0 and ma.r2>mb.r2 else "LOSS")
+                decision.append({"anchor":anchor,"method":method,"seasonal_bias_corrected":corrected,
+                                 "best_baseline":best,"verdict":verdict,
+                                 "delta_mae":ma.mae-mb.mae,"mae_ci_low":ci[0][0],"mae_ci_high":ci[1][0],
+                                 "delta_r2":ma.r2-mb.r2})
     dec=pd.DataFrame(decision)
-    summary=summary.merge(dec,on=["anchor","method"],how="left")
+    summary=summary.merge(dec,on=["anchor","method","seasonal_bias_corrected"],how="left")
     summary.to_csv(out/"loso_summary_v2g.csv",index=False)
     dec.to_csv(out/"loso_decision_v2g.csv",index=False)
-    print(json.dumps({"top_two_by_validation":top,"best_baseline":best,
+    print(json.dumps({"top_two_by_validation":top,
                       "decisions":decision,"source_commit":subprocess.check_output(["git","rev-parse","HEAD"],cwd=REPO_ROOT,text=True).strip(),
                       "timestamp_utc":dt.datetime.now(dt.timezone.utc).isoformat()},indent=2),flush=True)
 

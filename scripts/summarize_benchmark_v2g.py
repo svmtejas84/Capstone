@@ -139,7 +139,7 @@ def main():
         best=selection[(selection.horizon_hours==1)&selection.model.isin(
             ["gine_gru_wind","adaptive_graph_st","stpignn_v2"])].sort_values("validation_mae").iloc[0].model
         dem_checks=dem[(dem.record_type=="paired_bootstrap")&(dem.model==best)]
-        dem_met=(len(dem_checks)==2 and dem_checks.met.astype(bool).all())
+        dem_met=(len(dem_checks)==2 and dem_checks.met.astype(str).str.lower().eq("true").all())
         dem_line=f"DEM criterion: {'met' if dem_met else 'not met'}."
     else:
         dem_line="DEM criterion: not assessed."
