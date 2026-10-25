@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-10-25T04:00:21.389953+00:00",
+  "timestamp_utc": "2026-10-25T04:02:55.366450+00:00",
   "script": "scripts/summarize_gate_v2c.py",
   "config": "configs/gate_v2c.yaml",
   "data_config": "configs/data_v2.yaml",
@@ -12,7 +12,7 @@
     79
   ],
   "bootstrap_seed": 4303,
-  "source_git_commit": "9ed2397e2d87de87f59248f617e8b0acccde1016",
+  "source_git_commit": "012ace70c44dd9167595dfe1219914f97bc0a6f2",
   "test_pairs": 14583,
   "classical_selected_on_validation": "climatology_hod_dow",
   "choices": {
@@ -22,6 +22,7 @@
       "test_mae": 8.401825514032764,
       "test_r2": 0.5897558682562245,
       "selection_mae": 3.142210399609679,
+      "external_validation_diagnostic_mae": null,
       "comparisons": {
         "persistence": {
           "mae_difference_ug_m3": 0.2857304163083523,
@@ -62,7 +63,8 @@
       "lr": 0.0001,
       "test_mae": 8.12737180680897,
       "test_r2": 0.5789650371431017,
-      "selection_mae": 3.2609316557211363,
+      "selection_mae": 4.077199731972285,
+      "external_validation_diagnostic_mae": 3.2609316557211363,
       "comparisons": {}
     }
   },

@@ -1,6 +1,6 @@
 # Residual h=1 gate
 
-Source: `scripts/summarize_gate_v2c.py`, `configs/gate_v2c.yaml`, seeds [11, 23, 37, 51, 79], commit `9ed2397e2d87de87f59248f617e8b0acccde1016`, 2026-10-25T04:00:21.389953+00:00. All test rows use the same 14583 observed station-hour pairs.
+Source: `scripts/summarize_gate_v2c.py`, `configs/gate_v2c.yaml`, seeds [11, 23, 37, 51, 79], commit `012ace70c44dd9167595dfe1219914f97bc0a6f2`, 2026-10-25T04:02:55.366450+00:00. All test rows use the same 14583 observed station-hour pairs.
 
 | Method | Selection | Seeds | MAE mean±SD (µg/m³) | R² mean±SD |
 |---|---|---:|---:|---:|
@@ -28,14 +28,14 @@ Classical validation selection (not test selection):
 | ridge_meteorology_static | 7203 | 10.367326 | -0.057493 |
 | idw_known_at_t | 7203 | 12.645726 | -0.522832 |
 
-Corrected ST-PIGNN selected by validation: seed 11, LR 0.003, selection/diagnostic MAE 3.142210, test MAE 8.401826, R² 0.589756.
+Corrected ST-PIGNN selected by validation: seed 11, LR 0.003, selection MAE 3.142210, test MAE 8.401826, R² 0.589756.
 
 | ST-PIGNN minus reference | MAE difference [95% UTC-day CI] | R² difference [95% UTC-day CI] |
 |---|---:|---:|
 | persistence | 0.285730 [0.183806, 0.393342] | 0.057667 [0.044899, 0.070625] |
 | climatology_hod_dow | -13.066822 [-13.861912, -12.262534] | 0.682206 [0.634023, 0.735647] |
 
-Corrected ST-PIGNN selected by train_tail: seed 11, LR 0.0001, selection/diagnostic MAE 3.260932, test MAE 8.127372, R² 0.578965.
+Corrected ST-PIGNN selected by train_tail: seed 11, LR 0.0001, selection MAE 4.077200, test MAE 8.127372, R² 0.578965. Original July–September validation MAE (diagnostic only): 3.260932.
 
 Validation-selected residual ST-PIGNN beats persistence on test MAE with paired CI excluding zero: NO.
 source: results/gate_v2c.csv, results/gate_v2c_bootstrap.json, results/classical_validation_v2c.csv; produced by scripts/summarize_gate_v2c.py.
