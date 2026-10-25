@@ -1,0 +1,55 @@
+{
+  "timestamp_utc": "2026-10-25T04:09:31.461222+00:00",
+  "script": "scripts/physics_controls_v2c.py",
+  "config": "configs/gate_v2c.yaml",
+  "source_git_commit": "107388bc8988d28c15a655046d2e1a51410f872d",
+  "seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "lambda0_matched_lr": 0.003,
+  "threshold_scale_train_target_sd_ug_m3": 22.99373435974121,
+  "q_status": "unavailable: no measured traffic index",
+  "paired_seed_t_intervals": {
+    "stpignn_lambda0": {
+      "mae": {
+        "mean": 0.0986102616440359,
+        "sd": 0.09301323805849816,
+        "ci95": [
+          -0.016880927409557683,
+          0.21410145069762948
+        ]
+      },
+      "pvr_at_zero": {
+        "mean": 0.10696103807058961,
+        "sd": 0.27602535509096565,
+        "ci95": [
+          -0.2357697079372732,
+          0.4496917840784524
+        ]
+      }
+    },
+    "stpignn_laplacian": {
+      "mae": {
+        "mean": -0.02375060869883434,
+        "sd": 0.32781803417016464,
+        "ci95": [
+          -0.43079045968985985,
+          0.3832892422921912
+        ]
+      },
+      "pvr_at_zero": {
+        "mean": -0.09153396527194388,
+        "sd": 0.9065961701833355,
+        "ci95": [
+          -1.2172217906980065,
+          1.034153860154119
+        ]
+      }
+    }
+  },
+  "change_beyond_seed_noise_at_mae_or_pvr_zero": false
+}

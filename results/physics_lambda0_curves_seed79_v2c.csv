@@ -1,0 +1,6 @@
+model,scaler,lr,seed,budget,epoch,train_loss,val_mae_ug_m3,physics_lambda
+stpignn_lambda0,log1p,0.003,79,physics_lambda0,1,0.43858108003948204,3.1781619070272353,0.0
+stpignn_lambda0,log1p,0.003,79,physics_lambda0,2,0.20460906769506199,3.4331445641671885,0.0
+stpignn_lambda0,log1p,0.003,79,physics_lambda0,3,0.2000627033564509,3.201504767826493,0.0
+stpignn_lambda0,log1p,0.003,79,physics_lambda0,4,0.19689672991560012,3.733309422501852,0.0
+stpignn_lambda0,log1p,0.003,79,physics_lambda0,5,0.19458095345339416,3.1987643075058827,0.0
