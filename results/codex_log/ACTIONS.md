@@ -14,3 +14,4 @@
 - 2026-10-24 18:30:14 UTC DONE Gate C: result commit `a08e1e8` and seed/handoff commit `4b6eb39` pushed to `origin/audit/canonical-notebook-20261023`; no running job and no queued phase started.
 - 2026-10-25 UTC START checkpoint commit: record Gates A-C complete and queue S1-S4; no diagnostic, revision, training, or evaluation run.
 - 2026-10-25 UTC DONE checkpoint commit preparation: ACTIONS, DECISIONS, QUOTA, and RESUME updated; commit/push command follows.
+- 2026-10-25 02:38:26 UTC START S1: diagnose cleaned lag/target alignment, train-only AR/Ridge, saved-checkpoint lag association, split distributions and four unscored LOSO stations. No neural training.
