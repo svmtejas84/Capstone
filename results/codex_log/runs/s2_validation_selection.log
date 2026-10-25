@@ -1,0 +1,37 @@
+/home/jupyter-1nt23cb058/Capstone/scripts/train_gate_v2.py:120: RuntimeWarning: Mean of empty slice
+  station_mean = np.nanmean(self.observed_y[train], axis=0)
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3825990511951356, 'best_epoch': 17}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.346232066320145, 'best_epoch': 6}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3547591922201416, 'best_epoch': 5}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2293795380230894, 'best_epoch': 10}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.196446566884259, 'best_epoch': 6}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.1923950156552516, 'best_epoch': 4}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.142210399609679, 'best_epoch': 1}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.49551876003121, 'best_epoch': 20}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.1328270228370956, 'best_epoch': 20}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.135185776297254, 'best_epoch': 7}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.136610840232227, 'best_epoch': 2}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.169570248532126, 'best_epoch': 7}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.147328386104191, 'best_epoch': 4}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.178520741585839, 'best_epoch': 1}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.576828326950297, 'best_epoch': 20}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2581936742401356, 'best_epoch': 20}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2165800088854417, 'best_epoch': 12}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2128787305669975, 'best_epoch': 5}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.223548929888549, 'best_epoch': 3}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.272206203639921, 'best_epoch': 4}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.242597390628765, 'best_epoch': 3}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3438551576150495, 'best_epoch': 18}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3448870879348807, 'best_epoch': 5}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3470898763681722, 'best_epoch': 2}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3725060293970466, 'best_epoch': 3}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.373477539413508, 'best_epoch': 3}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.332344876177424, 'best_epoch': 3}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3715482318540357, 'best_epoch': 3}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.414224614527976, 'best_epoch': 14}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3559733094063366, 'best_epoch': 5}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.3854349906429984, 'best_epoch': 2}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2886153850417394, 'best_epoch': 2}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.2306393502603616, 'best_epoch': 6}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.272256749132748, 'best_epoch': 2}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'selection', 'best_val_mae_ug_m3': 3.12967279270823, 'best_epoch': 1}

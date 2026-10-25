@@ -1,11 +1,11 @@
 # Resume
 
-- Last completed step: S1 diagnosis. Source commit `38f477f`; final S1 result commit follows. S1 identified an imputed-lag and scaling defect. Original Gates B/C remain unchanged and final.
+- Last completed step: S1 diagnosis. Source commit `38f477f`, final S1 result commit `62132eb` pushed. S1 identified an imputed-lag and scaling defect. Original Gates B/C remain unchanged and final.
 - Branch: `audit/canonical-notebook-20261023`.
-- Latest commit: HEAD after the S1 result commit; use `git rev-parse HEAD` to resolve its hash. Pre-result source commit `38f477f`.
-- Running job: none (PID: none; log path: `results/codex_log/runs/s1_diagnose.log` is complete).
-- NEXT: S2 residual formulation, then S3 physics controls, then S4 LOSO rerun. S4 is required under the user's rule because S1 found a defect. The full S1-S4 instructions are in the latest user message of this session.
-- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git rev-parse HEAD && git status --short`.
+- Latest commit: `17495ff` (S2 source before results); use `git rev-parse HEAD` for any later commit.
+- Running job: PID 2906718, command session 45223, log `results/codex_log/runs/s2_validation_selection.log`; `nohup python -u -m scripts.train_gate_v2 --stage selection --config configs/gate_v2c.yaml --output-prefix v2c --models gru_only vanilla_gcn st_gru_gcn stpignn_corrected stpignn_laplacian`. Poll no more than once per five minutes.
+- Current step: S2 validation LR selection RUNNING. Next within S2: train-tail selection, then validation-selected and train-tail-selected five-seed final runs, summary/bootstrap. S3 physics and S4 LOSO remain NOT RUN. S4 is required under the user's rule because S1 found a defect.
+- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && tail -30 results/codex_log/runs/s2_validation_selection.log && git status --short`.
 
 ## Completed S1 evidence
 

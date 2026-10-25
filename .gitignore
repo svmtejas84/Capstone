@@ -61,6 +61,13 @@ data/processed/graph/*.pkl
 !results/loso_decision_v2.json
 !results/loso_predictions_v2.parquet
 !results/diagnosis_v2c.json
+!results/neural_selection_v2c_run.json
+!results/neural_selection_train_tail_v2c_run.json
+!results/neural_final_v2c_run.json
+!results/neural_train_tail_v2c_run.json
+!results/neural_predictions_v2c.parquet
+!results/neural_train_tail_predictions_v2c.parquet
+!results/gate_v2c_bootstrap.json
 !results/neural_longer_predictions_v2b.parquet
 !results/baselines_v2b_run.json
 !results/neural_selection_v2b_run.json

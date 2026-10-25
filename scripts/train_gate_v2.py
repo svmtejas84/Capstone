@@ -169,7 +169,7 @@ class Context:
 
 
 def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patience=None,
-              budget="short"):
+              budget="short", fixed_epochs=False):
     seed_all(seed)
     cfg = ctx.cfg
     model = make_model(name, ctx.features.shape[-1], int(cfg["neural_hidden_dim"]), ctx.edge_attr.shape[1]).to(ctx.device)
@@ -215,6 +215,10 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patienc
         curves.append({"model": name, "scaler": scaler, "lr": float(lr), "seed": seed, "budget": budget,
                        "epoch": epoch, "train_loss": loss_sum / weight_sum, "val_mae_ug_m3": val_mae,
                        "physics_lambda": physics_lambda})
+        if fixed_epochs:
+            best_val, best_epoch = val_mae, epoch
+            best_state = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
+            continue
         if val_mae < best_val:
             best_val, best_epoch, bad = val_mae, epoch, 0
             best_state = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
@@ -224,7 +228,8 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patienc
                 break
     model.load_state_dict(best_state)
     result = {"model": name, "scaler": scaler, "lr": float(lr), "seed": seed, "budget": budget,
-              "best_val_mae_ug_m3": best_val, "best_epoch": best_epoch}
+              "best_val_mae_ug_m3": best_val, "best_epoch": best_epoch,
+              "fixed_epochs_from_train_tail": bool(fixed_epochs)}
     predictions = None
     if test_after:
         predictions = evaluate_split(ctx, model, name, scaler, mean, std, "test", collect=True)
@@ -343,11 +348,13 @@ def main():
         for seed in ctx.cfg["neural_seeds"]:
             if not existing.empty and ((existing.model == name) & (existing.seed == int(seed))).any():
                 continue
+            fixed_epochs = args.stage == "tail_final"
+            epoch_limit = int(selected.best_epoch) if fixed_epochs else int(ctx.cfg["longer_max_epochs"] if args.stage == "longer" else ctx.cfg["neural_max_epochs"])
             result, track, predictions = run_model(ctx, name, selected_scaler, float(selected.lr), int(seed),
-                                                   int(ctx.cfg["longer_max_epochs"] if args.stage == "longer" else ctx.cfg["neural_max_epochs"]),
+                                                   epoch_limit,
                                                    test_after=True,
                                                    patience=int(ctx.cfg["longer_patience"]) if args.stage == "longer" else None,
-                                                   budget=args.stage)
+                                                   budget=args.stage, fixed_epochs=fixed_epochs)
             rows.append(result)
             curves.extend(track)
             frame = pd.DataFrame({"model": name, "scaler": selected_scaler, "seed": seed,
