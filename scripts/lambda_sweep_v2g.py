@@ -168,9 +168,10 @@ def summarize(horizons, cfg, seeds):
             verdict[horizon][name] = {"met": bool(better), "qualifying_lambdas": [row["lambda"] for row in better]}
     pd.DataFrame(rows).to_csv(OUTPUT_PATH, index=False)
     (REPO_ROOT / "results/lambda_verdict_v2g.json").write_text(json.dumps({
-        "criterion": "some lambda>0 has paired UTC-day bootstrap MAE CI strictly below zero vs lambda=0",
+        "criterion": "corrected ST-PIGNN: some lambda>0 has paired UTC-day bootstrap MAE CI strictly below zero vs lambda=0",
         "verdict_by_horizon": verdict,
-        "overall_met": any(item["met"] for methods in verdict.values() for item in methods.values()),
+        "overall_met": any(methods["stpignn_original"]["met"] for methods in verdict.values()),
+        "laplacian_control_met": any(methods["stpignn_laplacian"]["met"] for methods in verdict.values()),
         "script": "scripts/lambda_sweep_v2g.py", "config": "configs/benchmark_v2g.yaml",
         "seeds": cfg["neural_seeds"],
         "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip(),
