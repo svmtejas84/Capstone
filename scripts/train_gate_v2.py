@@ -202,7 +202,8 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patienc
                 variant = "legacy" if name == "stpignn_legacy" else ("laplacian" if name == "stpignn_laplacian" else "corrected_mask")
                 wind_mask = legacy_mask if variant == "legacy" else corrected_mask
                 physical_loss = batched_penalty(p_phys_norm, ctx.edge_index, wind_mask, ctx.edge_attr, variant)
-            physics_lambda = float(cfg["neural_physics_weight"]) * min(1.0, epoch / 25.0)
+            physics_lambda = (0.0 if name == "stpignn_lambda0" else
+                              float(cfg["neural_physics_weight"]) * min(1.0, epoch / 25.0))
             loss = data_loss + physics_lambda * physical_loss
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"Non-finite training loss: {name}, {scaler}, seed={seed}, epoch={epoch}")
