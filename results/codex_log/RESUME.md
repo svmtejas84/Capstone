@@ -1,28 +1,26 @@
 # Resume
 
-- Last completed gate: Gate C LOSO. Predeclared verdict TIE; Gate C final log commit `68df3b0` was pushed to `origin/audit/canonical-notebook-20261023`. Gates A and B are also complete.
+- Last completed step: S1 diagnosis. Source commit `38f477f`; final S1 result commit follows. S1 identified an imputed-lag and scaling defect. Original Gates B/C remain unchanged and final.
 - Branch: `audit/canonical-notebook-20261023`.
-- Latest commit: HEAD after the checkpoint commit named `Checkpoint: Gates A-C complete, S1-S4 queued`; run `git rev-parse HEAD` to obtain its hash. The preceding completed Gate C commit is `68df3b0`.
-- Running job: none (PID: none; log path: none).
-- NEXT: S1 diagnose; S2 residual formulation; S3 physics controls; S4 LOSO rerun. These were proposed but NOT RUN. The full S1-S4 prompt text is not in this handoff; ask the user to resend it before execution. Gate B/C results are final as precommitted.
-- Continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git rev-parse HEAD && git status --short`.
+- Latest commit: HEAD after the S1 result commit; use `git rev-parse HEAD` to resolve its hash. Pre-result source commit `38f477f`.
+- Running job: none (PID: none; log path: `results/codex_log/runs/s1_diagnose.log` is complete).
+- NEXT: S2 residual formulation, then S3 physics controls, then S4 LOSO rerun. S4 is required under the user's rule because S1 found a defect. The full S1-S4 instructions are in the latest user message of this session.
+- Exact continue command: `cd /home/jupyter-1nt23cb058/Capstone && cat results/codex_log/RESUME.md && git rev-parse HEAD && git status --short`.
 
-## Completed results
+## Completed S1 evidence
 
-- Gate A: cleaned training PM2.5 max 493 µg/m³; see `results/cleaning_compare_v2.json` and `results/cleaning_counts_v2.csv`.
-- Gate B: cleaned h=1 comparison in `results/gate_v2b.csv` and `results/gate_v2b.md`. Persistence MAE/R² 8.116095/0.532089; IDW 22.698642/-0.205856; validation-selected corrected ST-PIGNN 20.613632/0.001594.
-- Gate C: 15 folds considered, 11 scored, 14,583 observed test pairs per method. Pooled results in `results/loso_summary_v2.csv`; decision and bootstrap CI in `results/loso_decision_v2.json`; per-station scores in `results/loso_per_station_v2.csv`; raw predictions in `results/loso_predictions_v2.parquet`. Known-station ST-PIGNN versus ordinary kriging: MAE difference -0.305056 µg/m³, 95% paired UTC-day CI [-1.163714, 0.607623]; verdict TIE. Source commit `e90fd05`, config `configs/loso_v2.yaml`, seeds 11/23/37.
-- `claude_paper.md` has appended factual Step 4b-A, Step 4b-B and Step 4b-C handoffs. Do not reread it in full.
+- Script `scripts/diagnose_v2c.py`, configs `configs/data_v2.yaml` and `configs/gate_v2b.yaml`, seed 42, checkpoint seeds 11/23/37/51/79, source commit `38f477f`, final run 2026-10-25T02:43:01 UTC. Raw report `results/diagnosis_v2c.md`, JSON and CSV companions.
+- Training lag-target r=0.040120 over 32,628 observed target pairs; immediately observed lag r=0.823055 over 30,974 pairs. Three training lag values exceed 500 µg/m³ and the maximum is 44,428.418 µg/m³. Feature SD=562.017 µg/m³. Neural targets use a separate log1p transform. Train-only AR test MAE/R² 20.562207/-0.073372; Ridge lag+weather/static 20.485240/0.059078; persistence 8.116095/0.532089.
+- Four LOSO stations 5547, 5548, 6975, 2498781 have zero observed test targets. No timestamp shift was identified. S1 defect is input imputation/scaling, not proof of a target-time alignment bug.
 
-## NOT RUN queue after S1-S4
+## S2-S4 instructions (NOT RUN)
 
-1. D: cleaned h=6 and h=24 gate.
-2. E: latency, synchronized, 50 warmup + 200 timed.
-3. F: PVR and smoothness with matched lambda=0; Q blocked by absent traffic index.
-4. G: ablation, including full model, lambda, cone and elevation controls.
-5. H: calibration-fault test.
-6. I: Integrated Gradients with named v2 channels.
-7. J: routing after predicted-field range/correlation check, using the training feature builder.
-8. K: figures, Makefile, MANIFEST, claim verdicts C1-C14.
-9. L: citywide, conditional.
-10. M: London, conditional.
+- S2: residual prediction for ALL five neural models (GRU-only, Vanilla GCN, ST GRU-GCN, ST-PIGNN corrected, ST-PIGNN Laplacian), LR grid 3e-6/1e-5/3e-5/1e-4/3e-4/1e-3/3e-3, max 20 epochs, patience 4, 5 seeds. Select on validation and separately report selection on the last 30 train days. Paired UTC-day bootstrap 2,000 for ST-PIGNN versus persistence and best classical baseline. New outputs only with `_v2c` suffix. Predeclare choices in DECISIONS.md before run.
+- S3: corrected versus matched lambda=0 versus Laplacian, same seeds/budget; PVR thresholds 0/0.01/0.05/0.1 normalized and µg/m³, edge gradient, Dirichlet energy. Output `results/physics_controls_v2c.csv`.
+- S4: rerun LOSO with S2 formulation, same Gate C protocol and WIN/TIE/LOSS rule, plus nearest-known-station persistence; note four unscored folds. Output `results/loso_summary_v2c.csv`. Triggered by S1 defect. Append factual Step 4c tables/source lines to `claude_paper.md` after S4; stop before D-M.
+
+## Existing results and NOT RUN queue
+
+- Gate B: `results/gate_v2b.csv`/`.md`; persistence MAE/R² 8.116095/0.532089, IDW 22.698642/-0.205856, corrected ST-PIGNN 20.613632/0.001594.
+- Gate C: TIE; `results/loso_summary_v2.csv` and `results/loso_decision_v2.json`; 11 scored folds and 14,583 observed test pairs.
+- After S4, NOT RUN: D cleaned h=6/24; E latency; F PVR/smoothness; G ablation; H calibration; I IG; J routing; K figures/claim verdicts; L citywide conditional; M London conditional.

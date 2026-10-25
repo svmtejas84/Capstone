@@ -1,0 +1,71 @@
+{
+  "script": "scripts/diagnose_v2c.py",
+  "data_config": "configs/data_v2.yaml",
+  "gate_config": "configs/gate_v2b.yaml",
+  "seed": 42,
+  "checkpoint_seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "timestamp_utc": "2026-10-25T02:43:01.533108+00:00",
+  "source_git_commit": "38f477f4ae4b11824ee0405fe6e33a3940ba5d76",
+  "input_lag_transform": {
+    "formula": "(filled raw PM2.5 - train feature mean) / train feature SD",
+    "mean": 39.16933059692383,
+    "sd": 562.017333984375
+  },
+  "neural_target_transform": {
+    "formula": "(log1p(observed PM2.5) - train log mean) / train log SD",
+    "mean": 3.380091905593872,
+    "sd": 0.6390002965927124
+  },
+  "lag_and_target_same_transform": false,
+  "ar_intercept": 34.052818298339844,
+  "ar_slope": 0.002297320170328021,
+  "ridge_alpha": 1.0,
+  "ridge_feature_indices": [
+    0,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "ridge_coefficients": [
+    0.9431546330451965,
+    -1.4218727350234985,
+    -1.1267586946487427,
+    -4.138412952423096,
+    -6.999906539916992,
+    0.4074493646621704,
+    3.1470539569854736,
+    1.3784081935882568,
+    -4.493741989135742
+  ],
+  "tests": {
+    "ar_lag": {
+      "n": 14583,
+      "mae": 20.562206989829,
+      "rmse": 38.40643830134054,
+      "r2": -0.07337230753881174,
+      "bias": -10.270660079882312,
+      "nmae": 0.4628455652721309,
+      "median_ae": 13.836910247802734
+    },
+    "ridge_lag_weather_static": {
+      "n": 14583,
+      "mae": 20.48523988725819,
+      "rmse": 35.95883337048861,
+      "r2": 0.05907825498022978,
+      "bias": -5.2868172466307355,
+      "nmae": 0.46111307215432656,
+      "median_ae": 14.790781021118164
+    }
+  }
+}
