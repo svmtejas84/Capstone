@@ -136,3 +136,74 @@ h=24, C vs stpignn_laplacian: not met; ΔMAE +0.572419 CI [+0.150430,+1.010616];
 Any-model win: met.
 C physics-in-architecture support: not met.
 DEM criterion: not assessed.
+
+## Step 4g-2: paired reference intervals
+
+Source `scripts/append_benchmark_intervals_v2g.py`, saved W2 predictions, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], commit `cf200560c64c02076cf7be86c394ce038f09f824`, 2026-10-25T13:41:30.621917+00:00.
+
+ΔMAE is model minus reference in µg/m³; negative favors the model. Intervals resample paired UTC days 2,000 times.
+
+| Horizon (h) | Model | Reference | ΔMAE (µg/m³) | 95% CI (µg/m³) | CI width (µg/m³) |
+|---:|---|---|---:|---:|---:|
+| 1 | stpignn_original | persistence | -0.097270 | [-0.202529, +0.004498] | 0.207027 |
+| 1 | stpignn_original | same_hour_yesterday | -6.111487 | [-6.849143, -5.375730] | 1.473413 |
+| 1 | gine_gru_wind | persistence | -0.059730 | [-0.093491, -0.024862] | 0.068629 |
+| 1 | gine_gru_wind | same_hour_yesterday | -6.073946 | [-6.836922, -5.314510] | 1.522412 |
+| 1 | adaptive_graph_st | persistence | -0.090127 | [-0.111708, -0.068875] | 0.042833 |
+| 1 | adaptive_graph_st | same_hour_yesterday | -6.104344 | [-6.867843, -5.345048] | 1.522795 |
+| 1 | stpignn_v2 | persistence | +1.204792 | [+0.956397, +1.459631] | 0.503235 |
+| 1 | stpignn_v2 | same_hour_yesterday | -4.809425 | [-5.607807, -4.071090] | 1.536717 |
+| 1 | stpignn_lambda0 | persistence | -0.081476 | [-0.170251, +0.003237] | 0.173488 |
+| 1 | stpignn_lambda0 | same_hour_yesterday | -6.095692 | [-6.844999, -5.354179] | 1.490820 |
+| 1 | stpignn_laplacian | persistence | -0.080726 | [-0.193342, +0.031850] | 0.225192 |
+| 1 | stpignn_laplacian | same_hour_yesterday | -6.094943 | [-6.835938, -5.353892] | 1.482046 |
+| 3 | stpignn_original | persistence | -0.933707 | [-1.274953, -0.631194] | 0.643759 |
+| 3 | stpignn_original | same_hour_yesterday | -1.819660 | [-2.636952, -1.045364] | 1.591588 |
+| 3 | gine_gru_wind | persistence | -0.278201 | [-0.350399, -0.211148] | 0.139251 |
+| 3 | gine_gru_wind | same_hour_yesterday | -1.164155 | [-2.073857, -0.308342] | 1.765514 |
+| 3 | adaptive_graph_st | persistence | -0.190910 | [-0.228917, -0.156250] | 0.072667 |
+| 3 | adaptive_graph_st | same_hour_yesterday | -1.076864 | [-1.987687, -0.216029] | 1.771658 |
+| 3 | stpignn_v2 | persistence | +0.441423 | [+0.137539, +0.763671] | 0.626132 |
+| 3 | stpignn_v2 | same_hour_yesterday | -0.444530 | [-1.359295, +0.444623] | 1.803918 |
+| 3 | stpignn_lambda0 | persistence | -0.915652 | [-1.228868, -0.632554] | 0.596313 |
+| 3 | stpignn_lambda0 | same_hour_yesterday | -1.801605 | [-2.635581, -1.012516] | 1.623065 |
+| 3 | stpignn_laplacian | persistence | -0.930591 | [-1.273547, -0.619187] | 0.654360 |
+| 3 | stpignn_laplacian | same_hour_yesterday | -1.816544 | [-2.622615, -1.048691] | 1.573923 |
+| 6 | stpignn_original | persistence | -1.766343 | [-2.219745, -1.288067] | 0.931678 |
+| 6 | stpignn_original | same_hour_yesterday | +0.710236 | [-0.068723, +1.500975] | 1.569697 |
+| 6 | gine_gru_wind | persistence | -0.826526 | [-1.303282, -0.359625] | 0.943657 |
+| 6 | gine_gru_wind | same_hour_yesterday | +1.650053 | [+0.863279, +2.480145] | 1.616866 |
+| 6 | adaptive_graph_st | persistence | -1.479632 | [-1.914625, -1.001425] | 0.913200 |
+| 6 | adaptive_graph_st | same_hour_yesterday | +0.996947 | [+0.176091, +1.828676] | 1.652584 |
+| 6 | stpignn_v2 | persistence | -0.200835 | [-0.610891, +0.203061] | 0.813952 |
+| 6 | stpignn_v2 | same_hour_yesterday | +2.275745 | [+1.370734, +3.191583] | 1.820850 |
+| 6 | stpignn_lambda0 | persistence | -1.671338 | [-2.149502, -1.173659] | 0.975843 |
+| 6 | stpignn_lambda0 | same_hour_yesterday | +0.805241 | [+0.010549, +1.603717] | 1.593167 |
+| 6 | stpignn_laplacian | persistence | -1.712551 | [-2.154578, -1.243543] | 0.911035 |
+| 6 | stpignn_laplacian | same_hour_yesterday | +0.764029 | [-0.026276, +1.557933] | 1.584209 |
+| 12 | stpignn_original | persistence | -3.468357 | [-4.219589, -2.697742] | 1.521847 |
+| 12 | stpignn_original | same_hour_yesterday | +1.506893 | [+0.711599, +2.304991] | 1.593391 |
+| 12 | gine_gru_wind | persistence | -1.732595 | [-2.326582, -1.126920] | 1.199662 |
+| 12 | gine_gru_wind | same_hour_yesterday | +3.242655 | [+2.329706, +4.146136] | 1.816430 |
+| 12 | adaptive_graph_st | persistence | -1.748881 | [-2.128986, -1.339434] | 0.789552 |
+| 12 | adaptive_graph_st | same_hour_yesterday | +3.226368 | [+2.274254, +4.230490] | 1.956236 |
+| 12 | stpignn_v2 | persistence | -0.866232 | [-1.280995, -0.449956] | 0.831039 |
+| 12 | stpignn_v2 | same_hour_yesterday | +4.109017 | [+3.094776, +5.205569] | 2.110793 |
+| 12 | stpignn_lambda0 | persistence | -3.246797 | [-3.985532, -2.499008] | 1.486524 |
+| 12 | stpignn_lambda0 | same_hour_yesterday | +1.728453 | [+0.903467, +2.565784] | 1.662317 |
+| 12 | stpignn_laplacian | persistence | -3.746532 | [-4.519223, -2.982600] | 1.536623 |
+| 12 | stpignn_laplacian | same_hour_yesterday | +1.228717 | [+0.452769, +1.997965] | 1.545196 |
+| 24 | stpignn_original | persistence | -0.341689 | [-0.846439, +0.151647] | 0.998086 |
+| 24 | stpignn_original | same_hour_yesterday | -0.341689 | [-0.846439, +0.151647] | 0.998086 |
+| 24 | gine_gru_wind | persistence | -0.091843 | [-0.542778, +0.334958] | 0.877736 |
+| 24 | gine_gru_wind | same_hour_yesterday | -0.091843 | [-0.542778, +0.334958] | 0.877736 |
+| 24 | adaptive_graph_st | persistence | -0.472651 | [-0.774896, -0.195378] | 0.579518 |
+| 24 | adaptive_graph_st | same_hour_yesterday | -0.472651 | [-0.774896, -0.195378] | 0.579518 |
+| 24 | stpignn_v2 | persistence | +0.623863 | [+0.162653, +1.061427] | 0.898774 |
+| 24 | stpignn_v2 | same_hour_yesterday | +0.623863 | [+0.162653, +1.061427] | 0.898774 |
+| 24 | stpignn_lambda0 | persistence | -0.287578 | [-0.795546, +0.207566] | 1.003112 |
+| 24 | stpignn_lambda0 | same_hour_yesterday | -0.287578 | [-0.795546, +0.207566] | 1.003112 |
+| 24 | stpignn_laplacian | persistence | +0.051444 | [-0.503398, +0.610519] | 1.113917 |
+| 24 | stpignn_laplacian | same_hour_yesterday | +0.051444 | [-0.503398, +0.610519] | 1.113917 |
+
+Multiplicity note: 60 model-horizon-reference comparisons were made (6 models × 5 horizons × 2 references). These are nominal 95% intervals; no familywise or false-discovery adjustment was applied.

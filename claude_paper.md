@@ -353,3 +353,14 @@ Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, config
 | 12 | Original penalty ST-PIGNN | 15.637205 | 0.138050 |
 
 Final fixed criteria: A and B meet the win rule at h=1 and h=3, and B also at h=24; neither meets it at h=6 or h=12. C physics-in-architecture support is not met at any horizon. W3 DEM criterion remains not run because the five-hour limit elapsed.
+
+## Step 4g-2 (2026-10-25 13:42 UTC)
+
+Saved W2 predictions were used to append all 60 paired UTC-day 2,000-bootstrap MAE intervals and their widths to `results/benchmark_v2g.md`; no model was retrained. Source `scripts/append_benchmark_intervals_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `cf20056`.
+
+| h (hours) | Model minus persistence ΔMAE (µg/m³) | 95% CI (µg/m³) | CI width (µg/m³) |
+|---:|---|---:|---:|
+| 24 | Adaptive graph ST: -0.472651 | [-0.774896, -0.195378] | 0.579518 |
+| 24 | Original ST-PIGNN: -0.341689 | [-0.846439, +0.151647] | 0.998086 |
+
+These are nominal intervals across 60 model-horizon-reference comparisons; no multiplicity adjustment was applied. W7 is running; W3, W4 and W8 follow.
