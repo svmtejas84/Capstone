@@ -1,0 +1,26 @@
+seed: 42
+horizon_hours: 1
+residual_mode: true
+residual_anchor: last_observed_pm25_at_or_before_cutoff
+residual_anchor_fallback: train_station_mean_then_train_global_mean
+residual_target_transform: log1p_train_standardized
+train_tail_data_config: configs/data_v2c_tail.yaml
+train_tail_fit_end_utc: '2025-05-30T23:00:00Z'
+train_tail_start_utc: '2025-05-31T00:00:00Z'
+non_neural_regression_alpha: 1.0
+ridge_weather_static_only: true
+idw_power: 2.0
+bootstrap_replicates: 2000
+bootstrap_seed: 4303
+neural_seeds: [11, 23, 37, 51, 79]
+neural_hidden_dim: 96
+neural_batch_size: 512
+neural_selection_epochs: 20
+neural_max_epochs: 20
+neural_early_stopping_patience: 4
+neural_lr_grid: [3.0e-6, 1.0e-5, 3.0e-5, 1.0e-4, 3.0e-4, 1.0e-3, 3.0e-3]
+neural_weight_decay: 0.01
+neural_physics_weight: 0.06
+imputed_target_weight: 0.25
+target_scaler_grid: [log1p]
+station_graph_neighbours: 4

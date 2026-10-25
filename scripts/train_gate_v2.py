@@ -84,7 +84,7 @@ def aligned_mask_arrays(raw_wind, xy, edge_index, legacy_slope, legacy_intercept
 
 
 class Context:
-    def __init__(self, config_path="configs/gate_v2.yaml", output_prefix="v2"):
+    def __init__(self, config_path="configs/gate_v2.yaml", output_prefix="v2", selection_split="validation"):
         self.config_path = config_path
         self.output_prefix = output_prefix
         self.cfg = yaml.safe_load((REPO_ROOT / config_path).read_text())
@@ -100,6 +100,31 @@ class Context:
         self.observed_mask = self.z["observed_mask"]
         self.imputed_y = self.z["imputed_target"]
         self.station_ids = self.z["station_ids"]
+        if selection_split == "train_tail":
+            from src.stpignn.data_v2 import build
+            tail, _ = build(REPO_ROOT / self.cfg["train_tail_data_config"])
+            if not np.array_equal(tail.station_ids, self.station_ids) or not np.array_equal(tail.times.asi8, self.times.asi8):
+                raise AssertionError("Tail-fitted data must preserve station and UTC timeline alignment")
+            self.features = tail.features
+            self.observed_y = tail.observed_target
+            self.observed_mask = tail.observed_mask
+            self.imputed_y = tail.imputed_target
+            self.fit = tail.fit
+        self.anchor = None
+        if self.cfg.get("residual_mode", False):
+            train = np.asarray((self.times >= pd.Timestamp(self.cfg.get("residual_fit_train_start_utc", self.data_cfg["train_start_utc"]))) &
+                               (self.times <= pd.Timestamp(self.cfg.get("residual_fit_train_end_utc", self.data_cfg["train_end_utc"]))))
+            if selection_split == "train_tail":
+                train = np.asarray((self.times >= pd.Timestamp(self.data_cfg["train_start_utc"])) &
+                                   (self.times <= pd.Timestamp(self.cfg["train_tail_fit_end_utc"])))
+            station_mean = np.nanmean(self.observed_y[train], axis=0)
+            global_mean = float(np.nanmean(self.observed_y[train]))
+            station_mean = np.where(np.isfinite(station_mean), station_mean, global_mean)
+            anchor = pd.DataFrame(self.observed_y).ffill().to_numpy(dtype=np.float32)
+            self.anchor = np.where(np.isfinite(anchor), anchor, station_mean[None, :]).astype(np.float32)
+            self.features = self.features.copy()
+            self.features[:, :, 0] = ((np.log1p(self.anchor) - self.fit["target_log1p_mean"]) /
+                                       self.fit["target_log1p_std"]).astype(np.float32)
         self.edge_index, self.edge_attr = directed_knn_graph(self.z["coordinates"],
                                                               int(self.cfg["station_graph_neighbours"]))
         self.corrected_mask, self.legacy_mask = aligned_mask_arrays(
@@ -112,6 +137,14 @@ class Context:
             eligible = np.asarray((self.times >= a) & (self.times <= b) & self.observed_mask.any(axis=1))
             eligible[:self.history - 1 + self.horizon] = False
             self.hours[split] = np.flatnonzero(eligible)
+        if selection_split == "train_tail":
+            tail_start = pd.Timestamp(self.cfg["train_tail_start_utc"])
+            tail_end = pd.Timestamp(self.data_cfg["train_end_utc"])
+            self.hours["train"] = self.hours["train"][self.times[self.hours["train"]] < tail_start]
+            self.hours["validation"] = np.flatnonzero(np.asarray(
+                (self.times >= tail_start) & (self.times <= tail_end) & self.observed_mask.any(axis=1)))
+            if not len(self.hours["validation"]):
+                raise ValueError("Train-tail selection slice has no observed targets")
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.edge_index = self.edge_index.to(self.device)
         self.edge_attr = self.edge_attr.to(self.device)
@@ -149,9 +182,12 @@ def run_model(ctx, name, scaler, lr, seed, max_epochs, test_after=False, patienc
     for epoch in range(1, max_epochs + 1):
         model.train()
         loss_sum, weight_sum = 0.0, 0
-        for _, x, raw_y, observed_mask, imputed, corrected_mask, legacy_mask in ctx.batches("train", batch_size, seed * 1000 + epoch):
+        for target_idx, x, raw_y, observed_mask, imputed, corrected_mask, legacy_mask in ctx.batches("train", batch_size, seed * 1000 + epoch):
             optimizer.zero_grad(set_to_none=True)
             pred = model(model_inputs(x, name), ctx.edge_index, ctx.edge_attr)
+            if ctx.cfg.get("residual_mode", False):
+                anchor = torch.as_tensor(ctx.anchor[target_idx - ctx.horizon].copy(), dtype=torch.float32, device=ctx.device)
+                pred = pred + normalize_y(anchor, scaler, mean, std)
             if name == "stpignn_corrected_imputed":
                 weights = torch.where(observed_mask, 1.0, float(cfg["imputed_target_weight"]))
                 target_y = imputed
@@ -209,7 +245,11 @@ def evaluate_split(ctx, model, name, scaler, mean, std, split, collect):
     pred_all, truth_all, station_all, time_all = [], [], [], []
     with torch.no_grad():
         for target_idx, x, raw_y, mask, _, _, _ in ctx.batches(split, int(ctx.cfg["neural_batch_size"])):
-            pred = inverse_y(model(model_inputs(x, name), ctx.edge_index, ctx.edge_attr), scaler, mean, std)
+            out = model(model_inputs(x, name), ctx.edge_index, ctx.edge_attr)
+            if ctx.cfg.get("residual_mode", False):
+                anchor = torch.as_tensor(ctx.anchor[target_idx - ctx.horizon].copy(), dtype=torch.float32, device=ctx.device)
+                out = out + normalize_y(anchor, scaler, mean, std)
+            pred = inverse_y(out, scaler, mean, std)
             selected = mask.cpu().numpy()
             pred_np = pred.cpu().numpy()
             truth_np = raw_y.cpu().numpy()
@@ -240,17 +280,20 @@ def metadata(script, cfg, began, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("selection", "final", "longer"), required=True)
+    parser.add_argument("--stage", choices=("selection", "final", "longer", "tail_selection", "tail_final"), required=True)
     parser.add_argument("--models", nargs="*", default=None)
     parser.add_argument("--config", default="configs/gate_v2.yaml")
     parser.add_argument("--output-prefix", default="v2")
     args = parser.parse_args()
     began = time.perf_counter()
-    ctx = Context(args.config, args.output_prefix)
+    ctx = Context(args.config, args.output_prefix,
+                  selection_split="train_tail" if args.stage == "tail_selection" else "validation")
     models = args.models or MODELS
-    selection_path = REPO_ROOT / f"results/neural_selection_{ctx.output_prefix}.csv"
-    curves_path = REPO_ROOT / f"results/neural_curves_{ctx.output_prefix}.csv"
-    if args.stage == "selection":
+    selection_label = "neural_selection_train_tail" if args.stage in ("tail_selection", "tail_final") else "neural_selection"
+    selection_path = REPO_ROOT / f"results/{selection_label}_{ctx.output_prefix}.csv"
+    curves_label = "neural_curves_train_tail" if args.stage in ("tail_selection", "tail_final") else "neural_curves"
+    curves_path = REPO_ROOT / f"results/{curves_label}_{ctx.output_prefix}.csv"
+    if args.stage in ("selection", "tail_selection"):
         existing = pd.read_csv(selection_path) if selection_path.exists() else pd.DataFrame()
         rows = existing.to_dict("records")
         curves = pd.read_csv(curves_path).to_dict("records") if curves_path.exists() else []
@@ -269,26 +312,26 @@ def main():
                     if not existing.empty and ((existing.model == name) & (existing.scaler == scaler) & (existing.lr == float(lr))).any():
                         continue
                     result, track, _ = run_model(ctx, name, scaler, lr, int(ctx.cfg["neural_seeds"][0]),
-                                                 int(ctx.cfg["neural_selection_epochs"]), budget="selection")
+                                                 int(ctx.cfg["neural_selection_epochs"]), budget=args.stage)
                     rows.append(result)
                     curves.extend(track)
                     pd.DataFrame(rows).to_csv(selection_path, index=False)
                     pd.DataFrame(curves).to_csv(curves_path, index=False)
                     print("SELECT", result, flush=True)
         summary = metadata("scripts/train_gate_v2.py --stage selection", ctx.cfg, began, ctx.config_path)
-        (REPO_ROOT / f"results/neural_selection_{ctx.output_prefix}_run.json").write_text(json.dumps(summary, indent=2) + "\n")
+        (REPO_ROOT / f"results/{selection_label}_{ctx.output_prefix}_run.json").write_text(json.dumps(summary, indent=2) + "\n")
         return
 
     choices = pd.read_csv(selection_path)
     corrected = choices[choices.model == "stpignn_corrected"].sort_values("best_val_mae_ug_m3").iloc[0]
     selected_scaler = corrected.scaler
-    label = "neural_longer" if args.stage == "longer" else "neural_final"
+    label = "neural_longer" if args.stage == "longer" else ("neural_train_tail" if args.stage == "tail_final" else "neural_final")
     final_path = REPO_ROOT / f"results/{label}_{ctx.output_prefix}.csv"
     existing = pd.read_csv(final_path) if final_path.exists() else pd.DataFrame()
     rows = existing.to_dict("records")
     curves = pd.read_csv(curves_path).to_dict("records") if curves_path.exists() else []
     prediction_frames = []
-    pred_name = "neural_longer_predictions" if args.stage == "longer" else "neural_predictions"
+    pred_name = "neural_longer_predictions" if args.stage == "longer" else ("neural_train_tail_predictions" if args.stage == "tail_final" else "neural_predictions")
     pred_path = REPO_ROOT / f"results/{pred_name}_{ctx.output_prefix}.parquet"
     if pred_path.exists():
         prediction_frames.append(pd.read_parquet(pred_path))

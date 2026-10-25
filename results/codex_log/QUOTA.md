@@ -11,3 +11,4 @@
 - Checkpoint, 2026-10-25 UTC: approximately 13% quota remaining as reported by the user. Stop after commit/push; do not start S1-S4 or the later queue.
 - S1 started 2026-10-25 02:38:26 UTC. Approximate session quota at prior checkpoint: 13%; finish and push S1 before considering S2.
 - S1 analysis completed 2026-10-25 02:43:11 UTC, about five minutes after start. Final S1 commit/push is next; S2 remains NOT RUN.
+- S2 started 2026-10-25 UTC after S1 commit `62132eb` was pushed. A long five-seed LR sweep may approach the five-hour limit; stop only at a clean checkpoint with logs, RESUME, commit and push.
