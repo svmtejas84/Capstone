@@ -1,0 +1,37 @@
+/home/jupyter-1nt23cb058/Capstone/scripts/train_gate_v2.py:120: RuntimeWarning: Mean of empty slice
+  station_mean = np.nanmean(self.observed_y[train], axis=0)
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.153845031779402, 'best_epoch': 13, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.096712934041696, 'best_epoch': 6, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.099033382836463, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.077199731972285, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.551818984539355, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.426753840517642, 'best_epoch': 3, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_corrected', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.488524644054584, 'best_epoch': 12, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.044307376377618, 'best_epoch': 20, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.7584476921688856, 'best_epoch': 17, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.7565549441633337, 'best_epoch': 6, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.7615789668081607, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.9508739131402417, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.387200458725887, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'gru_only', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.443708194112698, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.256242172121013, 'best_epoch': 20, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.9105247227113638, 'best_epoch': 20, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.8666169595955617, 'best_epoch': 11, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.8533588306623114, 'best_epoch': 5, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.842144854626252, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.9291730599221504, 'best_epoch': 3, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'vanilla_gcn', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.986433964186838, 'best_epoch': 3, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.8763008605583784, 'best_epoch': 20, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.875291963912559, 'best_epoch': 6, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.873047213214349, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.8903016745154537, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.946058140465276, 'best_epoch': 3, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.9258809001093877, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'st_gru_gcn', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 3.881265331856647, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 3e-06, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.245388272745692, 'best_epoch': 12, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 1e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.1286923342874, 'best_epoch': 4, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 3e-05, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.114098488711203, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.0001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.105734136843958, 'best_epoch': 2, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.0003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.576910498683923, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.001, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.297372298375094, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
+SELECT {'model': 'stpignn_laplacian', 'scaler': 'log1p', 'lr': 0.003, 'seed': 11, 'budget': 'tail_selection', 'best_val_mae_ug_m3': 4.046292154903633, 'best_epoch': 1, 'fixed_epochs_from_train_tail': False}
