@@ -31,8 +31,8 @@ class TerrainEdgeModel(nn.Module):
 
 
 class DemContext(Context):
-    def __init__(self, variant, best_model, cfg, seed=42):
-        super().__init__(1, cfg)
+    def __init__(self, horizon, variant, best_model, cfg, seed=42):
+        super().__init__(horizon, cfg)
         self.variant = variant
         self.best_model = best_model
         z = np.load(REPO_ROOT/"results/data_v2g_arrays.npz")
@@ -95,82 +95,97 @@ class DemContext(Context):
 
 
 def main():
-    cfg=yaml.safe_load((REPO_ROOT/"configs/benchmark_v2g.yaml").read_text())
-    choices=pd.read_csv(REPO_ROOT/"results/benchmark_selection_v2g.csv")
-    candidates=choices[(choices.horizon_hours==1)&choices.model.isin(
-        ["gine_gru_wind","adaptive_graph_st","stpignn_v2"])].sort_values("validation_mae")
-    best=candidates.iloc[0].model
-    model_lr={name:float(choices[(choices.horizon_hours==1)&(choices.model==name)].sort_values("validation_mae").iloc[0].lr)
-              for name in (best,"gru_only")}
-    if best=="gru_only":
-        raise AssertionError("Best A/B/C cannot be GRU")
-    variants=["srtm","none","northing_only"]+[f"shuffle_{k}" for k in range(1,6)]
-    raw_path=REPO_ROOT/"results/dem_predictions_v2g.parquet"
-    raw=pd.read_parquet(raw_path) if raw_path.exists() else pd.DataFrame()
-    rows=[]
-    for variant in variants:
-        ctx=DemContext(variant,best,cfg,4200+int(variant.split("_")[-1]) if variant.startswith("shuffle") else 42)
-        for name in (best,"gru_only"):
-            for seed in cfg["neural_seeds"]:
-                if not raw.empty and ((raw.variant==variant)&(raw.model==name)&(raw.seed==seed)).any():
-                    continue
-                result,tested=fit(ctx,name,model_lr[name],seed,evaluate_test=True)
-                frame=pd.DataFrame({"variant":variant,"model":name,"seed":seed,
-                                    "target_time_utc":ctx.times[tested["time_index"]].astype(str),
-                                    "station_id":ctx.station_ids[tested["station_index"]],
-                                    "target":tested["truth"],"prediction":tested["pred"]})
-                raw=pd.concat([raw,frame],ignore_index=True)
-                raw.to_parquet(raw_path,index=False)
-                print("DEM",variant,name,seed,result["test_mae"],flush=True)
-        if variant=="srtm":
-            station=pd.DataFrame({"station_id":ctx.station_ids,"elevation_m":ctx.elevation_used,
-                                  "northing_m":ctx.xy[:,1]})
-            graph=REPO_ROOT/"data/processed/graph"
-            mapping=pd.read_parquet(graph/"station_to_topology_node_map.parquet")[["location_id","node_id"]]
-            raw_elevation=pd.read_parquet(graph/"nodes_elevation_true.parquet")[["osmid","elevation_true"]]
-            station=station.merge(mapping,left_on="station_id",right_on="location_id",validate="one_to_one")
-            station=station.merge(raw_elevation,left_on="node_id",right_on="osmid",validate="one_to_one")
-            if not np.allclose(station.elevation_m,station.elevation_true,rtol=0,atol=1e-4):
-                raise AssertionError("Station SRTM node feature differs from nodes_elevation_true.parquet")
-            station.to_csv(REPO_ROOT/"results/dem_station_values_v2g.csv",index=False)
-    nseeds=raw.groupby(["variant","model","target_time_utc","station_id"],sort=False).seed.nunique()
-    if nseeds.min()!=5:
+    cfg = yaml.safe_load((REPO_ROOT / "configs/benchmark_v2g.yaml").read_text())
+    choices = pd.read_csv(REPO_ROOT / "results/benchmark_selection_v2g.csv")
+    variants = ["srtm", "none", "northing_only"] + [f"shuffle_{k}" for k in range(1, 6)]
+    raw_path = REPO_ROOT / "results/dem_predictions_v2g.parquet"
+    raw = pd.read_parquet(raw_path) if raw_path.exists() else pd.DataFrame()
+    station_path = REPO_ROOT / "results/dem_station_values_v2g.csv"
+    chosen = {}
+    for horizon in (1, 24):
+        candidates = choices[(choices.horizon_hours == horizon) & choices.model.isin(
+            ["gine_gru_wind", "adaptive_graph_st", "stpignn_v2"])].sort_values("validation_mae")
+        best = candidates.iloc[0].model
+        chosen[horizon] = best
+        model_lr = {name: float(choices[(choices.horizon_hours == horizon) &
+                                         (choices.model == name)].sort_values("validation_mae").iloc[0].lr)
+                    for name in (best, "gru_only")}
+        for variant in variants:
+            seed_for_variant = 4200 + int(variant.split("_")[-1]) if variant.startswith("shuffle") else 42
+            ctx = DemContext(horizon, variant, best, cfg, seed_for_variant)
+            for name in (best, "gru_only"):
+                for seed in cfg["neural_seeds"]:
+                    done = (not raw.empty and ((raw.horizon_hours == horizon) & (raw.variant == variant) &
+                                               (raw.model == name) & (raw.seed == seed)).any())
+                    if done:
+                        continue
+                    result, tested = fit(ctx, name, model_lr[name], seed, evaluate_test=True)
+                    frame = pd.DataFrame({"horizon_hours": horizon, "variant": variant, "model": name,
+                                          "seed": seed, "target_time_utc": ctx.times[tested["time_index"]].astype(str),
+                                          "station_id": ctx.station_ids[tested["station_index"]],
+                                          "target": tested["truth"], "prediction": tested["pred"]})
+                    raw = pd.concat([raw, frame], ignore_index=True)
+                    raw.to_parquet(raw_path, index=False)
+                    print("DEM", horizon, variant, name, seed, result["test_mae"], flush=True)
+            if variant == "srtm" and not station_path.exists():
+                station = pd.DataFrame({"station_id": ctx.station_ids, "elevation_m": ctx.elevation_used,
+                                        "northing_m": ctx.xy[:, 1]})
+                graph = REPO_ROOT / "data/processed/graph"
+                mapping = pd.read_parquet(graph / "station_to_topology_node_map.parquet")[["location_id", "node_id"]]
+                raw_elevation = pd.read_parquet(graph / "nodes_elevation_true.parquet")[["osmid", "elevation_true"]]
+                station = station.merge(mapping, left_on="station_id", right_on="location_id", validate="one_to_one")
+                station = station.merge(raw_elevation, left_on="node_id", right_on="osmid", validate="one_to_one")
+                if not np.allclose(station.elevation_m, station.elevation_true, rtol=0, atol=1e-4):
+                    raise AssertionError("Station SRTM node feature differs from nodes_elevation_true.parquet")
+                station.to_csv(station_path, index=False)
+    nseeds = raw.groupby(["horizon_hours", "variant", "model", "target_time_utc", "station_id"],
+                         sort=False).seed.nunique()
+    if nseeds.min() != 5:
         raise AssertionError("Incomplete DEM seed set")
-    pooled=raw.groupby(["variant","model","target_time_utc","station_id"],as_index=False).agg(
-        target=("target","first"),prediction=("prediction","mean"))
-    station=pd.read_csv(REPO_ROOT/"results/dem_station_values_v2g.csv")
-    corr=float(station.elevation_m.corr(station.northing_m))
-    for (variant,name),part in pooled.groupby(["variant","model"]):
-        m=evaluate_arrays(part.prediction,part.target,np.ones(len(part),bool))
-        rows.append({"variant":variant,"model":name,"test_n":m["n"],"test_mae_ug_m3":m["mae"],
-                     "test_r2":m["r2"],"elevation_northing_correlation":corr})
-    result=pd.DataFrame(rows)
-    comparison=[]
-    for name in (best,"gru_only"):
-        base=pooled[(pooled.variant=="srtm")&(pooled.model==name)].sort_values(["target_time_utc","station_id"])
-        key=["target_time_utc","station_id"]
-        shuffled=pooled[(pooled.variant.str.startswith("shuffle"))&(pooled.model==name)].groupby(key,as_index=False).agg(
-            target=("target","first"),prediction=("prediction","mean"))
-        for label,other in (("none",pooled[(pooled.variant=="none")&(pooled.model==name)]),
-                            ("shuffled_mean",shuffled)):
-            joined=base[key+["target","prediction"]].merge(other[key+["prediction"]],on=key,suffixes=("_srtm","_other"),validate="one_to_one")
-            y=joined.target.to_numpy(); dates=pd.to_datetime(joined.target_time_utc,utc=True).dt.date.to_numpy()
-            dmae,ci,dr2,r2ci=paired_ci(joined.prediction_srtm.to_numpy(),joined.prediction_other.to_numpy(),
-                                         y,dates,4303,2000)
-            comparison.append({"model":name,"comparison":f"srtm_minus_{label}","delta_mae_ug_m3":dmae,
-                               "mae_ci_low":ci[0],"mae_ci_high":ci[1],"delta_r2":dr2,
-                               "r2_ci_low":r2ci[0],"r2_ci_high":r2ci[1],"met":ci[1]<0})
-    checks=pd.DataFrame(comparison)
-    result["record_type"]="variant"
-    checks["record_type"]="paired_bootstrap"
-    checks["variant"]=checks.comparison
-    pd.concat([result,checks],ignore_index=True).to_csv(REPO_ROOT/"results/dem_study_v2g.csv",index=False)
-    verdict=bool(checks[(checks.model==best)].met.all())
-    print(json.dumps({"best_validation_model":best,"elevation_northing_correlation":corr,
-                      "dem_criterion_met":verdict,"comparisons":comparison,
-                      "source_commit":subprocess.check_output(["git","rev-parse","HEAD"],cwd=REPO_ROOT,text=True).strip(),
-                      "timestamp_utc":dt.datetime.now(dt.timezone.utc).isoformat()},indent=2))
+    pooled = raw.groupby(["horizon_hours", "variant", "model", "target_time_utc", "station_id"],
+                         as_index=False).agg(target=("target", "first"), prediction=("prediction", "mean"))
+    station = pd.read_csv(station_path)
+    corr = float(station.elevation_m.corr(station.northing_m))
+    rows = []
+    comparison = []
+    for (horizon, variant, name), part in pooled.groupby(["horizon_hours", "variant", "model"]):
+        m = evaluate_arrays(part.prediction, part.target, np.ones(len(part), bool))
+        rows.append({"horizon_hours": horizon, "best_validation_model": chosen[horizon],
+                     "variant": variant, "model": name, "record_type": "variant", "test_n": m["n"],
+                     "test_mae_ug_m3": m["mae"], "test_r2": m["r2"],
+                     "elevation_northing_correlation": corr})
+    key = ["target_time_utc", "station_id"]
+    for horizon, best in chosen.items():
+        for name in (best, "gru_only"):
+            subset = pooled[(pooled.horizon_hours == horizon) & (pooled.model == name)]
+            base = subset[subset.variant == "srtm"].sort_values(key)
+            shuffled = subset[subset.variant.str.startswith("shuffle")].groupby(key, as_index=False).agg(
+                target=("target", "first"), prediction=("prediction", "mean"))
+            for label, other in (("none", subset[subset.variant == "none"]), ("shuffled_mean", shuffled)):
+                joined = base[key + ["target", "prediction"]].merge(other[key + ["prediction"]],
+                    on=key, suffixes=("_srtm", "_other"), validate="one_to_one")
+                if len(joined) != len(base):
+                    raise AssertionError("Unequal DEM test masks")
+                y = joined.target.to_numpy()
+                dates = pd.to_datetime(joined.target_time_utc, utc=True).dt.date.to_numpy()
+                dmae, ci, dr2, r2ci = paired_ci(joined.prediction_srtm.to_numpy(),
+                    joined.prediction_other.to_numpy(), y, dates, 4303 + horizon, 2000)
+                comparison.append({"horizon_hours": horizon, "best_validation_model": best,
+                    "model": name, "variant": f"srtm_minus_{label}", "record_type": "paired_bootstrap",
+                    "comparison": f"srtm_minus_{label}", "test_n": len(joined),
+                    "delta_mae_ug_m3": dmae, "mae_ci_low": ci[0], "mae_ci_high": ci[1],
+                    "delta_r2": dr2, "r2_ci_low": r2ci[0], "r2_ci_high": r2ci[1], "met": ci[1] < 0,
+                    "elevation_northing_correlation": corr})
+    pd.DataFrame(rows + comparison).to_csv(REPO_ROOT / "results/dem_study_v2g.csv", index=False)
+    verdict = {h: bool(all(row["met"] for row in comparison if row["horizon_hours"] == h and
+                           row["model"] == chosen[h])) for h in chosen}
+    print(json.dumps({"best_validation_model_by_horizon": chosen,
+                      "elevation_northing_correlation": corr,
+                      "dem_criterion_met_by_horizon": verdict,
+                      "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"],
+                          cwd=REPO_ROOT, text=True).strip(),
+                      "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat()}, indent=2))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

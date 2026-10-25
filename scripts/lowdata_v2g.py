@@ -1,4 +1,4 @@
-"""W4 fixed-draw low-data station holdout at horizons 1 and 6."""
+"""W4 fixed-draw low-data station holdout at horizons 1 and 24."""
 from __future__ import annotations
 
 import datetime as dt
@@ -46,10 +46,9 @@ class LowDataContext(Context):
 def main():
     cfg=yaml.safe_load((REPO_ROOT/"configs/benchmark_v2g.yaml").read_text())
     choices=pd.read_csv(REPO_ROOT/"results/benchmark_selection_v2g.csv")
-    h1=choices[(choices.horizon_hours==1)&choices.model.isin(
-        ["gine_gru_wind","adaptive_graph_st","stpignn_v2"])].sort_values("validation_mae")
-    best=h1.iloc[0].model
-    methods=list(dict.fromkeys([best,"stpignn_v2","gru_only","stpignn_lambda0"]))
+    best_by_horizon={h:choices[(choices.horizon_hours==h)&choices.model.isin(
+        ["gine_gru_wind","adaptive_graph_st"])].sort_values("validation_mae").iloc[0].model
+        for h in (1,24)}
     out=REPO_ROOT/"results/lowdata_v2g.csv"
     rows=pd.read_csv(out).to_dict("records") if out.exists() else []
     z=np.load(REPO_ROOT/"results/data_v2g_arrays.npz")
@@ -60,10 +59,14 @@ def main():
     val_period=np.asarray((times>=pd.Timestamp("2025-07-01T00:00:00Z"))&
                           (times<=pd.Timestamp("2025-09-21T23:00:00Z")))
     observed=z["observed_mask"]
-    for horizon in (1,6):
+    eligible_by_horizon={}
+    for horizon in (1,24):
+        best=best_by_horizon[horizon]
+        methods=list(dict.fromkeys([best,"gru_only","stpignn_lambda0","stpignn_original"]))
         train_pairs=(observed[horizon:]&observed[:-horizon]&train_period[horizon:,None]).sum(0)
         val_pairs=(observed[horizon:]&observed[:-horizon]&val_period[horizon:,None]).sum(0)
         eligible=station_ids[train_pairs>0]
+        eligible_by_horizon[horizon]=len(eligible)
         val_eligible=set(station_ids[val_pairs>0].tolist())
         lr={name:float(choices[(choices.horizon_hours==horizon)&(choices.model==name)].sort_values("validation_mae").iloc[0].lr)
             for name in methods}
@@ -106,14 +109,16 @@ def main():
     frame=pd.DataFrame(rows)
     means=frame[frame.status=="scored"].groupby(["horizon_hours","model","train_station_count"]).test_mae_ug_m3.mean()
     verdict={}
-    for horizon in (1,6):
+    for horizon in (1,24):
+        best=best_by_horizon[horizon]
+        methods=list(dict.fromkeys([best,"gru_only","stpignn_lambda0","stpignn_original"]))
         change={name:float(means[horizon,name,3]-means[horizon,name,5]) for name in methods}
         verdict[horizon]={"mae_change_3_minus_5":change,
-                          "ten_station_case":f"BLOCKED: only {len(eligible)} stations have observed-lag training pairs",
-                          "physics_degrades_less_than_controls_3_vs_5":all(change["stpignn_v2"]<change[c]
-                              for c in ("gru_only","stpignn_lambda0"))}
+                          "ten_station_case":f"BLOCKED: only {eligible_by_horizon[horizon]} stations have observed-lag training pairs",
+                          "physics_degrades_less_than_controls_3_vs_5":all(change["stpignn_original"]<change[c]
+                              for c in (best,"gru_only","stpignn_lambda0"))}
     (REPO_ROOT/"results/lowdata_verdict_v2g.json").write_text(json.dumps({
-        "best_validation_model":best,"verdict":verdict,"script":"scripts/lowdata_v2g.py",
+        "best_validation_model_by_horizon":best_by_horizon,"verdict":verdict,"script":"scripts/lowdata_v2g.py",
         "config":"configs/benchmark_v2g.yaml","seeds":cfg["neural_seeds"],
         "source_commit":subprocess.check_output(["git","rev-parse","HEAD"],cwd=REPO_ROOT,text=True).strip(),
         "timestamp_utc":dt.datetime.now(dt.timezone.utc).isoformat()},indent=2)+"\n")
