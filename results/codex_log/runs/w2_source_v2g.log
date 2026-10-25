@@ -1,0 +1,2 @@
+2026-10-25T09:09:32Z START W2 source preparation from commit 9451488. Fixed config configs/benchmark_v2g.yaml and input rules in DECISIONS.md before training.
+2026-10-25T09:13:23Z CUDA Tesla V100-PCIE-32GB. Syntax check passed. One-batch forward/backward smoke check passed for all 12 named neural models; input shape [512,12,15,18]. No W2 model has trained or produced a score yet.

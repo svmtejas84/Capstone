@@ -1,9 +1,7 @@
 # Resume
 
-- Branch: `audit/canonical-notebook-20261023`.
-- S4 complete and pushed at `006ba94`; S4 verdict LOSS versus ordinary kriging. Earlier outputs remain unchanged.
-- W1 input repair committed/pushed at `d935f64`; original W1 AR fit to raw targets scored test MAE/R² 11.894099/0.374211 versus persistence 8.116095/0.532089 and triggered the fixed stop rule.
-- X1–X5 input diagnostic complete: `scripts/input_diagnosis_v2g2.py`, `results/input_diagnosis_v2g2.md`, seed 42, config `configs/data_v2.yaml`. Observed-lag-only AR fitted in the shared train-fitted log1p target space scores all-test MAE/R² 8.509631/0.559943; persistence 8.116095/0.532089. Cause found: transform mismatch in the original W1 AR fitting. The repaired lag/target scaling and sampled one-hour timestamp alignment check pass. W1 PASSED by the fixed 0.5 µg/m³ margin.
-- Required input rule for future neural models: train-fitted shared log1p lag/target scaling and zero training-loss weight for target pairs with an imputed immediate lag. This is a diagnostic rule; no neural model has been trained under it.
-- This turn ends after committing/pushing X1–X5. W2–W8 are NOT RUN. No routing, IG, or Gate M.
-- ACTIONS, DECISIONS, QUOTA, and `runs/x_input_diagnosis_v2g2.log` were appended; only RESUME.md was overwritten.
+- Branch: `audit/canonical-notebook-20261023`. S4 LOSS at `006ba94`; X1–X5 W1 PASS at `9451488`.
+- W2 source preparation complete: `configs/benchmark_v2g.yaml`, `src/stpignn/models_v3.py`, `scripts/benchmark_v2g.py`. All 12 neural model forward/backward calls passed on CUDA; full training has NOT started. Source commit/push follows.
+- Fixed input rule: append lag_is_imputed, share train-fitted log1p PM2.5 lag/target scaling, train/select on observed-immediate-lag pairs, score all observed test targets. Validation-only LR and checkpoint selection, five seeds, four LRs, 30 epochs/patience 5, horizons 1/3/6/12/24. Priority order 1/6/24, then 3/12. No test-based tuning or post-score horizon/fold removal.
+- Time window started 2026-10-25 08:27 UTC, ends near 13:27 UTC. At 09:13 UTC about 4 hours 14 minutes remained.
+- Next after source push: run `python -u -m scripts.benchmark_v2g --horizon 1`, append `results/codex_log/runs/w2_h1_v2g.log`, inspect exit, then checkpoint. Do not start W3–W8 until W2 priority horizons and W5/W6 ordering are addressed or time forces clean handoff.

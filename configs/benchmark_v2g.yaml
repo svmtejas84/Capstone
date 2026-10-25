@@ -1,0 +1,20 @@
+seed: 42
+neural_seeds: [11, 23, 37, 51, 79]
+horizons_hours: [1, 3, 6, 12, 24]
+priority_horizons_hours: [1, 6, 24]
+neural_lr_grid: [0.0001, 0.0003, 0.001, 0.003]
+neural_hidden_dim: 64
+neural_batch_size: 512
+neural_max_epochs: 30
+neural_early_stopping_patience: 5
+neural_weight_decay: 0.01
+station_graph_neighbours: 4
+target_transform: log1p_train_standardized
+lag_transform: same_as_target
+lag_is_imputed_indicator: true
+train_selection_lag_rule: immediate_observed_only
+test_scoring: all_observed_targets
+residual_anchor: last_observed_at_or_before_cutoff
+lambda_original: 0.06
+bootstrap_replicates: 2000
+bootstrap_seed: 4303
