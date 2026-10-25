@@ -19,3 +19,4 @@
 - 2026-10-25 08:27 UTC: new W1–W8 round begins with an approximately five-hour ceiling. S4 is already pushed. W1 ended at 08:29 UTC with the user-specified AR stop condition, well before the time ceiling. No W2–W8 job was launched.
 - 2026-10-25 08:50 UTC: X1–X5 diagnostic completed about 23 minutes after the new round began. Commit/push the diagnostic and stop; W2 is explicitly excluded from this step.
 - 2026-10-25 09:13 UTC: W2 source implemented and all 12 neural methods passed a forward/backward smoke check on CUDA. The 08:27 UTC five-hour window has about 4 hours 14 minutes left. Commit/push the source before long training; train priority horizons 1, 6, 24 first and checkpoint results after each complete horizon.
+- 2026-10-25 09:30 UTC: priority h=1 fully completed, including corrected references and 2,000 paired-day W5 checks. About 3 hours 57 minutes remain. Source/result commits and pushes precede h=6; W3/W4/W6/W7/W8 runners are prepared but not yet run.

@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import glob
 import json
 import random
+import shutil
 import subprocess
 import time
 import warnings
@@ -51,6 +53,7 @@ class Context:
         old_fit = json.loads((REPO_ROOT / "results/input_fix_v2g.json").read_text())
         self.mu = float(old_fit["channels"][0]["log1p_mean"])
         self.sd = float(old_fit["channels"][0]["log1p_sd"])
+        self.physical_scale = float(json.loads((REPO_ROOT / "results/data_v2_fit.json").read_text())["fit"]["target_standard_std"])
         self.times = pd.DatetimeIndex(pd.to_datetime(z["times_ns"], utc=True))
         self.y = z["observed_target"]
         self.observed = z["observed_mask"]
@@ -85,6 +88,8 @@ class Context:
         speed = np.maximum(0, z["features"][:, 0, 5] * self._old_feature_sd(5) + self._old_feature_mean(5))
         along = speed[:, None] * np.cos(wind_towards[:, None] - bearing[None, :])
         self.wind_along = np.nan_to_num(along, nan=0).astype(np.float32)
+        angle = np.abs(np.angle(np.exp(1j * (wind_towards[:, None] - bearing[None, :]))))
+        self.corrected_wind_mask = np.isfinite(wind_towards[:, None]) & (angle <= np.deg2rad(37.5))
         self.edge_index = self.edge_index.to(self.device)
         self.hours = {}
         for name in ("train", "validation", "test"):
@@ -161,7 +166,7 @@ class Context:
         return result
 
 
-def fit(ctx, name, lr, seed, evaluate_test=False):
+def fit(ctx, name, lr, seed, evaluate_test=False, return_model=False):
     seed_all(seed)
     model = ctx.make(name)
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(lr), weight_decay=float(ctx.cfg["neural_weight_decay"]))
@@ -169,16 +174,17 @@ def fit(ctx, name, lr, seed, evaluate_test=False):
     started = time.perf_counter()
     for epoch in range(1, int(ctx.cfg["neural_max_epochs"]) + 1):
         model.train()
-        for _, x, y, mask, anchor, wind in ctx.batches("train", seed*1000+epoch):
+        for index, x, y, mask, anchor, wind in ctx.batches("train", seed*1000+epoch):
             optimizer.zero_grad(set_to_none=True)
             z = ctx.forward(model, name, x, anchor, wind)
             target_z = (torch.log1p(y.clamp_min(0)) - ctx.mu) / ctx.sd
             loss = ((z - target_z).square() * mask).sum() / mask.sum().clamp_min(1)
             if name in ("stpignn_original", "stpignn_laplacian"):
-                physical = torch.expm1(z * ctx.sd + ctx.mu) / 35.0
-                edge_wind = wind > 0
+                physical = torch.expm1(z * ctx.sd + ctx.mu) / ctx.physical_scale
+                edge_wind = torch.as_tensor(ctx.corrected_wind_mask[index - ctx.horizon].copy(),
+                                            device=ctx.device)
                 variant = "laplacian" if name.endswith("laplacian") else "corrected_mask"
-                loss = loss + float(ctx.cfg["lambda_original"]) * batched_penalty(
+                loss = loss + float(ctx.cfg["lambda_original"]) * min(1.0, epoch / 25.0) * batched_penalty(
                     physical, ctx.edge_index, edge_wind, ctx.edge_distance, variant)
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"nonfinite loss {name} h{ctx.horizon} seed{seed} epoch{epoch}")
@@ -198,14 +204,16 @@ def fit(ctx, name, lr, seed, evaluate_test=False):
               "best_epoch": best_epoch, "validation_mae": best, "epochs_run": epoch,
               "parameter_count": sum(p.numel() for p in model.parameters()),
               "train_seconds": time.perf_counter() - started}
+    if "tail" in ctx.hours:
+        result["train_tail_bias"] = ctx.evaluate(model, name, "tail")["bias"]
     if evaluate_test:
         tested = ctx.evaluate(model, name, "test", collect=True)
         result.update(test_mae=tested["mae"], test_r2=tested["r2"], test_n=tested["n"])
         if hasattr(model, "diffusion_raw"):
             result["learned_diffusion"] = float(torch.nn.functional.softplus(model.diffusion_raw).detach())
             result["learned_source_mean"] = (float(model.last_source_mean) if model.last_source_mean is not None else None)
-        return result, tested
-    return result, None
+        return (result, tested, model) if return_model else (result, tested)
+    return (result, None, model) if return_model else (result, None)
 
 
 def baselines(ctx):
@@ -221,7 +229,8 @@ def baselines(ctx):
                                 np.roll(ctx.observed, ctx.horizon, axis=0))
     valid_train = i_train >= ctx.history - 1 + ctx.horizon
     i_train, j_train = i_train[valid_train], j_train[valid_train]
-    x_train = ctx.features[i_train - ctx.horizon, j_train]
+    ridge_cols = [0] + list(range(5, ctx.features.shape[-1]))
+    x_train = ctx.features[i_train - ctx.horizon, j_train][:, ridge_cols]
     target_z = (np.log1p(y[i_train, j_train]) - ctx.mu) / ctx.sd
     ridge = Ridge(alpha=1.0).fit(x_train, target_z)
     rows = []
@@ -234,7 +243,7 @@ def baselines(ctx):
         climate = np.where(np.isfinite(climate), climate, station_mean[j])
         pred = {"persistence": anchor, "same_hour_yesterday": yesterday,
                 "climatology_hod_dow": climate, "station_train_mean": station_mean[j],
-                "ridge_lag_calendar_weather": np.expm1(ridge.predict(ctx.features[cutoff, j]) * ctx.sd + ctx.mu)}
+                "ridge_lag_calendar_weather": np.expm1(ridge.predict(ctx.features[cutoff, j][:, ridge_cols]) * ctx.sd + ctx.mu)}
         for name, values in pred.items():
             m = score(values, y[i, j])
             rows.append({"model": name, "horizon_hours": ctx.horizon, "split": split,
@@ -254,6 +263,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--horizon", type=int, required=True)
     parser.add_argument("--models", nargs="*", default=NAMES)
+    parser.add_argument("--refresh-baselines", action="store_true")
+    parser.add_argument("--refresh-models", nargs="*", default=[])
     args = parser.parse_args()
     cfg = yaml.safe_load((REPO_ROOT / "configs/benchmark_v2g.yaml").read_text())
     if args.horizon not in cfg["horizons_hours"]:
@@ -261,10 +272,28 @@ def main():
     ctx = Context(args.horizon, cfg)
     rows_path = REPO_ROOT / "results/benchmark_runs_v2g.csv"
     rows = pd.read_csv(rows_path).to_dict("records") if rows_path.exists() else []
+    selection_path = REPO_ROOT / "results/benchmark_selection_v2g.csv"
+    if args.refresh_models:
+        old_rows = [r for r in rows if r["horizon_hours"] == args.horizon and r["model"] in args.refresh_models]
+        if old_rows:
+            pd.DataFrame(old_rows).to_csv(REPO_ROOT / f"results/benchmark_provisional_h{args.horizon}_v2g.csv", index=False)
+        rows = [r for r in rows if not (r["horizon_hours"] == args.horizon and r["model"] in args.refresh_models)]
+        pd.DataFrame(rows).to_csv(rows_path, index=False)
+        if selection_path.exists():
+            choices = pd.read_csv(selection_path)
+            old_choices = choices[(choices.horizon_hours == args.horizon) & choices.model.isin(args.refresh_models)]
+            if len(old_choices):
+                old_choices.to_csv(REPO_ROOT / f"results/benchmark_selection_provisional_h{args.horizon}_v2g.csv", index=False)
+            choices = choices[~((choices.horizon_hours == args.horizon) & choices.model.isin(args.refresh_models))]
+            choices.to_csv(selection_path, index=False)
+        for name in args.refresh_models:
+            for path in glob.glob(str(REPO_ROOT / f"results/benchmark_predictions_h{args.horizon}_{name}_seed*_v2g.parquet")):
+                shutil.copy2(path, path.replace("_v2g.parquet", "_provisional_v2g.parquet"))
+    if args.refresh_baselines:
+        rows = [r for r in rows if not (r["horizon_hours"] == args.horizon and r["model"] in BASELINES)]
     if not any(r["horizon_hours"] == args.horizon and r["model"] == "persistence" and r["split"] == "test" for r in rows):
         rows.extend(baselines(ctx)); pd.DataFrame(rows).to_csv(rows_path, index=False)
     for name in args.models:
-        selection_path = REPO_ROOT / "results/benchmark_selection_v2g.csv"
         choices = pd.read_csv(selection_path).to_dict("records") if selection_path.exists() else []
         for lr in cfg["neural_lr_grid"]:
             if any(r["model"] == name and r["horizon_hours"] == args.horizon and np.isclose(r["lr"], lr) for r in choices):
