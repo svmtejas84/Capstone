@@ -132,9 +132,20 @@ def main():
             support.append(all(checks))
         else:
             lines.append(f"h={horizon}, C physics support: not assessed (incomplete predictions).")
+    dem_path=REPO_ROOT/"results/dem_study_v2g.csv"
+    if dem_path.exists():
+        dem=pd.read_csv(dem_path)
+        selection=pd.read_csv(REPO_ROOT/"results/benchmark_selection_v2g.csv")
+        best=selection[(selection.horizon_hours==1)&selection.model.isin(
+            ["gine_gru_wind","adaptive_graph_st","stpignn_v2"])].sort_values("validation_mae").iloc[0].model
+        dem_checks=dem[(dem.record_type=="paired_bootstrap")&(dem.model==best)]
+        dem_met=(len(dem_checks)==2 and dem_checks.met.astype(bool).all())
+        dem_line=f"DEM criterion: {'met' if dem_met else 'not met'}."
+    else:
+        dem_line="DEM criterion: not assessed."
     lines += ["", f"Any-model win: {'met' if wins else 'not met'}.",
               f"C physics-in-architecture support: {'met' if any(support) else 'not met' if support else 'not assessed'}.",
-              "DEM criterion: not assessed by this script.", ""]
+              dem_line, ""]
     (REPO_ROOT / "results/benchmark_v2g.md").write_text("\n".join(lines))
     print(json.dumps({"horizons": sorted(pred_by_h), "models": sorted(curve.model.unique()),
                       "wins": wins, "c_physics_support": any(support) if support else None}, indent=2))

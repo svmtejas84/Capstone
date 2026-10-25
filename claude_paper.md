@@ -280,3 +280,18 @@ Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, `confi
 | 1 | Original penalty ST-PIGNN | 8.018825 | 0.585597 |
 
 At h=1, A and B meet the fixed win rule: paired UTC-day test MAE differences against persistence are -0.059730 (95% CI [-0.093491,-0.024862]) and -0.090127 ([-0.111708,-0.068875]) µg/m³, and both also beat same-hour-yesterday with intervals excluding zero. C does not meet the physics-in-architecture criterion against its four specified controls. Other horizons remain queued; this checkpoint is not the final horizon conclusion.
+
+### Step 4g W2 h=6 checkpoint (2026-10-25 09:51 UTC)
+
+Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `a2596c8`. All 12 neural methods and five references were scored on the same 14,583 observed test targets; full parameter counts, times and paired-day intervals are in `results/benchmark_runs_v2g.csv` and `results/benchmark_v2g.md`.
+
+| h (hours) | Test method | MAE (µg/m³) | R² |
+|---:|---|---:|---:|
+| 6 | Persistence | 16.606891 | -0.161368 |
+| 6 | Same-hour-yesterday | 14.130312 | 0.283173 |
+| 6 | A: GINE+GRU+wind | 15.780365 | 0.130968 |
+| 6 | B: adaptive graph ST | 15.127259 | 0.125511 |
+| 6 | C: ST-PIGNN v2 transport+source | 16.406056 | 0.068911 |
+| 6 | Original penalty ST-PIGNN | 14.840548 | 0.183055 |
+
+At h=6 no A/B/C method beats both persistence and same-hour-yesterday. This is an interim horizon statement; h=24, 3 and 12 remain queued.

@@ -7,8 +7,6 @@ import subprocess
 
 import numpy as np
 import pandas as pd
-import rasterio
-from rasterio.warp import transform
 import torch
 from torch import nn
 import yaml
@@ -72,13 +70,13 @@ class DemContext(Context):
 
     def _midpoint_elevation(self):
         s,d=self.edge_index.cpu().numpy()
-        xy=(self.xy[s]+self.xy[d])/2
-        path=REPO_ROOT/"data/dem/bangalore_srtm1.tif"
-        with rasterio.open(path) as ds:
-            xx,yy=transform("EPSG:32643",ds.crs,xy[:,0].tolist(),xy[:,1].tolist())
-            values=np.array([sample[0] for sample in ds.sample(zip(xx,yy))],float)
-            if ds.nodata is not None:
-                values[values==ds.nodata]=np.nan
+        path=REPO_ROOT/"results/dem_midpoint_v2g.npy"
+        if not path.exists():
+            subprocess.run([str(REPO_ROOT/".venv/bin/python"),"-m","scripts.sample_dem_midpoints_v2g"],
+                           cwd=REPO_ROOT,check=True)
+        values=np.load(path)
+        if len(values)!=len(s):
+            raise AssertionError("SRTM midpoint array does not match station graph edges")
         endpoint=np.load(REPO_ROOT/"results/data_v2g_arrays.npz")["elevation_m"]
         fallback=(endpoint[s]+endpoint[d])/2
         return np.where(np.isfinite(values),values,fallback)
@@ -127,6 +125,13 @@ def main():
         if variant=="srtm":
             station=pd.DataFrame({"station_id":ctx.station_ids,"elevation_m":ctx.elevation_used,
                                   "northing_m":ctx.xy[:,1]})
+            graph=REPO_ROOT/"data/processed/graph"
+            mapping=pd.read_parquet(graph/"station_to_topology_node_map.parquet")[["location_id","node_id"]]
+            raw_elevation=pd.read_parquet(graph/"nodes_elevation_true.parquet")[["osmid","elevation_true"]]
+            station=station.merge(mapping,left_on="station_id",right_on="location_id",validate="one_to_one")
+            station=station.merge(raw_elevation,left_on="node_id",right_on="osmid",validate="one_to_one")
+            if not np.allclose(station.elevation_m,station.elevation_true,rtol=0,atol=1e-4):
+                raise AssertionError("Station SRTM node feature differs from nodes_elevation_true.parquet")
             station.to_csv(REPO_ROOT/"results/dem_station_values_v2g.csv",index=False)
     nseeds=raw.groupby(["variant","model","target_time_utc","station_id"],sort=False).seed.nunique()
     if nseeds.min()!=5:
@@ -156,8 +161,10 @@ def main():
                                "mae_ci_low":ci[0],"mae_ci_high":ci[1],"delta_r2":dr2,
                                "r2_ci_low":r2ci[0],"r2_ci_high":r2ci[1],"met":ci[1]<0})
     checks=pd.DataFrame(comparison)
-    result=result.merge(checks,left_on="model",right_on="model",how="left")
-    result.to_csv(REPO_ROOT/"results/dem_study_v2g.csv",index=False)
+    result["record_type"]="variant"
+    checks["record_type"]="paired_bootstrap"
+    checks["variant"]=checks.comparison
+    pd.concat([result,checks],ignore_index=True).to_csv(REPO_ROOT/"results/dem_study_v2g.csv",index=False)
     verdict=bool(checks[(checks.model==best)].met.all())
     print(json.dumps({"best_validation_model":best,"elevation_northing_correlation":corr,
                       "dem_criterion_met":verdict,"comparisons":comparison,
