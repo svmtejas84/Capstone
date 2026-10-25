@@ -338,3 +338,18 @@ Source: `scripts/evaluate_loso_v2g.py`, `configs/gate_v2c.yaml`, Gate C seeds [1
 | Blend, train-tail bias adjusted | LOSS | LOSS | TIE |
 
 No neural method meets the fixed LOSO WIN rule. Lower test R² than the best baseline blocks WIN for the bias-adjusted methods even where paired MAE improves.
+
+### Step 4g W2 h=12 and final W5 criteria (2026-10-25 13:30 UTC)
+
+Source: `scripts/benchmark_v2g.py`, `scripts/summarize_benchmark_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `3a1a8c3`. All 12 neural methods and five references were scored on 14,583 observed targets at h=12. Full parameter counts, training times, paired UTC-day intervals, and all five horizons are in `results/benchmark_runs_v2g.csv`, `results/benchmark_v2g.csv`/`.md`, `results/horizon_curve_v2g.csv`, and `figures/horizon_curve.pdf`.
+
+| h (hours) | Test method | MAE (µg/m³) | R² |
+|---:|---|---:|---:|
+| 12 | Persistence | 19.105561 | -0.456901 |
+| 12 | Same-hour-yesterday | 14.130312 | 0.283173 |
+| 12 | A: GINE+GRU+wind | 17.372966 | 0.030026 |
+| 12 | B: adaptive graph ST | 17.356680 | -0.059821 |
+| 12 | C: ST-PIGNN v2 transport+source | 18.239329 | -0.101382 |
+| 12 | Original penalty ST-PIGNN | 15.637205 | 0.138050 |
+
+Final fixed criteria: A and B meet the win rule at h=1 and h=3, and B also at h=24; neither meets it at h=6 or h=12. C physics-in-architecture support is not met at any horizon. W3 DEM criterion remains not run because the five-hour limit elapsed.

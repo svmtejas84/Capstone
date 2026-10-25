@@ -24,3 +24,4 @@
 - 2026-10-25 10:07 UTC: all priority W2 horizons h=1/6/24 complete with W5 partial criteria; about 3 hours 20 minutes remain. Commit/push h=24, then start W6 before h=3/12 per user priority. W3/W4/W7/W8 remain unrun.
 - 2026-10-25 12:52 UTC: five-hour window ends near 13:27 UTC; about 35 minutes remain. W2 h=3 complete, W6 at fold 12/15, h=12 still queued. Stop cleanly before limit if remaining steps cannot finish.
 - 2026-10-25 13:30 UTC: five-hour limit passed. W6 completed at 13:14 and h=12 completed; commit and push completed results, leave W3/W4/W7/W8 queued, start no further study run.
+- 2026-10-25 13:30 UTC: W6 pushed as `2ce644a`; h=12 final artifact commit/push is the last action in this time window. W3/W4/W7/W8 remain queued.
