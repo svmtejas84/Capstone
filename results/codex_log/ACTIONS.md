@@ -55,3 +55,5 @@
 - 2026-11-04T14:35:45.839945+00:00 START W4 supervised sensor-density run, PID 3475905, source commit `01a87a0`, log `runs/w4_v2h.log`; restart skips completed model/draw rows.
 
 - 2026-11-04T14:39:51.652209+00:00 Prepared `scripts/conformal_v2h.py` and supervised runner; masks and persistence calibration smoke-check passed. W4 remains active; conformal GPU run will start after W4 finishes.
+
+- 2026-11-04T14:42:21.039806+00:00 Prepared `scripts/loso_groupdro_v2h.py` and supervised runner. Source commit precedes training; W4 is still running.
