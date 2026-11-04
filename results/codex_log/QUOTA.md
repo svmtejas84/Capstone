@@ -29,3 +29,5 @@
 - 2026-10-25 13:40 UTC: about 4 hours 55 minutes remain; W7 at h=1 original lambda=0 final seeds. W3/W4/report source prepared while W7 trains.
 
 - 2026-11-04T14:33:46.874842+00:00 DONE deviation 6 Part 2: protocol-inflation analysis from stored result files only, no retraining. P0 baseline/persistence gains cannot be reconstructed on its 308 pairs; P1/P2/P3/P4 strongest-baseline MAE gains are -9.323752/-12.607068/-0.143013/+0.097270 ug/m3. Sources `scripts/protocol_inflation_v2h.py`, `results/protocol_inflation_v2h.csv`, `figures/protocol_inflation.pdf`; fixed h=1 and existing selected seeds.
+
+- 2026-11-04T14:35:45.839945+00:00 START W4 supervised sensor-density run, PID 3475905, source commit `01a87a0`, log `runs/w4_v2h.log`; restart skips completed model/draw rows.
