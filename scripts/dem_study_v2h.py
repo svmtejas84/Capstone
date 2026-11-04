@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 import subprocess
 
 import numpy as np
@@ -125,7 +126,9 @@ def main():
                                           "station_id": ctx.station_ids[tested["station_index"]],
                                           "target": tested["truth"], "prediction": tested["pred"]})
                     raw = pd.concat([raw, frame], ignore_index=True)
-                    raw.to_parquet(raw_path, index=False)
+                    pending=raw_path.with_suffix('.parquet.tmp')
+                    raw.to_parquet(pending, index=False)
+                    os.replace(pending, raw_path)
                     print("DEM", horizon, variant, name, seed, result["test_mae"], flush=True)
             if variant == "srtm" and not station_path.exists():
                 station = pd.DataFrame({"station_id": ctx.station_ids, "elevation_m": ctx.elevation_used,
