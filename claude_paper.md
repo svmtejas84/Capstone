@@ -364,3 +364,173 @@ Saved W2 predictions were used to append all 60 paired UTC-day 2,000-bootstrap M
 | 24 | Original ST-PIGNN: -0.341689 | [-0.846439, +0.151647] | 0.998086 |
 
 These are nominal intervals across 60 model-horizon-reference comparisons; no multiplicity adjustment was applied. W7 is running; W3, W4 and W8 follow.
+
+## Step 4h: deviation 6 bounded round
+
+Generated 2026-11-04T15:27:55.624456+00:00 from script `scripts/append_step4h_v2h.py` at source commit `62f0df18622aef4a6fe51c35a439200a0225c0f4`. This generation timestamp and commit apply to each source line below; study-specific source commits are also shown. All model selection used validation or fixed training choices; no test-driven horizon, fold, station or seed exclusion. Earlier results are unchanged.
+
+### W7 physics weight check
+
+Source `scripts/lambda_sweep_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `7f19982cc238fd09324c44e9cfd099dc5d9d4dca`, 2,000 paired UTC-day bootstrap draws; Step 4h check at the commit and time above.
+
+All five horizons [1,3,6,12,24] are present. The original ST-PIGNN has one nominal hit (h=6, λ=0.06, about -0.28 µg/m³ versus λ=0); it is not replicated at another horizon or weight. There are 25 original-model and 25 Laplacian positive-weight comparisons. Laplacian findings are a separate control and do not count as support for the original physics penalty.
+
+### Protocol-inflation analysis
+
+Source `scripts/protocol_inflation_v2h.py`, stored P0/P1/P2/P3/P4 result files, h=1 for comparable point gains; no retraining. P4 paired UTC-day interval is from `results/benchmark_v2g.md`.
+
+| Level | ST-PIGNN MAE | Gain vs strongest baseline | Gain vs persistence | Headline |
+|---|---:|---:|---:|---|
+| P0 | 53.140 | 9.370 | NA | P0: nominal 9.37 gain vs reported untrained ST GRU-GCN; paired validity unverified |
+| P1 | 30.585 | -9.324 | -9.324 | P1: no gain versus persistence on raw observed targets |
+| P2 | 20.723 | -12.607 | -12.607 | P2: no gain versus persistence after 0-500 cleaning |
+| P3 | 8.259 | -0.143 | -0.143 | P3: no gain versus persistence after lag and residual correction |
+| P4 | 8.019 | 0.097 | 0.097 | P4: h=1 point gain 0.097 but paired-day CI includes zero; h=3 win is reported separately |
+
+P0 nominal gain uses the notebook-reported untrained ST GRU-GCN MAE 62.51 versus checkpoint replay 53.14; same-pair baseline predictions and persistence are unavailable, so paired validity is unverified. P4 h=1 nominal gain is 0.097 µg/m³, but its paired-day CI crosses zero; h=3 has a separate supported win.
+
+### W4 held-out station density
+
+Source `scripts/lowdata_v2h.py`, config `configs/benchmark_v2g.yaml`, five fixed draw/model seeds [11,23,37,51,79], source commit `01a87a0`; full draw rows and spread in `results/sensor_density_v2h.csv`, vector figure `figures/sensor_density.pdf`.
+
+| Horizon | Method | Train stations | Held-out MAE mean ± SD | R² mean ± SD | Draws |
+|---:|---|---:|---:|---:|---:|
+| 1 | adaptive_graph_st | 3 | 19.866 ± 4.006 | -0.092 ± 0.068 | 5 |
+| 1 | adaptive_graph_st | 5 | 20.670 ± 4.393 | -0.091 ± 0.015 | 5 |
+| 1 | gru_only | 3 | 19.651 ± 3.860 | -0.063 ± 0.042 | 5 |
+| 1 | gru_only | 5 | 20.517 ± 4.351 | -0.063 ± 0.023 | 5 |
+| 1 | ridge_lag_weather | 3 | 21.088 ± 3.285 | -0.251 ± 0.078 | 5 |
+| 1 | ridge_lag_weather | 5 | 22.188 ± 3.970 | -0.232 ± 0.078 | 5 |
+| 1 | stpignn_lambda0 | 3 | 19.831 ± 3.910 | -0.083 ± 0.067 | 5 |
+| 1 | stpignn_lambda0 | 5 | 20.507 ± 4.303 | -0.067 ± 0.013 | 5 |
+| 1 | stpignn_original | 3 | 19.848 ± 3.889 | -0.083 ± 0.055 | 5 |
+| 1 | stpignn_original | 5 | 22.177 ± 6.001 | -0.180 ± 0.168 | 5 |
+| 24 | adaptive_graph_st | 3 | 19.907 ± 3.921 | -0.074 ± 0.050 | 5 |
+| 24 | adaptive_graph_st | 5 | 20.735 ± 3.947 | -0.067 ± 0.028 | 5 |
+| 24 | gru_only | 3 | 19.730 ± 3.681 | -0.053 ± 0.027 | 5 |
+| 24 | gru_only | 5 | 20.422 ± 4.173 | -0.030 ± 0.017 | 5 |
+| 24 | ridge_lag_weather | 3 | 21.071 ± 2.869 | -0.244 ± 0.141 | 5 |
+| 24 | ridge_lag_weather | 5 | 21.616 ± 3.704 | -0.170 ± 0.103 | 5 |
+| 24 | stpignn_lambda0 | 3 | 19.916 ± 3.449 | -0.104 ± 0.065 | 5 |
+| 24 | stpignn_lambda0 | 5 | 20.473 ± 4.241 | -0.032 ± 0.045 | 5 |
+| 24 | stpignn_original | 3 | 20.178 ± 3.415 | -0.135 ± 0.102 | 5 |
+| 24 | stpignn_original | 5 | 21.830 ± 5.361 | -0.156 ± 0.097 | 5 |
+
+Ten-station cases remain BLOCKED because only eight stations have observed-lag training pairs. All scored draw-mean R² values are negative. Different 3- and 5-station draws preclude a causal density interpretation of their mean difference.
+
+### Probabilistic intervals
+
+Source `scripts/conformal_v2h.py`, config `configs/benchmark_v2g.yaml`, source commit `37531f7`, fixed seed 11, LR 3e-4, 10 epochs, train-tail and validation calibration, nominal 80% and 90%, fixed and daily rolling variants, 2,000 paired UTC-day interval-score bootstraps. Validation calibration is exploratory because A/B architecture ranking used validation. Full per-station and per-month coverage is in `results/conformal_station_month_v2h.csv`.
+
+| Horizon | Model | 80% train-tail fixed coverage | Width | Interval score | Value verdict |
+|---:|---|---:|---:|---:|---|
+| 1 | persistence | 0.675 | 9.942 | 64.741 | NO |
+| 1 | same_hour_yesterday | 0.658 | 21.817 | 100.459 | NO |
+| 1 | ridge_lag | 0.638 | 10.817 | 65.708 | NO |
+| 1 | gru_only | 0.657 | 10.413 | 61.884 | NO |
+| 1 | stpignn_original | 0.669 | 10.803 | 60.990 | NO |
+| 1 | best_ab | 0.683 | 10.973 | 61.271 | NO |
+| 3 | persistence | 0.675 | 17.867 | 102.270 | NO |
+| 3 | same_hour_yesterday | 0.658 | 21.817 | 100.459 | NO |
+| 3 | ridge_lag | 0.668 | 20.391 | 92.046 | NO |
+| 3 | gru_only | 0.674 | 18.582 | 91.827 | NO |
+| 3 | stpignn_original | 0.696 | 20.055 | 88.561 | NO |
+| 3 | best_ab | 0.655 | 19.096 | 95.422 | NO |
+| 6 | persistence | 0.698 | 26.052 | 123.296 | NO |
+| 6 | same_hour_yesterday | 0.658 | 21.817 | 100.459 | NO |
+| 6 | ridge_lag | 0.691 | 28.333 | 103.706 | NO |
+| 6 | gru_only | 0.694 | 25.017 | 106.444 | NO |
+| 6 | stpignn_original | 0.700 | 25.827 | 101.628 | NO |
+| 6 | best_ab | 0.702 | 25.193 | 104.478 | NO |
+| 12 | persistence | 0.716 | 32.595 | 139.200 | NO |
+| 12 | same_hour_yesterday | 0.658 | 21.817 | 100.459 | NO |
+| 12 | ridge_lag | 0.661 | 29.040 | 115.356 | NO |
+| 12 | gru_only | 0.668 | 26.295 | 122.163 | NO |
+| 12 | stpignn_original | 0.686 | 27.315 | 108.291 | NO |
+| 12 | best_ab | 0.657 | 27.691 | 127.946 | NO |
+| 24 | persistence | 0.639 | 20.750 | 101.330 | NO |
+| 24 | same_hour_yesterday | 0.639 | 20.750 | 101.330 | NO |
+| 24 | ridge_lag | 0.603 | 22.892 | 98.830 | NO |
+| 24 | gru_only | 0.643 | 22.517 | 93.624 | NO |
+| 24 | stpignn_original | 0.655 | 23.594 | 92.179 | NO |
+| 24 | best_ab | 0.668 | 23.850 | 91.742 | NO |
+| pooled | best_ab | 0.673 | 21.361 | 96.172 | NO |
+| pooled | gru_only | 0.667 | 20.565 | 95.188 | NO |
+| pooled | persistence | 0.680 | 21.441 | 106.167 | NO |
+| pooled | ridge_lag | 0.652 | 22.295 | 95.129 | NO |
+| pooled | same_hour_yesterday | 0.654 | 21.604 | 100.633 | NO |
+| pooled | stpignn_original | 0.681 | 21.519 | 90.330 | NO |
+
+No model meets the fixed criterion at any horizon or nominal level; coverage is outside ±5 points of nominal in the primary train-tail fixed analysis. Rolling daily updates improve coverage but do not change the verdict.
+
+### Group-DRO station-attribute LOSO
+
+Source `scripts/loso_groupdro_v2h.py`, `configs/data_v2.yaml`, `configs/benchmark_v2g.yaml`, five-seed source commit `e4e2305`, seeds [11,23,37,51,79], 15 folds, 2,000 paired UTC-day bootstraps. Static embedding fields available at every station: SRTM elevation and projected UTM x/y coordinates, standardized using known training stations per fold. No station ID enters the embedding. η ∈ {0.01,0.1} chosen by validation MAE. ERM uses the same backbone; both use the train-fold mean residual anchor. W6 train-mean/IDW blend results remain separately in `results/loso_summary_v2g.csv`.
+
+| Method | MAE | R² | Best baseline | Baseline MAE | Baseline R² | Paired MAE 95% CI | Verdict |
+|---|---:|---:|---|---:|---:|---:|---|
+| ERM | 21.320 | -0.135 | ridge_weather_static | 20.594 | 0.073 | [0.143, 1.293] | LOSS |
+| group-DRO | 21.356 | -0.148 | ridge_weather_static | 20.594 | 0.073 | [0.210, 1.324] | LOSS |
+
+Four zero-test-target folds remain unscored: [5547, 5548, 6975, 2498781]. Per-station MAE and R² appear in `results/loso_station_predictability_v2h.csv`.
+
+### W3 SRTM terrain ablation
+
+Source `scripts/dem_study_v2h.py`, config `configs/benchmark_v2g.yaml`, control-list source commit `212cbcd`, seeds [11,23,37,51,79], five terrain shuffle seeds [4201,4202,4203,4204,4205], 2,000 paired UTC-day bootstrap draws. Per-station SRTM values verified against `nodes_elevation_true.parquet` in `results/dem_station_values_v2h.csv`.
+
+SRTM elevation versus northing Pearson correlation: 0.368.
+
+| Horizon | Model | Control | SRTM minus control MAE | 95% CI |
+|---:|---|---|---:|---:|
+| 1 | adaptive_graph_st | srtm_minus_none | -0.015 | [-0.019, -0.010] |
+| 1 | adaptive_graph_st | srtm_minus_northing_only | -0.014 | [-0.019, -0.009] |
+| 1 | adaptive_graph_st | srtm_minus_shuffled_mean | -0.015 | [-0.020, -0.011] |
+| 1 | adaptive_graph_st | srtm_minus_shuffle_1 | -0.031 | [-0.038, -0.024] |
+| 1 | adaptive_graph_st | srtm_minus_shuffle_2 | -0.011 | [-0.015, -0.007] |
+| 1 | adaptive_graph_st | srtm_minus_shuffle_3 | -0.010 | [-0.014, -0.006] |
+| 1 | adaptive_graph_st | srtm_minus_shuffle_4 | -0.013 | [-0.017, -0.008] |
+| 1 | adaptive_graph_st | srtm_minus_shuffle_5 | -0.016 | [-0.021, -0.011] |
+| 1 | gru_only | srtm_minus_none | 0.031 | [0.009, 0.055] |
+| 1 | gru_only | srtm_minus_northing_only | 0.050 | [0.027, 0.075] |
+| 1 | gru_only | srtm_minus_shuffled_mean | 0.047 | [0.028, 0.068] |
+| 1 | gru_only | srtm_minus_shuffle_1 | 0.017 | [-0.009, 0.044] |
+| 1 | gru_only | srtm_minus_shuffle_2 | 0.049 | [0.020, 0.081] |
+| 1 | gru_only | srtm_minus_shuffle_3 | 0.012 | [-0.013, 0.038] |
+| 1 | gru_only | srtm_minus_shuffle_4 | 0.058 | [0.040, 0.078] |
+| 1 | gru_only | srtm_minus_shuffle_5 | 0.026 | [0.012, 0.041] |
+| 24 | adaptive_graph_st | srtm_minus_none | 0.048 | [-0.010, 0.105] |
+| 24 | adaptive_graph_st | srtm_minus_northing_only | 0.190 | [0.070, 0.306] |
+| 24 | adaptive_graph_st | srtm_minus_shuffled_mean | 0.070 | [0.000, 0.138] |
+| 24 | adaptive_graph_st | srtm_minus_shuffle_1 | 0.024 | [-0.112, 0.158] |
+| 24 | adaptive_graph_st | srtm_minus_shuffle_2 | 0.092 | [0.010, 0.172] |
+| 24 | adaptive_graph_st | srtm_minus_shuffle_3 | -0.024 | [-0.082, 0.041] |
+| 24 | adaptive_graph_st | srtm_minus_shuffle_4 | -0.054 | [-0.123, 0.011] |
+| 24 | adaptive_graph_st | srtm_minus_shuffle_5 | 0.059 | [-0.081, 0.194] |
+| 24 | gru_only | srtm_minus_none | 0.045 | [-0.011, 0.098] |
+| 24 | gru_only | srtm_minus_northing_only | -0.316 | [-0.437, -0.192] |
+| 24 | gru_only | srtm_minus_shuffled_mean | 0.010 | [-0.048, 0.065] |
+| 24 | gru_only | srtm_minus_shuffle_1 | -0.087 | [-0.190, 0.013] |
+| 24 | gru_only | srtm_minus_shuffle_2 | -0.063 | [-0.146, 0.022] |
+| 24 | gru_only | srtm_minus_shuffle_3 | -0.111 | [-0.174, -0.047] |
+| 24 | gru_only | srtm_minus_shuffle_4 | 0.054 | [-0.001, 0.108] |
+| 24 | gru_only | srtm_minus_shuffle_5 | -0.059 | [-0.166, 0.039] |
+
+W3 h=1 DEM criterion for validation-best adaptive_graph_st: MET across the fixed controls.
+W3 h=24 DEM criterion for validation-best adaptive_graph_st: NOT MET across the fixed controls.
+
+### W8 citywide input precheck
+
+Source `scripts/citywide_precheck_v2h.py`, source commit `dd94737`, no training or seed; full audit and timestamp in `results/citywide_precheck_v2h.md`.
+
+Nodes: 154902.
+Distinct weather source points: 1 (12.9716 N, 77.5946 E).
+Nodes with stored hourly model-input rows: 22/154902; nodes with no stored temporal model-input data: 154880.
+Unique weather series among stored nodes: 18.
+Stored nodes whose weather series exactly duplicates another stored node's: 5/22 (22.727273%).
+If the single raw weather series were broadcast to all topology nodes, duplicate fraction would be 100.000000%.
+Nodes with SRTM elevation: 154902/154902; missing: 0.
+Nodes mapped to a station: 23/154902; without a station: 154879.
+Nodes with no weather or SRTM data after broadcast: 0.
+BLOCKED: a single weather source would give more than 50% identical citywide node series.
+
+The bounded round stops here; no routing, integrated gradients, citywide training or second-city study was run.

@@ -33,7 +33,7 @@ def main():
     density_verdict=json.loads((R/'sensor_density_verdict_v2h.json').read_text())
     city=(R/'citywide_precheck_v2h.md').read_text().splitlines()
     lines=['','## Step 4h: deviation 6 bounded round', '',
-           f'Generated {now} from script `scripts/append_step4h_v2h.py` at source commit `{commit}`. All model selection used validation or fixed training choices; no test-driven horizon, fold, station or seed exclusion. Earlier results are unchanged.', '',
+           f'Generated {now} from script `scripts/append_step4h_v2h.py` at source commit `{commit}`. This generation timestamp and commit apply to each source line below; study-specific source commits are also shown. All model selection used validation or fixed training choices; no test-driven horizon, fold, station or seed exclusion. Earlier results are unchanged.', '',
            '### W7 physics weight check', '',
            f'Source `scripts/lambda_sweep_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `{w7["source_commit"]}`, 2,000 paired UTC-day bootstrap draws; Step 4h check at the commit and time above.', '',
            f'All five horizons [1,3,6,12,24] are present. The original ST-PIGNN has one nominal hit (h=6, λ=0.06, about -0.28 µg/m³ versus λ=0); it is not replicated at another horizon or weight. There are 25 original-model and 25 Laplacian positive-weight comparisons. Laplacian findings are a separate control and do not count as support for the original physics penalty.', '',
@@ -76,14 +76,15 @@ def main():
     comparisons=dem[dem.record_type=='paired_bootstrap']
     for r in comparisons.itertuples():
         lines.append(f'| {r.horizon_hours} | {r.model} | {r.comparison} | {fmt(r.delta_mae_ug_m3)} | [{fmt(r.mae_ci_low)}, {fmt(r.mae_ci_high)}] |')
+    lines.append('')
     for horizon in (1,24):
         chosen=comparisons[comparisons.horizon_hours==horizon].best_validation_model.iloc[0]
         part=comparisons[(comparisons.horizon_hours==horizon)&(comparisons.model==chosen)]
         verdict='MET' if (part.mae_ci_high<0).all() else 'NOT MET'
         lines.append(f'W3 h={horizon} DEM criterion for validation-best {chosen}: {verdict} across the fixed controls.')
     lines += ['', '### W8 citywide input precheck', '',
-              'Source `scripts/citywide_precheck_v2h.py`, no training or seed; full audit in `results/citywide_precheck_v2h.md`.', '']
-    lines += [line for line in city if line.startswith(('Nodes:', 'Distinct weather', 'Nodes with stored', 'Unique weather', 'Stored nodes', 'Nodes with SRTM', 'Nodes mapped', 'Nodes with no weather', 'BLOCKED:', 'PRECHECK PASSED'))]
+              'Source `scripts/citywide_precheck_v2h.py`, source commit `dd94737`, no training or seed; full audit and timestamp in `results/citywide_precheck_v2h.md`.', '']
+    lines += [line for line in city if line.startswith(('Nodes:', 'Distinct weather', 'Nodes with stored', 'Unique weather', 'Stored nodes', 'If the single raw', 'Nodes with SRTM', 'Nodes mapped', 'Nodes with no weather', 'BLOCKED:', 'PRECHECK PASSED'))]
     lines += ['', 'The bounded round stops here; no routing, integrated gradients, citywide training or second-city study was run.', '']
     with P.open('a') as f:f.write('\n'.join(lines))
     print('Appended Step 4h',len(lines),'lines',now,commit)
