@@ -19,7 +19,7 @@ from src.stpignn.evaluation import evaluate_arrays
 from src.stpignn.models_v2 import expanded_edges
 from src.stpignn.paths import REPO_ROOT
 
-SEEDS=(11,23,37)
+SEEDS=(11,23,37,51,79)
 ETAS=(.01,.1)
 METHODS=('erm','dro_eta_0.01','dro_eta_0.1')
 LR=1e-4
@@ -155,7 +155,7 @@ def summarize():
         row.update(best_baseline=best['method'],baseline_mae=best['mae'],baseline_r2=best['r2'],
                    delta_mae=row['mae']-best['mae'],mae_ci_low=ci[0][0],mae_ci_high=ci[1][0],
                    verdict=('TIE' if ci[0][0]<=0<=ci[1][0] else ('WIN' if ci[1][0]<0 and row['r2']>best['r2'] else 'LOSS')),
-                   seeds='11;23;37',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO_ROOT,text=True).strip(),
+                   seeds='11;23;37;51;79',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO_ROOT,text=True).strip(),
                    timestamp_utc=dt.datetime.now(dt.timezone.utc).isoformat())
     unscored=sorted(set(pd.read_csv(REPO_ROOT/'results/stations_v2.csv').station_id.astype(int))-set(ensemble.station_id))
     for station in unscored:
