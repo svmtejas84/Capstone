@@ -61,3 +61,5 @@
 - 2026-11-04T14:43:18.879328+00:00 Prepared W3 DEM `_v2h` runner from predeclared W3 design, preserving five shuffles, two horizons, two models, five seeds and 2,000 paired UTC-day bootstraps. Per-horizon/variant/model/seed predictions checkpoint on restart. W4 remains active; W3 run scheduled after Parts 3 and 4.
 
 - 2026-11-04T14:45:39.233265+00:00 DONE W4 sensor-density: 100 scored rows (h=1/24, 3/5 stations, five draws, five methods), 50 ten-station rows BLOCKED because only eight stations have observed-lag train pairs. All scored pooled R2 means are negative. Three-station draw means happened to have lower MAE than five-station means; draws differ, so do not interpret as density improvement or physics robustness. Source `scripts/lowdata_v2h.py`, config `configs/benchmark_v2g.yaml`, seeds/draws [11,23,37,51,79], source commit `01a87a0`, `results/sensor_density_v2h.csv`, `results/sensor_density_summary_v2h.csv`, `figures/sensor_density.pdf`, raw `runs/w4_v2h.log`.
+
+- 2026-11-04T14:46:01.869365+00:00 START Part 3 supervised conformal run, PID 3478053, source commit `37531f7`, log `runs/conformal_v2h.log`; checkpoint per horizon/calibration/model.
