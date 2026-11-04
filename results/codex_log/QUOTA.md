@@ -27,3 +27,5 @@
 - 2026-10-25 13:30 UTC: W6 pushed as `2ce644a`; h=12 final artifact commit/push is the last action in this time window. W3/W4/W7/W8 remain queued.
 - 2026-10-25 13:37 UTC: user continuation starts a new five-hour work window ending near 18:35 UTC. W7 runs first, followed by W3, W4, W8. Reserve time to checkpoint and push before the limit.
 - 2026-10-25 13:40 UTC: about 4 hours 55 minutes remain; W7 at h=1 original lambda=0 final seeds. W3/W4/report source prepared while W7 trains.
+
+- 2026-11-04T14:33:46.874842+00:00 DONE deviation 6 Part 2: protocol-inflation analysis from stored result files only, no retraining. P0 baseline/persistence gains cannot be reconstructed on its 308 pairs; P1/P2/P3/P4 strongest-baseline MAE gains are -9.323752/-12.607068/-0.143013/+0.097270 ug/m3. Sources `scripts/protocol_inflation_v2h.py`, `results/protocol_inflation_v2h.csv`, `figures/protocol_inflation.pdf`; fixed h=1 and existing selected seeds.
