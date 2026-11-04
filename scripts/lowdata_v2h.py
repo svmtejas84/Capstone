@@ -145,14 +145,18 @@ def main():
         mae_mean=("test_mae_ug_m3","mean"),mae_sd=("test_mae_ug_m3","std"),
         r2_mean=("test_r2","mean"),r2_sd=("test_r2","std"),draws=("draw","nunique")).reset_index()
     summary.to_csv(REPO_ROOT/"results/sensor_density_summary_v2h.csv",index=False)
-    fig,axes=plt.subplots(1,2,figsize=(10,4),sharey=True)
-    for ax,h in zip(axes,(1,24)):
+    fig,axes=plt.subplots(2,2,figsize=(10,7),sharex=True)
+    for col,h in enumerate((1,24)):
         for name,g in summary[summary.horizon_hours==h].groupby("model"):
-            ax.errorbar(g.train_station_count,g.mae_mean,yerr=g.mae_sd,marker='o',capsize=3,label=name)
-        ax.set_title(f'h={h} hours');ax.set_xlabel('Training stations')
-        ax.set_xticks([3,5,10]);ax.text(10,ax.get_ylim()[1]*.94,'10 blocked',ha='right',fontsize=8)
-    axes[0].set_ylabel('Held-out station MAE (µg/m³)')
-    axes[1].legend(fontsize=7,loc='upper left',bbox_to_anchor=(1,1))
+            axes[0,col].errorbar(g.train_station_count,g.mae_mean,yerr=g.mae_sd,marker='o',capsize=3,label=name)
+            axes[1,col].errorbar(g.train_station_count,g.r2_mean,yerr=g.r2_sd,marker='o',capsize=3,label=name)
+        axes[0,col].set_title(f'h={h} hours')
+        for row in (0,1):
+            ax=axes[row,col];ax.set_xticks([3,5,10]);ax.set_xlabel('Training stations')
+            ax.text(10,ax.get_ylim()[1]*.94,'10 blocked',ha='right',fontsize=8)
+    axes[0,0].set_ylabel('Held-out station MAE (µg/m³)')
+    axes[1,0].set_ylabel('Held-out station R²')
+    axes[0,1].legend(fontsize=7,loc='upper left',bbox_to_anchor=(1,1))
     fig.tight_layout();fig.savefig(REPO_ROOT/'figures/sensor_density.pdf',bbox_inches='tight');plt.close(fig)
     print(json.dumps(verdict,indent=2))
 

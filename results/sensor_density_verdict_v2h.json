@@ -1,0 +1,41 @@
+{
+  "best_validation_model_by_horizon": {
+    "1": "adaptive_graph_st",
+    "24": "adaptive_graph_st"
+  },
+  "verdict": {
+    "1": {
+      "mae_change_3_minus_5": {
+        "adaptive_graph_st": -0.8041691582436847,
+        "gru_only": -0.8658551699508372,
+        "stpignn_lambda0": -0.6760910943617695,
+        "stpignn_original": -2.328761526146824,
+        "ridge_lag_weather": -1.100721703570489
+      },
+      "ten_station_case": "BLOCKED: only 8 stations have observed-lag training pairs",
+      "physics_degrades_less_than_controls_3_vs_5": true
+    },
+    "24": {
+      "mae_change_3_minus_5": {
+        "adaptive_graph_st": -0.82778522958602,
+        "gru_only": -0.6921472122127312,
+        "stpignn_lambda0": -0.5572019396793806,
+        "stpignn_original": -1.6522483931767056,
+        "ridge_lag_weather": -0.5454888245304517
+      },
+      "ten_station_case": "BLOCKED: only 8 stations have observed-lag training pairs",
+      "physics_degrades_less_than_controls_3_vs_5": true
+    }
+  },
+  "script": "scripts/lowdata_v2h.py",
+  "config": "configs/benchmark_v2g.yaml",
+  "seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "source_commit": "001422ed7c093a970f00d9ca0d936fb0a2ac8a74",
+  "timestamp_utc": "2026-11-04T14:44:56.373308+00:00"
+}
