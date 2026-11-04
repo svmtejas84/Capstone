@@ -1,0 +1,57 @@
+UNSCORED 1 5547
+UNSCORED 2 5548
+UNSCORED 6 6975
+UNSCORED 9 2498781
+{
+  "selected_eta": "dro_eta_0.01",
+  "pooled": [
+    {
+      "method": "ERM",
+      "selected_eta": 0.0,
+      "n": 14583,
+      "mae": 21.31973772304752,
+      "rmse": 39.4862007609255,
+      "r2": -0.13457449732487836,
+      "bias": -6.490299649078325,
+      "nmae": 0.4798972242015916,
+      "median_ae": 14.562911987304688,
+      "best_baseline": "ridge_weather_static",
+      "baseline_mae": 20.593675909453417,
+      "baseline_r2": 0.07251816358863272,
+      "delta_mae": 0.7260618135941037,
+      "mae_ci_low": 0.1431252966191705,
+      "mae_ci_high": 1.2926802762520786,
+      "verdict": "LOSS",
+      "seeds": "11;23;37;51;79",
+      "source_commit": "8448e309a306b67849de670ac6fb447db9a609ca",
+      "timestamp_utc": "2026-11-04T15:13:00.605227+00:00"
+    },
+    {
+      "method": "group-DRO",
+      "selected_eta": 0.01,
+      "n": 14583,
+      "mae": 21.356245886011028,
+      "rmse": 39.71458035290429,
+      "r2": -0.14773671522748155,
+      "bias": -8.729864437719852,
+      "nmae": 0.4807190057025876,
+      "median_ae": 14.254135131835938,
+      "best_baseline": "ridge_weather_static",
+      "baseline_mae": 20.593675909453417,
+      "baseline_r2": 0.07251816358863272,
+      "delta_mae": 0.7625699765576108,
+      "mae_ci_low": 0.20996694017713652,
+      "mae_ci_high": 1.3243291022636487,
+      "verdict": "LOSS",
+      "seeds": "11;23;37;51;79",
+      "source_commit": "8448e309a306b67849de670ac6fb447db9a609ca",
+      "timestamp_utc": "2026-11-04T15:13:05.322333+00:00"
+    }
+  ],
+  "unscored_stations": [
+    5547,
+    5548,
+    6975,
+    2498781
+  ]
+}
