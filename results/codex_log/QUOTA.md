@@ -43,3 +43,5 @@
 - 2026-11-04T14:56:08.651690+00:00 Part 4 supervisor PID 3479087 restarted after child termination to load five-seed source; completed fold/method/seed rows retained.
 
 - 2026-11-04T15:13:42.360229+00:00 DONE Part 4 five-seed attribute-embedded LOSO. Validation selected eta=0.01. Group-DRO pooled MAE/R2 21.356246/-0.147737 vs best fixed ridge_weather_static 20.593676/0.072518; paired UTC-day MAE CI for group-DRO minus baseline [+0.209967,+1.324329], LOSS. Matched ERM 21.319738/-0.134574, also LOSS. All 15 folds retained; 11 scored, four zero-test-target folds [5547,5548,6975,2498781] reported. Per-station table includes five baselines. Source `scripts/loso_groupdro_v2h.py`, config `configs/data_v2.yaml` and `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `8448e30`, 2,000 paired UTC-day bootstrap draws; raw `runs/groupdro_v2h.log`, resummary `runs/groupdro_v2h_resummary.log`.
+
+- 2026-11-04T15:14:13.958291+00:00 START W3 DEM supervised run, PID 3483121, source commit `212cbcd`, log `runs/dem_v2h.log`; checkpoint per horizon/variant/model/seed.
