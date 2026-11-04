@@ -142,11 +142,14 @@ def summarize():
         pooled.append({'method':label,'selected_eta':0. if label=='ERM' else float(selected.split('_')[-1]),**metric})
         for station,d in g.groupby('station_id'):
             m=evaluate_arrays(d.prediction,d.target,np.ones(len(d),bool))
-            station_rows.append({'station_id':station,'method':label,**m})
+            station_rows.append({'station_id':station,'method':label,'status':'scored',**m})
     base_metrics=[]
     for name,g in baselines.groupby('method'):
         m=evaluate_arrays(g.prediction,g.target,np.ones(len(g),bool))
         base_metrics.append({'method':name,**m})
+        for station,d in g.groupby('station_id'):
+            station_m=evaluate_arrays(d.prediction,d.target,np.ones(len(d),bool))
+            station_rows.append({'station_id':station,'method':name,'status':'scored',**station_m})
     best=min(base_metrics,key=lambda x:x['mae'])
     b=baselines[baselines.method==best['method']]
     for row in pooled:

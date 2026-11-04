@@ -79,3 +79,5 @@
 - 2026-11-04T14:56:08.651690+00:00 Part 4 supervisor PID 3479087 restarted after child termination to load five-seed source; completed fold/method/seed rows retained.
 
 - 2026-11-04T15:00:52.387615+00:00 Prepared idempotent `scripts/append_step4h_v2h.py`; it appends only after W3, W8 and Part 4 artifacts exist, with source/config/seed/commit/timestamp lines and factual tables. It does not reread the full paper.
+
+- 2026-11-04T15:09:54.420638+00:00 Expanded Part 4 predictability table to include per-station MAE/R2 for all five fixed baselines as well as ERM/group-DRO and four unscored folds. Presentation change fixed before inspecting Part 4 test summary; after current child exits, rerun checkpointed summarizer without retraining.
