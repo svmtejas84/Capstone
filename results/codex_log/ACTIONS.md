@@ -75,3 +75,5 @@
 - 2026-11-04T14:51:38.202128+00:00 START Part 4 group-DRO supervised run, PID 3479087, source commit `8815516`, log `runs/groupdro_v2h.log`; fold/method/seed checkpoint.
 
 - 2026-11-04T14:55:16.550884+00:00 Expanded Part 4 source to requested five seeds during initial fold training; will resume from stored fold/method/seed predictions after current process exits.
+
+- 2026-11-04T14:56:08.651690+00:00 Part 4 supervisor PID 3479087 restarted after child termination to load five-seed source; completed fold/method/seed rows retained.
