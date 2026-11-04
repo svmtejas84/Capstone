@@ -55,14 +55,16 @@ def main():
     station_nodes = int(stations.node_id.nunique())
     no_temporal_data=n-stored_nodes
     no_any_data = 0 if weather_finite_rows or elevation_valid == n else int((~np.isfinite(joined.elevation_true)).sum())
-    verdict = "BLOCKED: citywide inputs are copies" if duplicated_fraction > 0.5 else "PRECHECK PASSED"
-    lines = ["# Citywide precheck v2g", "",
+    projected_citywide_duplicate_fraction = 1.0 if distinct_weather_points == 1 and n > 1 else duplicated_fraction
+    verdict = ("BLOCKED: a single weather source would give more than 50% identical citywide node series"
+               if projected_citywide_duplicate_fraction > 0.5 else "PRECHECK PASSED")
+    lines = ["# Citywide precheck v2h", "",
              f"Source `scripts/citywide_precheck_v2h.py`, `scripts/pull_weather.py`, no training, no seed, commit `{subprocess.check_output(['git','rev-parse','HEAD'], cwd=REPO_ROOT, text=True).strip()}`, {dt.datetime.now(dt.timezone.utc).isoformat()}.", "",
              f"Nodes: {n}.", f"Distinct weather source points: {distinct_weather_points} (12.9716 N, 77.5946 E).",
              f"Nodes with stored hourly model-input rows: {stored_nodes}/{n}; nodes with no stored temporal model-input data: {no_temporal_data}.",
              f"Unique weather series among stored nodes: {len(signatures)}.",
              f"Stored nodes whose weather series exactly duplicates another stored node's: {duplicate_stored}/{stored_nodes} ({100*duplicated_fraction:.6f}%).",
-             f"If the single raw weather series were broadcast to all topology nodes, duplicate fraction would be 100.000000%.",
+             f"If the single raw weather series were broadcast to all topology nodes, duplicate fraction would be {100*projected_citywide_duplicate_fraction:.6f}%.",
              f"Weather hours with all six fields finite: {weather_finite_rows}/{len(weather)}.",
              f"Nodes with SRTM elevation: {elevation_valid}/{n}; missing: {n-elevation_valid}.",
              f"Nodes mapped to a station: {station_nodes}/{n}; without a station: {n-station_nodes}.",
