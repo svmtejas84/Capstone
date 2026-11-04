@@ -35,7 +35,7 @@ def main():
     lines=['','## Step 4h: deviation 6 bounded round', '',
            f'Generated {now} from script `scripts/append_step4h_v2h.py` at source commit `{commit}`. All model selection used validation or fixed training choices; no test-driven horizon, fold, station or seed exclusion. Earlier results are unchanged.', '',
            '### W7 physics weight check', '',
-           'Source `scripts/lambda_sweep_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], 2,000 paired UTC-day bootstrap draws; summary checked in Step 4h at the commit and time above.', '',
+           f'Source `scripts/lambda_sweep_v2g.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], source commit `{w7["source_commit"]}`, 2,000 paired UTC-day bootstrap draws; Step 4h check at the commit and time above.', '',
            f'All five horizons [1,3,6,12,24] are present. The original ST-PIGNN has one nominal hit (h=6, λ=0.06, about -0.28 µg/m³ versus λ=0); it is not replicated at another horizon or weight. There are 25 original-model and 25 Laplacian positive-weight comparisons. Laplacian findings are a separate control and do not count as support for the original physics penalty.', '',
            '### Protocol-inflation analysis', '',
            'Source `scripts/protocol_inflation_v2h.py`, stored P0/P1/P2/P3/P4 result files, h=1 for comparable point gains; no retraining. P4 paired UTC-day interval is from `results/benchmark_v2g.md`.', '',
@@ -52,7 +52,7 @@ def main():
         lines.append(f'| {r.horizon_hours} | {r.model} | {r.train_station_count} | {fmt(r.mae_mean)} ± {fmt(r.mae_sd)} | {fmt(r.r2_mean)} ± {fmt(r.r2_sd)} | {r.draws} |')
     lines += ['', 'Ten-station cases remain BLOCKED because only eight stations have observed-lag training pairs. All scored draw-mean R² values are negative. Different 3- and 5-station draws preclude a causal density interpretation of their mean difference.', '',
               '### Probabilistic intervals', '',
-              'Source `scripts/conformal_v2h.py`, config `configs/benchmark_v2g.yaml`, fixed seed 11, LR 3e-4, 10 epochs, train-tail and validation calibration, nominal 80% and 90%, fixed and daily rolling variants, 2,000 paired UTC-day interval-score bootstraps. Validation calibration is exploratory because A/B architecture ranking used validation. Full per-station and per-month coverage is in `results/conformal_station_month_v2h.csv`.', '',
+              'Source `scripts/conformal_v2h.py`, config `configs/benchmark_v2g.yaml`, source commit `37531f7`, fixed seed 11, LR 3e-4, 10 epochs, train-tail and validation calibration, nominal 80% and 90%, fixed and daily rolling variants, 2,000 paired UTC-day interval-score bootstraps. Validation calibration is exploratory because A/B architecture ranking used validation. Full per-station and per-month coverage is in `results/conformal_station_month_v2h.csv`.', '',
               '| Horizon | Model | 80% train-tail fixed coverage | Width | Interval score | Value verdict |',
               '|---:|---|---:|---:|---:|---|']
     sub=con[(con.calibration=='train_tail')&(con.nominal==.8)&(con.variant=='fixed')]
@@ -60,7 +60,7 @@ def main():
         lines.append(f'| {r.horizon_hours} | {r.model} | {fmt(r.coverage)} | {fmt(r.mean_width)} | {fmt(r.interval_score)} | {"YES" if r.adds_probabilistic_value else "NO"} |')
     lines += ['', 'No model meets the fixed criterion at any horizon or nominal level; coverage is outside ±5 points of nominal in the primary train-tail fixed analysis. Rolling daily updates improve coverage but do not change the verdict.', '',
               '### Group-DRO station-attribute LOSO', '',
-              'Source `scripts/loso_groupdro_v2h.py`, `configs/data_v2.yaml`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], 15 folds, 2,000 paired UTC-day bootstraps. Static embedding fields available at every station: SRTM elevation and projected UTM x/y coordinates, standardized using known training stations per fold. No station ID enters the embedding. η ∈ {0.01,0.1} chosen by validation MAE. ERM uses the same backbone; both use the train-fold mean residual anchor. W6 train-mean/IDW blend results remain separately in `results/loso_summary_v2g.csv`.', '',
+              'Source `scripts/loso_groupdro_v2h.py`, `configs/data_v2.yaml`, `configs/benchmark_v2g.yaml`, five-seed source commit `e4e2305`, seeds [11,23,37,51,79], 15 folds, 2,000 paired UTC-day bootstraps. Static embedding fields available at every station: SRTM elevation and projected UTM x/y coordinates, standardized using known training stations per fold. No station ID enters the embedding. η ∈ {0.01,0.1} chosen by validation MAE. ERM uses the same backbone; both use the train-fold mean residual anchor. W6 train-mean/IDW blend results remain separately in `results/loso_summary_v2g.csv`.', '',
               '| Method | MAE | R² | Best baseline | Baseline MAE | Baseline R² | Paired MAE 95% CI | Verdict |',
               '|---|---:|---:|---|---:|---:|---:|---|']
     for r in loso.itertuples():
@@ -69,7 +69,7 @@ def main():
     ids=unscored.loc[unscored.method=='unscored','station_id'].astype(int).tolist()
     lines += ['', f'Four zero-test-target folds remain unscored: {ids}. Per-station MAE and R² appear in `results/loso_station_predictability_v2h.csv`.', '',
               '### W3 SRTM terrain ablation', '',
-              'Source `scripts/dem_study_v2h.py`, config `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], five terrain shuffle seeds [4201,4202,4203,4204,4205], 2,000 paired UTC-day bootstrap draws. Per-station SRTM values verified against `nodes_elevation_true.parquet` in `results/dem_station_values_v2h.csv`.', '',
+              'Source `scripts/dem_study_v2h.py`, config `configs/benchmark_v2g.yaml`, control-list source commit `212cbcd`, seeds [11,23,37,51,79], five terrain shuffle seeds [4201,4202,4203,4204,4205], 2,000 paired UTC-day bootstrap draws. Per-station SRTM values verified against `nodes_elevation_true.parquet` in `results/dem_station_values_v2h.csv`.', '',
               f'SRTM elevation versus northing Pearson correlation: {fmt(station.elevation_m.corr(station.northing_m))}.', '',
               '| Horizon | Model | Control | SRTM minus control MAE | 95% CI |',
               '|---:|---|---|---:|---:|']
