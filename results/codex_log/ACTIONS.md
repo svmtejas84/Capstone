@@ -69,3 +69,5 @@
 - 2026-11-04T14:47:49.296845+00:00 Updated Part 2 CSV with one factual headline claim per level and P4 paired-day CI qualifier; regenerated table/figure from stored files only.
 
 - 2026-11-04T14:48:31.087302+00:00 Expanded W3 paired-bootstrap output to include northing and each of five shuffles before execution.
+
+- 2026-11-04T14:51:11.392312+00:00 DONE Part 3 conformal: 288 horizon/pooled × calibration × nominal × fixed/rolling × model rows; per-station/per-month coverage in `results/conformal_station_month_v2h.csv`. No model meets the fixed interval-score-vs-persistence-and-ridge plus ±5-point coverage criterion; 80% train-tail fixed coverage is below nominal at every horizon for all six models. Source `scripts/conformal_v2h.py`, fixed seed 11, LR 3e-4, 10 epochs, config `configs/benchmark_v2g.yaml`, source commit `37531f7`, raw `runs/conformal_v2h.log`; predictions checkpointed per horizon/calibration/model. Validation-calibration results exploratory due A/B architecture ranking on validation.

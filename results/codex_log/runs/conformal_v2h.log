@@ -1,0 +1,121 @@
+PRED 1 train_tail persistence 2901 14583
+PRED 1 train_tail same_hour_yesterday 2901 14583
+PRED 1 train_tail ridge_lag 2901 14583
+PRED 1 train_tail gru_only 2901 14583
+PRED 1 train_tail stpignn_original 2901 14583
+PRED 1 train_tail best_ab 2901 14583
+PRED 1 validation persistence 6965 14583
+PRED 1 validation same_hour_yesterday 6965 14583
+PRED 1 validation ridge_lag 6965 14583
+PRED 1 validation gru_only 6965 14583
+PRED 1 validation stpignn_original 6965 14583
+PRED 1 validation best_ab 6965 14583
+PRED 3 train_tail persistence 2832 14583
+PRED 3 train_tail same_hour_yesterday 2832 14583
+PRED 3 train_tail ridge_lag 2832 14583
+PRED 3 train_tail gru_only 2832 14583
+PRED 3 train_tail stpignn_original 2832 14583
+PRED 3 train_tail best_ab 2832 14583
+PRED 3 validation persistence 6831 14583
+PRED 3 validation same_hour_yesterday 6831 14583
+PRED 3 validation ridge_lag 6831 14583
+PRED 3 validation gru_only 6831 14583
+PRED 3 validation stpignn_original 6831 14583
+PRED 3 validation best_ab 6831 14583
+PRED 6 train_tail persistence 2761 14583
+PRED 6 train_tail same_hour_yesterday 2761 14583
+PRED 6 train_tail ridge_lag 2761 14583
+PRED 6 train_tail gru_only 2761 14583
+PRED 6 train_tail stpignn_original 2761 14583
+PRED 6 train_tail best_ab 2761 14583
+PRED 6 validation persistence 6687 14583
+PRED 6 validation same_hour_yesterday 6687 14583
+PRED 6 validation ridge_lag 6687 14583
+PRED 6 validation gru_only 6687 14583
+PRED 6 validation stpignn_original 6687 14583
+PRED 6 validation best_ab 6687 14583
+PRED 12 train_tail persistence 2712 14583
+PRED 12 train_tail same_hour_yesterday 2712 14583
+PRED 12 train_tail ridge_lag 2712 14583
+PRED 12 train_tail gru_only 2712 14583
+PRED 12 train_tail stpignn_original 2712 14583
+PRED 12 train_tail best_ab 2712 14583
+PRED 12 validation persistence 6556 14583
+PRED 12 validation same_hour_yesterday 6556 14583
+PRED 12 validation ridge_lag 6556 14583
+PRED 12 validation gru_only 6556 14583
+PRED 12 validation stpignn_original 6556 14583
+PRED 12 validation best_ab 6556 14583
+PRED 24 train_tail persistence 2660 14583
+PRED 24 train_tail same_hour_yesterday 2660 14583
+PRED 24 train_tail ridge_lag 2660 14583
+PRED 24 train_tail gru_only 2660 14583
+PRED 24 train_tail stpignn_original 2660 14583
+PRED 24 train_tail best_ab 2660 14583
+PRED 24 validation persistence 6389 14583
+PRED 24 validation same_hour_yesterday 6389 14583
+PRED 24 validation ridge_lag 6389 14583
+PRED 24 validation gru_only 6389 14583
+PRED 24 validation stpignn_original 6389 14583
+PRED 24 validation best_ab 6389 14583
+horizon_hours  nominal               model  coverage  interval_score  adds_probabilistic_value
+            1      0.8         persistence  0.674964       64.741117                     False
+            1      0.8 same_hour_yesterday  0.658232      100.459310                     False
+            1      0.8           ridge_lag  0.637866       65.707536                     False
+            1      0.8            gru_only  0.657478       61.883740                     False
+            1      0.8    stpignn_original  0.668655       60.989675                     False
+            1      0.8             best_ab  0.682987       61.271310                     False
+            1      0.9         persistence  0.786258      109.139691                     False
+            1      0.9 same_hour_yesterday  0.780566      154.352292                     False
+            1      0.9           ridge_lag  0.756497      109.110561                     False
+            1      0.9            gru_only  0.774601      103.091488                     False
+            1      0.9    stpignn_original  0.786464      101.219040                     False
+            1      0.9             best_ab  0.779949      103.726463                     False
+            3      0.8         persistence  0.674553      102.270047                     False
+            3      0.8 same_hour_yesterday  0.658232      100.459310                     False
+            3      0.8           ridge_lag  0.667558       92.045707                     False
+            3      0.8            gru_only  0.674415       91.826969                     False
+            3      0.8    stpignn_original  0.696016       88.560582                     False
+            3      0.8             best_ab  0.654666       95.422091                     False
+            3      0.9         persistence  0.802167      167.160375                     False
+            3      0.9 same_hour_yesterday  0.780704      154.322768                     False
+            3      0.9           ridge_lag  0.777412      147.506499                     False
+            3      0.9            gru_only  0.791812      149.575251                     False
+            3      0.9    stpignn_original  0.807996      142.017091                     False
+            3      0.9             best_ab  0.788727      153.215428                     False
+            6      0.8         persistence  0.697525      123.295501                     False
+            6      0.8 same_hour_yesterday  0.658232      100.459310                     False
+            6      0.8           ridge_lag  0.690599      103.706218                     False
+            6      0.8            gru_only  0.694096      106.443774                     False
+            6      0.8    stpignn_original  0.700473      101.628172                     False
+            6      0.8             best_ab  0.701913      104.478169                     False
+            6      0.9         persistence  0.838099      193.001284                     False
+            6      0.9 same_hour_yesterday  0.780841      154.299589                     False
+            6      0.9           ridge_lag  0.801893      160.109615                     False
+            6      0.9            gru_only  0.811493      169.038937                     False
+            6      0.9    stpignn_original  0.816293      158.392439                     False
+            6      0.9             best_ab  0.817870      166.340674                     False
+           12      0.8         persistence  0.715834      139.200250                     False
+           12      0.8 same_hour_yesterday  0.658232      100.459310                     False
+           12      0.8           ridge_lag  0.660701      115.356132                     False
+           12      0.8            gru_only  0.668175      122.163172                     False
+           12      0.8    stpignn_original  0.685730      108.290883                     False
+           12      0.8             best_ab  0.657135      127.945693                     False
+           12      0.9         persistence  0.861071      214.419280                     False
+           12      0.9 same_hour_yesterday  0.780841      154.299589                     False
+           12      0.9           ridge_lag  0.785092      175.768461                     False
+           12      0.9            gru_only  0.792224      193.705252                     False
+           12      0.9    stpignn_original  0.793527      169.678599                     False
+           12      0.9             best_ab  0.797024      199.940068                     False
+           24      0.8         persistence  0.638895      101.329909                     False
+           24      0.8 same_hour_yesterday  0.638895      101.329909                     False
+           24      0.8           ridge_lag  0.602688       98.830188                     False
+           24      0.8            gru_only  0.642529       93.623534                     False
+           24      0.8    stpignn_original  0.654598       92.178721                     False
+           24      0.8             best_ab  0.667832       91.741576                     False
+           24      0.9         persistence  0.763423      157.701707                     False
+           24      0.9 same_hour_yesterday  0.763423      157.701707                     False
+           24      0.9           ridge_lag  0.733388      150.777617                     False
+           24      0.9            gru_only  0.756703      144.967155                     False
+           24      0.9    stpignn_original  0.757800      143.074782                     False
+           24      0.9             best_ab  0.783378      141.619878                     False
