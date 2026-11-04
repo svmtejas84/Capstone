@@ -53,3 +53,5 @@
 - 2026-11-04T14:35:21.227863+00:00 W4 deviation-6 source prepared: `scripts/lowdata_v2h.py` adds ridge lag+weather, draw-level MAE/R2 spread and PDF; `scripts/run_w4_supervised_v2h.sh` uses flock and restart loop. All 3/5-station draws checkpoint per model; 10-station cases remain BLOCKED. Source commit precedes run.
 
 - 2026-11-04T14:35:45.839945+00:00 START W4 supervised sensor-density run, PID 3475905, source commit `01a87a0`, log `runs/w4_v2h.log`; restart skips completed model/draw rows.
+
+- 2026-11-04T14:39:51.652209+00:00 Prepared `scripts/conformal_v2h.py` and supervised runner; masks and persistence calibration smoke-check passed. W4 remains active; conformal GPU run will start after W4 finishes.
