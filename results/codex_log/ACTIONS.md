@@ -65,3 +65,5 @@
 - 2026-11-04T14:46:01.869365+00:00 START Part 3 supervised conformal run, PID 3478053, source commit `37531f7`, log `runs/conformal_v2h.log`; checkpoint per horizon/calibration/model.
 
 - 2026-11-04T14:46:38.393400+00:00 Prepared W8 no-training `scripts/citywide_precheck_v2h.py`; confirmed graph, SRTM, station map and node-hour input files exist and are readable. Run after Parts 3/4 and W3 per fixed quota order.
+
+- 2026-11-04T14:47:49.296845+00:00 Updated Part 2 CSV with one factual headline claim per level and P4 paired-day CI qualifier; regenerated table/figure from stored files only.

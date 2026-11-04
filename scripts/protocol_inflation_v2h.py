@@ -60,7 +60,15 @@ add('P4','P3 + same-hour-yesterday and paired-day decision rule',bm('stpignn_ori
                        'climatology_hod_dow','station_train_mean']},bm('persistence'),
     'results/benchmark_v2g.csv; results/benchmark_v2g.md',
     'h=1 five-seed ensemble; point gain requires paired UTC-day CI for a decision, not test-selected model choice.')
-out=pd.DataFrame(rows);out.to_csv(R/'protocol_inflation_v2h.csv',index=False)
+out=pd.DataFrame(rows)
+out['headline_claim']=[
+    'P0: MAE 53.14 on 308 pairs; same-pair baseline gain unavailable',
+    'P1: no gain versus persistence on raw observed targets',
+    'P2: no gain versus persistence after 0-500 cleaning',
+    'P3: no gain versus persistence after lag and residual correction',
+    'P4: h=1 point gain 0.097 but paired-day CI includes zero; h=3 win is reported separately',
+]
+out.to_csv(R/'protocol_inflation_v2h.csv',index=False)
 fig,ax=plt.subplots(figsize=(7,4));x=np.arange(len(out))
 ax.plot(x,out.headline_gain_ug_m3,marker='o',label='gain vs strongest available baseline')
 ax.plot(x,out.gain_vs_persistence_ug_m3,marker='s',label='gain vs persistence')
