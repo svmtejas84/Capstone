@@ -161,7 +161,12 @@ def main():
             base = subset[subset.variant == "srtm"].sort_values(key)
             shuffled = subset[subset.variant.str.startswith("shuffle")].groupby(key, as_index=False).agg(
                 target=("target", "first"), prediction=("prediction", "mean"))
-            for label, other in (("none", subset[subset.variant == "none"]), ("shuffled_mean", shuffled)):
+            controls=[("none",subset[subset.variant == "none"]),
+                      ("northing_only",subset[subset.variant == "northing_only"]),
+                      ("shuffled_mean",shuffled)]
+            controls += [(f"shuffle_{k}",subset[subset.variant == f"shuffle_{k}"])
+                         for k in range(1,6)]
+            for label, other in controls:
                 joined = base[key + ["target", "prediction"]].merge(other[key + ["prediction"]],
                     on=key, suffixes=("_srtm", "_other"), validate="one_to_one")
                 if len(joined) != len(base):
