@@ -77,3 +77,5 @@
 - 2026-11-04T14:55:16.550884+00:00 Expanded Part 4 source to requested five seeds during initial fold training; will resume from stored fold/method/seed predictions after current process exits.
 
 - 2026-11-04T14:56:08.651690+00:00 Part 4 supervisor PID 3479087 restarted after child termination to load five-seed source; completed fold/method/seed rows retained.
+
+- 2026-11-04T15:00:52.387615+00:00 Prepared idempotent `scripts/append_step4h_v2h.py`; it appends only after W3, W8 and Part 4 artifacts exist, with source/config/seed/commit/timestamp lines and factual tables. It does not reread the full paper.
