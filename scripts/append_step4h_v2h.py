@@ -55,7 +55,7 @@ def main():
               'Source `scripts/conformal_v2h.py`, config `configs/benchmark_v2g.yaml`, fixed seed 11, LR 3e-4, 10 epochs, train-tail and validation calibration, nominal 80% and 90%, fixed and daily rolling variants, 2,000 paired UTC-day interval-score bootstraps. Validation calibration is exploratory because A/B architecture ranking used validation. Full per-station and per-month coverage is in `results/conformal_station_month_v2h.csv`.', '',
               '| Horizon | Model | 80% train-tail fixed coverage | Width | Interval score | Value verdict |',
               '|---:|---|---:|---:|---:|---|']
-    sub=con[(con.calibration=='train_tail')&(con.nominal==.8)&(con.variant=='fixed')&(con.horizon_hours!='pooled')]
+    sub=con[(con.calibration=='train_tail')&(con.nominal==.8)&(con.variant=='fixed')]
     for r in sub.itertuples():
         lines.append(f'| {r.horizon_hours} | {r.model} | {fmt(r.coverage)} | {fmt(r.mean_width)} | {fmt(r.interval_score)} | {"YES" if r.adds_probabilistic_value else "NO"} |')
     lines += ['', 'No model meets the fixed criterion at any horizon or nominal level; coverage is outside ±5 points of nominal in the primary train-tail fixed analysis. Rolling daily updates improve coverage but do not change the verdict.', '',
@@ -76,6 +76,11 @@ def main():
     comparisons=dem[dem.record_type=='paired_bootstrap']
     for r in comparisons.itertuples():
         lines.append(f'| {r.horizon_hours} | {r.model} | {r.comparison} | {fmt(r.delta_mae_ug_m3)} | [{fmt(r.mae_ci_low)}, {fmt(r.mae_ci_high)}] |')
+    for horizon in (1,24):
+        chosen=comparisons[comparisons.horizon_hours==horizon].best_validation_model.iloc[0]
+        part=comparisons[(comparisons.horizon_hours==horizon)&(comparisons.model==chosen)]
+        verdict='MET' if (part.mae_ci_high<0).all() else 'NOT MET'
+        lines.append(f'W3 h={horizon} DEM criterion for validation-best {chosen}: {verdict} across the fixed controls.')
     lines += ['', '### W8 citywide input precheck', '',
               'Source `scripts/citywide_precheck_v2h.py`, no training or seed; full audit in `results/citywide_precheck_v2h.md`.', '']
     lines += [line for line in city if line.startswith(('Nodes:', 'Distinct weather', 'Nodes with stored', 'Unique weather', 'Stored nodes', 'Nodes with SRTM', 'Nodes mapped', 'Nodes with no weather', 'BLOCKED:', 'PRECHECK PASSED'))]
