@@ -87,3 +87,5 @@
 - 2026-11-04T15:13:42.360229+00:00 Automatic approval review rejected force-adding/pushing the 14 MB raw conformal prediction cache because it contains station-level targets and forecasts. Aggregate conformal outputs are pushed. Raw caches remain local and ignored; no workaround attempted.
 
 - 2026-11-04T15:14:13.958291+00:00 START W3 DEM supervised run, PID 3483121, source commit `212cbcd`, log `runs/dem_v2h.log`; checkpoint per horizon/variant/model/seed.
+
+- 2026-11-04T15:18:12.173612+00:00 Updated P0 protocol row and figure to show the notebook-reported untrained-baseline nominal gain with explicit verification caveat.

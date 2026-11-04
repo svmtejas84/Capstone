@@ -43,7 +43,7 @@ def main():
            '|---|---:|---:|---:|---|']
     for r in proto.itertuples():
         lines.append(f'| {r.level} | {fmt(r.stpignn_mae)} | {fmt(r.headline_gain_ug_m3)} | {fmt(r.gain_vs_persistence_ug_m3)} | {r.headline_claim} |')
-    lines += ['', 'P0 same-pair baseline and persistence predictions on the legacy 308 pairs are unavailable, so its gain is not reconstructed. P4 h=1 nominal gain is 0.097 µg/m³, but its paired-day CI crosses zero; h=3 has a separate supported win.', '',
+    lines += ['', 'P0 nominal gain uses the notebook-reported untrained ST GRU-GCN MAE 62.51 versus checkpoint replay 53.14; same-pair baseline predictions and persistence are unavailable, so paired validity is unverified. P4 h=1 nominal gain is 0.097 µg/m³, but its paired-day CI crosses zero; h=3 has a separate supported win.', '',
               '### W4 held-out station density', '',
               'Source `scripts/lowdata_v2h.py`, config `configs/benchmark_v2g.yaml`, five fixed draw/model seeds [11,23,37,51,79], source commit `01a87a0`; full draw rows and spread in `results/sensor_density_v2h.csv`, vector figure `figures/sensor_density.pdf`.', '',
               '| Horizon | Method | Train stations | Held-out MAE mean ± SD | R² mean ± SD | Draws |',

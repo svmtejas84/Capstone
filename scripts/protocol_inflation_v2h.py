@@ -61,8 +61,13 @@ add('P4','P3 + same-hour-yesterday and paired-day decision rule',bm('stpignn_ori
     'results/benchmark_v2g.csv; results/benchmark_v2g.md',
     'h=1 five-seed ensemble; point gain requires paired UTC-day CI for a decision, not test-selected model choice.')
 out=pd.DataFrame(rows)
+out.loc[out.level=='P0','strongest_baseline']='ST GRU-GCN (untrained; reported)'
+out.loc[out.level=='P0','strongest_baseline_mae']=62.51
+out.loc[out.level=='P0','headline_gain_ug_m3']=62.51-53.14
+out.loc[out.level=='P0','status']='REPORTED_ONLY_UNTRAINED'
+out.loc[out.level=='P0','note']='Notebook-reported untrained ST GRU-GCN MAE 62.51 versus checkpoint replay 53.14; same-pair baseline predictions and persistence are unavailable.'
 out['headline_claim']=[
-    'P0: MAE 53.14 on 308 pairs; same-pair baseline gain unavailable',
+    'P0: nominal 9.37 gain vs reported untrained ST GRU-GCN; paired validity unverified',
     'P1: no gain versus persistence on raw observed targets',
     'P2: no gain versus persistence after 0-500 cleaning',
     'P3: no gain versus persistence after lag and residual correction',
