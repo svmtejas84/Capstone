@@ -57,3 +57,5 @@
 - 2026-11-04T14:39:51.652209+00:00 Prepared `scripts/conformal_v2h.py` and supervised runner; masks and persistence calibration smoke-check passed. W4 remains active; conformal GPU run will start after W4 finishes.
 
 - 2026-11-04T14:42:21.039806+00:00 Prepared `scripts/loso_groupdro_v2h.py` and supervised runner. Source commit precedes training; W4 is still running.
+
+- 2026-11-04T14:43:18.879328+00:00 Prepared W3 DEM `_v2h` runner from predeclared W3 design, preserving five shuffles, two horizons, two models, five seeds and 2,000 paired UTC-day bootstraps. Per-horizon/variant/model/seed predictions checkpoint on restart. W4 remains active; W3 run scheduled after Parts 3 and 4.
