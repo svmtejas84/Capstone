@@ -49,3 +49,5 @@
 - 2026-11-04T14:31:12.670648+00:00 W7 deviation-6 check: all five horizons and 60 grid rows present; corrected physics-support label counts only original ST-PIGNN, with Laplacian separate. Multiplicity: 25 original-model and 25 Laplacian positive-weight comparisons. The sole original-model hit is h=6, lambda=0.06, about -0.28 ug/m3; it is not replicated at other horizons or weights. No retraining.
 
 - 2026-11-04T14:33:46.874842+00:00 DONE deviation 6 Part 2: protocol-inflation analysis from stored result files only, no retraining. P0 baseline/persistence gains cannot be reconstructed on its 308 pairs; P1/P2/P3/P4 strongest-baseline MAE gains are -9.323752/-12.607068/-0.143013/+0.097270 ug/m3. Sources `scripts/protocol_inflation_v2h.py`, `results/protocol_inflation_v2h.csv`, `figures/protocol_inflation.pdf`; fixed h=1 and existing selected seeds.
+
+- 2026-11-04T14:35:21.227863+00:00 W4 deviation-6 source prepared: `scripts/lowdata_v2h.py` adds ridge lag+weather, draw-level MAE/R2 spread and PDF; `scripts/run_w4_supervised_v2h.sh` uses flock and restart loop. All 3/5-station draws checkpoint per model; 10-station cases remain BLOCKED. Source commit precedes run.
