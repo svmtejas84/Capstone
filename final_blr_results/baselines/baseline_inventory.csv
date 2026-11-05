@@ -1,0 +1,19 @@
+model,corrected_v2j_present,horizons,seeds,parameter_count,test_pairs_per_horizon,prediction_files,median_train_seconds,weather,target,source
+vanilla_gcn,True,"1,3,6,12,24","11,23,37,51,79",5441,14583,25,2.22,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+gru_only,True,"1,3,6,12,24","11,23,37,51,79",16193,14583,25,3.0,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+st_gru_gcn,True,"1,3,6,12,24","11,23,37,51,79",26241,14583,25,8.544,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+stpignn_original,True,"1,3,6,12,24","11,23,37,51,79",43393,14583,25,12.484,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+stpignn_lambda0,True,"1,3,6,12,24","11,23,37,51,79",43393,14583,25,10.622,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+stpignn_laplacian,True,"1,3,6,12,24","11,23,37,51,79",43393,14583,25,10.223,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+gine_gru_wind,True,"1,3,6,12,24","11,23,37,51,79",24705,14583,25,3.366,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+adaptive_graph_st,True,"1,3,6,12,24","11,23,37,51,79",24434,14583,25,1.768,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+adaptive_graph_st_fixed_knn,True,"1,3,6,12,24","11,23,37,51,79",24434,14583,25,1.908,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+stpignn_v2,True,"1,3,6,12,24","11,23,37,51,79",25667,14583,25,3.742,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+stpignn_v2_transport_removed,True,"1,3,6,12,24","11,23,37,51,79",25667,14583,25,3.842,corrected UTC half-hour v2j,"log1p train standardized, residual output",results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+persistence,True,"1,3,6,12,24",,,14583,0,,corrected UTC half-hour v2j,direct deterministic/linear or unavailable,results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+same_hour_yesterday,True,"1,3,6,12,24",,,14583,0,,corrected UTC half-hour v2j,direct deterministic/linear or unavailable,results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+ridge_lag_calendar_weather,True,"1,3,6,12,24",,,14583,0,,corrected UTC half-hour v2j,direct deterministic/linear or unavailable,results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+climatology_hod_dow,True,"1,3,6,12,24",,,14583,0,,corrected UTC half-hour v2j,direct deterministic/linear or unavailable,results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+station_train_mean,True,"1,3,6,12,24",,,14583,0,,corrected UTC half-hour v2j,direct deterministic/linear or unavailable,results/benchmark_v2j.csv; results/benchmark_runs_v2j.csv; configs/benchmark_v2g.yaml
+mlp,False,,,,,0,,,direct deterministic/linear or unavailable,none
+temporal_cnn,False,,,,,0,,,direct deterministic/linear or unavailable,none

@@ -65,3 +65,5 @@
 2026-11-05T15:43:22Z Step 4j fixed lambda check complete: about 34 minutes on Tesla V100. DEM pending.
 2026-11-05T15:57:38Z Step 4j DEM complete: about 10 minutes on Tesla V100; all required GPU training finished. Numerical comparison and summary recomputation used saved predictions only.
 2026-11-05 Step 4j paper appendix and reporting only; no further GPU/CPU training. All v2j supervised GPU runs complete, no active experiment process.
+
+2026-11-05T17:17:36.111144+00:00 v2k read-only audit plus lightweight reports: zero CPU/GPU model training, zero full-graph inference, zero new supervisor jobs; CPU-only structural graph scan and saved-prediction metric recomputation; 2,141 local files SHA-256 hashed; ~0.9 MB new lightweight deliverables. No data/cache upload.
