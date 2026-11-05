@@ -136,3 +136,7 @@
 2026-11-05T19:41:10.571629+00:00 v2m cutoff-safe opt-in flag implemented; new arrays built at final_blr_results/baselines/v2m/data/data_v2m_arrays.npz (SHA256 8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5). Essential checks pass: UTC shift/timestamp ordering, byte-identical targets/masks/timeline, finite 18-channel input. Temperature peak 09 UTC. Protocol frozen before training. Training 0/50.
 
 2026-11-05T19:43:36.627323+00:00 v2m MLP and causal TCN implemented under final_blr_results/baselines/v2m/reproducibility/train_v2m.py using frozen configuration. Synthetic CPU model tests passed shape, finite gradients, station independence and TCN causal masking. CUDA-only training guard in place. 0/50 cells.
+
+2026-11-05T19:44:14.944369+00:00 Launched v2m supervised GPU group mlp h=1, PID 3572183, run dir final_blr_results/baselines/v2m/runs/mlp_h1, source commit e695c6e. Training 0/50 at launch.
+
+2026-11-05T19:45:15.088043+00:00 v2m mlp h=1 all five seed cell outputs completed; supervisor attempted three restarts and stopped because group-level COMPLETE marker was omitted. Per-cell checkpoints/predictions/metrics and checksums remain intact. Added end-of-group marker after per-cell checksum verification; resume supervised group to close marker before next group. 5/50 cells.

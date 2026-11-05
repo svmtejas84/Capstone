@@ -147,6 +147,15 @@ def train_group(name, horizon, cfg):
                              "metrics": {"path": metrics.name, "sha256": sha(metrics)}})
         print("COMPLETE", name, horizon, seed, result["test_mae"], flush=True)
     print("GROUP COMPLETE", name, horizon, flush=True)
+    run_dir = BASE / "runs" / f"{name}_h{horizon}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    atomic_json(run_dir / "group_integrity.json", {
+        "model": name, "horizon": horizon,
+        "seed_markers": {str(seed): sha(group / f"seed{seed}" / "COMPLETE.json")
+                         for seed in cfg["neural_seeds"]},
+        "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat()})
+    (run_dir / "COMPLETE.tmp").write_text("five seeds verified\n")
+    (run_dir / "COMPLETE.tmp").replace(run_dir / "COMPLETE")
 
 
 def main():
