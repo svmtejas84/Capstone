@@ -67,3 +67,5 @@
 2026-11-05 Step 4j paper appendix and reporting only; no further GPU/CPU training. All v2j supervised GPU runs complete, no active experiment process.
 
 2026-11-05T17:17:36.111144+00:00 v2k read-only audit plus lightweight reports: zero CPU/GPU model training, zero full-graph inference, zero new supervisor jobs; CPU-only structural graph scan and saved-prediction metric recomputation; 2,141 local files SHA-256 hashed; ~0.9 MB new lightweight deliverables. No data/cache upload.
+
+2026-11-05T18:46:41.491285+00:00 v2l analysis only: zero model-training GPU/CPU hours, zero supervised jobs, zero checkpoint modifications. Existing local Parquets and corrected feature arrays read; 2,000 UTC-day and 2,000 seven-day block replicates per declared comparison; ~0.3 MB lightweight v2l tables/reports/figure. No large cache upload; no independent durable prediction backup.
