@@ -6,6 +6,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -160,15 +161,71 @@ def train_group(name, horizon, cfg):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", choices=["mlp", "tcn"], required=True)
-    parser.add_argument("--horizon", type=int, choices=[1, 3, 6, 12, 24], required=True)
+    parser.add_argument("--model", choices=["mlp", "tcn"])
+    parser.add_argument("--horizon", type=int, choices=[1, 3, 6, 12, 24])
+    parser.add_argument("--all", action="store_true")
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA required; CPU training forbidden")
     cfg = yaml.safe_load(CONFIG.read_text())
     if cfg["neural_seeds"] != [11,23,37,51,79] or cfg["neural_lr_grid"] != [0.0001,0.0003,0.001,0.003]:
         raise RuntimeError("Frozen configuration changed")
-    train_group(args.model, args.horizon, cfg)
+    if args.all:
+        groups = [(model, h) for model in ("mlp", "tcn") for h in (1,3,6,12,24)]
+    else:
+        if args.model is None or args.horizon is None:
+            parser.error("--model and --horizon required unless --all")
+        groups = [(args.model, args.horizon)]
+    for model, horizon in groups:
+        group_dir = BASE / model / f"h{horizon}"
+        if not (BASE / "runs" / f"{model}_h{horizon}" / "COMPLETE").exists():
+            update_resume(model, horizon, "starting")
+            train_group(model, horizon, cfg)
+        else:
+            for seed in cfg["neural_seeds"]:
+                marker = json.loads((group_dir / f"seed{seed}/COMPLETE.json").read_text())
+                for key in ("checkpoint", "predictions", "metrics"):
+                    artifact = group_dir / f"seed{seed}" / marker[key]["path"]
+                    if sha(artifact) != marker[key]["sha256"]:
+                        raise RuntimeError(f"Corrupt completed cell: {artifact}")
+        update_resume(model, horizon, "completed")
+    if args.all:
+        run_dir = BASE / "runs/all_v2m"
+        (run_dir / "COMPLETE.tmp").write_text("all 50 seed cells verified\n")
+        (run_dir / "COMPLETE.tmp").replace(run_dir / "COMPLETE")
+
+
+def update_resume(model, horizon, state):
+    from datetime import timezone
+    log = REPO_ROOT / "results/codex_log"
+    count = sum((BASE / m / f"h{h}" / f"seed{s}/COMPLETE.json").exists()
+                for m in ("mlp", "tcn") for h in (1,3,6,12,24) for s in (11,23,37,51,79))
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip()
+    completed = [f"{m} h{h}" for m in ("mlp", "tcn") for h in (1,3,6,12,24)
+                 if all((BASE / m / f"h{h}" / f"seed{s}/COMPLETE.json").exists()
+                        for s in (11,23,37,51,79))]
+    timestamp = dt.datetime.now(timezone.utc).isoformat()
+    run_dir = BASE / "runs/all_v2m"
+    supervisor_pid = (run_dir / "supervisor.pid").read_text().strip() if (run_dir / "supervisor.pid").exists() else "none"
+    resume = f"""# Resume — v2m supervised baseline benchmark
+
+- Updated {timestamp}; branch audit/canonical-notebook-20261023; HEAD {head}; last successful push dfa84d1. Current group {model} h{horizon} {state}.
+- Training {count}/50 cells. Completed groups: {', '.join(completed) or 'none'}. Active Python PID {os.getpid()}; supervisor PID {supervisor_pid}; GPU training {'YES' if state=='starting' else 'between groups or complete'}. Supervised run: {run_dir}; inspect `scripts/run_supervised.sh status {run_dir}`.
+- Dataset {DATA}, SHA256 {sha(DATA)}; frozen protocol {BASE/'EXPERIMENT_PROTOCOL.md'}. Output checkpoints/predictions/configs under {BASE}/[mlp|tcn]/hH/seedS. Latest completed group {model} h{horizon} if state=completed; each cell has COMPLETE.json and SHA256 entries.
+- Backup: {REPO_ROOT/'final_blr_results/research_backup_exports/research_backup_pretrain_v2m.zip'}, SHA256 13d4e04ead4cb6027b1fb81010bc5f57bdebaf3a859085b41aa20d84158a1905. LOCAL ARCHIVE VERIFIED — EXTERNAL COPY PENDING under supervisor exception. Three historical artifact classes missing at source.
+- Pending: remaining groups, metrics/ensembles/paired comparisons, methodology, supplementary ZIP, final verdict, commit/push. No historical retraining. Historical baselines differ in weather information set.
+- Recovery: `cd {REPO_ROOT}`; `bash scripts/run_supervised.sh status {run_dir}`; `bash scripts/run_supervised.sh resume {run_dir}` if stopped and no active worker; inspect `tail -n 30 {run_dir}/attempt_*.log`. The runner verifies and skips completed seed cells. No need to rerun finished groups.
+- Preexisting untracked v2j run controls untouched. No paper, London or full-graph training.
+"""
+    atomic_json(BASE / "reproducibility/progress.json", dict(updated_utc=timestamp, count=count, completed_groups=completed, active_group=f"{model} h{horizon}", state=state))
+    tmp = log / "RESUME.md.tmp"
+    tmp.write_text(resume)
+    tmp.replace(log / "RESUME.md")
+    if state == "completed":
+        with (log / "ACTIONS.md").open("a") as f:
+            f.write(f"\n{timestamp} v2m completed and verified {model} h{horizon}; {count}/50 cells; artifacts under {BASE/model/f'h{horizon}'}.\n")
+        with (log / "QUOTA.md").open("a") as f:
+            f.write(f"\n{timestamp} v2m supervised GPU progress {count}/50 final cells; last completed {model} h{horizon}.\n")
 
 
 if __name__ == "__main__":
