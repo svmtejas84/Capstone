@@ -74,3 +74,5 @@
 2026-11-05T19:07:26.009055+00:00 v2m final candidate inventory excludes 70 compiled caches: 2,369 files, 1,110 local-only totaling 2,385,780,353 bytes. Zero training cells and zero GPU training time remain.
 2026-11-05T19:20:09.880293+00:00 v2m local archive: one 348,597,625-byte ZIP64-compatible file created from 1,104 source research files; no source deletion/move or cloud upload. Verification read all ZIP members by SHA-256 and CRC. Zero GPU training time and 0/50 final cells.
 2026-11-05T19:24:42.447267+00:00 v2m weather audit only: zero model training, 0/50 cells, zero GPU training time, no supervised worker. Read-only source/raw-weather/array/prediction-key checks across five horizons; pre-training ZIP remains 348,597,625 bytes and verified locally. Post-training archive not applicable because no training occurred.
+
+2026-11-05T19:41:10.571629+00:00 v2m: 0/50 cells; protocol/data milestone. Supervised CUDA training pending. Local pre-training ZIP verified, external copy pending.

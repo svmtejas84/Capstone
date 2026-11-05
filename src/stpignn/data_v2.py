@@ -270,7 +270,10 @@ def weather_utc_half_hours(values) -> pd.DatetimeIndex:
 
 
 def build(config_path: Path, excluded_station_id: int | None = None,
-          weather_half_hour_rule: bool = False) -> tuple[DataV2, dict]:
+          weather_half_hour_rule: bool = False,
+          weather_cutoff_safe: bool = False) -> tuple[DataV2, dict]:
+    if weather_cutoff_safe and not weather_half_hour_rule:
+        raise ValueError("Cutoff-safe weather requires the corrected half-hour timestamps")
     cfg = yaml.safe_load(Path(config_path).read_text())
     times = pd.date_range(cfg["train_start_utc"], cfg["test_end_utc"], freq="h", tz="UTC")
     if not times.is_monotonic_increasing or not times.is_unique or np.any(np.diff(times.asi8) != 3_600_000_000_000):
@@ -319,9 +322,14 @@ def build(config_path: Path, excluded_station_id: int | None = None,
     weather_raw, weather_cleaning = _clean_rows(weather_raw, cfg, "weather", "time_utc")
     if weather_half_hour_rule:
         grouped = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True)
-        before = grouped.reindex(times - pd.Timedelta(minutes=30)).to_numpy()
-        after = grouped.reindex(times + pd.Timedelta(minutes=30)).to_numpy()
-        weather = pd.DataFrame((before + after) / 2, index=times, columns=grouped.columns)
+        if weather_cutoff_safe:
+            weather = grouped.reindex(times - pd.Timedelta(minutes=30), method="ffill",
+                                      tolerance=pd.Timedelta(hours=24))
+            weather.index = times
+        else:
+            before = grouped.reindex(times - pd.Timedelta(minutes=30)).to_numpy()
+            after = grouped.reindex(times + pd.Timedelta(minutes=30)).to_numpy()
+            weather = pd.DataFrame((before + after) / 2, index=times, columns=grouped.columns)
     else:
         weather = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True).reindex(times)
     wind_raw = weather["wind_direction_10m"].to_numpy(dtype=np.float32)
