@@ -1,0 +1,40 @@
+{
+  "criterion": "corrected ST-PIGNN: some lambda>0 has paired UTC-day bootstrap MAE CI strictly below zero vs lambda=0",
+  "verdict_by_horizon": {
+    "1": {
+      "stpignn_original": {
+        "met": true,
+        "qualifying_lambdas": [
+          0.06
+        ]
+      },
+      "stpignn_laplacian": {
+        "met": false,
+        "qualifying_lambdas": []
+      }
+    },
+    "24": {
+      "stpignn_original": {
+        "met": false,
+        "qualifying_lambdas": []
+      },
+      "stpignn_laplacian": {
+        "met": false,
+        "qualifying_lambdas": []
+      }
+    }
+  },
+  "overall_met": true,
+  "laplacian_control_met": false,
+  "script": "scripts/lambda_check_v2j.py",
+  "config": "configs/benchmark_v2g.yaml",
+  "seeds": [
+    11,
+    23,
+    37,
+    51,
+    79
+  ],
+  "source_commit": "de098c5ba9cf53f33914e4c630642cdb1461a37d",
+  "timestamp_utc": "2026-11-05T15:43:21.606237+00:00"
+}

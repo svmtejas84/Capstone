@@ -62,3 +62,4 @@
 2026-11-05T13:01:58Z Step 4j GPU benchmark active: one host V100 neural job; no CPU neural job and no concurrent experiment.
 2026-11-05T14:00:57Z Step 4j GPU benchmark complete: about 59 minutes on Tesla V100, all five horizons. No active benchmark job; LOSO/lambda/DEM pending.
 2026-11-05T15:07:54Z Step 4j LOSO complete: about 63 minutes on Tesla V100, all fixed folds and both anchors. Lambda and DEM pending.
+2026-11-05T15:43:22Z Step 4j fixed lambda check complete: about 34 minutes on Tesla V100. DEM pending.
