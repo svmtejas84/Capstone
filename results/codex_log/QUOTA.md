@@ -72,3 +72,4 @@
 
 2026-11-05T19:05:45.945132+00:00 v2m gate only: zero training cells of 50, zero GPU training time, zero supervised jobs or checkpoints. Read-only local SHA-256/committed-blob verification of 2,439 files, no dataset/cache upload or copy; ~2.39 GB remains local-only. V100 available but unused.
 2026-11-05T19:07:26.009055+00:00 v2m final candidate inventory excludes 70 compiled caches: 2,369 files, 1,110 local-only totaling 2,385,780,353 bytes. Zero training cells and zero GPU training time remain.
+2026-11-05T19:20:09.880293+00:00 v2m local archive: one 348,597,625-byte ZIP64-compatible file created from 1,104 source research files; no source deletion/move or cloud upload. Verification read all ZIP members by SHA-256 and CRC. Zero GPU training time and 0/50 final cells.
