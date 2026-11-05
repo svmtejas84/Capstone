@@ -61,7 +61,9 @@ class Context:
         self.xy = z["coordinates"]
         self.n = len(self.station_ids)
         self.history = int(data_cfg["history_hours"])
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if not torch.cuda.is_available():
+            raise RuntimeError("v2j neural runs require CUDA; CPU training is disabled")
+        self.device = torch.device("cuda")
         train_period = np.asarray((self.times >= pd.Timestamp(data_cfg["train_start_utc"])) &
                                   (self.times <= pd.Timestamp(data_cfg["train_end_utc"])))
         with warnings.catch_warnings():

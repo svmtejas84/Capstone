@@ -1,0 +1,20 @@
+{
+  "git_commit": "9fca5049e16cd97c1a8b4ec06f890a24085f7bba",
+  "configuration": null,
+  "command": [
+    "python",
+    "-m",
+    "scripts.run_benchmark_v2j"
+  ],
+  "random_seeds": null,
+  "python": "3.9.7 | packaged by conda-forge | (default, Sep 29 2021, 19:20:46) \n[GCC 9.4.0]",
+  "python_executable": "/opt/tljh/user/bin/python",
+  "platform": "Linux-5.15.0-139-generic-x86_64-with-glibc2.31",
+  "torch": "2.8.0+cu128",
+  "gpu": null,
+  "working_directory": "/home/jupyter-1nt23cb058/Capstone",
+  "start_utc": "2026-11-05T07:19:39.734346+00:00",
+  "output_directory": "/home/jupyter-1nt23cb058/Capstone/results/codex_log/runs/benchmark_v2j",
+  "max_restarts": 2,
+  "checkpoint_contract": "checkpoint.bin plus checkpoint.bin.sha256; COMPLETE marker"
+}

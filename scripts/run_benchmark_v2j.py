@@ -9,7 +9,7 @@ from src.stpignn.paths import REPO_ROOT
 
 
 def main():
-    run_dir = REPO_ROOT / "results/codex_log/runs/benchmark_v2j"
+    run_dir = REPO_ROOT / "results/codex_log/runs/benchmark_gpu_v2j"
     for horizon in (1, 3, 6, 12, 24):
         subprocess.run([sys.executable, "-m", "scripts.benchmark_v2j", "--horizon", str(horizon)],
                        cwd=REPO_ROOT, check=True)
