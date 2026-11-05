@@ -1,5 +1,5 @@
 # Resume
 
 - 2026-11-05T01:39:36.521137+00:00 R1 Phase 0 complete at source commit `dca4bcc`, branch `audit/canonical-notebook-20261023`. Worktree was clean at start. No experiment jobs or stale locks. Repository/environment record: `results/research_audit_r1/repository_state.md`.
-- Current phase: Phase 6 reproducibility/protocol readiness. Phase 5 wrapper: `scripts/run_supervised.sh`; docs and synthetic test: `docs/EXPERIMENT_RECOVERY.md`, `results/research_audit_r1/persistence_test.md`. Synthetic PIDs 3505933 and 3506105 completed; no running process PID. Next command: inventory dependencies/artifacts and write machine-readable metric map plus readiness reports.
+- Current phase: R1 audit complete; supervisor review required before protocol change or any external-city training. Phase 6 outputs: `results/research_audit_r1/artifact_manifest.json`, `reproducibility.md`, `protocol_readiness.md`. Audit source commit `dca4bcce690da6b7865702f91d15dd2e06b6ef75`; current branch `audit/canonical-notebook-20261023` (run `git rev-parse HEAD` for latest audit commit). No running process PID. Exact next command for review: `git status --short && git log -1 --oneline && cat results/research_audit_r1/protocol_readiness.md`.
 - No paper edits, model training, or external-city training authorized. Raw prediction caches remain local and ignored.

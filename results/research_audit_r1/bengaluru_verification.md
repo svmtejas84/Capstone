@@ -19,3 +19,13 @@ Source commit examined: `dca4bcce690da6b7865702f91d15dd2e06b6ef75`. Audit recomp
 ## Weather alignment concern
 
 `scripts/pull_weather.py:72-95` requested `timezone="Asia/Kolkata"` and parsed returned ISO strings into timezone-naive pandas timestamps. `src/stpignn/data_v2.py:302-304` passes these through `utc_hour(..., assume_naive_utc=True)`. Open-Meteo documents that its ISO times use the requested timezone ([historical API](https://open-meteo.com/en/docs/historical-weather-api)). This code path therefore appears to label local IST hours as UTC, a 5h30m offset. The archive lacks the original response offset metadata and the old citywide-node feature builder, so this is a source-grounded suspected defect, not a measured correction. It potentially affects all weather-using rebuilt experiments. Do not modify data or rerun models during this audit.
+
+For the primary 80% fixed train-tail conformal setting, each test row below has 14,583 observed targets. Values are coverage / mean interval score; all fail the predeclared probabilistic-value criterion, principally because coverage is more than five points below 80%. Per-station/month breakdown remains in `results/conformal_station_month_v2h.csv`.
+
+| Horizon h | Persistence | Ridge lag | Original ST-PIGNN | Best A/B |
+|---:|---:|---:|---:|---:|
+| 1 | 0.675 / 64.74 | 0.638 / 65.71 | 0.669 / 60.99 | 0.683 / 61.27 |
+| 3 | 0.675 / 102.27 | 0.668 / 92.05 | 0.696 / 88.56 | 0.655 / 95.42 |
+| 6 | 0.698 / 123.30 | 0.691 / 103.71 | 0.700 / 101.63 | 0.702 / 104.48 |
+| 12 | 0.716 / 139.20 | 0.661 / 115.36 | 0.686 / 108.29 | 0.657 / 127.95 |
+| 24 | 0.639 / 101.33 | 0.603 / 98.83 | 0.655 / 92.18 | 0.668 / 91.74 |
