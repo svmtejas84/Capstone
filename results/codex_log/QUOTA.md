@@ -60,3 +60,4 @@
 2026-11-05T12:56Z Step 4j-2 resource correction: GPU unavailable (`gpu: null` in execution manifest; torch CUDA false). Benchmark is CPU-only, 230/300 neural seed fits saved. Remaining full Step 2 may require many more CPU hours.
 2026-11-05 Step 4j GPU correction: CPU job stopped. Host V100 is available outside sandbox; CPU-only partial outputs archived and excluded. GPU neural rerun pending; zero active jobs after stop.
 2026-11-05T13:01:58Z Step 4j GPU benchmark active: one host V100 neural job; no CPU neural job and no concurrent experiment.
+2026-11-05T14:00:57Z Step 4j GPU benchmark complete: about 59 minutes on Tesla V100, all five horizons. No active benchmark job; LOSO/lambda/DEM pending.
