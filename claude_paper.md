@@ -534,3 +534,35 @@ Nodes with no weather or SRTM data after broadcast: 0.
 BLOCKED: a single weather source would give more than 50% identical citywide node series.
 
 The bounded round stops here; no routing, integrated gradients, citywide training or second-city study was run.
+
+## Step 4i — timestamp measurement and fixed-gate city lookup
+
+Source: `scripts/pull_weather.py:26-36,72-95,111-113`; `src/stpignn/data_v2.py:41-47,302-305,320-324`; `results/weather_timestamp_check_v2i.md`; 37,152 hours, 2022-01-01 through 2026-03-28; source commit `84b7f88`, measurement commit `d2ae851`; 2026-11-05 UTC; no seed or training.
+
+| Bengaluru weather timestamp measurement | Value |
+|---|---:|
+| Open-Meteo request timezone | Asia/Kolkata (UTC+5:30) |
+| Raw Parquet index timezone | Naive; no offset metadata |
+| First three `2022.parquet` timestamps | 2022-01-01 00:00, 01:00, 02:00 |
+| v2 parser assumption for naive weather | UTC; floor to hour |
+| Mean 2 m temperature maximum in pipeline clock | 14:00; 28.596°C (13:00: 28.591°C) |
+| Expected temperature-peak UTC window | 08:30–10:30 |
+| Temperature-peak offset from window midpoint | +4.5 h; hourly empirical proxy |
+| Timestamp-label offset from request and parser | +5.5 h |
+| Shortwave-radiation nighttime check | Unavailable; column absent |
+| Verdict | SHIFT CONFIRMED |
+
+Source: dependency inventory `results/weather_timestamp_check_v2i.md`; data config `configs/data_v2.yaml`; source commit `84b7f88`; 2026-11-05 UTC.
+
+| Stored weather-dependent arrays | Weather-dependent result families |
+|---|---|
+| `results/data_v2_arrays.npz`, `results/data_v2g_arrays.npz`, fold-local v2 rebuilds | v2/v2b/v2c neural and weather-baseline predictions and gates; W2 benchmark; W7 lambda; W3 DEM; W4 sensor density; W6 LOSO; v2h group-DRO and conformal; protocol-inflation derivative |
+
+Source: `results/second_city_feasibility_v2i.md`, `results/london_station_eligibility_v2i.csv`; [LAQN station/species API](https://api.erg.ic.ac.uk/AirQuality/Information/MonitoringSiteSpecies/GroupName=London/Json), [LAQN annual report API](https://api.erg.ic.ac.uk/AirQuality/Annual/MonitoringReport/SiteCode=BX2/Year=2024/Json), [LAEI 2022](https://data.london.gov.uk/dataset/london-atmospheric-emissions-inventory-laei-2022-2lg5g), [Delhi AQI stations](https://aqi.delhi.gov.in/stations), [IITM SAFAR inventory](https://www.tropmet.res.in/156-event_details), [ERA5](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview), [SRTM](https://www.usgs.gov/centers/eros/science/usgs-eros-archive-digital-elevation-shuttle-radar-topography-mission-srtm-1); access 2026-11-05 UTC; source commit `573668e`; no seed or training.
+
+| Candidate | Eligible reference-grade stations with ≥2 years hourly PM2.5, 2022–2026 | Coverage/network count observed | Licence status | PM2.5 emissions / traffic source | Verified hourly Q | Fixed ≥30-station gate |
+|---|---|---|---|---|---|---|
+| London | UNKNOWN | LAQN 85 historical PM25 listings; 47 listed for ≥730 days in 2022–2025; 45 with positive annual capture in ≥2 years; 35 with ≥17,520 estimated valid hours from rounded annual capture; instrument method unresolved | LAQN API documentation: OGL v2; LAEI 2022: OGL v3; exact per-extract terms to verify | LAEI 2022: 1-km annual tonnes/year PM2.5 grid and major-road links; LAQN API documents traffic-counter feed | No | UNKNOWN; no training pass |
+| Delhi | UNKNOWN | Official live network: 60 stations, 55 reporting in cited snapshot; historical PM2.5 hours/methods unresolved | Delhi AQI: GODL-India; exact raw-repository extract terms unresolved | IITM SAFAR 2018 400-m PM2.5 inventory and 2020 ~0.4-km annual sectoral grid; sampled junction traffic counts | No | UNKNOWN; no training pass |
+
+Source: [ERA5 dataset](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview), DOI 10.24381/cds.adbb2d47, hourly 0.25° and CC-BY; [USGS SRTM 1 Arc-Second Global](https://www.usgs.gov/centers/eros/science/usgs-eros-archive-digital-elevation-shuttle-radar-topography-mission-srtm-1), DOI 10.5066/F7PR7TFT, ~30 m; access 2026-11-05 UTC.

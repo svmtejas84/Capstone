@@ -54,3 +54,4 @@
 2026-11-05 R1 engineering audit: no GPU training and no new Bengaluru/London/Copenhagen experiment. Only saved-prediction recomputation, documentation, web source checks, lightweight existing tests, and synthetic CPU recovery tests were run. No active supervisor process remains.
 2026-11-05 Step 4i-1: zero GPU training; local weather timestamp measurement only, 37,152 stored hourly rows. No active experiment jobs.
 2026-11-05 Step 4i-2: zero GPU training; 188 small LAQN annual-report metadata requests plus one station/species metadata request, no hourly observation-series download. Delhi lookup used source pages only. No active experiment job.
+2026-11-05 Step 4i-3: paper tables/source lines only; zero GPU training; no new job.
