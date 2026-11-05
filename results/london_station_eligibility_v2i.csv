@@ -1,0 +1,48 @@
+site_code,site_name,site_type,data_manager,pm25_started,pm25_finished,capture_2022_pct,capture_2023_pct,capture_2024_pct,capture_2025_pct,estimated_valid_hours_2022_2025,years_positive_capture,instrument_method
+BL0,Camden - Bloomsbury,Urban Background,King's College London,2007-12-01 00:00:00,,60.0,63.0,,77.0,17520,3,unverified
+BQ7,Bexley - Belvedere West,Urban Background,King's College London,2022-02-24 00:00:00,,63.0,99.0,67.0,100.0,28836,4,unverified
+BQ9,Bexley - Slade Green Fidas,Suburban,King's College London,2020-10-01 10:00:00,,100.0,95.0,95.0,99.0,34099,4,unverified
+BT4,Brent - Ikea,Roadside,King's College London,2020-10-07 00:00:00,,99.0,99.0,99.0,99.0,34713,4,unverified
+BT5,Brent - Neasden Lane,Industrial,King's College London,2023-07-06 11:00:00,,,48.0,91.0,89.0,19995,3,unverified
+BT6,Brent - John Keble Primary School,Roadside,King's College London,2023-08-30 08:00:00,,,29.0,94.0,99.0,19470,3,unverified
+BT8,Brent - ARK Franklin Primary Academy,Roadside,King's College London,2023-08-23 00:00:00,,,36.0,100.0,99.0,20610,3,unverified
+BX2,Bexley - Belvedere,Suburban,King's College London,2022-02-15 00:00:00,,66.0,99.0,96.0,98.0,31471,4,unverified
+BY7,Bromley - Harwood Avenue,Roadside,King's College London,2020-04-17 00:00:00,2026-01-05 00:00:00,97.0,92.0,90.0,94.0,32696,4,unverified
+CD1,Camden - Swiss Cottage,Kerbside,King's College London,2008-02-11 00:00:00,,,20.0,96.0,98.0,18769,3,unverified
+CE2,Waterloo Place (The Crown Estate),Roadside,King's College London,2020-12-21 00:00:00,,91.0,89.0,87.0,98.0,31995,4,unverified
+CE3,Regent Street (The Crown Estate),Roadside,King's College London,2022-10-28 00:00:00,,9.0,95.0,44.0,94.0,21210,4,unverified
+CR8,Croydon - Norbury Manor,Urban Background,King's College London,2014-12-01 01:00:00,2025-04-01 00:00:00,69.0,95.0,90.0,18.0,23849,4,unverified
+CW3,Tower Hamlets - Jubilee Park,Urban Background,King's College London,2022-01-01 10:00:00,,47.0,98.0,72.0,90.0,26910,4,unverified
+GB0,Greenwich - Falconwood FDMS,Roadside,King's College London,2009-05-28 00:00:00,,37.0,62.0,69.0,98.0,23318,4,unverified
+GN0,Greenwich - A206 Burrage Grove,Roadside,King's College London,2008-06-19 00:00:00,,95.0,20.0,100.0,98.0,27443,4,unverified
+GN3,Greenwich - Plumstead High Street,Roadside,King's College London,2006-01-27 10:00:00,,60.0,75.0,100.0,100.0,29370,4,unverified
+GN6,Greenwich - John Harrison Way,Roadside,King's College London,2018-07-02 00:00:00,,85.0,58.0,97.0,44.0,24902,4,unverified
+GR4,Greenwich - Eltham,Suburban,King's College London,2008-05-10 13:00:00,,49.0,20.0,,,6044,2,unverified
+GR8,Greenwich - Woolwich Flyover,Roadside,King's College London,2021-08-24 00:00:00,,56.0,15.0,3.0,0.0,6483,3,unverified
+GR9,Greenwich - Westhorne Avenue,Roadside,King's College London,2004-11-01 00:00:00,,58.0,98.0,96.0,83.0,29369,4,unverified
+HK6,Hackney - Old Street,Roadside,King's College London,2022-02-28 00:00:00,,22.0,17.0,,,3416,2,unverified
+HP1,Lewisham - Honor Oak Park,Urban Background,King's College London,2017-07-20 15:00:00,,99.0,100.0,100.0,99.0,34889,4,unverified
+HV1,Havering - Rainham,Roadside,King's College London,2013-03-13 00:00:00,,93.0,92.0,0.0,,16206,2,unverified
+KF1,Kensington and Chelsea - North Ken FIDAS,Urban Background,King's College London,2017-07-20 15:00:00,,2.0,,,,175,1,unverified
+KT4,Kingston Upon Thames - Tolworth Broadway,Roadside,King's College London,2022-05-18 11:00:00,2024-06-20 00:00:00,55.0,91.0,36.0,,15952,3,unverified
+LB4,Lambeth - Brixton Road,Kerbside,King's College London,2022-01-28 13:00:00,,80.0,85.0,91.0,83.0,29718,4,unverified
+LH0,Hillingdon - Harlington,Urban Background,King's College London,2007-01-01 00:00:00,,0.0,22.0,,,1927,1,unverified
+LW2,Lewisham - New Cross,Roadside,King's College London,2012-04-11 12:00:00,2025-04-01 00:00:00,64.0,68.0,60.0,20.0,18586,4,unverified
+LW5,Lewisham - Deptford,Urban Background,King's College London,2019-09-25 15:00:00,2025-04-01 00:00:00,98.0,95.0,98.0,24.0,27618,4,unverified
+MR8,Marylebone Road - BAM,Kerbside,King's College London,2019-05-01 14:00:00,,83.0,0.0,0.0,4.0,7621,2,unverified
+NM2,Newham - Cam Road,Roadside,King's College London,2021-04-01 00:00:00,2024-04-02 00:00:00,99.0,98.0,25.0,,19453,3,unverified
+NM3,Newham - Wren Close,Urban Background,King's College London,2021-04-01 00:00:00,2024-04-02 00:00:00,97.0,99.0,24.0,,19278,3,unverified
+RB7,Redbridge - Ley Street,Urban Background,King's College London,2016-04-21 00:00:00,2024-04-03 00:00:00,85.0,84.0,22.0,,16737,3,unverified
+SK6,Southwark - Elephant and Castle,Urban Background,King's College London,2020-09-15 00:00:00,2025-03-31 00:00:00,94.0,89.0,97.0,21.0,26391,4,unverified
+SK8,Southwark - Tower Bridge Road,Roadside,King's College London,2020-05-13 00:00:00,2025-03-31 00:00:00,100.0,99.0,100.0,24.0,28319,4,unverified
+SK9,Southwark - A2 Old Kent Road FIDAS,Roadside,King's College London,2020-09-03 00:00:00,2025-03-31 00:00:00,98.0,99.0,98.0,24.0,27968,4,unverified
+SKA,Southwark - Lower Road,Roadside,King's College London,2020-11-24 00:00:00,2025-03-31 00:00:00,99.0,99.0,100.0,22.0,28056,4,unverified
+SKB,Southwark - Vicarage Grove,Roadside,King's College London,2021-01-26 12:00:00,2025-03-31 00:00:00,100.0,90.0,99.0,25.0,27530,4,unverified
+SKC,Southwark - South Circular Road,Roadside,King's College London,2021-07-22 16:00:00,2025-03-31 00:00:00,83.0,96.0,95.0,25.0,26215,4,unverified
+ST5,Sutton - Beddington Lane north,Industrial,King's College London,2014-07-23 00:00:00,2024-06-20 00:00:00,97.0,99.0,39.0,,20595,3,unverified
+TD5,London Teddington Bushy Park ,Suburban,King's College London,2013-07-01 00:00:00,,98.0,19.0,,,10249,2,unverified
+TH4,Tower Hamlets - Blackwall,Roadside,King's College London,2006-09-10 00:00:00,,46.0,74.0,100.0,99.0,27968,4,unverified
+TL6,Newham - Britannia Gate,Roadside,King's College London,2021-09-02 00:00:00,,87.0,93.0,59.0,92.0,29010,4,unverified
+WM0,Westminster - Horseferry Road,Urban Background,King's College London,2001-07-17 00:00:00,,91.0,19.0,,,9636,2,unverified
+WM5,Westminster - Covent Garden,Urban Background,King's College London,2023-11-15 00:00:00,2026-04-01 00:00:00,,7.0,91.0,99.0,17279,3,unverified
+WMD,Westminster - Elizabeth Bridge,Roadside,King's College London,2020-04-27 00:00:00,2026-04-01 00:00:00,96.0,97.0,99.0,94.0,33837,4,unverified
