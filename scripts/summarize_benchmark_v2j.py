@@ -114,7 +114,7 @@ def main():
             for baseline in ("persistence", "same_hour_yesterday"):
                 dmae, ci, _, _ = paired_ci(pivot[model].to_numpy(), pivot[baseline].to_numpy(), y,
                                            dates, 4303+horizon)
-                favorable &= ci[1] < 0
+                favorable &= dmae < 0 and ci[1] < 0
                 parts.append(f"{baseline} ΔMAE {dmae:+.6f} CI [{ci[0]:+.6f},{ci[1]:+.6f}]")
             lines.append(f"h={horizon}, {model}: {'met' if favorable else 'not met'}; " + "; ".join(parts) + ".")
             if favorable:

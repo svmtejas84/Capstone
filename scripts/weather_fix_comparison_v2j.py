@@ -36,8 +36,9 @@ def win(pivot, model, horizon):
         return 0
     y = pivot.index.get_level_values("target_ug_m3").to_numpy(float)
     dates = pd.to_datetime(pivot.index.get_level_values("target_time_utc"), utc=True).date
-    return int(all(paired_ci(pivot[model].to_numpy(), pivot[base].to_numpy(), y,
-                             dates, 4303+horizon, 2000)[1][1] < 0
+    return int(all((lambda result: result[0] < 0 and result[1][1] < 0)(
+                   paired_ci(pivot[model].to_numpy(), pivot[base].to_numpy(), y,
+                             dates, 4303+horizon, 2000))
                    for base in ("persistence", "same_hour_yesterday")))
 
 

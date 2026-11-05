@@ -1,6 +1,6 @@
 # Benchmark v2g
 
-Source `scripts/summarize_benchmark_v2j.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], commit `a736005077104f01d0ab1006ba7dc12daae0d403`, 2026-11-05T14:03:58.821251+00:00.
+Source `scripts/summarize_benchmark_v2j.py`, `configs/benchmark_v2g.yaml`, seeds [11,23,37,51,79], commit `94e09d8b3b7578309dfc6a022e3ec3e899d4c0e5`, 2026-11-05T16:08:43.502072+00:00.
 
 | h (hours) | Model | Test pairs | MAE (µg/m³) | R² |
 |---:|---|---:|---:|---:|
@@ -155,4 +155,4 @@ h=24, stpignn_laplacian: not met; persistence ΔMAE -0.125883 CI [-0.618065,+0.3
 
 Any-model win: met.
 Physics criterion: see fixed lambda check h=1 and h=24.
-DEM criterion: not assessed.
+DEM criterion: not met.

@@ -160,7 +160,7 @@ def summarize(horizons, cfg, seeds):
                        "mean_validation_mae": runs.validation_mae.mean(),
                        "lr": runs.lr.iloc[0], "parameter_count": runs.parameter_count.iloc[0],
                        "total_train_seconds": runs.train_seconds.sum(),
-                       "physics_helps_at_horizon": bool(lam > 0 and ci[1] < 0)}
+                       "physics_helps_at_horizon": bool(lam > 0 and dmae < 0 and ci[1] < 0)}
                 rows.append(row)
                 print("COMPARE", horizon, name, lam, dmae, ci, flush=True)
             better = [row for row in rows if row["horizon_hours"] == horizon and row["model"] == name and
