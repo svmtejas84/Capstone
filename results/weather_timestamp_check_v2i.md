@@ -1,0 +1,21 @@
+# Weather timestamp check v2i — measurement only
+
+Source commit examined: `84b7f88dea65ff1134372f72bad3bb46b628cc75`. Measured 2026-11-05 UTC. No source data, array, model, result or threshold was changed.
+
+| Item | Measurement |
+|---|---|
+| Source and request | `scripts/pull_weather.py:26-36,72-95`: Open-Meteo archive at 12.9716°N, 77.5946°E; `timezone="Asia/Kolkata"`; hourly wind speed/direction/gust, 2 m temperature, relative humidity, surface pressure. No ERA5 file was ingested separately in `data/raw/weather/`. |
+| Raw file | `data/raw/weather/2022.parquet`; first three index timestamps: `2022-01-01 00:00:00`, `01:00:00`, `02:00:00`. Index dtype `datetime64[us]`, timezone **naive**. No timezone column, UTC offset or timezone attribute in the Parquet schema/pandas metadata; the API response offset was not retained. `scripts/pull_weather.py:92-94,111-113` parses ISO strings with `pd.to_datetime`, sets them as index, then writes Parquet. |
+| v2 parsing | `src/stpignn/data_v2.py:41-47`: `pd.DatetimeIndex(pd.to_datetime(values))`; if naive and `assume_naive_utc=True`, `tz_localize("UTC")`, then `tz_convert("UTC").floor("h")`. `:302-305` invokes this path for weather, groups by assumed UTC hour and reindexes the UTC model timeline. `:320-324` broadcasts the weather values to all 15 station nodes. |
+| Full-period sample | Five raw Parquet files covering `2022-01-01 00:00:00` through `2026-03-28 23:00:00`, 37,152 unique hourly rows (1,548 per clock hour), all timezone naive. |
+| Diurnal temperature | Mean 2 m temperature by the pipeline-assumed UTC hour reaches 28.591°C at 13:00 and **28.596°C at 14:00** (maximum); 15:00 is 28.169°C. The corresponding `results/data_v2_arrays.npz` reconstructed temperature channel also peaks at **14:00**. Temperature minimum is 19.099°C at 05:00. |
+| Expected UTC comparison | The fixed reference peak window is 08:30–10:30 UTC (14:00–16:00 local). Observed pseudo-UTC peak 14:00 is +3.5 to +5.5 h later than that window, or +4.5 h from its 09:30 midpoint. The code path has an **exact +5.5 h timestamp-label offset** for Asia/Kolkata local time: a raw 14:00 local record is labelled 14:00 UTC instead of 08:30 UTC. Hourly binning and the broad 13:00–14:00 temperature plateau prevent estimating that exact offset from the temperature peak alone. |
+| Radiation | `shortwave_radiation` is absent from all six raw weather columns and from the v2 feature registry. Nighttime zero-radiation hours are **unavailable**, so no radiation-based cross-check can be reported. |
+
+The [Open-Meteo historical API documentation](https://open-meteo.com/en/docs/historical-weather-api) states that requested `timezone` determines the ISO timestamps and offset; the repository request uses Asia/Kolkata and discards the response offset. The timestamp-label result follows directly from that request and `data_v2.py`'s UTC localization. It is a measurement of stored data and code, not a model-performance correction.
+
+**Stored arrays affected:** `results/data_v2_arrays.npz` (`features` weather channels 5–11 and `raw_wind_degrees`), derived `results/data_v2g_arrays.npz`, and fold-local rebuilds made by `src/stpignn/data_v2.build`. `results/data_v2_fit.json`, `feature_registry.json`, `input_fix_v2g.json`, selection tables and model checkpoints inherit the aligned weather inputs or its fitted statistics.
+
+**Weather-dependent result families:** `results/baselines_v2_predictions.parquet`, `baselines_v2b_predictions.parquet`, `neural_predictions_v2.parquet`, `neural_predictions_v2b.parquet`, `neural_predictions_v2c.parquet`, `gate_v2b.csv`, `gate_v2c.csv`, `benchmark_v2g.csv`/`.md` and `benchmark_predictions_h*_v2g.parquet`, `lambda_sweep_v2g.csv` and `lambda_predictions_v2g/*.parquet`, `dem_study_v2h.csv` and local `dem_predictions_v2h.parquet`, `sensor_density_v2h.csv`, `loso_summary_v2*.csv`, `loso_decision_v2g.csv`, `loso_groupdro_v2h.csv`, `conformal_v2h.csv` and local `conformal_predictions_v2h/*.parquet`, and derivative `protocol_inflation_v2h.csv`. Weather-independent persistence and station-mean components inside those comparisons do not inherit the weather feature shift. `citywide_precheck_v2h.md` counts raw weather sources but has no trained metric. This is a source-dependency list, not evidence that each numerical result changes by a specified amount.
+
+SHIFT CONFIRMED
