@@ -1,0 +1,13 @@
+# R1 repository state
+
+- Inspected source commit: `dca4bcce690da6b7865702f91d15dd2e06b6ef75` (`git rev-parse HEAD` verified below); branch: `audit/canonical-notebook-20261023`.
+- Repository: `/home/jupyter-1nt23cb058/Capstone`; remote `origin`: `https://github.com/svmtejas84/Capstone` for fetch and push.
+- Starting worktree: clean (`git status --short --branch` showed only the branch tracking line); `dca4bcc` exists locally as a commit and is HEAD. No later local changes were present. No reset, branch switch, cache deletion, or experimental output replacement was performed.
+- Existing manifest: `results/MANIFEST.md`, principally a Phase A and rebuilt-data artifact list. A complete machine-readable v2h artifact manifest was absent at inspection.
+- Experiment processes: none found with the experiment/script/supervisor process search; only the long-running Jupyter kernel was visible. No `*.lock` files remained in `results/codex_log/runs/`. Historical RESUME says all deviation-6 jobs completed. The local raw prediction caches are present but ignored by Git: 60 conformal files, `dem_predictions_v2h.parquet`, and `loso_groupdro_predictions_v2h.parquet`. Their existence does not establish their integrity; Phase 1 checks that separately.
+- Python 3.9.7; PyTorch 2.8.0+cu128; CUDA runtime 12.8; GPU NVIDIA Tesla V100-PCIE-32GB (32 GiB), driver 535.261.03, 12 MiB used at inspection. Selected packages: torch-geometric 2.6.1, NumPy 1.26.4, pandas 2.3.3, pyarrow 21.0.0, scikit-learn 1.6.1, SciPy 1.13.1, PyKrige 1.7.3, Matplotlib 3.9.4. `rasterio`, `xarray`, `dask`, and `cdsapi` are absent from this Python environment.
+- Storage: root filesystem 879 GiB total, 714 GiB used, 121 GiB available (86% used). `data/` occupies about 2.1 GiB; `results/` about 218 MiB.
+- Accessible local data: `data/raw/airquality/` (5 entries), `data/raw/weather/` (5), `data/processed/graph/` (8), `data/dem/`, `results/data_v2g_arrays.npz`, plus the local v2h prediction caches. No London/Copenhagen local observation dataset was identified in the Phase 0 directory inventory.
+- Relevant log history: `results/codex_log/{RESUME,ACTIONS,DECISIONS,QUOTA}.md` inspected. These are historical claims; Phase 1 treats results as unverified until source and saved artifacts are checked. The prior automatic review rejected publication of the raw conformal cache. This audit will not force-add it.
+
+Source check: `git status`, `git log -10 --oneline`, `git remote -v`, `git cat-file -t dca4bcc`, `ps`, filesystem inventory, `df`, `du`, Python package queries, and `nvidia-smi`, run on 2026-11-05. Exact HEAD is recorded in the machine-readable artifact manifest and final Git handoff.

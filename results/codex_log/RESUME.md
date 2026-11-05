@@ -1,6 +1,5 @@
 # Resume
 
-- 2026-11-04T15:30:23.170886+00:00 Deviation 6 COMPLETE on branch `audit/canonical-notebook-20261023`. W7 check, W3 DEM, W4 sensor density, W8 citywide precheck, protocol inflation, conformal intervals, five-seed group-DRO LOSO, and paper Step 4h are complete. No running job PID. Final commit/push follows this checkpoint.
-- W3: h=1 tiny DEM benefit; h=24 no DEM benefit. W4: 10-station cases blocked; scored R2 means negative. Part 3: no probabilistic-value WIN. Part 4: group-DRO LOSS versus ridge_weather_static. W8: BLOCKED by one raw weather source projected to 100% duplicate citywide series.
-- Automatic approval review rejected pushing raw station-level conformal prediction caches to GitHub; aggregate results and figures are pushed. Local raw prediction caches remain ignored. Do not force-add them without explicit approval.
-- STOP here. No routing, IG, citywide training or second city in this round.
+- 2026-11-05T01:39:36.521137+00:00 R1 Phase 0 complete at source commit `dca4bcc`, branch `audit/canonical-notebook-20261023`. Worktree was clean at start. No experiment jobs or stale locks. Repository/environment record: `results/research_audit_r1/repository_state.md`.
+- Current phase: Phase 1 Bengaluru v2h artifact and metric verification. No running process PID. Next command: inspect W3/W4/W8/protocol/conformal/group-DRO source and local caches, recompute from saved predictions only.
+- No paper edits, model training, or external-city training authorized. Raw prediction caches remain local and ignored.
