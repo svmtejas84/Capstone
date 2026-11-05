@@ -566,3 +566,104 @@ Source: `results/second_city_feasibility_v2i.md`, `results/london_station_eligib
 | Delhi | UNKNOWN | Official live network: 60 stations, 55 reporting in cited snapshot; historical PM2.5 hours/methods unresolved | Delhi AQI: GODL-India; exact raw-repository extract terms unresolved | IITM SAFAR 2018 400-m PM2.5 inventory and 2020 ~0.4-km annual sectoral grid; sampled junction traffic counts | No | UNKNOWN; no training pass |
 
 Source: [ERA5 dataset](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview), DOI 10.24381/cds.adbb2d47, hourly 0.25° and CC-BY; [USGS SRTM 1 Arc-Second Global](https://www.usgs.gov/centers/eros/science/usgs-eros-archive-digital-elevation-shuttle-radar-topography-mission-srtm-1), DOI 10.5066/F7PR7TFT, ~30 m; access 2026-11-05 UTC.
+
+## Step 4j — corrected weather timestamps
+
+All earlier weather-dependent scores remain labelled **shifted weather**. The v2j scores use the confirmed Asia/Kolkata timestamp correction and the fixed half-hour rule: subtract 5 h 30 min from each raw local timestamp, then average the records at UTC h−1:30 and h:30 to represent hour h. The first raw local record (2022-01-01 00:00) becomes 2021-12-31 18:30 UTC; the first complete UTC hour is 19:00. The first model hour (2022-01-01 00:00 UTC) averages 2021-12-31 23:30 and 2022-01-01 00:30. The last six model hours lack a complete pair and use the existing bounded forward fill and train-only fallback. The mean 2 m temperature peaks at **08:00 UTC**.
+
+Source: `src/stpignn/data_v2.py`, `scripts/build_data_v2j.py`, `tests/test_weather_half_hour_v2j.py`; config `configs/data_v2.yaml`, data seed 42; source commit `9dbaabbdd57676c3898c923c80ec782e6c561407`; generated 2026-11-05T16:14:09.150138+00:00.
+
+### Fixed horizon benchmark
+
+The same cleaning bounds (0–500 µg/m³), splits, train-only fitting, imputed-lag indicator, same-space log1p channels, residual output, model families, learning-rate grid, and five seeds were retained. A win requires a lower point test MAE than both persistence and same-hour-yesterday and a paired UTC-day 2,000-replicate MAE CI below zero against each.
+
+| h | Model | Shifted MAE | Shifted R² | Corrected MAE | Corrected R² | Win shifted → corrected |
+|---:|---|---:|---:|---:|---:|---|
+| 1 | persistence | 8.116 | 0.532 | 8.116 | 0.532 | 0 → 0 |
+| 1 | same_hour_yesterday | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 1 | Ridge | 8.692 | 0.566 | 8.706 | 0.570 | 0 → 0 |
+| 1 | ST-PIGNN original | 8.019 | 0.586 | 8.026 | 0.585 | 0 → 0 |
+| 1 | A | 8.056 | 0.548 | 7.984 | 0.577 | 1 → 1 |
+| 1 | B | 8.026 | 0.543 | 7.947 | 0.590 | 1 → 1 |
+| 1 | C | 9.321 | 0.546 | 9.530 | 0.526 | 0 → 0 |
+| 3 | persistence | 13.244 | 0.101 | 13.244 | 0.101 | 0 → 0 |
+| 3 | same_hour_yesterday | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 3 | Ridge | 13.176 | 0.308 | 13.357 | 0.314 | 0 → 0 |
+| 3 | ST-PIGNN original | 12.311 | 0.303 | 12.342 | 0.305 | 1 → 1 |
+| 3 | A | 12.966 | 0.152 | 12.744 | 0.280 | 1 → 1 |
+| 3 | B | 13.053 | 0.128 | 13.052 | 0.130 | 1 → 1 |
+| 3 | C | 13.686 | 0.225 | 13.321 | 0.226 | 0 → 0 |
+| 6 | persistence | 16.607 | -0.161 | 16.607 | -0.161 | 0 → 0 |
+| 6 | same_hour_yesterday | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 6 | Ridge | 15.814 | 0.177 | 16.106 | 0.171 | 0 → 0 |
+| 6 | ST-PIGNN original | 14.841 | 0.183 | 14.706 | 0.181 | 0 → 0 |
+| 6 | A | 15.780 | 0.131 | 16.026 | 0.122 | 0 → 0 |
+| 6 | B | 15.127 | 0.126 | 15.171 | 0.097 | 0 → 0 |
+| 6 | C | 16.406 | 0.069 | 15.856 | 0.095 | 0 → 0 |
+| 12 | persistence | 19.106 | -0.457 | 19.106 | -0.457 | 0 → 0 |
+| 12 | same_hour_yesterday | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 12 | Ridge | 17.396 | 0.084 | 17.390 | 0.085 | 0 → 0 |
+| 12 | ST-PIGNN original | 15.637 | 0.138 | 15.509 | 0.142 | 0 → 0 |
+| 12 | A | 17.373 | 0.030 | 16.877 | 0.080 | 0 → 0 |
+| 12 | B | 17.357 | -0.060 | 16.926 | -0.007 | 0 → 0 |
+| 12 | C | 18.239 | -0.101 | 17.664 | -0.000 | 0 → 0 |
+| 24 | persistence | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 24 | same_hour_yesterday | 14.130 | 0.283 | 14.130 | 0.283 | 0 → 0 |
+| 24 | Ridge | 14.960 | 0.353 | 15.005 | 0.358 | 0 → 0 |
+| 24 | ST-PIGNN original | 13.789 | 0.375 | 13.902 | 0.377 | 0 → 0 |
+| 24 | A | 14.038 | 0.389 | 14.188 | 0.391 | 0 → 0 |
+| 24 | B | 13.658 | 0.400 | 13.744 | 0.396 | 1 → 1 |
+| 24 | C | 14.754 | 0.357 | 14.709 | 0.344 | 0 → 0 |
+
+| h | Corrected qualifying models | Any-model win |
+|---:|---|---|
+| 1 | adaptive_graph_st, gine_gru_wind, gru_only | MET |
+| 3 | adaptive_graph_st, adaptive_graph_st_fixed_knn, gine_gru_wind, gru_only, stpignn_lambda0, stpignn_laplacian, stpignn_original | MET |
+| 6 | none | NOT MET |
+| 12 | none | NOT MET |
+| 24 | adaptive_graph_st, st_gru_gcn | MET |
+
+Source: `scripts/benchmark_v2j.py`, `scripts/summarize_benchmark_v2j.py`, `scripts/weather_fix_comparison_v2j.py`; config `configs/benchmark_v2g.yaml`; seeds [11,23,37,51,79], bootstrap seed 4303, 2,000 UTC-day draws; source commit `9dbaabbdd57676c3898c923c80ec782e6c561407`; generated 2026-11-05T16:14:09.150138+00:00. All 85 model/horizon pairs are in `results/weather_fix_comparison_v2j.csv`.
+
+### Leave-one-station-out transfer
+
+All 15 fixed folds were retained; four have zero observed test targets and are reported without a score. Both W6 anchors were evaluated. The fixed W6 WIN/TIE/LOSS rule compares each neural method with the best fixed spatial baseline on paired UTC days.
+
+| Anchor | Neural method | Raw MAE | Raw verdict | Bias-adjusted MAE | Bias-adjusted verdict |
+|---|---|---:|---|---:|---|
+| train_mean | adaptive_graph_st | 21.342 | LOSS | 21.361 | LOSS |
+| train_mean | gine_gru_wind | 20.588 | TIE | 20.717 | LOSS |
+| train_mean | gru_only | 21.404 | LOSS | 21.409 | LOSS |
+| train_mean | stpignn_original | 22.314 | LOSS | 21.769 | TIE |
+| train_mean_idw_blend | adaptive_graph_st | 20.740 | TIE | 20.711 | LOSS |
+| train_mean_idw_blend | gine_gru_wind | 20.798 | TIE | 20.956 | LOSS |
+| train_mean_idw_blend | gru_only | 21.029 | TIE | 21.010 | LOSS |
+| train_mean_idw_blend | stpignn_original | 21.456 | LOSS | 21.114 | LOSS |
+
+Source: `scripts/evaluate_loso_v2j.py`; configs `configs/data_v2.yaml`, `configs/benchmark_v2g.yaml`, `configs/loso_v2.yaml`; seeds [11,23,37], bootstrap seed 4303, 2,000 UTC-day draws; source commit `9dbaabbdd57676c3898c923c80ec782e6c561407`; generated 2026-11-05T16:14:09.150138+00:00. Unscored stations: 5547, 5548, 6975, 2498781. No neural WIN.
+
+### Fixed lambda check and DEM control
+
+Physics helps only when lambda>0 has lower point test MAE than lambda=0 and the paired UTC-day MAE CI excludes zero. The full lambda sweep was not repeated.
+
+| h | Original ST-PIGNN lambda | Test MAE | ΔMAE vs 0 | 95% CI | Helps |
+|---:|---:|---:|---:|---|---|
+| 1 | 0.00 | 8.052 | 0.000 | [0.000, 0.000] | NOT MET |
+| 1 | 0.06 | 8.026 | -0.026 | [-0.049, -0.001] | MET |
+| 1 | 0.30 | 8.072 | 0.020 | [-0.008, 0.048] | NOT MET |
+| 1 | 1.00 | 8.117 | 0.065 | [0.040, 0.091] | NOT MET |
+| 24 | 0.00 | 13.755 | 0.000 | [0.000, 0.000] | NOT MET |
+| 24 | 0.06 | 13.967 | 0.211 | [0.026, 0.399] | NOT MET |
+| 24 | 0.30 | 14.094 | 0.339 | [0.122, 0.561] | NOT MET |
+| 24 | 1.00 | 15.120 | 1.364 | [0.972, 1.801] | NOT MET |
+
+The original physics criterion is MET at h=1 for lambda=0.06 and NOT MET at h=24. The Laplacian control has no qualifying positive-lambda cell at either checked horizon.
+
+| h | Validation-best A/B/C model | SRTM − no terrain ΔMAE | 95% CI | All-control DEM verdict shifted → corrected |
+|---:|---|---:|---|---|
+| 1 | adaptive_graph_st | -0.148 | [-0.214, -0.082] | 1 → 0 |
+| 24 | stpignn_v2 | -0.076 | [-0.146, -0.009] | 0 → 0 |
+
+Both corrected-weather DEM horizons fail the predeclared all-control criterion because the fixed `shuffle_2` control CI includes zero. The earlier shifted-weather h=1 DEM verdict was MET; its h=24 verdict was NOT MET.
+
+Source: `scripts/lambda_check_v2j.py`, `scripts/dem_study_v2j.py`, `scripts/weather_fix_comparison_v2j.py`; config `configs/benchmark_v2g.yaml`; seeds [11,23,37,51,79], fixed lambda grid [0,0.06,0.3,1], shuffle seeds [4201..4205], 2,000 UTC-day draws; source commit `9dbaabbdd57676c3898c923c80ec782e6c561407`; generated 2026-11-05T16:14:09.150138+00:00.
