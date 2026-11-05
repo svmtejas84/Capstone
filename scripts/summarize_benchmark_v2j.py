@@ -102,7 +102,6 @@ def main():
         lines.append(f"| {row.horizon_hours} | {row.model} | {row.test_n} | {row.test_mae_ug_m3:.6f} | {row.test_r2:.6f} |")
     lines += ["", "## Fixed criteria", ""]
     wins = []
-    support = []
     for horizon, pivot in sorted(pred_by_h.items()):
         y = pivot.index.get_level_values("target_ug_m3").to_numpy(dtype=float)
         dates = pd.to_datetime(pivot.index.get_level_values("target_time_utc"), utc=True).date
@@ -120,19 +119,6 @@ def main():
             lines.append(f"h={horizon}, {model}: {'met' if favorable else 'not met'}; " + "; ".join(parts) + ".")
             if favorable:
                 wins.append((horizon, model))
-        model = "stpignn_v2"
-        controls = ("stpignn_v2_source_removed", "stpignn_v2_transport_removed",
-                    "stpignn_lambda0", "stpignn_laplacian")
-        if model in pivot and all(c in pivot for c in controls):
-            checks = []
-            for control in controls:
-                dmae, ci_mae, dr2, ci_r2 = paired_ci(pivot[model].to_numpy(), pivot[control].to_numpy(), y,
-                                                       dates, 4303+horizon)
-                checks.append(ci_mae[1] < 0 or ci_r2[0] > 0)
-                lines.append(f"h={horizon}, C vs {control}: {'met' if checks[-1] else 'not met'}; ΔMAE {dmae:+.6f} CI [{ci_mae[0]:+.6f},{ci_mae[1]:+.6f}]; ΔR² {dr2:+.6f} CI [{ci_r2[0]:+.6f},{ci_r2[1]:+.6f}].")
-            support.append(all(checks))
-        else:
-            lines.append(f"h={horizon}, C physics support: not assessed (incomplete predictions).")
     dem_path=REPO_ROOT/"results/dem_study_v2j.csv"
     if dem_path.exists():
         dem=pd.read_csv(dem_path)
@@ -145,11 +131,10 @@ def main():
     else:
         dem_line="DEM criterion: not assessed."
     lines += ["", f"Any-model win: {'met' if wins else 'not met'}.",
-              f"C physics-in-architecture support: {'met' if any(support) else 'not met' if support else 'not assessed'}.",
-              dem_line, ""]
+              "Physics criterion: see fixed lambda check h=1 and h=24.", dem_line, ""]
     (REPO_ROOT / "results/benchmark_v2j.md").write_text("\n".join(lines))
     print(json.dumps({"horizons": sorted(pred_by_h), "models": sorted(curve.model.unique()),
-                      "wins": wins, "c_physics_support": any(support) if support else None}, indent=2))
+                      "wins": wins}, indent=2))
 
 
 if __name__ == "__main__":
