@@ -1,0 +1,6 @@
+horizon_hours,target_pairs,unique_target_hours,earliest_cutoff_utc,latest_cutoff_utc,pairs_with_record_after_cutoff,pairs_with_future_temperature_used,pairs_with_all_six_future_weather_values,future_temperature_fraction,model_input_last_hour,source
+1,14583,4063,2025-09-22 23:00:00+00:00,2026-03-28 22:00:00+00:00,14563,14563,14563,0.9986285400809162,cutoff,Open-Meteo Archive API; scripts/pull_weather.py
+3,14583,4063,2025-09-22 21:00:00+00:00,2026-03-28 20:00:00+00:00,14571,14571,14571,0.9991771240485496,cutoff,Open-Meteo Archive API; scripts/pull_weather.py
+6,14583,4063,2025-09-22 18:00:00+00:00,2026-03-28 17:00:00+00:00,14583,14583,14583,1.0,cutoff,Open-Meteo Archive API; scripts/pull_weather.py
+12,14583,4063,2025-09-22 12:00:00+00:00,2026-03-28 11:00:00+00:00,14583,14583,14583,1.0,cutoff,Open-Meteo Archive API; scripts/pull_weather.py
+24,14583,4063,2025-09-22 00:00:00+00:00,2026-03-27 23:00:00+00:00,14583,14583,14583,1.0,cutoff,Open-Meteo Archive API; scripts/pull_weather.py
