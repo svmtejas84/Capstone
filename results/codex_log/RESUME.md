@@ -1,5 +1,5 @@
 # Resume
 
-- Step 4i complete on branch `audit/canonical-notebook-20261023`. Weather measurement: `results/weather_timestamp_check_v2i.md` (SHIFT CONFIRMED; +5.5 h label offset, 14:00 pseudo-UTC temperature peak). City lookup: `results/second_city_feasibility_v2i.md`, `results/london_station_eligibility_v2i.csv` (London and Delhi eligible counts UNKNOWN; fixed gate unchanged). Step 4i tables/source lines appended to `claude_paper.md`. Supervisor: Claude only.
-- No running process PID. No training, new model, weather correction, threshold change, or large data download. Raw prediction caches remain local. Work stopped as requested.
-- Exact next command for a future supervisor review: `git pull --ff-only && git status --short && git log -1 --oneline && cat results/weather_timestamp_check_v2i.md && cat results/second_city_feasibility_v2i.md`. No experiment is authorized by this resume note.
+- Step 4j fixed protocol committed/pushed at `27dd8ce`. Step 1 data fix built and temperature peak passed at 08:00 UTC. Step 1 source/results commit is pending; Step 2 benchmark, LOSO and lambda reruns have not started.
+- Historical weather-dependent results are retained as shifted-weather results. New opt-in data builder: `python -m scripts.build_data_v2j`; outputs `results/data_v2j_arrays.npz` and `results/data_v2j_fit.json`. Original `build()` behavior remains default.
+- No `scripts.*` process was running at initial check. Before any new work, check processes again. Continue with fixed v2g models/seeds and existing criteria, no tuning. Long jobs must use `scripts/run_supervised.sh` with per-seed/fold checkpoints. No London work.

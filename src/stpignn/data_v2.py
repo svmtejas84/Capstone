@@ -258,7 +258,19 @@ def _causal_fill(values: np.ndarray, train_mask: np.ndarray, max_forward: int, f
     return out, train_medians
 
 
-def build(config_path: Path, excluded_station_id: int | None = None) -> tuple[DataV2, dict]:
+def weather_utc_half_hours(values) -> pd.DatetimeIndex:
+    """Interpret naive Open-Meteo labels as Asia/Kolkata local hour starts."""
+    local = pd.DatetimeIndex(pd.to_datetime(values))
+    if local.tz is not None:
+        raise ValueError("Half-hour rule expects naive Asia/Kolkata local timestamps")
+    shifted = (local - pd.Timedelta(hours=5, minutes=30)).tz_localize("UTC")
+    if not bool((shifted.minute == 30).all()):
+        raise AssertionError("Weather shift must produce :30 UTC records")
+    return shifted
+
+
+def build(config_path: Path, excluded_station_id: int | None = None,
+          weather_half_hour_rule: bool = False) -> tuple[DataV2, dict]:
     cfg = yaml.safe_load(Path(config_path).read_text())
     times = pd.date_range(cfg["train_start_utc"], cfg["test_end_utc"], freq="h", tz="UTC")
     if not times.is_monotonic_increasing or not times.is_unique or np.any(np.diff(times.asi8) != 3_600_000_000_000):
@@ -300,9 +312,18 @@ def build(config_path: Path, excluded_station_id: int | None = None) -> tuple[Da
                                                   idw_power=cfg["spatial_idw_power"])
 
     weather_raw, weather_paths = _load_raw_table(cfg["raw_weather_glob"])
-    weather_raw["time_utc"] = utc_hour(weather_raw.time, assume_naive_utc=True)
+    if weather_half_hour_rule:
+        weather_raw["time_utc"] = weather_utc_half_hours(weather_raw.time)
+    else:
+        weather_raw["time_utc"] = utc_hour(weather_raw.time, assume_naive_utc=True)
     weather_raw, weather_cleaning = _clean_rows(weather_raw, cfg, "weather", "time_utc")
-    weather = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True).reindex(times)
+    if weather_half_hour_rule:
+        grouped = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True)
+        before = grouped.reindex(times - pd.Timedelta(minutes=30)).to_numpy()
+        after = grouped.reindex(times + pd.Timedelta(minutes=30)).to_numpy()
+        weather = pd.DataFrame((before + after) / 2, index=times, columns=grouped.columns)
+    else:
+        weather = weather_raw.groupby("time_utc", observed=True).mean(numeric_only=True).reindex(times)
     wind_raw = weather["wind_direction_10m"].to_numpy(dtype=np.float32)
     # Direction is a circular measurement; retain raw degrees for physics.
     wind_sin = np.sin(np.deg2rad(wind_raw)).astype(np.float32)

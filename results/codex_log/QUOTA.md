@@ -55,3 +55,4 @@
 2026-11-05 Step 4i-1: zero GPU training; local weather timestamp measurement only, 37,152 stored hourly rows. No active experiment jobs.
 2026-11-05 Step 4i-2: zero GPU training; 188 small LAQN annual-report metadata requests plus one station/species metadata request, no hourly observation-series download. Delhi lookup used source pages only. No active experiment job.
 2026-11-05 Step 4i-3: paper tables/source lines only; zero GPU training; no new job.
+2026-11-05 Step 4j-1: CPU-only data rebuild and one shift test; zero GPU training. No experiment job running at this checkpoint.
