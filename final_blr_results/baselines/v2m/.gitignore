@@ -1,0 +1,6 @@
+# Large local artifacts are preserved in the checksum-verified supplementary ZIP.
+data/*.npz
+mlp/
+tcn/
+runs/
+reproducibility/*.zip

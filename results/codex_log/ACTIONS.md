@@ -140,3 +140,25 @@
 2026-11-05T19:44:14.944369+00:00 Launched v2m supervised GPU group mlp h=1, PID 3572183, run dir final_blr_results/baselines/v2m/runs/mlp_h1, source commit e695c6e. Training 0/50 at launch.
 
 2026-11-05T19:45:15.088043+00:00 v2m mlp h=1 all five seed cell outputs completed; supervisor attempted three restarts and stopped because group-level COMPLETE marker was omitted. Per-cell checkpoints/predictions/metrics and checksums remain intact. Added end-of-group marker after per-cell checksum verification; resume supervised group to close marker before next group. 5/50 cells.
+
+2026-11-05T19:47:11.105977+00:00 v2m completed and verified mlp h1; 5/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/mlp/h1.
+
+2026-11-05T19:47:24.878765+00:00 v2m completed and verified mlp h3; 10/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/mlp/h3.
+
+2026-11-05T19:47:40.402958+00:00 v2m completed and verified mlp h6; 15/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/mlp/h6.
+
+2026-11-05T19:48:00.848888+00:00 v2m completed and verified mlp h12; 20/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/mlp/h12.
+
+2026-11-05T19:48:14.406284+00:00 v2m completed and verified mlp h24; 25/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/mlp/h24.
+
+2026-11-05T19:48:32.899837+00:00 v2m completed and verified tcn h1; 30/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h1.
+
+2026-11-05T19:48:50.872358+00:00 v2m completed and verified tcn h3; 35/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h3.
+
+2026-11-05T19:49:10.289227+00:00 v2m completed and verified tcn h6; 40/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h6.
+
+2026-11-05T19:49:33.014671+00:00 v2m completed and verified tcn h12; 45/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h12.
+
+2026-11-05T19:49:51.800151+00:00 v2m completed and verified tcn h24; 50/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h24.
+
+2026-11-05T19:55:23.933735+00:00 v2m final: 50/50 CUDA cells complete, no failed or incomplete cells. Supervised all-groups run ended 2026-11-05T19:49:52Z; per-cell checkpoint/prediction/metrics SHA256 verified. Saved-prediction evaluator produced 50 individual metrics, 10 ensembles, 10 prespecified paired comparisons, 100 secondary descriptive comparisons with exact matched targets/timestamps and no dropped pairs. Supplementary ZIP 15,762,253 bytes, 275 members, SHA256 f669952674bcc24a15fe6f5a5c492d3b6492f2e625d2179954aee6f51b6fef3b, CRC and member SHA verified; external copy pending. Methodology and final verdict written under v2m.

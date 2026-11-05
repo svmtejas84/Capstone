@@ -1,0 +1,318 @@
+{
+  "round": "v2m",
+  "status": "50/50 cells complete; local archive pending external copy",
+  "training_source_commits": [
+    "e695c6e",
+    "dfa84d1",
+    "07dd9e2"
+  ],
+  "evaluation_source_commit": "b78b5f2",
+  "dataset": "final_blr_results/baselines/v2m/data/data_v2m_arrays.npz",
+  "dataset_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5",
+  "protocol": "final_blr_results/baselines/v2m/EXPERIMENT_PROTOCOL.md",
+  "cells": [
+    {
+      "model": "mlp",
+      "horizon_hours": 1,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/mlp/h1/seed11/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 1,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/mlp/h1/seed23/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 1,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/mlp/h1/seed37/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 1,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/mlp/h1/seed51/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 1,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/mlp/h1/seed79/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 3,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/mlp/h3/seed11/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 3,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/mlp/h3/seed23/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 3,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/mlp/h3/seed37/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 3,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/mlp/h3/seed51/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 3,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/mlp/h3/seed79/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 6,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/mlp/h6/seed11/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 6,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/mlp/h6/seed23/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 6,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/mlp/h6/seed37/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 6,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/mlp/h6/seed51/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 6,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/mlp/h6/seed79/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 12,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/mlp/h12/seed11/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 12,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/mlp/h12/seed23/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 12,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/mlp/h12/seed37/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 12,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/mlp/h12/seed51/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 12,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/mlp/h12/seed79/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 24,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/mlp/h24/seed11/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 24,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/mlp/h24/seed23/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 24,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/mlp/h24/seed37/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 24,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/mlp/h24/seed51/COMPLETE.json"
+    },
+    {
+      "model": "mlp",
+      "horizon_hours": 24,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/mlp/h24/seed79/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 1,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/tcn/h1/seed11/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 1,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/tcn/h1/seed23/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 1,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/tcn/h1/seed37/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 1,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/tcn/h1/seed51/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 1,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/tcn/h1/seed79/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 3,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/tcn/h3/seed11/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 3,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/tcn/h3/seed23/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 3,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/tcn/h3/seed37/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 3,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/tcn/h3/seed51/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 3,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/tcn/h3/seed79/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 6,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/tcn/h6/seed11/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 6,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/tcn/h6/seed23/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 6,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/tcn/h6/seed37/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 6,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/tcn/h6/seed51/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 6,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/tcn/h6/seed79/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 12,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/tcn/h12/seed11/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 12,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/tcn/h12/seed23/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 12,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/tcn/h12/seed37/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 12,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/tcn/h12/seed51/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 12,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/tcn/h12/seed79/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 24,
+      "seed": 11,
+      "marker": "final_blr_results/baselines/v2m/tcn/h24/seed11/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 24,
+      "seed": 23,
+      "marker": "final_blr_results/baselines/v2m/tcn/h24/seed23/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 24,
+      "seed": 37,
+      "marker": "final_blr_results/baselines/v2m/tcn/h24/seed37/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 24,
+      "seed": 51,
+      "marker": "final_blr_results/baselines/v2m/tcn/h24/seed51/COMPLETE.json"
+    },
+    {
+      "model": "tcn",
+      "horizon_hours": 24,
+      "seed": 79,
+      "marker": "final_blr_results/baselines/v2m/tcn/h24/seed79/COMPLETE.json"
+    }
+  ],
+  "supervisor": "final_blr_results/baselines/v2m/runs/all_v2m",
+  "historical_baseline_protocol": "v2j centered weather; cross-protocol comparisons only",
+  "created_utc": "2026-11-05T19:53:13.216232+00:00"
+}

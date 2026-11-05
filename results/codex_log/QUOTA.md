@@ -76,3 +76,25 @@
 2026-11-05T19:24:42.447267+00:00 v2m weather audit only: zero model training, 0/50 cells, zero GPU training time, no supervised worker. Read-only source/raw-weather/array/prediction-key checks across five horizons; pre-training ZIP remains 348,597,625 bytes and verified locally. Post-training archive not applicable because no training occurred.
 
 2026-11-05T19:41:10.571629+00:00 v2m: 0/50 cells; protocol/data milestone. Supervised CUDA training pending. Local pre-training ZIP verified, external copy pending.
+
+2026-11-05T19:47:11.105977+00:00 v2m supervised GPU progress 5/50 final cells; last completed mlp h1.
+
+2026-11-05T19:47:24.878765+00:00 v2m supervised GPU progress 10/50 final cells; last completed mlp h3.
+
+2026-11-05T19:47:40.402958+00:00 v2m supervised GPU progress 15/50 final cells; last completed mlp h6.
+
+2026-11-05T19:48:00.848888+00:00 v2m supervised GPU progress 20/50 final cells; last completed mlp h12.
+
+2026-11-05T19:48:14.406284+00:00 v2m supervised GPU progress 25/50 final cells; last completed mlp h24.
+
+2026-11-05T19:48:32.899837+00:00 v2m supervised GPU progress 30/50 final cells; last completed tcn h1.
+
+2026-11-05T19:48:50.872358+00:00 v2m supervised GPU progress 35/50 final cells; last completed tcn h3.
+
+2026-11-05T19:49:10.289227+00:00 v2m supervised GPU progress 40/50 final cells; last completed tcn h6.
+
+2026-11-05T19:49:33.014671+00:00 v2m supervised GPU progress 45/50 final cells; last completed tcn h12.
+
+2026-11-05T19:49:51.800151+00:00 v2m supervised GPU progress 50/50 final cells; last completed tcn h24.
+
+2026-11-05T19:55:23.933735+00:00 v2m completed 50/50 final cells. Supervised all-groups run about 166 seconds; final-cell fit time sum 84.8 seconds; peak PyTorch GPU allocated memory 125,483,008 bytes. 10 model/horizon groups and supplementary archive verified. No GPU training active.
