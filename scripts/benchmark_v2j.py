@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import time
 import warnings
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -45,12 +46,12 @@ def score(p, y):
 
 
 class Context:
-    def __init__(self, horizon, config):
+    def __init__(self, horizon, config, arrays_path=None, fit_path=None):
         self.cfg = config
         self.horizon = horizon
         data_cfg = yaml.safe_load((REPO_ROOT / "configs/data_v2.yaml").read_text())
-        z = np.load(REPO_ROOT / "results/data_v2j_arrays.npz")
-        old_fit = json.loads((REPO_ROOT / "results/data_v2j_fit.json").read_text())
+        z = np.load(arrays_path or (REPO_ROOT / "results/data_v2j_arrays.npz"))
+        old_fit = json.loads(Path(fit_path or (REPO_ROOT / "results/data_v2j_fit.json")).read_text())
         self.mu = float(old_fit["target_log1p_mean"])
         self.sd = float(old_fit["target_log1p_sd"])
         self.physical_scale = float(json.loads((REPO_ROOT / "results/data_v2j_fit.json").read_text())["fit"]["target_standard_std"])

@@ -134,3 +134,5 @@
 2026-11-05T19:25:47.262032+00:00 v2m weather blocker milestone `7df1c2b` committed/pushed; host process recheck found no training/supervisor job and pre-training ZIP hash still verifies. RESUME refreshed after push with 0/50 cells, local-archive status, weather stop condition and exact recovery commands.
 
 2026-11-05T19:41:10.571629+00:00 v2m cutoff-safe opt-in flag implemented; new arrays built at final_blr_results/baselines/v2m/data/data_v2m_arrays.npz (SHA256 8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5). Essential checks pass: UTC shift/timestamp ordering, byte-identical targets/masks/timeline, finite 18-channel input. Temperature peak 09 UTC. Protocol frozen before training. Training 0/50.
+
+2026-11-05T19:43:36.627323+00:00 v2m MLP and causal TCN implemented under final_blr_results/baselines/v2m/reproducibility/train_v2m.py using frozen configuration. Synthetic CPU model tests passed shape, finite gradients, station independence and TCN causal masking. CUDA-only training guard in place. 0/50 cells.
