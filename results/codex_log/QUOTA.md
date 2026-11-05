@@ -98,3 +98,5 @@
 2026-11-05T19:49:51.800151+00:00 v2m supervised GPU progress 50/50 final cells; last completed tcn h24.
 
 2026-11-05T19:55:23.933735+00:00 v2m completed 50/50 final cells. Supervised all-groups run about 166 seconds; final-cell fit time sum 84.8 seconds; peak PyTorch GPU allocated memory 125,483,008 bytes. 10 model/horizon groups and supplementary archive verified. No GPU training active.
+
+2026-11-05T20:23:01.890818+00:00 v2n handover-only checkpoint: zero v2n training, inference or explainability jobs launched. V100 idle. 121 GB free. Lightweight documentation/verification only; no quota-consuming experiment.
