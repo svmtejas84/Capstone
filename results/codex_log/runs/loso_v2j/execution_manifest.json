@@ -1,0 +1,20 @@
+{
+  "git_commit": "dfd2ff8c5f1086952af8257a1924eaa6e5036aa8",
+  "configuration": null,
+  "command": [
+    "python",
+    "-m",
+    "scripts.run_loso_v2j"
+  ],
+  "random_seeds": null,
+  "python": "3.9.7 | packaged by conda-forge | (default, Sep 29 2021, 19:20:46) \n[GCC 9.4.0]",
+  "python_executable": "/opt/tljh/user/bin/python",
+  "platform": "Linux-5.15.0-139-generic-x86_64-with-glibc2.31",
+  "torch": "2.8.0+cu128",
+  "gpu": "Tesla V100-PCIE-32GB",
+  "working_directory": "/home/jupyter-1nt23cb058/Capstone",
+  "start_utc": "2026-11-05T14:05:20.223371+00:00",
+  "output_directory": "/home/jupyter-1nt23cb058/Capstone/results/codex_log/runs/loso_v2j",
+  "max_restarts": 2,
+  "checkpoint_contract": "checkpoint.bin plus checkpoint.bin.sha256; COMPLETE marker"
+}

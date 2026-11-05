@@ -1,0 +1,476 @@
+fold 1 station 5547 unscored
+fold 2 station 5548 unscored
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=11 n=1620
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=23 n=1620
+fold=3/15 station=5607 train_mean adaptive_graph_st seed=37 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=11 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=23 n=1620
+fold=3/15 station=5607 train_mean gine_gru_wind seed=37 n=1620
+fold=3/15 station=5607 train_mean gru_only seed=11 n=1620
+fold=3/15 station=5607 train_mean gru_only seed=23 n=1620
+fold=3/15 station=5607 train_mean gru_only seed=37 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=11 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=23 n=1620
+fold=3/15 station=5607 train_mean stpignn_original seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend adaptive_graph_st seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gine_gru_wind seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gru_only seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gru_only seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend gru_only seed=37 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=11 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=23 n=1620
+fold=3/15 station=5607 train_mean_idw_blend stpignn_original seed=37 n=1620
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=11 n=302
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=23 n=302
+fold=4/15 station=6973 train_mean adaptive_graph_st seed=37 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=11 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=23 n=302
+fold=4/15 station=6973 train_mean gine_gru_wind seed=37 n=302
+fold=4/15 station=6973 train_mean gru_only seed=11 n=302
+fold=4/15 station=6973 train_mean gru_only seed=23 n=302
+fold=4/15 station=6973 train_mean gru_only seed=37 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=11 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=23 n=302
+fold=4/15 station=6973 train_mean stpignn_original seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend adaptive_graph_st seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend gine_gru_wind seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend gru_only seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend gru_only seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend gru_only seed=37 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=11 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=23 n=302
+fold=4/15 station=6973 train_mean_idw_blend stpignn_original seed=37 n=302
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=11 n=8
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=23 n=8
+fold=5/15 station=6974 train_mean adaptive_graph_st seed=37 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=11 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=23 n=8
+fold=5/15 station=6974 train_mean gine_gru_wind seed=37 n=8
+fold=5/15 station=6974 train_mean gru_only seed=11 n=8
+fold=5/15 station=6974 train_mean gru_only seed=23 n=8
+fold=5/15 station=6974 train_mean gru_only seed=37 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=11 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=23 n=8
+fold=5/15 station=6974 train_mean stpignn_original seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend adaptive_graph_st seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend gine_gru_wind seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend gru_only seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend gru_only seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend gru_only seed=37 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=11 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=23 n=8
+fold=5/15 station=6974 train_mean_idw_blend stpignn_original seed=37 n=8
+fold 6 station 6975 unscored
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=11 n=1901
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=23 n=1901
+fold=7/15 station=6983 train_mean adaptive_graph_st seed=37 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=11 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=23 n=1901
+fold=7/15 station=6983 train_mean gine_gru_wind seed=37 n=1901
+fold=7/15 station=6983 train_mean gru_only seed=11 n=1901
+fold=7/15 station=6983 train_mean gru_only seed=23 n=1901
+fold=7/15 station=6983 train_mean gru_only seed=37 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=11 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=23 n=1901
+fold=7/15 station=6983 train_mean stpignn_original seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend adaptive_graph_st seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gine_gru_wind seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gru_only seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gru_only seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend gru_only seed=37 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=11 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=23 n=1901
+fold=7/15 station=6983 train_mean_idw_blend stpignn_original seed=37 n=1901
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=11 n=1877
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=23 n=1877
+fold=8/15 station=6984 train_mean adaptive_graph_st seed=37 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=11 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=23 n=1877
+fold=8/15 station=6984 train_mean gine_gru_wind seed=37 n=1877
+fold=8/15 station=6984 train_mean gru_only seed=11 n=1877
+fold=8/15 station=6984 train_mean gru_only seed=23 n=1877
+fold=8/15 station=6984 train_mean gru_only seed=37 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=11 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=23 n=1877
+fold=8/15 station=6984 train_mean stpignn_original seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend adaptive_graph_st seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gine_gru_wind seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gru_only seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gru_only seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend gru_only seed=37 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=11 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=23 n=1877
+fold=8/15 station=6984 train_mean_idw_blend stpignn_original seed=37 n=1877
+fold 9 station 2498781 unscored
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=11 n=2113
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=23 n=2113
+fold=10/15 station=3409385 train_mean adaptive_graph_st seed=37 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=11 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=23 n=2113
+fold=10/15 station=3409385 train_mean gine_gru_wind seed=37 n=2113
+fold=10/15 station=3409385 train_mean gru_only seed=11 n=2113
+fold=10/15 station=3409385 train_mean gru_only seed=23 n=2113
+fold=10/15 station=3409385 train_mean gru_only seed=37 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=11 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=23 n=2113
+fold=10/15 station=3409385 train_mean stpignn_original seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend adaptive_graph_st seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gine_gru_wind seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gru_only seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gru_only seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend gru_only seed=37 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=11 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=23 n=2113
+fold=10/15 station=3409385 train_mean_idw_blend stpignn_original seed=37 n=2113
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=11 n=2243
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=23 n=2243
+fold=11/15 station=3409388 train_mean adaptive_graph_st seed=37 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=11 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=23 n=2243
+fold=11/15 station=3409388 train_mean gine_gru_wind seed=37 n=2243
+fold=11/15 station=3409388 train_mean gru_only seed=11 n=2243
+fold=11/15 station=3409388 train_mean gru_only seed=23 n=2243
+fold=11/15 station=3409388 train_mean gru_only seed=37 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=11 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=23 n=2243
+fold=11/15 station=3409388 train_mean stpignn_original seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend adaptive_graph_st seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gine_gru_wind seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gru_only seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gru_only seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend gru_only seed=37 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=11 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=23 n=2243
+fold=11/15 station=3409388 train_mean_idw_blend stpignn_original seed=37 n=2243
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=11 n=2207
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=23 n=2207
+fold=12/15 station=3409393 train_mean adaptive_graph_st seed=37 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=11 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=23 n=2207
+fold=12/15 station=3409393 train_mean gine_gru_wind seed=37 n=2207
+fold=12/15 station=3409393 train_mean gru_only seed=11 n=2207
+fold=12/15 station=3409393 train_mean gru_only seed=23 n=2207
+fold=12/15 station=3409393 train_mean gru_only seed=37 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=11 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=23 n=2207
+fold=12/15 station=3409393 train_mean stpignn_original seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend adaptive_graph_st seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gine_gru_wind seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gru_only seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gru_only seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend gru_only seed=37 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=11 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=23 n=2207
+fold=12/15 station=3409393 train_mean_idw_blend stpignn_original seed=37 n=2207
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=11 n=845
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=23 n=845
+fold=13/15 station=6119271 train_mean adaptive_graph_st seed=37 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=11 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=23 n=845
+fold=13/15 station=6119271 train_mean gine_gru_wind seed=37 n=845
+fold=13/15 station=6119271 train_mean gru_only seed=11 n=845
+fold=13/15 station=6119271 train_mean gru_only seed=23 n=845
+fold=13/15 station=6119271 train_mean gru_only seed=37 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=11 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=23 n=845
+fold=13/15 station=6119271 train_mean stpignn_original seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend adaptive_graph_st seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gine_gru_wind seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gru_only seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gru_only seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend gru_only seed=37 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=11 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=23 n=845
+fold=13/15 station=6119271 train_mean_idw_blend stpignn_original seed=37 n=845
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=11 n=212
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=23 n=212
+fold=14/15 station=6146655 train_mean adaptive_graph_st seed=37 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=11 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=23 n=212
+fold=14/15 station=6146655 train_mean gine_gru_wind seed=37 n=212
+fold=14/15 station=6146655 train_mean gru_only seed=11 n=212
+fold=14/15 station=6146655 train_mean gru_only seed=23 n=212
+fold=14/15 station=6146655 train_mean gru_only seed=37 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=11 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=23 n=212
+fold=14/15 station=6146655 train_mean stpignn_original seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend adaptive_graph_st seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gine_gru_wind seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gru_only seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gru_only seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend gru_only seed=37 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=11 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=23 n=212
+fold=14/15 station=6146655 train_mean_idw_blend stpignn_original seed=37 n=212
+/home/jupyter-1nt23cb058/Capstone/scripts/evaluate_loso_v2.py:170: RuntimeWarning: Mean of empty slice
+  train_station_means = np.nanmean(train_known, axis=0)
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=11 n=1255
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=23 n=1255
+fold=15/15 station=6206921 train_mean adaptive_graph_st seed=37 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=11 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=23 n=1255
+fold=15/15 station=6206921 train_mean gine_gru_wind seed=37 n=1255
+fold=15/15 station=6206921 train_mean gru_only seed=11 n=1255
+fold=15/15 station=6206921 train_mean gru_only seed=23 n=1255
+fold=15/15 station=6206921 train_mean gru_only seed=37 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=11 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=23 n=1255
+fold=15/15 station=6206921 train_mean stpignn_original seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend adaptive_graph_st seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gine_gru_wind seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gru_only seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gru_only seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend gru_only seed=37 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=11 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=23 n=1255
+fold=15/15 station=6206921 train_mean_idw_blend stpignn_original seed=37 n=1255
+{
+  "top_two_by_validation": [
+    "adaptive_graph_st",
+    "gine_gru_wind"
+  ],
+  "decisions": [
+    {
+      "anchor": "train_mean",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 0.7179722140597171,
+      "mae_ci_low": 0.273750181639757,
+      "mae_ci_high": 1.143590581770511,
+      "delta_r2": -0.20477690307085583
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": -0.036083887627704314,
+      "mae_ci_low": -0.5400268757115703,
+      "mae_ci_high": 0.48327518994736524,
+      "delta_r2": -0.20014905241911352
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gru_only",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 0.7803859991897468,
+      "mae_ci_low": 0.330214740060212,
+      "mae_ci_high": 1.2290191153056798,
+      "delta_r2": -0.22888683569055857
+    },
+    {
+      "anchor": "train_mean",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 1.690228640772954,
+      "mae_ci_low": 1.1164225054020833,
+      "mae_ci_high": 2.2751550235747597,
+      "delta_r2": -0.29750471477992113
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.11538954216449326,
+      "mae_ci_low": -0.349699633662543,
+      "mae_ci_high": 0.5820342538597929,
+      "delta_r2": -0.1933857433722993
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.17369521601289506,
+      "mae_ci_low": -0.3639746895874215,
+      "mae_ci_high": 0.7044377294845218,
+      "delta_r2": -0.20351884251284502
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gru_only",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": 0.40496675106410507,
+      "mae_ci_low": -0.05213406058876621,
+      "mae_ci_high": 0.8436053047909816,
+      "delta_r2": -0.2075463736908042
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": false,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": 0.8314367433518477,
+      "mae_ci_low": 0.3008967218412021,
+      "mae_ci_high": 1.357349340076271,
+      "delta_r2": -0.25099023425391664
+    },
+    {
+      "anchor": "train_mean",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -0.8254057509394919,
+      "mae_ci_low": -1.3170326756080168,
+      "mae_ci_high": -0.313202095905775,
+      "delta_r2": -0.18395355268181557
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -1.4698688660039068,
+      "mae_ci_low": -2.0270976305251946,
+      "mae_ci_high": -0.9297951219605428,
+      "delta_r2": -0.1719755923161289
+    },
+    {
+      "anchor": "train_mean",
+      "method": "gru_only",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -0.7782271795524345,
+      "mae_ci_low": -1.3402606858100246,
+      "mae_ci_high": -0.20080412053139823,
+      "delta_r2": -0.1998733841316641
+    },
+    {
+      "anchor": "train_mean",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "TIE",
+      "delta_mae": -0.41765988602223203,
+      "mae_ci_low": -1.2019726431076196,
+      "mae_ci_high": 0.4055746814478278,
+      "delta_r2": -0.2502372881146123
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "adaptive_graph_st",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -1.4762269651340176,
+      "mae_ci_low": -2.0511076067903335,
+      "mae_ci_high": -0.8717650734320571,
+      "delta_r2": -0.17204061010000193
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gine_gru_wind",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -1.2310160123702794,
+      "mae_ci_low": -1.8357967751441808,
+      "mae_ci_high": -0.6270378073620719,
+      "delta_r2": -0.18125905468215586
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "gru_only",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -1.1772195332965794,
+      "mae_ci_low": -1.7804441686062762,
+      "mae_ci_high": -0.5719119086060641,
+      "delta_r2": -0.1788673033499254
+    },
+    {
+      "anchor": "train_mean_idw_blend",
+      "method": "stpignn_original",
+      "seasonal_bias_corrected": true,
+      "best_baseline": "ridge_weather_static",
+      "verdict": "LOSS",
+      "delta_mae": -1.0730350294181719,
+      "mae_ci_low": -1.8476425943191144,
+      "mae_ci_high": -0.274088387943225,
+      "delta_r2": -0.21456110443796106
+    }
+  ],
+  "source_commit": "dfd2ff8c5f1086952af8257a1924eaa6e5036aa8",
+  "timestamp_utc": "2026-11-05T15:07:53.606471+00:00"
+}
