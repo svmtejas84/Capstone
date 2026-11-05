@@ -162,3 +162,5 @@
 2026-11-05T19:49:51.800151+00:00 v2m completed and verified tcn h24; 50/50 cells; artifacts under /home/jupyter-1nt23cb058/Capstone/final_blr_results/baselines/v2m/tcn/h24.
 
 2026-11-05T19:55:23.933735+00:00 v2m final: 50/50 CUDA cells complete, no failed or incomplete cells. Supervised all-groups run ended 2026-11-05T19:49:52Z; per-cell checkpoint/prediction/metrics SHA256 verified. Saved-prediction evaluator produced 50 individual metrics, 10 ensembles, 10 prespecified paired comparisons, 100 secondary descriptive comparisons with exact matched targets/timestamps and no dropped pairs. Supplementary ZIP 15,762,253 bytes, 275 members, SHA256 f669952674bcc24a15fe6f5a5c492d3b6492f2e625d2179954aee6f51b6fef3b, CRC and member SHA verified; external copy pending. Methodology and final verdict written under v2m.
+
+2026-11-05T19:56:44.809950+00:00 v2m result commit 58970655e65379c8f43a467e0846e86c449d1ae9 pushed and remote ref verified equal; supervised status COMPLETE; both pretraining and supplementary local ZIP SHA256 sidecars passed recheck. No active v2m GPU training. Final RESUME log-update commit/push follows.
