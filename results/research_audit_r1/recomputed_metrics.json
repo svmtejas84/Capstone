@@ -1,0 +1,214 @@
+{
+  "source_commit_examined": "dca4bcce690da6b7865702f91d15dd2e06b6ef75",
+  "W3": {
+    "raw_rows": 2333280,
+    "unique_fit_keys": 2333280,
+    "duplicate_prediction_keys": 0,
+    "seeds_min_max": [
+      5,
+      5
+    ],
+    "target_nunique_max": 1,
+    "max_variant_mae_abs_error": 1.7763568394002505e-15,
+    "srtm_vs_none": {
+      "1": {
+        "n_pairs": 14583,
+        "delta_mae": -0.014683439396321774,
+        "ci95": [
+          -0.019364484266222698,
+          -0.009846312299910752
+        ],
+        "reported_delta": -0.0146846771240234,
+        "reported_ci": [
+          -0.0193644842662226,
+          -0.0098463122999107
+        ]
+      },
+      "24": {
+        "n_pairs": 14583,
+        "delta_mae": 0.04808644577860832,
+        "ci95": [
+          -0.010083606189603682,
+          0.10489401261531028
+        ],
+        "reported_delta": 0.0480871200561523,
+        "reported_ci": [
+          -0.0100836061896036,
+          0.1048940126153102
+        ]
+      }
+    },
+    "station_elevation_max_abs_error": 0.0,
+    "elevation_northing_r": 0.36785145857688745
+  },
+  "W4": {
+    "scored_rows": 100,
+    "blocked_rows": 50,
+    "draws": 20,
+    "draw_selection_mismatches": 0,
+    "within_draw_population_mismatches": 0,
+    "test_n_mismatches": 0,
+    "target_n_range_by_count": {
+      "3": [
+        10227,
+        12340
+      ],
+      "5": [
+        9961,
+        12030
+      ]
+    },
+    "target_mean_range_by_count": {
+      "3": [
+        40.299747467041016,
+        46.619972229003906
+      ],
+      "5": [
+        40.76966857910156,
+        48.28506851196289
+      ]
+    },
+    "all_cross_count_target_n_equal": false
+  },
+  "P1_P3": {
+    "P1": {
+      "st_mae": 30.58485370656436,
+      "persistence_mae": 21.261101513404018,
+      "pairs_st": 14623,
+      "pairs_baseline": 14623,
+      "keys_equal": true
+    },
+    "P2": {
+      "st_mean_seed_mae": 20.723162791795882,
+      "st_ensemble_mae": 20.661099316775164,
+      "persistence_mae": 8.116095097724411,
+      "seeds": [
+        11,
+        23,
+        37,
+        51,
+        79
+      ],
+      "pairs_per_seed": [
+        14583
+      ],
+      "baseline_pairs": 14583,
+      "keys_equal": true
+    },
+    "P3": {
+      "st_mean_seed_mae": 8.259108378705008,
+      "st_ensemble_mae": 8.008962554533092,
+      "persistence_mae": 8.116095097724411,
+      "seeds": [
+        11,
+        23,
+        37,
+        51,
+        79
+      ],
+      "pairs_per_seed": [
+        14583
+      ],
+      "baseline_pairs": 14583,
+      "keys_equal": true
+    }
+  },
+  "conformal": {
+    "prediction_files": 60,
+    "recomputed_horizon_rows": 240,
+    "max_coverage_abs_error": 0.0,
+    "max_interval_score_abs_error": 1.3321223946149985e-07,
+    "max_width_abs_error": 7.258989853653475e-08,
+    "n_mismatches": 0,
+    "example": {
+      "horizon": 12,
+      "calibration": "train_tail",
+      "model": "best_ab",
+      "nominal": 0.8,
+      "variant": "fixed",
+      "n_cal": 2712,
+      "n_test": 14583,
+      "coverage": 0.6571350202290338,
+      "mean_width": 27.690948320791172,
+      "interval_score": 127.9456932072644,
+      "q_initial": 13.952018737792969
+    }
+  },
+  "groupdro": {
+    "raw_rows": 218745,
+    "fit_keys": 165,
+    "scored_stations": [
+      5607,
+      6973,
+      6974,
+      6983,
+      6984,
+      3409385,
+      3409388,
+      3409393,
+      6119271,
+      6146655,
+      6206921
+    ],
+    "selected_eta_reported": 0.01,
+    "methods": {
+      "erm": {
+        "n": 14583,
+        "seeds": [
+          11,
+          23,
+          37,
+          51,
+          79
+        ],
+        "mae": 21.31973772304752,
+        "r2": -0.13457449732487836,
+        "baseline_mae": 20.593675909453417,
+        "baseline_r2": 0.07251816358863272,
+        "delta_mae": 0.7260618155549716,
+        "ci95": [
+          0.14312530611585775,
+          1.2926802769901171
+        ]
+      },
+      "dro_eta_0.01": {
+        "n": 14583,
+        "seeds": [
+          11,
+          23,
+          37,
+          51,
+          79
+        ],
+        "mae": 21.356245886011028,
+        "r2": -0.14773671522748155,
+        "baseline_mae": 20.593675909453417,
+        "baseline_r2": 0.07251816358863272,
+        "delta_mae": 0.7625699790416492,
+        "ci95": [
+          0.20996694247861297,
+          1.3243290996045967
+        ]
+      },
+      "dro_eta_0.1": {
+        "n": 14583,
+        "seeds": [
+          11,
+          23,
+          37,
+          51,
+          79
+        ],
+        "mae": 22.694120933087994,
+        "r2": -0.1858042018762831,
+        "baseline_mae": 20.593675909453417,
+        "baseline_r2": 0.07251816358863272,
+        "delta_mae": 2.100445016439965,
+        "ci95": [
+          1.53792063221534,
+          2.6671543444027046
+        ]
+      }
+    }
+  }
+}
