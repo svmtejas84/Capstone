@@ -40,7 +40,7 @@ def build(kind):
    if src.read_bytes()!=raw:raise RuntimeError(f"member differs from source {name}")
  csvpath=ARCH/f"{kind}_v2r_members.csv"
  with csvpath.open("w",newline="") as f:
-  w=csv.DictWriter(f,fieldnames=["member","bytes","sha256"]);w.writeheader();w.writerows(rows)
+  w=csv.DictWriter(f,fieldnames=["member","bytes","sha256"],lineterminator="\n");w.writeheader();w.writerows(rows)
  return {"zip":path.relative_to(ROOT).as_posix(),"bytes":path.stat().st_size,"sha256":digest(path),"members":len(rows),"member_manifest":csvpath.relative_to(ROOT).as_posix(),"crc":"PASS","per_member_sha256":"PASS"}
 
 def main():
@@ -54,7 +54,7 @@ def main():
   if p.name in {"artifact_checksums.csv","artifact_manifest.json"}:continue
   rows.append({"path":p.relative_to(ROOT).as_posix(),"bytes":p.stat().st_size,"sha256":digest(p)})
  with (REPRO/"artifact_checksums.csv").open("w",newline="") as f:
-  w=csv.DictWriter(f,fieldnames=["path","bytes","sha256"]);w.writeheader();w.writerows(rows)
+  w=csv.DictWriter(f,fieldnames=["path","bytes","sha256"],lineterminator="\n");w.writeheader();w.writerows(rows)
  import subprocess
  try:
   commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()

@@ -1,0 +1,121 @@
+{
+  "round": "Bengaluru v2r",
+  "branch": "research/bengaluru-v2r-final",
+  "source_commit_before_archive_manifest": "da851aee93197311752d21cefce3eae4cdd6f96d",
+  "artifacts_indexed": 442,
+  "checksums_csv": "final_blr_results/final_research_v2r/reproducibility/artifact_checksums.csv",
+  "self_hashes_excluded": [
+    "artifact_manifest.json",
+    "artifact_checksums.csv"
+  ],
+  "source_inputs": [
+    {
+      "path": "results/data_v2j_arrays.npz",
+      "available": true,
+      "bytes": 5730357,
+      "sha256": "649519c9d11e02c535b960642fbc35a7f79ab1916df418cbea276f3960eaa3f8"
+    },
+    {
+      "path": "data/graphs/bangalore_utm_nodes.parquet",
+      "available": true,
+      "bytes": 4079595,
+      "sha256": "d42b9551a84e64727fa61d6825e8310d3a540276c220299bbfddb4ae7776989f"
+    },
+    {
+      "path": "data/processed/graph/nodes_elevation_true.parquet",
+      "available": true,
+      "bytes": 4255000,
+      "sha256": "dd4f21f9062bd0273992d554c29e1689776d173b621e5e2fbd85b00faa92236c"
+    },
+    {
+      "path": "notebooks/production/evaluated_wind_advection.ipynb",
+      "available": true,
+      "bytes": 109437,
+      "sha256": "242d0cf3d2f95c78a011841ed2aec2e100cc8c326e6211c918a8bd70504b8161"
+    },
+    {
+      "path": "configs/data_v2.yaml",
+      "available": true,
+      "bytes": 1125,
+      "sha256": "377f27e6d9dee53c7686e149cb751040fcd27a25013b10e52cd3f60cf09216b1"
+    },
+    {
+      "path": "configs/loso_v2.yaml",
+      "available": true,
+      "bytes": 579,
+      "sha256": "33f512adcec9e381d45c5d3bc36a90029dde8799bf25e18c7f221a6660f06c93"
+    },
+    {
+      "path": "src/stpignn/data_v2.py",
+      "available": true,
+      "bytes": 21274,
+      "sha256": "7092a26de087aa57273f9cc3c92bb8ee2b054059f5d5a45aceb204a10741c649"
+    },
+    {
+      "path": "src/stpignn/models_v2.py",
+      "available": true,
+      "bytes": 2619,
+      "sha256": "9a6e42f2c3419458518edc1d5d20d6d328f573b58de1cb263ae46c5a82679bfe"
+    },
+    {
+      "path": "src/stpignn/physics_v2.py",
+      "available": true,
+      "bytes": 5706,
+      "sha256": "7b1b3c5bccebde4d8e84a1ddecb683b10a28680ef0750c8dff0146ffaaf225c3"
+    },
+    {
+      "path": "src/stpignn/station_graph.py",
+      "available": true,
+      "bytes": 955,
+      "sha256": "9705c4b1ed967ee720b6471290405a8a02c6ea6bf04150347f2c19e0077c64e8"
+    },
+    {
+      "path": "src/stpignn/rgdr.py",
+      "available": true,
+      "bytes": 3766,
+      "sha256": "4a475cb81ca95f1607ca61fa64a945d66be754431116502dc427c44c00f2f638"
+    },
+    {
+      "path": "src/stpignn/rgdr_continuous.py",
+      "available": true,
+      "bytes": 3130,
+      "sha256": "f223b8f8c030b8a1abaa991afbb0aaadbea25ac415b46310604e96bd1e5b7256"
+    },
+    {
+      "path": "tests/test_rgdr_continuous_v2r.py",
+      "available": true,
+      "bytes": 3273,
+      "sha256": "4f899b038e3eb160771b8ce4e6f167163ede4f4e082b1dbd6479b97776da9cc8"
+    }
+  ],
+  "archives": {
+    "citywide": {
+      "zip": "final_blr_results/final_research_v2r/archive/citywide_v2r.zip",
+      "bytes": 91595568,
+      "sha256": "192d7607f037e7d84886b478a52481fee642838db7df2d72d94d8661a6069ec6",
+      "members": 423,
+      "member_manifest": "final_blr_results/final_research_v2r/archive/citywide_v2r_members.csv",
+      "crc": "PASS",
+      "per_member_sha256": "PASS"
+    },
+    "rgdr": {
+      "zip": "final_blr_results/final_research_v2r/archive/rgdr_v2r.zip",
+      "bytes": 22189,
+      "sha256": "0dc13a049c5a2d08474a627fa2a05c82a38b2c10a2fc17962cce0307e662ac77",
+      "members": 14,
+      "member_manifest": "final_blr_results/final_research_v2r/archive/rgdr_v2r_members.csv",
+      "crc": "PASS",
+      "per_member_sha256": "PASS"
+    }
+  },
+  "citywide": {
+    "nodes": 154902,
+    "target_timestamps": 3,
+    "status": "experimental neural-assisted estimates; no independent roadside accuracy"
+  },
+  "rgdr": {
+    "implementation": "continuous V2 passed focused tests",
+    "training": "not run; frozen feasibility gate failed",
+    "status": "predictive effect not evaluated"
+  }
+}

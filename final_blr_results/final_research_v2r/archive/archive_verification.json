@@ -1,0 +1,20 @@
+{
+  "citywide": {
+    "zip": "final_blr_results/final_research_v2r/archive/citywide_v2r.zip",
+    "bytes": 91595568,
+    "sha256": "192d7607f037e7d84886b478a52481fee642838db7df2d72d94d8661a6069ec6",
+    "members": 423,
+    "member_manifest": "final_blr_results/final_research_v2r/archive/citywide_v2r_members.csv",
+    "crc": "PASS",
+    "per_member_sha256": "PASS"
+  },
+  "rgdr": {
+    "zip": "final_blr_results/final_research_v2r/archive/rgdr_v2r.zip",
+    "bytes": 22189,
+    "sha256": "0dc13a049c5a2d08474a627fa2a05c82a38b2c10a2fc17962cce0307e662ac77",
+    "members": 14,
+    "member_manifest": "final_blr_results/final_research_v2r/archive/rgdr_v2r_members.csv",
+    "crc": "PASS",
+    "per_member_sha256": "PASS"
+  }
+}
