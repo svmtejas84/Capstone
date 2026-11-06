@@ -123,3 +123,7 @@
 2026-11-06 IEEE evidence package: 0 training cells, 0 inference experiments, 0 GPU hours, 0 second-city jobs. CPU/read-only evidence work only; recomputation read retained prediction parquets in existing ZIPs without extraction/modification. Rebuild approximately 30 seconds; 126/126 artifact checksums verified. Existing archive size and checksum pending final ZIP build.
 
 2026-11-06 evidence closure: 0 new experimental cells, 0 training, 0 GPU hours, 0 second-city jobs. Recomputed metrics from existing archived outputs only. Final evidence ZIP 3,909,520 bytes, SHA-256 bb8f086eb0c53e6579f2d82c5e3d02d24439cc89e018d06da68530564d7d859a; CRC and 138 member hashes verified.
+
+2026-11-06 final publication check: 0 experiment/training/GPU/second-city jobs. Remote equality verified for evidence commit 09757af. Archive 3,909,520 bytes, SHA-256 bb8f086eb0c53e6579f2d82c5e3d02d24439cc89e018d06da68530564d7d859a; 138 members CRC/SHA verified.
+
+2026-11-06 closeout: no new compute or experiment use. Package and second-city handover publication is documentation-only; final log commit and remote equality check remain.

@@ -127,3 +127,7 @@
 2026-11-06 IEEE evidence-package decision: original IEEE PDF and six full review texts are unavailable in repository; do not invent exact claims/quotes, reviewer assignments or bibliography. Matrix categories are placeholders tied to actual later evidence and require normal source transfer. Keep v2j/v2m weather protocol difference and retrospective versus forecast spatial tasks separate. Report RGDR novelty and predictive gain as unestablished/not evaluated; route simulation is admitted-only and nonvalidating. No new experiments or paper drafting.
 
 2026-11-06 final evidence freeze: preserve archive checksum in external verification JSON; exclude ZIP from Git, ignore only its exact path. Source manuscript/review files remain unavailable; do not fill reviewer assignments or citations by inference. Reference source transfer is still required before page-specific reconciliation. Second-city London/Copenhagen gates remain blocked and no training approval exists.
+
+2026-11-06 publication verification: lightweight evidence and second-city handover are on the research branch. Keep the separately verified 3.9 MB ZIP outside Git. Current new external sources missing: rejected manuscript PDF and six review texts; use handover placeholder until transferred.
+
+2026-11-06 publication terminal: after the final continuity commit is pushed, verify origin ref exactly equals local HEAD. The prior evidence commit 09757af was already confirmed at origin; generated ZIP remains outside Git.
