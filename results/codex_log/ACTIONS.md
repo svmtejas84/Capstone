@@ -184,3 +184,9 @@
 2026-11-06 v2r startup: read required v2q and v2p handoffs, verified notebook SHA, starting HEAD 062f4a1, 23 prior untracked controls, 120 GB free; created research/bengaluru-v2r-final. Host V100 available outside sandbox, no active experiment job. Protocol freeze next.
 
 2026-11-06 v2r: froze final exploratory protocol before experimental execution; host V100 access verified outside sandbox, no model fit launched.
+
+2026-11-06 v2r preflight attempt 1 failed before GPU execution (nested script import path); supervised attempts/logs preserved. Fixed source path for next run.
+
+2026-11-06 v2r: cutoff-safe 5607 fold builder audit passed in 2.72 s; V100 batch preflight 0.5373 s and 1.83 GB peak, >=18.8 GPU-h minimum 225-model crossfit projection. Repaired supervised COMPLETE after three verified code-0 output attempts. Launch one bounded all-station source fit for experimental neural-assisted city inference.
+
+2026-11-06 v2r source fit: supervised V100 seed11 h6 corrected model COMPLETE after 10 epochs, best val MAE 6.621 on 7203 pairs, 16.65 s, peak 1.83 GB, checkpoint SHA 27d04630f3b27c537178854736b2f142f513475b9991bac822c17c9a40ea00b3. Resource estimate corrected before LOSO training.
