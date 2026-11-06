@@ -1,0 +1,88 @@
+{
+  "archive": "final_blr_results/citywide_extension/v2q/research_results_v2q.zip",
+  "bytes": 21433,
+  "sha256": "5e6aa4b9fea20fcc9933bd23e9ce6769a791c01d8c981e2df698d5ceba86a640",
+  "members": [
+    {
+      "path": "final_blr_results/citywide_extension/v2q/CITYWIDE_NEURAL_INFERENCE_RESULTS.md",
+      "bytes": 1204,
+      "sha256": "f2515bdd0ac8ce2f8f9d640547fe237c68d9606f3797237617f0b632f9dda295"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/CITYWIDE_NEURAL_PROTOCOL.md",
+      "bytes": 4930,
+      "sha256": "623f1fe678bc19e79f383e55a0a38411881c2f2b360ff299d9205e904e451a51"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/CITYWIDE_NEURAL_VERDICT.md",
+      "bytes": 1653,
+      "sha256": "fc3b9708a0c7c4254785f0f4f3fa659b4986ea6696aa9d420e39a9c01de91723"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/FINAL_V2Q_HANDOFF.md",
+      "bytes": 1984,
+      "sha256": "d857bc3b1f99633b98cbd0d10c06e2c590d64580ad68e6e5ec019e1e8bf79716"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/METHODOLOGY.md",
+      "bytes": 1269,
+      "sha256": "6e7c5ae08dee3ea40a7e407503e94b06dd55158c7fc85a91bb3a92c23298147a"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/ORIGINAL_MODEL_ARCHITECTURE.md",
+      "bytes": 2254,
+      "sha256": "875d64aa56f83a0a38a1858e6f633e3666cdd4d047e8fd7ecb88f38f37f3a2a0"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/ORIGINAL_NOTEBOOK_DEPENDENCY_MAP.md",
+      "bytes": 2158,
+      "sha256": "e8ebae89f26da32dfb96d1022f70971c3eca840ac5b21b74cb97da83199c30fd"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/ORIGINAL_NOTEBOOK_RECOVERY.md",
+      "bytes": 4099,
+      "sha256": "6c2799de855437b55e83a4f67216039dec0f929cc6a2ebd51305181e21ff6cbf"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/ORIGINAL_VS_CORRECTED_COMPARISON.md",
+      "bytes": 2352,
+      "sha256": "f9c67987699543ce15a9088233a77a3c0bc7a942810856239631e90f042aaf71"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/RECOVERED_ARTIFACT_MANIFEST.csv",
+      "bytes": 2368,
+      "sha256": "d40ae3694c35dbc74c428e3947e098afafd16c8bf64fabdd623cf246440e1bbb"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/REPRODUCIBILITY.md",
+      "bytes": 1771,
+      "sha256": "2cb1cf0ff591e297ead12684f44635ad93578a678a07b7644687b0e5f1e7025c"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/SPATIAL_DECODER_DESIGN.md",
+      "bytes": 2533,
+      "sha256": "e062026ee11c4745989960c3807b85fbd67b829e7b139cf077daf62205281a5c"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/SPATIAL_DECODER_VALIDATION.csv",
+      "bytes": 458,
+      "sha256": "7f0f7f698e6da5c378e863762f12aeba87fa21939d8b1ec1bcf9913bc962442f"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/build_archive.py",
+      "bytes": 1530,
+      "sha256": "79c44dff26afe0e39d8da78d87fc9083f4bc2c125bb83ab1ee5f0de7b73b8406"
+    },
+    {
+      "path": "final_blr_results/citywide_extension/v2q/spatial_decoder.py",
+      "bytes": 3458,
+      "sha256": "f35f8e22c721606fb1faac216f8e560e3cc8101f0c437be0d7cdccc5f5e6dea0"
+    },
+    {
+      "path": "tests/test_v2q_spatial_decoder.py",
+      "bytes": 1727,
+      "sha256": "482238b0e39d4447b60305064db4d030eecf65091a9284e43f9b026cc7cbdf2e"
+    }
+  ],
+  "crc_ok": true
+}
