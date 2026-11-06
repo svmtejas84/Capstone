@@ -112,3 +112,5 @@
 2026-11-06 v2q startup: zero GPU/model training, zero notebook cells executed, zero city neural inference; 120 GB free, no active job.
 
 2026-11-06 v2q final: zero neural fits, zero GPU hours, zero v2q road-node forward predictions; static notebook recovery, one CPU checkpoint strict-load, 3 synthetic bridge tests. Full-city runtime and VRAM not measured. Supplemental local ZIP 21433 bytes; five older ZIPs retained; no active worker.
+
+2026-11-06 v2r startup: zero new fits, zero GPU hours; host V100 32 GB free except 12 MiB display usage, 120 GB disk free; no study job active.

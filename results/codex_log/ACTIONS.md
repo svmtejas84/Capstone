@@ -180,3 +180,7 @@
 2026-11-06 v2q recovery: statically inspected all 26 notebook cells and imported model/dataset code; verified root checkpoint strict-load, artifact hashes, temporal sparsity and historical replay reports. Wrote recovery and original-versus-corrected reports; froze citywide protocol before new model evaluation.
 
 2026-11-06 v2q closure: after frozen protocol 421c7d4 pushed, implemented fixed forecast-IDW and 1249-parameter residual decoder; 3/3 synthetic tests passed. Eligible cross-fitted support forecasts absent, so empirical decoder comparison and neural city forward NOT RUN. Created 16-member v2q ZIP, 21433 bytes, SHA-256 5e6aa4b9fea20fcc9933bd23e9ce6769a791c01d8c981e2df698d5ceba86a640, CRC/member hashes verified. No active job; final result commit/push pending.
+
+2026-11-06 v2r startup: read required v2q and v2p handoffs, verified notebook SHA, starting HEAD 062f4a1, 23 prior untracked controls, 120 GB free; created research/bengaluru-v2r-final. Host V100 available outside sandbox, no active experiment job. Protocol freeze next.
+
+2026-11-06 v2r: froze final exploratory protocol before experimental execution; host V100 access verified outside sandbox, no model fit launched.
