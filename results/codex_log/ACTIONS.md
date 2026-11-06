@@ -178,3 +178,5 @@
 2026-11-06 v2q startup: confirmed 26-cell production notebook SHA-256 242d0cf3d2f95c78a011841ed2aec2e100cc8c326e6211c918a8bd70504b8161, no saved outputs, no active jobs, 120 GB free; created isolated branch research/bengaluru-v2q-recovery from 7356487. Static recovery begins before new model code.
 
 2026-11-06 v2q recovery: statically inspected all 26 notebook cells and imported model/dataset code; verified root checkpoint strict-load, artifact hashes, temporal sparsity and historical replay reports. Wrote recovery and original-versus-corrected reports; froze citywide protocol before new model evaluation.
+
+2026-11-06 v2q closure: after frozen protocol 421c7d4 pushed, implemented fixed forecast-IDW and 1249-parameter residual decoder; 3/3 synthetic tests passed. Eligible cross-fitted support forecasts absent, so empirical decoder comparison and neural city forward NOT RUN. Created 16-member v2q ZIP, 21433 bytes, SHA-256 5e6aa4b9fea20fcc9933bd23e9ce6769a791c01d8c981e2df698d5ceba86a640, CRC/member hashes verified. No active job; final result commit/push pending.

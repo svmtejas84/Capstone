@@ -108,3 +108,7 @@
 2026-11-06 v2o: zero neural training and zero GPU use; one supervised CPU spatial-estimation attempt completed in 10.14 s with peak process RSS 427916 KiB. Three full-city snapshots produced 464706 estimated rows. Local supplemental ZIP 18997765 bytes, 32 members verified; prior three ZIPs preserved, external USB copy still pending. No active v2o job.
 
 2026-11-06 v2p: zero model fits and zero GPU hours; CPU-only prior-art inspection, 8 focused tests and 10 train/validation mask-diagnostic rows. Local supplemental ZIP 24303 bytes, 19 members SHA/CRC verified. No active v2p process. External USB backup remains pending.
+
+2026-11-06 v2q startup: zero GPU/model training, zero notebook cells executed, zero city neural inference; 120 GB free, no active job.
+
+2026-11-06 v2q final: zero neural fits, zero GPU hours, zero v2q road-node forward predictions; static notebook recovery, one CPU checkpoint strict-load, 3 synthetic bridge tests. Full-city runtime and VRAM not measured. Supplemental local ZIP 21433 bytes; five older ZIPs retained; no active worker.

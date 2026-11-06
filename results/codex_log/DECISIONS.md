@@ -110,3 +110,5 @@
 2026-11-06 v2q start: inspect production notebook and surviving original artifacts before architecture changes. Treat original full-road model separately from corrected 15-station forecasts; no paper, London or RGDR work.
 
 2026-11-06 v2q recovery decision: Path A is historical-only because cell 5 clones entire station pollutant histories onto road nodes, and cell 9 has same-hour input/target plus modulo time indexing. Root checkpoint survives and is shape-compatible with old GINE–GRU, but repairing inputs changes its semantics. Assess a small forecast-safe station-to-road bridge under frozen protocol; do not represent old maps as forecasts.
+
+2026-11-06 v2q terminal decision: original 16-channel weights are historical-only; exact model restoration cannot cure target-hour leakage and copied road histories. Saved LOSO fold predictions cannot be mixed as support forecasts because each fold model may have seen the target station. Do not fit decoder or issue citywide neural maps without target-isolated forecast-origin support arrays. Declare spatial validation NOT RUN and full-city neural inference BLOCKED, preserving prior negative W6 LOSO finding.

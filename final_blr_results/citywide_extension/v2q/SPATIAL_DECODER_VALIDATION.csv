@@ -1,0 +1,4 @@
+method,status,horizon_hours,scored_stations,scored_pairs,mae_ug_m3,rmse_ug_m3,r2,coverage,reason
+training_only_station_mean,NOT_RUN,6,,,,,,,"No common v2q LOSO future-target population with cross-fitted support forecasts"
+station_forecast_plus_idw,NOT_RUN,6,,,,,,,"Per-origin support forecasts from target-excluding folds unavailable"
+compact_learned_decoder,NOT_RUN,6,,,,,,,"Requires same isolated support forecasts and training-only fit; no model trained"
