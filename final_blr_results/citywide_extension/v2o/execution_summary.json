@@ -1,0 +1,29 @@
+{
+  "source_data_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5",
+  "road_nodes_sha256": "d42b9551a84e64727fa61d6825e8310d3a540276c220299bbfddb4ae7776989f",
+  "elevation_sha256": "dd4f21f9062bd0273992d554c29e1689776d173b621e5e2fbd85b00faa92236c",
+  "output_sha256": "45bf6740a75b22abae499934329e395d3e066d77a64f9c905615c838c12d0738",
+  "snapshot_count": 3,
+  "row_count": 464706,
+  "selected_times_utc": [
+    "2025-10-08 13:00:00+00:00",
+    "2026-02-10 07:00:00+00:00",
+    "2026-03-28 23:00:00+00:00"
+  ],
+  "support_counts": [
+    4,
+    6,
+    4
+  ],
+  "poor_support_fraction": [
+    0.8613897819266375,
+    0.8494854811429162,
+    0.9055273656892745
+  ],
+  "max_estimate_ug_m3": 97.99999999856803,
+  "min_estimate_ug_m3": 2.4394155195070162e-09,
+  "total_seconds": 10.136390685103834,
+  "peak_ram_kib": 427916,
+  "gpu_vram_bytes": null,
+  "semantic_class": "retrospective IDW spatial estimates; not forecasts or observations"
+}

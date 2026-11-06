@@ -81,3 +81,7 @@ data/processed/graph/*.pkl
 # v2n local supervised controls and supplemental archive; small reports are tracked.
 /final_blr_results/city_scale/explainability/runs/
 /final_blr_results/city_scale/reproducibility/research_results_v2n.zip
+
+# Extension local archives and supervised controls; reports and scripts are tracked.
+/final_blr_results/citywide_extension/v2o/research_results_v2o.zip
+/final_blr_results/citywide_extension/v2o/runs/

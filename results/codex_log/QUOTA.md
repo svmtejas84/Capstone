@@ -104,3 +104,5 @@
 2026-11-06 v2n execution checkpoint: zero new model-training cells, zero full-road forward passes and zero GPU compute measured. Captum station-only IG ran on CPU under the supervised worker; 228 records produced. The detached launcher did not persist in the sandbox; foreground worker attempts exited 0 and output verification repaired its initially missing COMPLETE marker. Existing local ZIPs rehashed successfully; external USB copy remains pending. No active v2n job.
 
 2026-11-06T02:39:54Z v2n final: no additional training or city inference; 110 source/output artifact hashes checked; 50-member supplemental ZIP verified; result commit pushed and remote HEAD checked. This round is frozen with no active job. No new GPU VRAM or city runtime measurement exists; external copy pending.
+
+2026-11-06 v2o: zero neural training and zero GPU use; one supervised CPU spatial-estimation attempt completed in 10.14 s with peak process RSS 427916 KiB. Three full-city snapshots produced 464706 estimated rows. Local supplemental ZIP 18997765 bytes, 32 members verified; prior three ZIPs preserved, external USB copy still pending. No active v2o job.

@@ -1,0 +1,15 @@
+feature,source,unit,spatial_resolution,temporal_resolution,kind,forecast_time_eligible,missingness,imputation,transformation,train_fitted_parameter
+road_row_index,raw OSM node Parquet,index,road node,static,identifier,yes,none,none,none,none
+osmid,raw OSM node Parquet,OSM ID,road node,static,identifier,yes,none,none,none,none
+utm_x_m,raw OSM node Parquet,m,road node,static,geometry,yes,none,none,EPSG:32643,none
+utm_y_m,raw OSM node Parquet,m,road node,static,geometry,yes,none,none,EPSG:32643,none
+elevation_srtm_m,nodes_elevation_true.parquet,m,SRTM raster sampled at node,static,remote-sensing estimate,yes,none in canonical table,none,none,none
+support_station_pm25,cleaned v2m observed_target at same UTC hour,ug/m3,monitor site,hourly,observation,no for future lead-time forecast,missing at unobserved station-hours,none,0-500 cleaned observation,none
+estimate_ug_m3,fixed IDW power 2 from same-hour observed stations,ug/m3,road node,selected UTC hour,model estimate,no for future lead-time forecast,unavailable if fewer than two support stations,none,Euclidean inverse-distance squared,none
+nearest_support_distance_m,road geometry and eligible observed monitors,m,road node,selected UTC hour,support diagnostic,yes for geometry; eligible station set depends on same-hour data,unavailable with zero support,none,minimum Euclidean distance,none
+support_station_count,observed station mask at selected hour,count,city support set,selected UTC hour,support diagnostic,no for future lead-time forecast,none,none,count,none
+outside_support_hull,convex hull of same-hour eligible monitors,binary,road node,selected UTC hour,support diagnostic,no for future lead-time forecast,unavailable for degenerate hull,none,Delaunay hull membership,none
+poor_support,outside hull or distance greater than 5000 m,binary,road node,selected UTC hour,map display flag,no for future lead-time forecast,none,none,predeclared display rule,none
+road_pm25_observed,unavailable,ug/m3,road node,hourly,missing,no,all unsensed road nodes,none,none,none
+road_pm25_lag,unavailable,ug/m3,road node,hourly,missing,no,all unsensed road nodes,none,none,none
+road_wind_differentiated,unavailable,m/s or degree,road node,hourly,missing,no,all road nodes,none,none,none

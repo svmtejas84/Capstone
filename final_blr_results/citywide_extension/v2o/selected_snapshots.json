@@ -1,0 +1,14 @@
+{
+  "rule": "first median last test UTC hour with >=4 observed PM2.5 stations; mask only",
+  "indices": [
+    33037,
+    36031,
+    37151
+  ],
+  "times_utc": [
+    "2025-10-08 13:00:00+00:00",
+    "2026-02-10 07:00:00+00:00",
+    "2026-03-28 23:00:00+00:00"
+  ],
+  "station_array_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5"
+}

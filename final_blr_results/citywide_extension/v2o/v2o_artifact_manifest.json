@@ -1,0 +1,214 @@
+{
+  "protocol_commit": "27ba8c7",
+  "method": "retrospective IDW power 2",
+  "snapshots": 3,
+  "road_nodes": 154902,
+  "output_rows": 464706,
+  "source_commit_before_v2o": "c50f58f8107ddd485b8f82a21df13c2f7c2436d8",
+  "missing": [
+    "corrected ST-PIGNN road checkpoint",
+    "complete road pollutant histories",
+    "independent road observations",
+    "calibrated road uncertainty"
+  ],
+  "artifacts": [
+    {
+      "role": "source",
+      "path": "final_blr_results/baselines/v2m/data/data_v2m_arrays.npz",
+      "bytes": 5624007,
+      "sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5"
+    },
+    {
+      "role": "source",
+      "path": "data/graphs/bangalore_utm_nodes.parquet",
+      "bytes": 4079595,
+      "sha256": "d42b9551a84e64727fa61d6825e8310d3a540276c220299bbfddb4ae7776989f"
+    },
+    {
+      "role": "source",
+      "path": "data/processed/graph/nodes_elevation_true.parquet",
+      "bytes": 4255000,
+      "sha256": "dd4f21f9062bd0273992d554c29e1689776d173b621e5e2fbd85b00faa92236c"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/CITYWIDE_EXECUTION_RESULTS.md",
+      "bytes": 1890,
+      "sha256": "044e49f6a18fd7845263254df546bd80efb944711ab08356c764c1ac7312f9b8"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/CITYWIDE_INFERENCE_PROTOCOL.md",
+      "bytes": 3774,
+      "sha256": "a9e227da801041b4a7380a31a433dcd0d3b0702970bfdfac3a6e369f25b95ca6"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/CITYWIDE_INFERENCE_VERDICT.md",
+      "bytes": 1776,
+      "sha256": "28390c620e17f145fa011245c6cdb4de925a213b559f70502864949fce62ec59"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/CITYWIDE_METHODOLOGY.md",
+      "bytes": 2512,
+      "sha256": "74503dd0f27b8eabbcd6b508a9ad641ade68a9c99f79bf101e6c391ea570e33e"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/CITYWIDE_UNCERTAINTY_AND_SUPPORT.md",
+      "bytes": 1381,
+      "sha256": "98d0cca76eee96e03cfb624d5924f12c103bdd8aec139c3befd46e4ed17cff1e"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/REPRODUCIBILITY.md",
+      "bytes": 2516,
+      "sha256": "95dc7a14d5504bc75b2a105db4de52674af7315017c164ea8d6a0889b2d98687"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/ROAD_NODE_FEATURE_PROVENANCE.md",
+      "bytes": 1732,
+      "sha256": "1c9b43e910d090aaf822cfc3e239f13f29e3e92bd370dadf1a96d474e33f8b07"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/ROAD_NODE_FEATURE_REGISTRY.csv",
+      "bytes": 2242,
+      "sha256": "cb7eb571eba8f3b53d012461da2badd3a08677f1acb80f89e119a4780fc0cb79"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/SPATIAL_ESTIMATION_METHOD.md",
+      "bytes": 2285,
+      "sha256": "58f33ed0d702167fccff5847fcff7477744585d4f5267943f9f4bf8ccd650f34"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/SPATIAL_VALIDATION_RESULTS.csv",
+      "bytes": 3892,
+      "sha256": "6be838d73b286c9bfe14de9a3a37c5e42c1f23a88c1d728aa5dce1772b558140"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/SPATIAL_VALIDATION_VERDICT.md",
+      "bytes": 2230,
+      "sha256": "e4e268d622273a2ff9521b85f9f041eefc584289a87d7be49ffcfd9ec952b45a"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/build_v2o_archive.py",
+      "bytes": 2692,
+      "sha256": "26e2788f7fd462e32fdd448d468e2e683dec21f136094bdf3aaf5b435e252c89"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/citywide_idw_33037.png",
+      "bytes": 496521,
+      "sha256": "c897aba8b05d2c6b6573d78f7aa3d3fa2188a31c1ab29b1a2115da46e7f26f28"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/citywide_idw_36031.png",
+      "bytes": 512426,
+      "sha256": "86f74288f91c102ee0de49505087df3432d795cac3cc6100fd33cfe0455cfc07"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/citywide_idw_37151.png",
+      "bytes": 470324,
+      "sha256": "7267c1a33706fb0bf82e1d7902c8256147a7339d7286b319be3fbd574ddcd307"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/execution_benchmarks.csv",
+      "bytes": 858,
+      "sha256": "745c38ce9ee6b3d417041d3099c7a0e7c4c94c489d9276b5de5eb87aa4d93137"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/execution_summary.json",
+      "bytes": 962,
+      "sha256": "d20ccce28f08d76c05ef5147610867e8ec9e704de0accd6b87a0a334197f93b9"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/plot_citywide_support.py",
+      "bytes": 1180,
+      "sha256": "5393eaec76d638acbe3134e15a4013b15cd5bbc38569e76776dd5fc54143ed18"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/road_node_estimates.parquet",
+      "bytes": 20623396,
+      "sha256": "45bf6740a75b22abae499934329e395d3e066d77a64f9c905615c838c12d0738"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/run_spatial_bridge.py",
+      "bytes": 10719,
+      "sha256": "038a13ef3a5d6e463a3a12ca51bbe79323fc08e37538507039d3ad28760a94e3"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/COMPLETE",
+      "bytes": 65,
+      "sha256": "60420b1676af7e5f5271ed45761db5e4685e37817943d3b77c36119f227d6ab1"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/attempt_0_20261106T025521Z.log",
+      "bytes": 1746,
+      "sha256": "109fd9c292e444734976835e9407a45557d8b87fcfe80a481c68b6f800ec8e75"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/attempts.log",
+      "bytes": 206,
+      "sha256": "e08f67d873bcfd2a13753bbb4f77a5f1e62769429e15610e57f1ad4f797416ae"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/command.nul",
+      "bytes": 87,
+      "sha256": "5784b1b10f21e6075daf750e16163089a1e2cd938e25c9df71394c0fe059ad37"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/execution_manifest.json",
+      "bytes": 834,
+      "sha256": "f8ab2f76f7c548c3327ed5cedf23d5f8ac76bde05e89e427ec377b42fa5eee25"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/max_restarts",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/supervisor.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/runs/v2o_bridge/supervisor.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/selected_snapshots.json",
+      "bytes": 358,
+      "sha256": "e5742711f815bbec695e4b91e668fb382303e1a16d788d753ef76dd45cc866f4"
+    },
+    {
+      "role": "v2o_output",
+      "path": "final_blr_results/citywide_extension/v2o/spatial_validation_pairs.parquet",
+      "bytes": 321284,
+      "sha256": "8dc6a5eca6a8d287a5842af36009a996d98f617fc4675ae205b986d6d8f5c501"
+    }
+  ]
+}
