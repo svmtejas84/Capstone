@@ -127,3 +127,5 @@
 2026-11-06 final publication check: 0 experiment/training/GPU/second-city jobs. Remote equality verified for evidence commit 09757af. Archive 3,909,520 bytes, SHA-256 bb8f086eb0c53e6579f2d82c5e3d02d24439cc89e018d06da68530564d7d859a; 138 members CRC/SHA verified.
 
 2026-11-06 closeout: no new compute or experiment use. Package and second-city handover publication is documentation-only; final log commit and remote equality check remain.
+
+2026-11-06 final status: branch push and ZIP/package hashes verified; no training/inference/second-city workloads.

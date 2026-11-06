@@ -203,3 +203,5 @@
 2026-11-06 evidence package publication: commit `09757af701c347cc532b4d8e94c4b48896751d77` pushed to `research/bengaluru-v2r-final`; remote ref verified equal to local HEAD. ZIP remains separately archived and excluded from Git. Pre-existing v2j controls and untracked v2r run output trees remain untouched.
 
 2026-11-06 final continuity closeout: evidence commit `09757af701c347cc532b4d8e94c4b48896751d77` verified on origin; added terminal resume/action/decision/quota state for final commit. No change to experiment artifacts; preserve all identified untracked v2j and v2r files.
+
+2026-11-06 final branch check: `04a20f0fbc7e65a35b8e13330c14a2f736a5598b` matched origin; package checksum verifier passed 127/127; archive SHA-256 bb8f086eb0c53e6579f2d82c5e3d02d24439cc89e018d06da68530564d7d859a passed. This final RESUME/ACTIONS record is the last documentation-only publication.

@@ -131,3 +131,5 @@
 2026-11-06 publication verification: lightweight evidence and second-city handover are on the research branch. Keep the separately verified 3.9 MB ZIP outside Git. Current new external sources missing: rejected manuscript PDF and six review texts; use handover placeholder until transferred.
 
 2026-11-06 publication terminal: after the final continuity commit is pushed, verify origin ref exactly equals local HEAD. The prior evidence commit 09757af was already confirmed at origin; generated ZIP remains outside Git.
+
+2026-11-06 terminal record: current local/remote branch equality verified after push; no remaining model or evidence work authorized in this session. Manuscript/review transfer remains a source dependency, not a reason to reconstruct content.
