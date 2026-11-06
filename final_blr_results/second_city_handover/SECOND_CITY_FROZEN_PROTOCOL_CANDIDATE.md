@@ -1,0 +1,5 @@
+# Protocol candidate (not frozen or authorized)
+
+Before any modeling, supervisor and authors must freeze: eligible-site threshold and instrumentation class; pollutant and units; source/version/quality flags; UTC and daylight-saving conversion; station inclusion and spatial folds; forecast origin and horizons; train/validation/test time split; only origin-available observations and meteorology; train-only scaling/imputation; graph construction from training metadata only; model checkpoint/code version; baselines (persistence, seasonal naive, station mean/climatology, weather/statistical ridge, GRU/GCN/MLP/TCN as feasible); λ=0, directional and generic Laplacian controls; matched masks and seeds; primary metrics and station-level uncertainty; multiplicity family; stop thresholds; resource, backup and recovery plan.
+
+Avoid the unregistered deviations documented in `results/research_audit_r1/protocol_readiness.md`. Bengaluru's repeatedly exposed test set cannot select any rule. A distinct untouched second-city test is required for confirmation.

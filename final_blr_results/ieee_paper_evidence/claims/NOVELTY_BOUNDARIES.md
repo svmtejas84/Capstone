@@ -1,0 +1,3 @@
+# Novelty boundaries
+
+GINE/GRU spatiotemporal forecasting, graph-based sensor prediction, wind-aware air-quality forecasting, physics-informed penalties, missingness-aware modeling, and station-to-road estimation each have prior art. The repository's directional hinge is an engineering regularizer, not a demonstrated conservation law. RGDR adds provenance/age-based weighting to that heuristic, but available review found close ideas in missingness-aware models and adaptive physics-loss weighting; novelty is NOT ESTABLISHED. Do not claim a new general architecture or new physical mechanism without a separate rigorous literature review and independent evidence.

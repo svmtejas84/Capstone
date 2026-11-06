@@ -1,0 +1,3 @@
+# Explainability
+
+Captum Integrated Gradients covered 18 compatible v2m station MLP/TCN checkpoint cells; 228 attribution records, each 12×18. Wrapper maximum error was 2.67e-5 µg/m³; zero nonfinite values; 85/228 records exceeded the frozen completeness flag. Median absolute delta 0.0160, 95th percentile 0.1054, max 0.2764 µg/m³; baseline magnitude sensitivity was material. Corrected ST-PIGNN, λ=0 and Laplacian checkpoints were unavailable, so their IG is UNVERIFIABLE. IG describes input effects relative to chosen baselines, not causal effects, physical validity, or road concentration accuracy. See `final_blr_results/city_scale/explainability/`.

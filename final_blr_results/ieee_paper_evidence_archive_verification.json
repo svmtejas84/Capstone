@@ -1,0 +1,12 @@
+{
+  "archive_path": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/ieee_paper_evidence_and_second_city_handover.zip",
+  "bytes": 3909520,
+  "sha256": "bb8f086eb0c53e6579f2d82c5e3d02d24439cc89e018d06da68530564d7d859a",
+  "members": 138,
+  "zip_crc": "passed",
+  "member_sha256": "passed",
+  "included_roots": [
+    "final_blr_results/ieee_paper_evidence/",
+    "final_blr_results/second_city_handover/"
+  ]
+}

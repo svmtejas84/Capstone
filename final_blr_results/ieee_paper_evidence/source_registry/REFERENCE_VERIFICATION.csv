@@ -1,0 +1,5 @@
+reference_key,verified,source,doi_or_url,notes
+che2018grud,yes,Scientific Reports publisher,https://doi.org/10.1038/s41598-018-24271-9,Metadata verified; relevance limited to missingness masks and elapsed time
+cini2022grin,yes,ICLR/OpenReview,https://openreview.net/forum?id=kOu3-S3wJ7,Metadata verified; graph time-series imputation
+hettige2024airphynet,yes,ICLR proceedings/arXiv,https://arxiv.org/abs/2402.03784,Metadata verified; physics-guided air-quality model
+original_manuscript_references,no,ST_PIGNN_IEEE_Big_Data_Conf(2).pdf,NOT FOUND,Full bibliography cannot be audited until source transferred

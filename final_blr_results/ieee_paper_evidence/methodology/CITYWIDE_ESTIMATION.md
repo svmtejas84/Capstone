@@ -1,0 +1,3 @@
+# Citywide estimation
+
+The road topology has 154,902 nodes but is not the forecasting graph. v2o produced retrospective IDW estimates. v2r generated three six-hour neural-assisted estimates per road node using corrected station forecasts plus a compact spatial decoder: 464,706 values total. They are experimental estimates, not observations, and have unfavorable held-out decoder evidence. Median nearest-monitor distance 3.315 km; 19.45% of nodes exceed 5 km; 60.58% lie outside the monitor convex hull. These are support diagnostics, not calibrated intervals. v2r expansion took 1.12–1.30 s per snapshot, peak RSS about 1.49 GB, GPU VRAM 0 for expansion; station source-fold models used up to 1.831 GB GPU. No independent roadside accuracy.
