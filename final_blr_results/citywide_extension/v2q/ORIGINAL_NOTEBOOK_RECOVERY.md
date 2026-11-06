@@ -1,0 +1,20 @@
+# Original production notebook recovery
+
+Source: `notebooks/production/evaluated_wind_advection.ipynb`, SHA-256 `242d0cf3d2f95c78a011841ed2aec2e100cc8c326e6211c918a8bd70504b8161`, inspected statically on 2026-11-06. It has 26 code cells, zero Markdown cells, and zero saved outputs or execution counts. Cell indices here are zero based. Historical audit used a different notebook hash (`0c2f...`) and therefore supports the extracted implementation and checkpoint, not byte-for-byte execution of today's notebook. No cell was executed in this recovery.
+
+| Component | Found? | Original code location | Reusable? | Limitation |
+|---|---|---|---|---|
+| OSM topology and indexed coordinates | Yes | cell 2; `data/processed/graph/topology_graph_pyg_inference.pt`, node map, `data/graphs/bangalore_utm_nodes.parquet` | Directly as topology | 154,902 road nodes are not monitors; graph does not encode air transport. |
+| 64 KMeans partitions | Yes | cells 2–3; `src/stpignn/legacy_canonical.py:SpatialPartition` | With corrections | 7,134 cross-partition message arcs omitted; no halo equivalence. |
+| GINE–GRU model | Yes | cell 11 imports `src.stpignn.STPIGNN`; source `gnn/model.py:STPIGNN` | Historical architecture | 16 duplicated channels, direct one-step output, distinct from corrected 18-channel model. |
+| Node-hour input builder | Yes | cells 4–5, 9; `TierAwareClusterDatasetV3` in `legacy_canonical.py` | Historical only | 22/154,902 temporal node series; cell 5 copies entire nearest series to 154,880 nodes; modulo indexing destroys calendar alignment. |
+| Wind mask and penalty | Yes | cells 7, 13, 20; `legacy_canonical.py` | Audit only | Uses first node's scaled wind-direction channel as degrees; reverse-bearing mask and hinge are heuristics, not conservation. |
+| Training and checkpoint save | Yes | cells 0, 9, 11, 13 | Historical replay | Input window's last hour equals supervised target hour; no forecast lead, zero targets treated as missing; checkpoint epoch 2. |
+| Checkpoint load | Yes | cells 14–17, 20; `gnn/checkpoint.py` | Historical replay | Root `citywide_stpignn_best.pt` loads strictly (16 input/16 edge, 96 hidden, 2 GINE, 98,497 parameters); not corrected v2j weights. |
+| Full-road inference/plots | Partial | cells 17–19, 24 | Technical demonstration only | Partition outputs use copied inputs and lost boundary arcs; cell 19 averages across validation times, so maps are not forecast snapshots. |
+| Captum IG | Yes | cell 14; `src/stpignn/explain.py` | With corrections | Zero baseline and duplicate feature names; target wrapper/quality require separate audit. |
+| Navigation/routing | External | `gnn/stpignn_inference.py`, `scripts/prepare_routing_snapshot.py` | Historical only | Static fallback and unvalidated edge concentrations; notebook itself contains no routing optimizer. |
+
+The notebook **contains road-partition model training and forward passes**, but **does not establish a scientifically valid full-road forecasting pathway**. The graph has 154,902 nodes; supervised loss is at 23 snapped `train_mask` nodes and actual temporal rows cover 22 nodes. Cell 5's nearest-neighbor *timeline copying* fills the rest. Cell 9 sets target time to `t_start + 11` while input spans `t_start..t_start+11`; the pollutant input at the target hour can therefore expose the target. These are methodological blockers, not missing software conveniences. No replacement architecture may reuse these input rules.
+
+Surviving root best checkpoint SHA-256 `7f4bc65f0aaba920f2269a1b385b7c408b5c3e2ce7855233af9a8523ca2cdd3f` loads strictly via `gnn/checkpoint.py`. Historical `results/replay_canonical.json` reports a 75.97 s V100 replay, 308 scored validation pairs, MAE 53.138 µg/m³ and near-zero negative correlation; this is an **audited historical replay**, not a new independent v2q forecast validation. `results/audit_canonical.json` records 22 temporal node IDs, 23 graph sensor-mask nodes and 15 partitions with temporal source rows. The current notebook file differs from the older audit hash, so exact saved-cell-output reproduction is unavailable.
