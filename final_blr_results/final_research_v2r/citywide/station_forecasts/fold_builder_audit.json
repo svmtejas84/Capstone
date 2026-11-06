@@ -1,0 +1,18 @@
+{
+  "audit_station_id": 5607,
+  "builder_seconds": 2.724438608624041,
+  "station_count": 15,
+  "feature_channels_base": 13,
+  "fit_station_count": 14,
+  "heldout_excluded_from_fit": true,
+  "weather_half_hour_rule": true,
+  "weather_cutoff_safe": true,
+  "scored_test_stations": 11,
+  "unscored_test_station_ids": [
+    5547,
+    5548,
+    6975,
+    2498781
+  ],
+  "source_forecasts_generated": false
+}

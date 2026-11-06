@@ -114,3 +114,7 @@
 2026-11-06 v2q final: zero neural fits, zero GPU hours, zero v2q road-node forward predictions; static notebook recovery, one CPU checkpoint strict-load, 3 synthetic bridge tests. Full-city runtime and VRAM not measured. Supplemental local ZIP 21433 bytes; five older ZIPs retained; no active worker.
 
 2026-11-06 v2r startup: zero new fits, zero GPU hours; host V100 32 GB free except 12 MiB display usage, 120 GB disk free; no study job active.
+
+2026-11-06 v2r preflight: three code-0 one-batch V100 attempts because initial script omitted supervisor COMPLETE marker; each ~0.537 s forward/backward, 1.83 GB peak, no optimizer step. One 2.72 s CPU fold build. No model fit yet; RGDR training gate failed.
+
+2026-11-06 v2r final: 30 corrected source-fit cells completed in 12m04s campaign wall, max fold CUDA allocation 1.831 GB, cumulative per-cell fit wall 447.91 s (168.73 inner + 279.17 outer); decoder LOSO evaluator took 142.09 s per attempt; supervisor marker repaired after three identical code-0 executions because its contract was omitted by the evaluator. Full-city supervised stage completed in 60 s wall, including decoder fit, maps and parquet; road-node expansion 1.12–1.30 s per timestamp, peak RSS 1,494,616 KiB, 0 GPU VRAM. Decoder outputs 3 × 154,902 rows, 8.9 MB each. RGDR tests 13/13 pass; zero RGDR model fits/GPU hours after failed exposure rule. All three v2r supervised run directories are COMPLETE; no v2r worker active. Disk remains ~120 GB before archive.

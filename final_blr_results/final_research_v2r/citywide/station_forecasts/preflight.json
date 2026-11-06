@@ -1,0 +1,11 @@
+{
+  "batch_size": 512,
+  "hours_per_fit_upper_epochs": 20,
+  "measured_forward_backward_seconds": 0.5372881963849068,
+  "peak_gpu_bytes": 1829728768,
+  "parameter_count": 95809,
+  "minimum_fold_models": 225,
+  "projected_20_epoch_gpu_hours_lower_bound": 18.805086873471737,
+  "source_arrays": "results/data_v2j_arrays.npz",
+  "note": "shape-only, no optimizer or data preprocessing; projection excludes fold building, validation, cross-fitting time blocks and I/O"
+}

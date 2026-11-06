@@ -1,0 +1,16 @@
+station_id,station_index,observed_train_hours,observed_validation_hours,observed_test_hours,test_scored
+5547,0,2593,0,0,False
+5548,1,2,0,0,False
+5607,2,0,0,1620,True
+6973,3,5248,1601,302,True
+6974,4,5511,1808,8,True
+6975,5,2565,0,0,False
+6983,6,0,0,1901,True
+6984,7,0,0,1877,True
+2498781,8,9278,0,0,False
+3409385,9,2645,1537,2113,True
+3409388,10,2342,773,2243,True
+3409393,11,2454,1484,2207,True
+6119271,12,0,0,845,True
+6146655,13,0,0,212,True
+6206921,14,0,0,1255,True
