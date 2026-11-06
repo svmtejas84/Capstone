@@ -1,4 +1,12 @@
-# BENGALURU v2n COMPLETE — EXPERIMENTAL RESEARCH FROZEN
+# BENGALURU v2o/v2p EXTENSION IN PROGRESS
+
+Startup 2026-11-06: branch `research/bengaluru-v2o-v2p` created from verified `c50f58f8107ddd485b8f82a21df13c2f7c2436d8`; previous v2n reports remain frozen below. Current phase: v2o citywide spatial-estimation protocol and feature audit. No v2o/v2p worker active. The 23 pre-existing v2j untracked run controls remain untouched. Disk available 121 GB. CUDA driver is unavailable inside the sandbox; host V100 availability is unverified this session. Existing graph is 154,902 nodes / 424,550 message arcs; corrected ST-PIGNN road inference remains incompatible without missing checkpoints and node-hour inputs. Existing W6 LOSO favors weather/static ridge over ST-PIGNN on 11 scored stations. Independent road-node truth, differentiated citywide weather and external USB backup remain absent/unverified.
+
+Pending v2o: freeze a station-isolated spatial estimator protocol; construct versioned road-node support/provenance features; validate the bridge on held-out stations without target leakage; execute bounded/full road-node *estimation* only if the bridge passes its predefined gate; record maps, benchmarks, uncertainty/support and a terminal v2o verdict. Pending v2p after v2o completion: primary-source prior-art review, exact directional-loss specification, modular reliability-gated implementation, synthetic tests, bounded training/validation-only diagnostics, frozen future evaluation plan and handoff. No unrestricted GPU campaign or Bengaluru test-based RGDR selection is authorized.
+
+Recovery: `cd /home/jupyter-1nt23cb058/Capstone`; `git branch --show-current`; `git rev-parse HEAD`; `git status --short`; `df -h .`; `ps -eo pid,args | rg 'run_supervised|citywide|rgdr'`; `cat results/codex_log/RESUME.md`; `cat final_blr_results/city_scale/final_evidence/FINAL_BENGALURU_RESEARCH_VERDICT.md`; inspect `final_blr_results/citywide_extension/v2o/` and `v2p_rgdr/` for progress. Do not assume detached processes survive restart. Preserve v2j–v2n and all three existing ZIPs.
+
+## Prior frozen round
 
 2026-11-06T02:39:54Z final result commit `6ccee849147310e2584267467471dad6b78363b7` was pushed and `git ls-remote` returned the identical remote branch SHA. A final continuity-log commit follows; use `git rev-parse HEAD` and `git ls-remote` for the final log commit. No study job remains active.
 
