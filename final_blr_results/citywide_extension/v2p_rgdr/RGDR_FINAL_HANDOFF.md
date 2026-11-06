@@ -1,0 +1,9 @@
+# v2p RGDR terminal handoff
+
+**Method development complete; predictive evaluation NOT RUN.** A binary provenance gate, exact directional loss, generic smoothing control and focused synthetic tests are implemented. Eight physics/RGDR tests passed. The all-one gate reproduces the original corrected wind-masked penalty. No ST-PIGNN architecture or historical model result was changed.
+
+Primary-source prior art shows that missingness-aware forecasting, adaptive physics-loss weighting and wind-aware graph air-quality models already exist. A broad novelty claim is **not established**. The narrower candidate contribution is a falsifiable application-specific comparison of a cutoff-observation gate on this repository's directional hinge against fixed and reliability-weighted generic controls.
+
+Training/validation masks expose a major negative diagnostic: the binary gate retains only about 2.3% of eligible fixed-directional training edge instances and leaves about 79–80% of training target hours with no gated edge. The result may make RGDR ineffective or unstable; no gate relaxation was chosen from test results. There is **no validation MAE**, no multi-seed comparative fit, no Bengaluru test result and no external confirmation. CUDA was unavailable in the sandbox; no neural training was attempted. The full future plan, four controls, 15-test family, external eligibility gate, 180-fit ceiling and 24-hour GPU ceiling are in `RGDR_FROZEN_EVALUATION_PROTOCOL.md` for supervisor review. Its execution and any second-city data collection require separate authorization.
+
+The local v2p archive, checksum manifest and exact recovery commands are recorded in `RGDR_REPRODUCIBILITY.md` and `v2p_archive_verification.json`. Keep all older archives. This phase ends at a documented method/protocol state, not at a positive research finding or publishable RGDR claim.

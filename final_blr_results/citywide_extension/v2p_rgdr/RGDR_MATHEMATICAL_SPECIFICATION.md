@@ -1,0 +1,11 @@
+# Exact RGDR mathematical specification
+
+The existing `src/stpignn/physics_v2.py:batched_penalty(..., variant="corrected_mask")` uses directed edge `(src,dst)` and `diff = pred_norm[:,dst] − pred_norm[:,src]`. The mask selects an edge whose bearing aligns with wind *transport-to* (raw wind-from +180°, half angle 37.5°). For west-from wind (270°), eastbound edges are selected. The original hinge penalizes a **higher predicted downwind value**. Its geometric factor is `g_e = sigmoid(edge_length_m/1000)`; the penalty is `mean_{M=1} ReLU(g_e·diff)^2`, with `pred_norm = predicted physical PM2.5 / cleaned training target SD`. This is a monotonicity heuristic, not a conservation balance.
+
+Let `m_{b,i,c}` be the existing binary `lag_is_imputed` input indicator for station i at forecast cutoff c, where 0 means the immediate PM2.5 lag was observed. Define observation reliability `o=1−m`, clipped to {0,1} after validation, and edge gate `r_{b,e}=o_{b,src,c}o_{b,dst,c}`. No target value, future observation, test outcome or learned weight enters r. The proposed penalty is
+
+`P_RGDR = Σ_{b,e} M_{b,e} r_{b,e} [ReLU(g_e (ŷ_norm[b,dst]−ŷ_norm[b,src]))]^2 / max(Σ_{b,e} M_{b,e} r_{b,e}, 1)`.
+
+`L_total = L_data + λ P_RGDR`, using the same global λ and warm-up as the matched fixed-directional model. When `r≡1`, RGDR equals the existing corrected masked penalty to floating-point tolerance. With zero eligible reliable edges, it returns differentiable zero. The denominator matches the original masked-mean definition at constant reliability; it does not silently rescale by all graph edges.
+
+Controls: (1) λ=0; (2) original fixed directional `M` with r≡1; (3) reliability-weighted **generic symmetric smoothing** over all directed station edges, `Σ r (g_e diff)^2 / max(Σ r,1)`, which has the same reliability signal and geometric factor but no wind mask or rectified sign; (4) RGDR. The generic penalty need not have the same raw magnitude. A future matched experiment must report each train-only penalty magnitude and gradient norm and prespecify any training-only scale calibration for the generic control before validation/test. Do not claim a directional mechanism if RGDR merely changes effective regularization strength.

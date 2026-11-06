@@ -1,0 +1,119 @@
+{
+  "stage": "method implementation and train/validation mask diagnostics only",
+  "source_branch": "research/bengaluru-v2o-v2p",
+  "dataset_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5",
+  "training_runs": 0,
+  "validation_forecast_metrics": null,
+  "test_access": false,
+  "novelty": "NOT ESTABLISHED",
+  "artifacts": [
+    {
+      "role": "source",
+      "path": "src/stpignn/rgdr.py",
+      "bytes": 3766,
+      "sha256": "4a475cb81ca95f1607ca61fa64a945d66be754431116502dc427c44c00f2f638"
+    },
+    {
+      "role": "source",
+      "path": "src/stpignn/physics_v2.py",
+      "bytes": 5706,
+      "sha256": "7b1b3c5bccebde4d8e84a1ddecb683b10a28680ef0750c8dff0146ffaaf225c3"
+    },
+    {
+      "role": "source",
+      "path": "tests/test_rgdr.py",
+      "bytes": 3145,
+      "sha256": "d1cab195f23ae63c34f13dac49d82a071960bc01c66c3a5507224dddfc293bc7"
+    },
+    {
+      "role": "source",
+      "path": "configs/data_v2.yaml",
+      "bytes": 1125,
+      "sha256": "377f27e6d9dee53c7686e149cb751040fcd27a25013b10e52cd3f60cf09216b1"
+    },
+    {
+      "role": "source",
+      "path": "final_blr_results/baselines/v2m/data/data_v2m_arrays.npz",
+      "bytes": 5624007,
+      "sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_CONTROL_COMPARISONS.md",
+      "bytes": 1237,
+      "sha256": "bf7c9a86ad35ed3857e6e4c0af38fcaeabb3640378fd5f8c317ba6613e342836"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_FINAL_HANDOFF.md",
+      "bytes": 1871,
+      "sha256": "5de24a3b8dee68577fc9a18949d7bd2f690fa655a72c8b0d6c586fe388a60bd9"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_FROZEN_EVALUATION_PROTOCOL.md",
+      "bytes": 3577,
+      "sha256": "0986ff4b1ccf0d1da05252f9ebd9d4b486dc3ba6d07756cfd3381ca69565c4c8"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_IMPLEMENTATION_AND_TESTS.md",
+      "bytes": 1835,
+      "sha256": "3fa7dd65d08a0e5530545b04b5809e1637c743fbdf6aee8228ec409212aea1ca"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_MATHEMATICAL_SPECIFICATION.md",
+      "bytes": 2251,
+      "sha256": "d96147f56b61821d01b13d6b37d6c4f173c6143c03802e50bb538e85a3549096"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_PRIOR_ART_REVIEW.md",
+      "bytes": 2610,
+      "sha256": "ad41dbcfbfc82d95872d4dae7f206f3f22e0da9a623605a8fb8ac1bc8fe9c154"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_RELIABILITY_PROVENANCE.md",
+      "bytes": 1309,
+      "sha256": "8e84be44ae5f88238b5b4e59c8b4d5fc4df920fb5d47ea6eb253e591ce4add5f"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_REPRODUCIBILITY.md",
+      "bytes": 1669,
+      "sha256": "933635fe058cb86d80c523b32d97467f5da9a16948b0645dcf4347fe498f4f89"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_RESEARCH_HYPOTHESIS.md",
+      "bytes": 1298,
+      "sha256": "68e0ecbf446e6cfdf0a27dc6e1a48c1259097222dbf54ac9e77cd36c66bd7a4a"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/RGDR_VALIDATION_ONLY_RESULTS.md",
+      "bytes": 1964,
+      "sha256": "69c6d7a16fa7e6adad06bee1eaf71665a8e4844c18a803f09d21f7c757bc5a21"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/build_v2p_archive.py",
+      "bytes": 2647,
+      "sha256": "936a68bb2a9c33ba3823914bd9fd0a3ed94a80f80741a941c2a3cb4ccdef2244"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/gate_diagnostics.csv",
+      "bytes": 1527,
+      "sha256": "c359cd8af0951c41251f22e24d9f411add211d29862174eed8fdbf332cf0e3a4"
+    },
+    {
+      "role": "v2p_output",
+      "path": "final_blr_results/citywide_extension/v2p_rgdr/gate_diagnostics.py",
+      "bytes": 2154,
+      "sha256": "9fa97809a5fe60cf363f1c10415bc38050d0b9ef74f9fc2167e03894ce3f2ece"
+    }
+  ]
+}

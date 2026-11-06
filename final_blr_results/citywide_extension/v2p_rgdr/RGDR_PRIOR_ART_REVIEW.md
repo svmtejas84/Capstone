@@ -1,0 +1,13 @@
+# RGDR prior-art review (primary sources, checked 2026-11-06)
+
+| Work | Relevant established idea | Difference and remaining uncertainty |
+|---|---|---|
+| [Che et al., GRU-D, *Scientific Reports* 2018](https://www.nature.com/articles/s41598-018-24271-9) | Missingness masks and time intervals can be informative model inputs. | RGDR would use a cutoff missingness indicator to weight a loss term, not change recurrent imputation. Missingness-aware modeling is established. |
+| [Cini et al., GRIN, ICLR 2022](https://openreview.net/pdf?id=kOu3-S3wJ7) | Graph message passing can reconstruct missing multivariate sensor time series. | RGDR is not a new graph imputer. It reweights an existing directional penalty. |
+| [McClenny & Braga-Neto, SA-PINNs](https://arxiv.org/abs/2009.04544) | Pointwise adaptive physics-loss weights are established. | RGDR uses nonlearned provenance-based edge weights; adaptive physics weighting itself is not novel. |
+| [Xiang et al., loss-balanced PINNs, *Neurocomputing* 2022](https://www.sciencedirect.com/science/article/pii/S092523122200546X) | Physics/data loss balancing can be uncertainty-based and adaptive. | RGDR leaves the global λ fixed and modulates eligible graph edges only. |
+| [Hettige et al., AirPhyNet, ICLR 2024](https://openreview.net/pdf?id=JW3jTjaaAB) | Air-quality graph forecasting with explicit advection/diffusion-guided modeling is established. | RGDR does not add a governing PDE or validated transport operator; its hinge remains heuristic. |
+| [GraPhy, *ACM TOSN* 2026](https://doi.org/10.1145/3734869) | Sparse-monitor air-quality imputation uses coarse wind and graph convection features. | This is close environmental context; no claim that RGDR invents wind-aware sparse-monitor learning. |
+| [TransNet, *npj Clean Air* 2026](https://www.nature.com/articles/s44407-026-00052-x) | Directional transport and Laplacian-type graph operators for PM2.5 forecasting have been explored. | RGDR does not inherit its mass-conserving formulation; a simple directionally weighted hinge is narrower. |
+
+**Novelty status: NOT ESTABLISHED.** This search found missingness-aware temporal models, adaptive per-point physics weights, and wind-aware sparse-sensor graph methods. A binary provenance gate on the repository's particular directional hinge may be an implementation-specific experimental variant, but we cannot claim a new general mechanism from this review. A publishable contribution would need a more exhaustive literature search and independent matched-control evidence. No cited paper is used to assert that RGDR will improve Bengaluru accuracy.

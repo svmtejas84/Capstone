@@ -85,3 +85,4 @@ data/processed/graph/*.pkl
 # Extension local archives and supervised controls; reports and scripts are tracked.
 /final_blr_results/citywide_extension/v2o/research_results_v2o.zip
 /final_blr_results/citywide_extension/v2o/runs/
+/final_blr_results/citywide_extension/v2p_rgdr/research_results_v2p_rgdr.zip
