@@ -77,3 +77,7 @@ data/processed/graph/*.pkl
 !results/neural_final_v2b_run.json
 !results/neural_longer_v2b_run.json
 !results/gate_v2b_bootstrap.json
+
+# v2n local supervised controls and supplemental archive; small reports are tracked.
+/final_blr_results/city_scale/explainability/runs/
+/final_blr_results/city_scale/reproducibility/research_results_v2n.zip

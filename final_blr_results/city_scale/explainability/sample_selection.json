@@ -1,0 +1,365 @@
+{
+  "rule": "first/middle/last observed station and first/middle/last observed test target per horizon; masks only",
+  "samples": [
+    {
+      "horizon": 1,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 34680,
+      "target_time_utc": "2025-12-16 00:00:00+00:00",
+      "cutoff_time_utc": "2025-12-15 23:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 35886,
+      "target_time_utc": "2026-02-04 06:00:00+00:00",
+      "cutoff_time_utc": "2026-02-04 05:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 22:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 32845,
+      "target_time_utc": "2025-09-30 13:00:00+00:00",
+      "cutoff_time_utc": "2025-09-30 12:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 35692,
+      "target_time_utc": "2026-01-27 04:00:00+00:00",
+      "cutoff_time_utc": "2026-01-27 03:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 22:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 35506,
+      "target_time_utc": "2026-01-19 10:00:00+00:00",
+      "cutoff_time_utc": "2026-01-19 09:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 36162,
+      "target_time_utc": "2026-02-15 18:00:00+00:00",
+      "cutoff_time_utc": "2026-02-15 17:00:00+00:00"
+    },
+    {
+      "horizon": 1,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 22:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 34680,
+      "target_time_utc": "2025-12-16 00:00:00+00:00",
+      "cutoff_time_utc": "2025-12-15 21:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 35886,
+      "target_time_utc": "2026-02-04 06:00:00+00:00",
+      "cutoff_time_utc": "2026-02-04 03:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 20:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 32845,
+      "target_time_utc": "2025-09-30 13:00:00+00:00",
+      "cutoff_time_utc": "2025-09-30 10:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 35692,
+      "target_time_utc": "2026-01-27 04:00:00+00:00",
+      "cutoff_time_utc": "2026-01-27 01:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 20:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 35506,
+      "target_time_utc": "2026-01-19 10:00:00+00:00",
+      "cutoff_time_utc": "2026-01-19 07:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 36162,
+      "target_time_utc": "2026-02-15 18:00:00+00:00",
+      "cutoff_time_utc": "2026-02-15 15:00:00+00:00"
+    },
+    {
+      "horizon": 3,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 20:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 34680,
+      "target_time_utc": "2025-12-16 00:00:00+00:00",
+      "cutoff_time_utc": "2025-12-15 18:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 35886,
+      "target_time_utc": "2026-02-04 06:00:00+00:00",
+      "cutoff_time_utc": "2026-02-04 00:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 17:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 32845,
+      "target_time_utc": "2025-09-30 13:00:00+00:00",
+      "cutoff_time_utc": "2025-09-30 07:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 35692,
+      "target_time_utc": "2026-01-27 04:00:00+00:00",
+      "cutoff_time_utc": "2026-01-26 22:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 17:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 35506,
+      "target_time_utc": "2026-01-19 10:00:00+00:00",
+      "cutoff_time_utc": "2026-01-19 04:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 36162,
+      "target_time_utc": "2026-02-15 18:00:00+00:00",
+      "cutoff_time_utc": "2026-02-15 12:00:00+00:00"
+    },
+    {
+      "horizon": 6,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 17:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 34680,
+      "target_time_utc": "2025-12-16 00:00:00+00:00",
+      "cutoff_time_utc": "2025-12-15 12:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 35886,
+      "target_time_utc": "2026-02-04 06:00:00+00:00",
+      "cutoff_time_utc": "2026-02-03 18:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 11:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 32845,
+      "target_time_utc": "2025-09-30 13:00:00+00:00",
+      "cutoff_time_utc": "2025-09-30 01:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 35692,
+      "target_time_utc": "2026-01-27 04:00:00+00:00",
+      "cutoff_time_utc": "2026-01-26 16:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 11:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 35506,
+      "target_time_utc": "2026-01-19 10:00:00+00:00",
+      "cutoff_time_utc": "2026-01-18 22:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 36162,
+      "target_time_utc": "2026-02-15 18:00:00+00:00",
+      "cutoff_time_utc": "2026-02-15 06:00:00+00:00"
+    },
+    {
+      "horizon": 12,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-28 11:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 34680,
+      "target_time_utc": "2025-12-16 00:00:00+00:00",
+      "cutoff_time_utc": "2025-12-15 00:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 35886,
+      "target_time_utc": "2026-02-04 06:00:00+00:00",
+      "cutoff_time_utc": "2026-02-03 06:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 5607,
+      "station_index": 2,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-27 23:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 32845,
+      "target_time_utc": "2025-09-30 13:00:00+00:00",
+      "cutoff_time_utc": "2025-09-29 13:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 35692,
+      "target_time_utc": "2026-01-27 04:00:00+00:00",
+      "cutoff_time_utc": "2026-01-26 04:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 3409385,
+      "station_index": 9,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-27 23:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 35506,
+      "target_time_utc": "2026-01-19 10:00:00+00:00",
+      "cutoff_time_utc": "2026-01-18 10:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 36162,
+      "target_time_utc": "2026-02-15 18:00:00+00:00",
+      "cutoff_time_utc": "2026-02-14 18:00:00+00:00"
+    },
+    {
+      "horizon": 24,
+      "station_id": 6206921,
+      "station_index": 14,
+      "target_index": 37151,
+      "target_time_utc": "2026-03-28 23:00:00+00:00",
+      "cutoff_time_utc": "2026-03-27 23:00:00+00:00"
+    }
+  ]
+}

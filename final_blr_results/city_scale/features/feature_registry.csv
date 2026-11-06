@@ -1,0 +1,19 @@
+index,station_feature,physical_unit,station_preprocessing,road_counterpart,road_citywide_coverage,compatibility
+0,pm25_lagged,ug/m3,train-fitted standardized log1p and causal imputation,station_pm25,no,BLOCKED
+1,pm10,ug/m3,train-fitted standardized log1p and causal fill,station_pm10,no,BLOCKED
+2,no2,ppb,train-fitted z-score and causal fill,station_no2,no,BLOCKED
+3,so2,ppb,train-fitted z-score and causal fill,station_so2,no,BLOCKED
+4,co,ppb,train-fitted z-score and causal fill,station_co,no,BLOCKED
+5,wind_speed,m/s,train-fitted z-score,weather_wind_speed_10m,no,BLOCKED
+6,wind_gusts,m/s,train-fitted z-score,weather_wind_gusts_10m,no,BLOCKED
+7,temperature,degC,train-fitted z-score,weather_temperature_2m,no,BLOCKED
+8,humidity,percent,train-fitted z-score,weather_relative_humidity_2m,no,BLOCKED
+9,surface_pressure,hPa,train-fitted z-score,weather_surface_pressure,no,BLOCKED
+10,wind_direction_sin,unitless,train-fitted z-score of sine,weather_wind_direction_10m,no,BLOCKED
+11,wind_direction_cos,unitless,train-fitted z-score of cosine,weather_wind_direction_10m,no,BLOCKED
+12,srtm_elevation,m,train-fitted z-score,elevation,yes,APPROXIMATE WITH ASSUMPTIONS
+13,lag_is_imputed,binary,raw missingness indicator,none,no,BLOCKED
+14,hour_sin,unitless,raw calendar sine,none,derivable,APPROXIMATE WITH ASSUMPTIONS
+15,hour_cos,unitless,raw calendar cosine,none,derivable,APPROXIMATE WITH ASSUMPTIONS
+16,weekday_sin,unitless,raw calendar sine,none,derivable,APPROXIMATE WITH ASSUMPTIONS
+17,weekday_cos,unitless,raw calendar cosine,none,derivable,APPROXIMATE WITH ASSUMPTIONS

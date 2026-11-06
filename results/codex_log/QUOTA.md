@@ -100,3 +100,5 @@
 2026-11-05T19:55:23.933735+00:00 v2m completed 50/50 final cells. Supervised all-groups run about 166 seconds; final-cell fit time sum 84.8 seconds; peak PyTorch GPU allocated memory 125,483,008 bytes. 10 model/horizon groups and supplementary archive verified. No GPU training active.
 
 2026-11-05T20:23:01.890818+00:00 v2n handover-only checkpoint: zero v2n training, inference or explainability jobs launched. V100 idle. 121 GB free. Lightweight documentation/verification only; no quota-consuming experiment.
+
+2026-11-06 v2n execution checkpoint: zero new model-training cells, zero full-road forward passes and zero GPU compute measured. Captum station-only IG ran on CPU under the supervised worker; 228 records produced. The detached launcher did not persist in the sandbox; foreground worker attempts exited 0 and output verification repaired its initially missing COMPLETE marker. Existing local ZIPs rehashed successfully; external USB copy remains pending. No active v2n job.

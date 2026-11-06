@@ -1,0 +1,16 @@
+{
+  "protocol": "final_blr_results/city_scale/protocol/CITY_SCALE_PROTOCOL.md",
+  "road_graph": "data/processed/graph/topology_graph.pt",
+  "raw_nodes": 154902,
+  "message_arcs": 424550,
+  "horizons_hours": [1, 3, 6, 12, 24],
+  "timestamp_rule": "first, middle, last available test cutoff UTC time if compatibility gate passes",
+  "sequence": ["small road subgraph", "medium road subgraph", "full road graph"],
+  "partition_halo": "at least two message-passing hops; verify equivalence before partitioned output",
+  "gate_status": "BLOCKED",
+  "executed_nodes": 0,
+  "reason": "missing corrected ST-PIGNN checkpoint and complete compatible road-node dynamic features/anchors",
+  "runtime_seconds": null,
+  "gpu_peak_bytes": null,
+  "output_sha256": null
+}
