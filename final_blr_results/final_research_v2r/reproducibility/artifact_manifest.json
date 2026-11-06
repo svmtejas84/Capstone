@@ -1,7 +1,7 @@
 {
   "round": "Bengaluru v2r",
   "branch": "research/bengaluru-v2r-final",
-  "source_commit_before_archive_manifest": "da851aee93197311752d21cefce3eae4cdd6f96d",
+  "source_commit_before_archive_manifest": "c4d9e95dad8901d284251c2a0e900ec8cae347a2",
   "artifacts_indexed": 442,
   "checksums_csv": "final_blr_results/final_research_v2r/reproducibility/artifact_checksums.csv",
   "self_hashes_excluded": [
