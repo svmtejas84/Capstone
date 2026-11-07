@@ -1,0 +1,33 @@
+{
+  "volumes": 16,
+  "appendices": 15,
+  "master_plus_volume_appendix_words": 103051,
+  "full_report_exhibits_unique": 100,
+  "direct_source_checks": 16,
+  "distinct_source_artifacts_referenced": 180,
+  "copied_numeric_tables": 19,
+  "figure_files": 28,
+  "figure_pairs": 14,
+  "display_equations_in_equation_register": 11,
+  "experiment_register_rows": 20,
+  "reachable_git_commits": 213,
+  "source_hash_mismatches": [],
+  "appendix_source_mismatches": [],
+  "table_hash_mismatches": [],
+  "figure_hash_mismatches": [],
+  "broken_authored_links": [],
+  "key_numeric_checks": "PASS",
+  "original_notebook_cells": 26,
+  "original_notebook_sha256": "242d0cf3d2f95c78a011841ed2aec2e100cc8c326e6211c918a8bd70504b8161",
+  "original_manuscript_pdf_present": false,
+  "full_review_texts_present": false,
+  "unresolved_source_categories": [
+    "submitted BigData PDF",
+    "four BigData full reviews",
+    "two DELCON full reviews",
+    "original manuscript bibliography/page and figure mapping",
+    "some historical checkpoints and training state",
+    "independent roadside observations and external replication"
+  ],
+  "pdf_edition": "NOT GENERATED: pandoc unavailable; authoritative Markdown complete"
+}

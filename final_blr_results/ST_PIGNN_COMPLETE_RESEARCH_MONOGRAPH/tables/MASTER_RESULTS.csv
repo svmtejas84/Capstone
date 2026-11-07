@@ -1,0 +1,14 @@
+experiment,protocol,population,metric,estimate,unit,source,verification_class,interpretation
+v2j_v2l_physics,horizon 1,11 stations/14583 pairs,MAE_delta_physics_minus_lambda0,-0.026,ug/m3,final_blr_results/physics_audit/FINAL_PHYSICS_VERDICT.md,verified_report,near zero
+v2j_v2l_physics,horizon 3,11 stations/14583 pairs,MAE_delta_physics_minus_lambda0,-0.13,ug/m3,final_blr_results/physics_audit/FINAL_PHYSICS_VERDICT.md,verified_report,modest favorable; family-sensitive
+v2j_v2l_physics,horizon 6,11 stations/14583 pairs,MAE_delta_physics_minus_lambda0,-0.41,ug/m3,final_blr_results/physics_audit/FINAL_PHYSICS_VERDICT.md,verified_report,comparatively stable favorable; no physical specificity
+v2j_v2l_physics,horizon 12,11 stations/14583 pairs,MAE_delta_physics_minus_lambda0,-0.262,ug/m3,final_blr_results/physics_audit/FINAL_PHYSICS_VERDICT.md,verified_report,moderate favorable
+v2j_v2l_physics,horizon 24,11 stations/14583 pairs,MAE_delta_physics_minus_lambda0,0.145,ug/m3,final_blr_results/physics_audit/FINAL_PHYSICS_VERDICT.md,verified_report,unfavorable
+v2m_vs_mlp,horizon 6,14583 pairs,paired_MAE_delta_STPIGNN_minus_MLP,-0.8066,ug/m3,final_blr_results/baselines/v2m/comparisons/primary_ten_comparisons.csv,verified_summary,Holm-adjusted p=0.0049975; weather protocols differ
+v2m_vs_mlp,horizon 12,14583 pairs,paired_MAE_delta_STPIGNN_minus_MLP,-0.5171,ug/m3,final_blr_results/baselines/v2m/comparisons/primary_ten_comparisons.csv,verified_summary,Holm-adjusted p=0.0089955; weather protocols differ
+v2m_vs_tcn,all horizons,14583 pairs per horizon,Holm_significant_comparisons,0.0,count,final_blr_results/baselines/v2m/comparisons/primary_ten_comparisons.csv,verified_summary,no contrast survives Holm
+W6_LOSO,all horizons,11 scored sites/4 unscored,STPIGNN_MAE,22.314,ug/m3,final_blr_results/city_scale/spatial_validation/SPATIAL_VALIDATION_VERDICT.md,verified_report,weather/static ridge 20.624; ST-PIGNN loses
+v2r_decoder_LOSO,h6,11 sites/14583 pairs,decoder_MAE,27.36,ug/m3,final_blr_results/final_research_v2r/citywide/spatial_validation/SPATIAL_VALIDATION_VERDICT.md,verified_saved_table,IDW 20.154 and mean 20.634 outperform
+v2r_citywide,h6 x 3 snapshots,154902 nodes each,road_estimates,464706.0,count,final_blr_results/final_research_v2r/FINAL_RESEARCH_HANDOFF.md,verified_execution,experimental estimates not observed concentration
+v2r_RGDR,h6 feasibility,14206 training hours,continuous_gate_edge_mass,0.0248,fraction,final_blr_results/final_research_v2r/rgdr/RGDR_FINAL_VERDICT.md,verified_diagnostic,training stopped; no predictive comparison
+routing_simulation,random 1000-trip synthetic scenario,444 admitted/556 unmatched,dose_reduction_pct,-0.1211,percent,data/processed/evaluations/routing_results.json,verified_saved_simulation,admitted-only simulator comparison; static unvalidated PM25; no operational benefit demonstrated

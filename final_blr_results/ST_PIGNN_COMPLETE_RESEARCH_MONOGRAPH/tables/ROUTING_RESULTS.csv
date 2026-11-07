@@ -1,0 +1,2 @@
+requested_trips,admitted_trips,unmatched_trips,comparison_population,astar_mean_dose_ug,gs_mean_dose_ug,dose_reduction_pct,astar_mean_time_min,gs_mean_time_min,time_tradeoff_pct,seed,quota_min,quota_median,quota_max,edge_pm25_min_ug_m3,edge_pm25_median_ug_m3,edge_pm25_max_ug_m3,source
+1000,444,556,admitted trips only,0.2714978884730556,0.2718266394187536,-0.12108784622486485,3.535885362510467,3.5410592847310207,0.1463260736733933,42,9,12.0,12,1.2825158511768096,1.3072501998002641,1.6286018280230463,data/processed/evaluations/routing_results.json

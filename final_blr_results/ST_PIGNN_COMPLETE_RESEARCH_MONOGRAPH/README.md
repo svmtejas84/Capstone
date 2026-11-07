@@ -1,0 +1,3 @@
+# ST-PIGNN complete research monograph
+
+Start with [the master document](ST_PIGNN_COMPLETE_RESEARCH_MONOGRAPH.md), then [the contents](TABLE_OF_CONTENTS.md). The 16 volumes contain editorial analysis plus full traceable research exhibits. The 15 appendices and copied CSV tables preserve machine evidence. The original rejected PDF and six full reviews are absent; volume 1/2 are source-limited and clearly marked. No experiment is run by these documentation builders. Use `python build_monograph.py`, `python build_appendices.py`, and `python verify_monograph.py` from this directory after ensuring the source repository is present. Markdown is authoritative.
