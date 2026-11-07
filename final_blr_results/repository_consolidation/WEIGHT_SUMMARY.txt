@@ -1,0 +1,4 @@
+Local weight-like files: 272
+TRACKED: 138
+UNTRACKED: 74
+IGNORED: 60

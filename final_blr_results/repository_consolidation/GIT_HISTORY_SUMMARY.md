@@ -1,0 +1,7 @@
+# Git history summary and audit commands
+
+At audit, `origin/main` was `22a0f5a` (SRTM mapping/ablation report). Its descendant Bengaluru line contains 159 additional commits through v2u `7cd1d83`. Milestones include v2j corrected weather/benchmark, v2l physics audit, v2m MLP/TCN and archive, v2n graph/Captum compatibility, v2o retrospective interpolation, v2p RGDR, v2q notebook recovery, v2r citywide decoder and RGDR closure, three-pillar Captum/physics/routing audit, v2t capacity correction, the IEEE evidence package, monograph and v2u publication assets. The older `frontend_testing`, notebook audit, v2o/v2p and v2q refs are ancestor snapshots, not parallel unpublished work.
+
+Audit commands: `git status --short`; `git branch -vv`; `git branch -a`; `git remote -v`; `git fetch origin --prune`; `git log --all --graph --decorate --oneline -n 100`; `git tag -l`; `git merge-base origin/main origin/research/bengaluru-v2r-final`; both directional `git log A..B`; `git rev-list --left-right --count`; `git diff --name-status`; `git status --short --ignored`; `git grep` for LFS pointers. The fetched remote refs matched local configured upstream tips. No tag or LFS configuration was found. `gh` and `git lfs` were unavailable, so remote protection settings and LFS server state cannot be independently read.
+
+The complete 100-commit topological log was inspected during audit. No history rewrite, force push, destructive reset, branch deletion, experiment, or data regeneration occurred.

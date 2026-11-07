@@ -1,4 +1,8 @@
-# IEEE PUBLICATION ASSETS v2u — COMPLETE AND VERIFIED
+# REPOSITORY CONSOLIDATION — AUDIT COMPLETE, MAIN FAST-FORWARD PENDING
+
+## Git consolidation audit (2026-11-07)
+
+Current branch `research/bengaluru-v2r-final`, starting HEAD `7cd1d8306e0433a48e5234ca2b065bb824e5fceb`. `git fetch origin --prune` completed; `origin/main` is `22a0f5ac5a0527bf173e97692e22c20a245bc6a7`, a strict ancestor (0 main-only, 159 Bengaluru-only commits). `origin/frontend_testing`, notebook audit, v2o/v2p and v2q refs are all ancestors with no unique change to cherry-pick. The full diff has 1,613 added, 7 modified and one deleted path; `draft paper.md` is the only deletion and remains recoverable in Git history. Primary checkout tracked files remain clean; preserve the listed pre-existing untracked/ignored research files. Audit reports and 22 key/16 archive hash inventory are under `final_blr_results/repository_consolidation/`. All seven checked local ZIP members matched their host files, but external backup is still unverified. Pending: commit/push audit reports, fast-forward main in a separate worktree, run read-only checks and focused tests, push/verify main, create/push London branch, write final handoff, create/verify Git bundle. No research compute authorized. Recovery: `cd /home/jupyter-1nt23cb058/Capstone`; `git status --short`; `git branch -a -vv`; `git merge-base origin/main origin/research/bengaluru-v2r-final`; inspect `final_blr_results/repository_consolidation/MAIN_MERGE_PLAN.md` and `KEY_ARTIFACT_HASHES.csv`. Do not switch the primary checkout until untracked files are protected.
 
 ## v2u terminal package (2026-11-07)
 
