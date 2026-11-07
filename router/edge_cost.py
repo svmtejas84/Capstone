@@ -55,5 +55,5 @@ def compute_path_cost(
 		edge_times_s = [edge_time_s] * len(edge_weights)
 	return sum(
 		compute_edge_weight(concentration_ug_m3=concentration, travel_time_s=time_s, mode=mode)
-		for concentration, time_s in zip(edge_weights, edge_times_s, strict=False)
+		for concentration, time_s in zip(edge_weights, edge_times_s)
 	)

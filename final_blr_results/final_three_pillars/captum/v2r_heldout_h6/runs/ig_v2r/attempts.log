@@ -1,0 +1,9 @@
+2026-11-07T03:37:36Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/v2r_heldout_h6/runs/ig_v2r/attempt_0_20261107T033736Z.log
+2026-11-07T03:38:20Z EXIT attempt=0 code=1
+2026-11-07T03:38:20Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/v2r_heldout_h6/runs/ig_v2r/attempt_1_20261107T033820Z.log
+2026-11-07T03:38:34Z EXIT attempt=1 code=1
+2026-11-07T03:38:34Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/v2r_heldout_h6/runs/ig_v2r/attempt_2_20261107T033834Z.log
+2026-11-07T03:38:48Z EXIT attempt=2 code=1
+RESTART_LIMIT_EXHAUSTED
+2026-11-07T03:39:19Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/v2r_heldout_h6/runs/ig_v2r/attempt_0_20261107T033919Z.log
+2026-11-07T03:39:34Z EXIT attempt=0 code=0

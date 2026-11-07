@@ -1,0 +1,20 @@
+/home/jupyter-1nt23cb058/Capstone/scripts/train_gate_v2.py:120: RuntimeWarning: Mean of empty slice
+  station_mean = np.nanmean(self.observed_y[train], axis=0)
+{
+  "record_count": 54,
+  "unique_samples": 9,
+  "unique_checkpoints": 5,
+  "max_wrapper_error_ug_m3": 4.57763671875e-05,
+  "max_abs_completeness_delta_ug_m3": 2.1457672119140625e-05,
+  "median_abs_completeness_delta_ug_m3": 2.9802322387695312e-06,
+  "flagged_records": 0,
+  "nonfinite_records": 0,
+  "mean_absolute_attribution_sum_by_seed": {
+    "11": 6.932277472001539,
+    "23": 11.034055958104801,
+    "37": 16.511940421838336,
+    "51": 9.919022088549276,
+    "79": 9.56542771720276
+  },
+  "seed_variability_scope": "descriptive across 3 selected h1 samples; same Bengaluru test population"
+}

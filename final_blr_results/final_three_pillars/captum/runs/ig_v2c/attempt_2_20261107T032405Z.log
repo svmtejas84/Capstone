@@ -1,0 +1,10 @@
+/home/jupyter-1nt23cb058/Capstone/scripts/train_gate_v2.py:120: RuntimeWarning: Mean of empty slice
+  station_mean = np.nanmean(self.observed_y[train], axis=0)
+Traceback (most recent call last):
+  File "/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2c_ig.py", line 225, in <module>
+    main()
+  File "/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2c_ig.py", line 125, in main
+    pred = float(forward(x)[0])
+  File "/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2c_ig.py", line 119, in forward
+    residual = model(inp, ctx.edge_index, ctx.edge_attr)
+NameError: free variable 'model' referenced before assignment in enclosing scope

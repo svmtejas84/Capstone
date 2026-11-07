@@ -129,3 +129,8 @@
 2026-11-06 closeout: no new compute or experiment use. Package and second-city handover publication is documentation-only; final log commit and remote equality check remain.
 
 2026-11-06 final status: branch push and ZIP/package hashes verified; no training/inference/second-city workloads.
+2026-11-07 final three pillars: model training cells 0; new forecast runs 0; GPU hours 0; Captum CPU records 72 total (v2c 54, v2r 18); synthetic physics diagnostics only; focused test command completed 10 tests. ZIP payload 1,477,638 bytes, 161 checksummed members. No new citywide route simulation.
+2026-11-07 three-pillar validation startup: 0 training cells, 0 forecasting runs, 0 GPU hours, 0 second-city jobs. Static inspection and bounded deterministic software/route checks only unless a specific existing-result recomputation is needed; no new model evaluation.
+2026-11-07 three-pillar planned diagnostic: no training/forecast fit. One supervised CPU-only bounded Captum job for five saved h1 v2c ST-PIGNN checkpoints; expected 30 samples×baseline records under frozen 64-step IG. Conservation finite-volume grid diagnostic ran <1 s; no GPU.
+2026-11-07 v2c h1 IG: 54 attribution records completed, 64 steps, CPU, five existing checkpoint cells, <2 min wall, no GPU/training. Next: one bounded v2r h6 heldout IG on 3 fold checkpoints × 3 samples × 2 baselines (18 records), CPU; no model fitting.
+2026-11-07 before v2r h6 IG: one CPU supervised attribution process, max 18 64-step records, 3 already saved checkpoint folds, 0 training/forecast cells, 0 GPU hours.

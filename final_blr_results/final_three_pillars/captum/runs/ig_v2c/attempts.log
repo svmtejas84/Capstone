@@ -1,0 +1,33 @@
+2026-11-07T03:22:44Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_0_20261107T032244Z.log
+2026-11-07T03:22:48Z EXIT attempt=0 code=1
+2026-11-07T03:22:48Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_1_20261107T032248Z.log
+2026-11-07T03:22:52Z EXIT attempt=1 code=1
+2026-11-07T03:22:52Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_2_20261107T032252Z.log
+2026-11-07T03:22:57Z EXIT attempt=2 code=1
+RESTART_LIMIT_EXHAUSTED
+2026-11-07T03:23:43Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_0_20261107T032343Z.log
+2026-11-07T03:23:54Z EXIT attempt=0 code=1
+2026-11-07T03:23:54Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_1_20261107T032354Z.log
+2026-11-07T03:24:05Z EXIT attempt=1 code=1
+2026-11-07T03:24:05Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_2_20261107T032405Z.log
+2026-11-07T03:24:15Z EXIT attempt=2 code=1
+RESTART_LIMIT_EXHAUSTED
+2026-11-07T03:25:34Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_0_20261107T032534Z.log
+2026-11-07T03:27:05Z EXIT attempt=0 code=1
+2026-11-07T03:27:05Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_1_20261107T032705Z.log
+2026-11-07T03:27:13Z EXIT attempt=1 code=1
+2026-11-07T03:27:13Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_2_20261107T032713Z.log
+2026-11-07T03:27:21Z EXIT attempt=2 code=1
+RESTART_LIMIT_EXHAUSTED
+2026-11-07T03:28:39Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_0_20261107T032839Z.log
+2026-11-07T03:28:48Z EXIT attempt=0 code=0
+missing COMPLETE marker
+2026-11-07T03:28:48Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_1_20261107T032848Z.log
+2026-11-07T03:28:56Z EXIT attempt=1 code=0
+missing COMPLETE marker
+2026-11-07T03:28:56Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_2_20261107T032856Z.log
+2026-11-07T03:29:05Z EXIT attempt=2 code=0
+missing COMPLETE marker
+RESTART_LIMIT_EXHAUSTED
+2026-11-07T03:31:05Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/runs/ig_v2c/attempt_0_20261107T033105Z.log
+2026-11-07T03:31:14Z EXIT attempt=0 code=0

@@ -1,0 +1,17 @@
+/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2r_heldout_ig.py:82: RuntimeWarning: Mean of empty slice
+  mean_station=np.nanmean(train_y,axis=0);mean_global=float(np.nanmean(train_y))
+/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2r_heldout_ig.py:82: RuntimeWarning: Mean of empty slice
+  mean_station=np.nanmean(train_y,axis=0);mean_global=float(np.nanmean(train_y))
+/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_three_pillars/captum/run_v2r_heldout_ig.py:82: RuntimeWarning: Mean of empty slice
+  mean_station=np.nanmean(train_y,axis=0);mean_global=float(np.nanmean(train_y))
+{
+  "record_count": 18,
+  "examples": 9,
+  "checkpoints": 3,
+  "max_wrapper_abs_error_ug_m3": 7.62939453125e-06,
+  "max_abs_completeness_delta_ug_m3": 7.808208465576172e-06,
+  "median_abs_completeness_delta_ug_m3": 3.3974647521972656e-06,
+  "flagged_records": 0,
+  "nonfinite_records": 0,
+  "scope": "post-hoc exploratory explanation on repeatedly exposed Bengaluru test period; heldout-station model predictions"
+}
