@@ -1,0 +1,7 @@
+2026-11-07T04:59:23Z START attempt=0 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_routing_closure/v2t/runs/benchmark/attempt_0_20261107T045923Z.log
+2026-11-07T04:59:25Z EXIT attempt=0 code=1
+2026-11-07T04:59:25Z START attempt=1 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_routing_closure/v2t/runs/benchmark/attempt_1_20261107T045925Z.log
+2026-11-07T04:59:28Z EXIT attempt=1 code=1
+2026-11-07T04:59:28Z START attempt=2 log=/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_routing_closure/v2t/runs/benchmark/attempt_2_20261107T045928Z.log
+2026-11-07T04:59:31Z EXIT attempt=2 code=1
+RESTART_LIMIT_EXHAUSTED

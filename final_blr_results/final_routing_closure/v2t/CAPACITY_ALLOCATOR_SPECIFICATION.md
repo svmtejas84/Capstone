@@ -1,0 +1,11 @@
+# Corrected preference allocator
+
+`matcher/edge_capacity_da.py::allocate_shared_edges` is an additive implementation. The historical `matcher.gale_shapley.batch_match` and `scripts.evaluate_routing_gs.deferred_acceptance` remain callable. The serving endpoint defaults to corrected mode; `TOXICITY_ROUTE_ALLOCATOR=original` reproduces the historical matcher behavior.
+
+Commuters propose route IDs in the original `matcher.commuter_model` order. Each route retains its original `matcher.segment_model` receiver ranking and has an integer route quota. Each route also consumes one unit of capacity on every directed `(u,v)` edge it traverses. `(v,u)` is a distinct resource. When a proposal overloads a route or edge, the lowest ranked user(s) are rejected. For two different routes sharing an edge, priority is the rank of each commuter in their proposed route's receiver list, then commuter ID. This cross-route ordering is an explicit extension; no classical stability theorem follows from it.
+
+All rejections remove the user's whole route bundle before occupancy is checked again. Rejected users may propose the next route. An exhausted user returns `None`; the serving API reports `UNASSIGNED` and an empty route. The allocator validates unique IDs, directed route continuity, nonempty/nonrepeated edges, nonnegative capacities, and capacity metadata. It asserts route and edge occupancy after each proposal. It does not assign a route outside a commuter's preferences.
+
+For each edge (e), the enforced invariant is \(\sum_c 1[e\in R_c]\le K_e\). Unit consumption is one simultaneous commuter per directed edge. The API obtains `K_e` from the existing `route_capacity` method applied to each physical edge's available OSM attributes and traversal time; route capacities remain computed from the whole path. These are assumed allocation ceilings, not measured traffic counts. Candidate routes remain limited to the existing three generated alternatives.
+
+The algorithm terminates because each proposal advances that commuter's finite route-preference pointer. Feasibility is checked during every iteration and at the returned assignment. Global preference stability and welfare optimality are unproved for overlapping route bundles.

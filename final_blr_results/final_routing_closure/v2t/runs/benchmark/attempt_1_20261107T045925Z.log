@@ -1,0 +1,6 @@
+/home/jupyter-1nt23cb058/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-e80ldut2 because there was an issue with the default path (/home/jupyter-1nt23cb058/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+Traceback (most recent call last):
+  File "/home/jupyter-1nt23cb058/Capstone/final_blr_results/final_routing_closure/v2t/run_benchmark.py", line 11, in <module>
+    from matcher.commuter_model import Commuter, build_preference_list
+ModuleNotFoundError: No module named 'matcher'

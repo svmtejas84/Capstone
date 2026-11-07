@@ -138,3 +138,5 @@
 2026-11-07 three-pillar planned diagnostic: no training/forecast fit. One supervised CPU-only bounded Captum job for five saved h1 v2c ST-PIGNN checkpoints; expected 30 samples×baseline records under frozen 64-step IG. Conservation finite-volume grid diagnostic ran <1 s; no GPU.
 2026-11-07 v2c h1 IG: 54 attribution records completed, 64 steps, CPU, five existing checkpoint cells, <2 min wall, no GPU/training. Next: one bounded v2r h6 heldout IG on 3 fold checkpoints × 3 samples × 2 baselines (18 records), CPU; no model fitting.
 2026-11-07 before v2r h6 IG: one CPU supervised attribution process, max 18 64-step records, 3 already saved checkpoint folds, 0 training/forecast cells, 0 GPU hours.
+
+2026-11-07 v2t terminal compute: 0 neural fits, 0 GPU hours, 36 bounded CPU scenario/batch cells (12/24/48 requests × 3 seeds × 4 fields), 6,048 saved method-request rows, about 104 seconds measured batch work; one 20-test focused suite. Final archive 679,231 bytes and 84 verified members. No active benchmark job.

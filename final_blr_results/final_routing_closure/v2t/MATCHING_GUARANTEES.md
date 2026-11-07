@@ -1,0 +1,9 @@
+# Mathematical claim audit
+
+**Capacity feasibility:** The corrected allocator checks both route quotas and shared directed-edge quotas after every proposal. It releases all edges of a displaced route atomically and returns `None` if no candidate can be held. The test gate passed and an independent scan of all 6,048 saved rows found 0 invalid paths and 0 declared directed-edge quota violations across 216 method/batch/scenario groups. These quotas are assumed traffic capacities; they are not measured road flow limits. The frozen benchmark reached at most 5.405% utilization and saturated no edge, so the city scenario did not stress the correction.
+
+**Preference stability:** Classical many-to-one Gale–Shapley stability applies to route-only quotas with complete strict responsive preferences and no fallback. The corrected allocator uses route bundles that share road edges; a commuter's assignment consumes complementary resources. Cross-route edge priority is declared by the rank in each route's receiver list then commuter ID. There is no theorem or exhaustive proof that this output is globally stable for the bundle market. Verdict: **UNPROVEN**. The two-person exhaustive test verifies feasibility, not general preference stability.
+
+**Welfare optimality:** Neither the corrected allocator nor the historical one solves a global dose/time or social-welfare objective. Unconstrained minimum-dose paths are separate controls. Verdict: **UNSUPPORTED**.
+
+**Scalability:** On the frozen 1,428-node central snapshot, full batch generation plus six method evaluations averaged 1.236 s (12 requests), 2.738 s (24), and 4.734 s (48) in the original concentration scenario. The four-scenario 36-batch job was about 104 s of measured batch work. Per-method runtime and full-city operational latency were not isolated. Verdict: **SUPPORTED only as bounded 1,428-node computational execution**.

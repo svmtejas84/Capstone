@@ -12,6 +12,7 @@ from gnn.stpignn_inference import predict_route_edge_concentrations
 from gnn.wake_predictor import predict_wake_polygon
 from matcher.commuter_model import MODE_ALPHA, Commuter, build_preference_list as build_commuter_preferences
 from matcher.gale_shapley import batch_match
+from matcher.edge_capacity_da import allocate_shared_edges
 from matcher.road_capacity import route_capacity
 from matcher.segment_model import Segment, build_preference_list as build_segment_preferences
 from router.api.dependencies import env_seed_from_state, redis_store
@@ -231,7 +232,7 @@ def _candidate_paths(
 			heuristic=lambda a, b: _heuristic(graph, a, b),
 			weight="dose",
 		))
-	except nx.NetworkXNoPath:
+	except (nx.NetworkXNoPath, nx.NodeNotFound):
 		return []
 
 	try:
@@ -388,12 +389,12 @@ def route(req: RouteRequest) -> RouteResponse:
 	candidate_paths = _candidate_paths(graph, source, target, mode=req.mode, k=3, tox_preds=tox_preds)
 	candidates: list[RouteCandidate] = []
 	if not candidate_paths:
-		route_line = [req.origin, req.destination]
+		route_line = []
 		total_cost = 0.0
-		corridor_id = "route_0"
+		corridor_id = "UNASSIGNED"
 	else:
 		route_ids = [f"route_{i}" for i in range(len(candidate_paths))]
-		route_edges = {rid: _path_edges(path) for rid, path in zip(route_ids, candidate_paths, strict=False)}
+		route_edges = {rid: _path_edges(path) for rid, path in zip(route_ids, candidate_paths)}
 		
 		# The concentrations are already predicted. Apply post-prediction scaling (per-edge/zone) if available.
 		route_model_concentrations: dict[tuple[int, int], float] = {}
@@ -450,23 +451,43 @@ def route(req: RouteRequest) -> RouteResponse:
 			for rid in route_ids
 		}
 
-		allocation = batch_match(
-			[c.id for c in all_commuters],
-			route_ids,
-			commuter_preferences=commuter_preferences,
-			segment_preferences=segment_preferences,
-			segment_capacities=segment_capacities,
-			route_distances={c.id: route_distance_m for c in all_commuters},
-			max_iterations=len(route_ids) * len(all_commuters),
-		)
+		allocator_mode = os.environ.get("TOXICITY_ROUTE_ALLOCATOR", "corrected").lower()
+		if allocator_mode == "original":
+			allocation = batch_match(
+				[c.id for c in all_commuters], route_ids,
+				commuter_preferences=commuter_preferences,
+				segment_preferences=segment_preferences,
+				segment_capacities=segment_capacities,
+				route_distances={c.id: route_distance_m for c in all_commuters},
+				max_iterations=len(route_ids) * len(all_commuters),
+			)
+		elif allocator_mode == "corrected":
+			edge_capacities = {}
+			for edges in route_edges.values():
+				for u, v in edges:
+					attrs = _first_edge_attrs(graph, u, v)
+					edge_capacities[(u, v)] = route_capacity(
+						[attrs], travel_time_s=_edge_travel_time_s(attrs, req.mode))
+			allocation = allocate_shared_edges(
+				[c.id for c in all_commuters], commuter_preferences, route_edges,
+				segment_capacities, edge_capacities, segment_preferences)
+		else:
+			raise ValueError("TOXICITY_ROUTE_ALLOCATOR must be original or corrected")
 		# With no load simulation the requester retains the raw dose/distance
 		# optimum. Gale-Shapley can reassign it only when an explicit cohort fills
 		# that corridor's capacity.
 		preferred_corridor_id = commuter_preferences["requester"][0]
-		corridor_id = allocation.get("requester") or preferred_corridor_id
-		chosen_path = candidate_paths[int(corridor_id.split("_")[-1])]
-		route_line = _path_to_latlon(graph, chosen_path)
-		total_cost = route_dose[corridor_id]
+		corridor_id = allocation.get("requester")
+		if corridor_id is None and allocator_mode == "original":
+			corridor_id = preferred_corridor_id
+		if corridor_id is None:
+			corridor_id = "UNASSIGNED"
+			route_line = []
+			total_cost = 0.0
+		else:
+			chosen_path = candidate_paths[int(corridor_id.split("_")[-1])]
+			route_line = _path_to_latlon(graph, chosen_path)
+			total_cost = route_dose[corridor_id]
 		explanations = _route_score_explanations(
 			route_ids,
 			route_dose=route_dose,
@@ -485,7 +506,7 @@ def route(req: RouteRequest) -> RouteResponse:
 					feature_attributions=neural.feature_attributions,
 					reason=neural.reason,
 				)
-		for rid, path in zip(route_ids, candidate_paths, strict=False):
+		for rid, path in zip(route_ids, candidate_paths):
 			edges = route_edges[rid]
 			total_time_s = 0.0
 			weighted_concentration = 0.0

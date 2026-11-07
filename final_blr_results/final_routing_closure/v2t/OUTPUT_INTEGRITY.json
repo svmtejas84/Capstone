@@ -1,0 +1,7 @@
+{
+  "saved_rows": 6048,
+  "method_batch_scenario_groups": 216,
+  "invalid_routes": 0,
+  "shared_directed_edge_capacity_violations": 0,
+  "note": "Independent output scan; road-class capacity remains an assumed scenario constraint."
+}
