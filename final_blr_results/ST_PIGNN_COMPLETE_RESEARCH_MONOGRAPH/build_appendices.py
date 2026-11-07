@@ -183,8 +183,8 @@ def main():
     '| Routing lowers measured commuter exposure | NOT EVALUATED | Static concentration and RMV/capacity assumptions, negligible modeled dose change and no measured exposure. |\n']
   (AP/(name+'.md')).write_text('\n'.join(text))
  (AP/'COMPLETE_EQUATION_REGISTER.md').write_text(EQUATIONS)
- commits=subprocess.check_output(['git','log','--all','--date=iso-strict','--format=%H%x09%ad%x09%s'],cwd=ROOT,text=True).splitlines()
- lines=['# Complete recoverable Git commit chronology\n','This is a mechanical listing of reachable repository commits, not a claim that every experiment has a unique training commit. Date is the commit author date as recorded in Git; it does not prove experiment execution time.\n','| Commit | Recorded date | Subject |','|---|---|---|']
+ commits=subprocess.check_output(['git','log','1c46a4b605f2d8e8ba25a407ace756e675a8aa15','--date=iso-strict','--format=%H%x09%ad%x09%s'],cwd=ROOT,text=True).splitlines()
+ lines=['# Complete recoverable research-source Git commit chronology\n','This is a mechanical listing of commits reachable from frozen pre-monograph source snapshot `1c46a4b605f2d8e8ba25a407ace756e675a8aa15`, not a claim that every experiment has a unique training commit. Later documentation-publication commits are intentionally outside this research-source chronology. Date is the recorded Git author date, not proof of experiment execution time.\n','| Commit | Recorded date | Subject |','|---|---|---|']
  for row in commits:
   x=row.split('\t',2)
   if len(x)==3: lines.append('| '+' | '.join(esc(i) for i in x)+' |')

@@ -2,7 +2,7 @@
 
 This audit checks the generated documentation and selected saved numerical evidence. It does not rerun model training or reconstruct missing external sources.
 
-- Volumes: **16/16**; appendices: **15/15**; master/volume/appendix words: **103,051**.
+- Volumes: **16/16**; appendices: **15/15**; master/volume/appendix words: **103,062**.
 - Distinct source artifacts across exhibits, appendices, tables, figures and code: **180**. Full report exhibits: **100**; direct notebook/code checks: **16**.
 - Copied numeric tables: **19**, all source SHA-256 matched; figures: **14 PNG/PDF pairs**, all source SHA-256 matched.
 - The equation register contains **11** rendered display equations, with version/units boundaries.

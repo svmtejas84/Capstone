@@ -1,6 +1,6 @@
-# Complete recoverable Git commit chronology
+# Complete recoverable research-source Git commit chronology
 
-This is a mechanical listing of reachable repository commits, not a claim that every experiment has a unique training commit. Date is the commit author date as recorded in Git; it does not prove experiment execution time.
+This is a mechanical listing of commits reachable from frozen pre-monograph source snapshot `1c46a4b605f2d8e8ba25a407ace756e675a8aa15`, not a claim that every experiment has a unique training commit. Later documentation-publication commits are intentionally outside this research-source chronology. Date is the recorded Git author date, not proof of experiment execution time.
 
 | Commit | Recorded date | Subject |
 |---|---|---|
