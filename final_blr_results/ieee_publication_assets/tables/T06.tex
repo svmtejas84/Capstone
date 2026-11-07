@@ -1,0 +1,14 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Corrected ST-PIGNN Captum verification. Units for delta and wrapper error are micrograms per cubic metre. v2c and v2r are different model protocols; neither is the missing v2j benchmark checkpoint.}
+\label{tab:t06}
+\begin{tabular}{lrrrrrrrr}
+\hline
+Variant & Checkpoints & Primary records & All records & Baseline & IG steps & Max |delta| & Max wrapper error & Nonfinite \\
+\hline
+v2c h=1 & 5 & 45 & 54 & training mean + sensitivity & 64 & 0.000 & 0.000 & 0 \\
+v2r h=6 outer-LOSO & 3 & 9 & 18 & training mean + sensitivity & 64 & 0.000 & 0.000 & 0 \\
+\hline
+\end{tabular}
+\end{table*}

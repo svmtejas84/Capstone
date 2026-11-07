@@ -1,0 +1,13 @@
+Property,Value,Unit,Provenance
+Raw hourly coverage,2022-01-01 to 2026-03-28,date range,"data genealogy, Vol. 03"
+Raw hourly rows,37152,hours,"data genealogy, Vol. 03"
+Forecasting sites,15,stations,stations_v2.csv
+Station kNN arcs,60,directed arcs,v2j corrected protocol
+Input window,12,hours,v2j corrected protocol
+Input channels,18,channels,v2j corrected protocol
+Forecast horizons,"1, 3, 6, 12, 24",hours,v2j corrected protocol
+Road nodes,154902,nodes,bangalore_utm_nodes.parquet
+Raw road edges,393089,directed rows,bangalore_utm_edges.parquet
+Processed message arcs,424550,arcs,topology_graph_pyg_inference.pt
+Historical partitions,64,partitions,partitioned_manifold_64_clusters.pt
+Historical omitted boundary arcs,7134,arcs,v2k graph integrity audit

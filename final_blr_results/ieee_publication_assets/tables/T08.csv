@@ -1,0 +1,10 @@
+Claim,Status,Evidence,Limit
+Station multi-horizon forecasting,MIXED,v2j benchmark; v2m baselines,Strong simple controls and weather protocol differences
+Directional penalty physical specificity,UNSUPPORTED,v2l physics audit,No consistent superiority to Laplacian; no conservation
+Held-out station transfer superiority,UNSUPPORTED,W6 LOSO; v2r decoder,Ridge and forecast-IDW outperform
+Full-city computational execution,SUPPORTED,v2r road predictions,"154,902 nodes × 3; experimental estimates"
+Independent roadside accuracy,NOT EVALUATED,No roadside ground truth,Cannot validate road concentrations
+Captum numerical attribution,SUPPORTED,v2c/v2r IG results,Baseline-relative; limited checkpoint variants
+Routing edge-capacity feasibility,SUPPORTED,v2t toy tests and benchmark,No classical stability or welfare theorem
+Real-world exposure reduction,NOT EVALUATED,v2t scenario benchmark,Modeled differences near zero
+RGDR predictive superiority,NOT EVALUATED,v2r gate diagnostics,No comparative training results

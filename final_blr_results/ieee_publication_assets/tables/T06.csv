@@ -1,0 +1,3 @@
+Variant,Checkpoints,Primary records,All records,Baseline,IG steps,Max |delta|,Max wrapper error,Nonfinite
+v2c h=1,5,45,54,training mean + sensitivity,64,2.1457672119140625e-05,4.57763671875e-05,0
+v2r h=6 outer-LOSO,3,9,18,training mean + sensitivity,64,7.808208465576172e-06,7.62939453125e-06,0

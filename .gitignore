@@ -90,3 +90,8 @@ final_blr_results/citywide_extension/v2q/research_results_v2q.zip
 
 # Evidence export is separately checksum-verified and intentionally not committed.
 /final_blr_results/ieee_paper_evidence_and_second_city_handover.zip
+
+# v2u publication ZIP and duplicate full-city plotting CSV stay local.
+/final_blr_results/ieee_publication_assets/IEEE_PUBLICATION_ASSETS.zip
+/final_blr_results/ieee_publication_assets/source_data/F07_snapshot_node_data.csv
+!final_blr_results/ieee_publication_assets/source_data/figure_manifest.json

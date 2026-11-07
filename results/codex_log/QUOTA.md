@@ -142,3 +142,5 @@
 2026-11-07 v2t terminal compute: 0 neural fits, 0 GPU hours, 36 bounded CPU scenario/batch cells (12/24/48 requests × 3 seeds × 4 fields), 6,048 saved method-request rows, about 104 seconds measured batch work; one 20-test focused suite. Final archive 679,231 bytes and 84 verified members. No active benchmark job.
 
 2026-11-07 monograph: documentation and hash/numeric verification only; 0 model fits, 0 GPU hours, 0 forecast or routing experiments, 0 second-city runs. Output 103,062 Markdown words across master/volumes/appendices, 19 copied tables, 14 copied figure pairs, 100-member archive 4,007,216 bytes. Source PDF/reviews remain external transfer dependencies.
+2026-11-07 v2u: 0 model fits, 0 neural inference runs, 0 GPU hours, 0 new scientific experiment cells. Documentation/plotting only: ten figure variants, ten table files, static numeric/source checks, local ZIP. Existing saved outputs only.
+2026-11-07 v2u terminal: 10,666,424-byte local export ZIP, 89 verified members; zero model-training cells, zero new forecasting cells, zero GPU hours, zero second-city jobs. Matplotlib/CPU plotting and static verification only.

@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{v2r spatial decoder held-out forecast comparison. Separate positive-lead-time task. Decoder underperforms forecast-IDW and station mean; not pooled with W6.}
+\label{tab:t04b}
+\begin{tabular}{lrrrrrr}
+\hline
+Method & Pairs & MAE & RMSE & R2 & Sites & Params \\
+\hline
+train\_only\_spatial\_mean & 14583 & 20.634 & 38.614 & -0.085 & 11 & 0 \\
+forecast\_idw & 14583 & 20.154 & 39.295 & -0.124 & 11 & 0 \\
+forecast\_decoder & 14583 & 27.360 & 44.046 & -0.412 & 11 & 1249 \\
+\hline
+\end{tabular}
+\end{table*}

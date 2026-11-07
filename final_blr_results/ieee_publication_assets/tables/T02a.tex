@@ -1,0 +1,57 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Corrected forecasting benchmark: v2j. Five-seed ensemble where available; MAE/RMSE in micrograms per cubic metre. Historical v2j weather information protocol; 14,583 paired test observations per horizon.}
+\label{tab:t02a}
+\begin{tabular}{lrrrrr}
+\hline
+Model & h (h) & Pairs & MAE & RMSE & R2 \\
+\hline
+climatology\_hod\_dow & 1 & 14583 & 21.469 & 38.746 & -0.092 \\
+climatology\_hod\_dow & 3 & 14583 & 21.469 & 38.746 & -0.092 \\
+climatology\_hod\_dow & 6 & 14583 & 21.469 & 38.746 & -0.092 \\
+climatology\_hod\_dow & 12 & 14583 & 21.469 & 38.746 & -0.092 \\
+climatology\_hod\_dow & 24 & 14583 & 21.469 & 38.746 & -0.092 \\
+gru\_only & 1 & 14583 & 7.991 & 24.101 & 0.577 \\
+gru\_only & 3 & 14583 & 12.655 & 31.901 & 0.259 \\
+gru\_only & 6 & 14583 & 15.162 & 34.960 & 0.111 \\
+gru\_only & 12 & 14583 & 16.389 & 35.786 & 0.068 \\
+gru\_only & 24 & 14583 & 14.107 & 29.367 & 0.372 \\
+persistence & 1 & 14583 & 8.116 & 25.358 & 0.532 \\
+persistence & 3 & 14583 & 13.244 & 35.150 & 0.101 \\
+persistence & 6 & 14583 & 16.607 & 39.950 & -0.161 \\
+persistence & 12 & 14583 & 19.106 & 44.745 & -0.457 \\
+persistence & 24 & 14583 & 14.130 & 31.386 & 0.283 \\
+ridge\_lag\_calendar\_weather & 1 & 14583 & 8.706 & 24.316 & 0.570 \\
+ridge\_lag\_calendar\_weather & 3 & 14583 & 13.357 & 30.706 & 0.314 \\
+ridge\_lag\_calendar\_weather & 6 & 14583 & 16.106 & 33.752 & 0.171 \\
+ridge\_lag\_calendar\_weather & 12 & 14583 & 17.390 & 35.468 & 0.085 \\
+ridge\_lag\_calendar\_weather & 24 & 14583 & 15.005 & 29.707 & 0.358 \\
+same\_hour\_yesterday & 1 & 14583 & 14.130 & 31.386 & 0.283 \\
+same\_hour\_yesterday & 3 & 14583 & 14.130 & 31.386 & 0.283 \\
+same\_hour\_yesterday & 6 & 14583 & 14.130 & 31.386 & 0.283 \\
+same\_hour\_yesterday & 12 & 14583 & 14.130 & 31.386 & 0.283 \\
+same\_hour\_yesterday & 24 & 14583 & 14.130 & 31.386 & 0.283 \\
+st\_gru\_gcn & 1 & 14583 & 8.220 & 24.962 & 0.547 \\
+st\_gru\_gcn & 3 & 14583 & 13.172 & 34.242 & 0.147 \\
+st\_gru\_gcn & 6 & 14583 & 16.468 & 38.948 & -0.104 \\
+st\_gru\_gcn & 12 & 14583 & 19.540 & 42.728 & -0.329 \\
+st\_gru\_gcn & 24 & 14583 & 13.896 & 30.365 & 0.329 \\
+station\_train\_mean & 1 & 14583 & 20.965 & 37.336 & -0.014 \\
+station\_train\_mean & 3 & 14583 & 20.965 & 37.336 & -0.014 \\
+station\_train\_mean & 6 & 14583 & 20.965 & 37.336 & -0.014 \\
+station\_train\_mean & 12 & 14583 & 20.965 & 37.336 & -0.014 \\
+station\_train\_mean & 24 & 14583 & 20.965 & 37.336 & -0.014 \\
+stpignn\_original & 1 & 14583 & 8.026 & 23.893 & 0.585 \\
+stpignn\_original & 3 & 14583 & 12.342 & 30.905 & 0.305 \\
+stpignn\_original & 6 & 14583 & 14.706 & 33.548 & 0.181 \\
+stpignn\_original & 12 & 14583 & 15.509 & 34.337 & 0.142 \\
+stpignn\_original & 24 & 14583 & 13.902 & 29.254 & 0.377 \\
+vanilla\_gcn & 1 & 14583 & 8.255 & 25.167 & 0.539 \\
+vanilla\_gcn & 3 & 14583 & 13.231 & 34.464 & 0.136 \\
+vanilla\_gcn & 6 & 14583 & 16.612 & 39.118 & -0.113 \\
+vanilla\_gcn & 12 & 14583 & 19.055 & 44.134 & -0.417 \\
+vanilla\_gcn & 24 & 14583 & 14.029 & 30.344 & 0.330 \\
+\hline
+\end{tabular}
+\end{table*}

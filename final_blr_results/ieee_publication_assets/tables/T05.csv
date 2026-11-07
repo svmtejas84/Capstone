@@ -1,0 +1,2 @@
+Method,Road nodes,Snapshots,Estimates,Full run (s),Peak RAM (GB),Expansion GPU VRAM (GB),Support >5 km (%),Outside hull (%)
+ST-PIGNN station forecaster + decoder,154902,3,464706,56.44,1.49,0,19.45,60.58

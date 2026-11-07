@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Cutoff-safe MLP and TCN benchmark: v2m. Five-seed mean-prediction ensembles. v2m weather aggregation differs from historical v2j ST-PIGNN; not identical-input ablations.}
+\label{tab:t02b}
+\begin{tabular}{lrrrrr}
+\hline
+Model & h (h) & Pairs & MAE & RMSE & R2 \\
+\hline
+mlp & 1 & 14583 & 8.016 & 24.631 & 0.559 \\
+mlp & 3 & 14583 & 12.543 & 32.209 & 0.245 \\
+mlp & 6 & 14583 & 15.513 & 36.678 & 0.021 \\
+mlp & 12 & 14583 & 16.026 & 35.090 & 0.104 \\
+mlp & 24 & 14583 & 13.840 & 29.340 & 0.374 \\
+tcn & 1 & 14583 & 8.080 & 25.098 & 0.542 \\
+tcn & 3 & 14583 & 12.268 & 31.571 & 0.275 \\
+tcn & 6 & 14583 & 14.868 & 34.724 & 0.123 \\
+tcn & 12 & 14583 & 15.278 & 34.235 & 0.147 \\
+tcn & 24 & 14583 & 13.894 & 29.265 & 0.377 \\
+\hline
+\end{tabular}
+\end{table*}

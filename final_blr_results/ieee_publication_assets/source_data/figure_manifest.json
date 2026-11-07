@@ -1,0 +1,140 @@
+[
+  {
+    "id": "F01_corrected_architecture",
+    "group": "F01_architecture",
+    "title": "Corrected forecasting system and downstream extensions",
+    "caption": "Solid: evaluated station forecasting and loss. Dashed: experimental decoder and routing dataflow. Road GNN training and mass conservation are not shown because neither was established.",
+    "sources": [
+      "final_blr_results/final_research_v2r/FINAL_RESEARCH_HANDOFF.md"
+    ],
+    "source_data": null,
+    "png": "figures/F01_architecture/F01_corrected_architecture.png",
+    "pdf": "figures/F01_architecture/F01_corrected_architecture.pdf",
+    "svg": "figures/F01_architecture/F01_corrected_architecture.svg"
+  },
+  {
+    "id": "F02_bengaluru_graph",
+    "group": "F02_graph_partitions",
+    "title": "Bengaluru road topology, historical partitions, and monitors",
+    "caption": "Stored UTM graph and partition IDs; 154,902 nodes. The corrected forecasting model was evaluated on a separate 15-station, 60-edge kNN graph, not on the road graph. Arc and edge-row counts have different preprocessing semantics.",
+    "sources": [
+      "data/graphs/bangalore_utm_nodes.parquet",
+      "data/graphs/bangalore_utm_edges.parquet",
+      "data/processed/graph/partitioned_manifold_64_clusters.pt",
+      "results/stations_v2.csv"
+    ],
+    "source_data": "source_data/F02_graph_summary.csv",
+    "png": "figures/F02_graph_partitions/F02_bengaluru_graph.png",
+    "pdf": "figures/F02_graph_partitions/F02_bengaluru_graph.pdf",
+    "svg": "figures/F02_graph_partitions/F02_bengaluru_graph.svg"
+  },
+  {
+    "id": "F03_multi_horizon_mae",
+    "group": "F03_forecasting_benchmarks",
+    "title": "Multi-horizon forecasting MAE by protocol",
+    "caption": "Five forecast horizons; 14,583 saved evaluation pairs per horizon. v2j ST-PIGNN and v2m MLP/TCN used different weather aggregation and are not identical-input architecture ablations. Negative and unfavorable results are retained.",
+    "sources": [
+      "final_blr_results/ieee_paper_evidence/results/RECOMPUTED_V2J_BENCHMARK.csv",
+      "final_blr_results/baselines/v2m/comparisons/ensemble_metrics.csv"
+    ],
+    "source_data": "source_data/F03_forecasting_metrics.csv",
+    "png": "figures/F03_forecasting_benchmarks/F03_multi_horizon_mae.png",
+    "pdf": "figures/F03_forecasting_benchmarks/F03_multi_horizon_mae.pdf",
+    "svg": "figures/F03_forecasting_benchmarks/F03_multi_horizon_mae.svg"
+  },
+  {
+    "id": "F04_directional_ablation",
+    "group": "F04_physics_ablations",
+    "title": "Directional regularization ablations",
+    "caption": "Negative \u0394MAE favors directional regularization. Panels A/B are five-seed ensemble differences; C shows individual-seed paired differences. No physical-specificity or mass-conservation inference follows. Multiplicity and seven-day block sensitivity are reported in T03.",
+    "sources": [
+      "final_blr_results/physics_audit/ensemble_analysis/ensemble_decomposition.csv",
+      "final_blr_results/physics_audit/seed_analysis/per_seed_physics_comparisons.csv"
+    ],
+    "source_data": "source_data/F04_physics_differences.csv",
+    "png": "figures/F04_physics_ablations/F04_directional_ablation.png",
+    "pdf": "figures/F04_physics_ablations/F04_directional_ablation.pdf",
+    "svg": "figures/F04_physics_ablations/F04_directional_ablation.svg"
+  },
+  {
+    "id": "F05_spatial_holdouts",
+    "group": "F05_spatial_validation",
+    "title": "Spatial holdout forecasting: W6 and v2r",
+    "caption": "W6 pooled MAE: ST-PIGNN 22.314 versus ridge 20.624 \u00b5g/m\u00b3; 11 scored stations, four without test observations. v2r is a separate forecast population: decoder 27.360, forecast-IDW 20.154, station mean 20.634 \u00b5g/m\u00b3. Timestamps are not independent spatial sites.",
+    "sources": [
+      "results/loso_per_station_v2j.csv",
+      "final_blr_results/final_research_v2r/citywide/spatial_decoder/pooled_test_metrics.csv"
+    ],
+    "source_data": "source_data/F05_W6_per_station.csv",
+    "png": "figures/F05_spatial_validation/F05_spatial_holdouts.png",
+    "pdf": "figures/F05_spatial_validation/F05_spatial_holdouts.pdf",
+    "svg": "figures/F05_spatial_validation/F05_spatial_holdouts.svg"
+  },
+  {
+    "id": "F06a_v2c_h1",
+    "group": "F06_captum_explainability",
+    "title": "Integrated Gradients: v2c one-hour corrected ST-PIGNN",
+    "caption": "Real saved attribution tensors, primary training-mean baseline, 45 attributed records, 12 input hours. Mean absolute and signed IG are separate. Maximum completeness |delta| 2.1e-05 \u00b5g/m\u00b3; wrapper error 4.6e-05 \u00b5g/m\u00b3. IG is baseline-relative sensitivity, not causality or physics proof. Integration-step count is documented in source methodology.",
+    "sources": [
+      "final_blr_results/final_three_pillars/captum/attribution_tensors.npz"
+    ],
+    "source_data": "source_data/F06a_v2c_h1/",
+    "png": "figures/F06_captum_explainability/F06a_v2c_h1.png",
+    "pdf": "figures/F06_captum_explainability/F06a_v2c_h1.pdf",
+    "svg": "figures/F06_captum_explainability/F06a_v2c_h1.svg"
+  },
+  {
+    "id": "F06b_v2r_h6",
+    "group": "F06_captum_explainability",
+    "title": "Integrated Gradients: v2r six-hour outer-LOSO ST-PIGNN",
+    "caption": "Real saved attribution tensors, primary training-mean baseline, 9 attributed records, 12 input hours. Mean absolute and signed IG are separate. Maximum completeness |delta| 7.8e-06 \u00b5g/m\u00b3; wrapper error 7.6e-06 \u00b5g/m\u00b3. IG is baseline-relative sensitivity, not causality or physics proof. Integration-step count is documented in source methodology.",
+    "sources": [
+      "final_blr_results/final_three_pillars/captum/v2r_heldout_h6/attribution_tensors.npz"
+    ],
+    "source_data": "source_data/F06b_v2r_h6/",
+    "png": "figures/F06_captum_explainability/F06b_v2r_h6.png",
+    "pdf": "figures/F06_captum_explainability/F06b_v2r_h6.pdf",
+    "svg": "figures/F06_captum_explainability/F06b_v2r_h6.svg"
+  },
+  {
+    "id": "F07_citywide_snapshot",
+    "group": "F07_citywide_estimation",
+    "title": "Experimental neural-assisted road-node estimates and support",
+    "caption": "Earliest frozen origin, 2025-10-08 07:00 UTC, six-hour forecast; 154,902 saved node values without added smoothing. Station forecaster uses 15-station graph; road values use separate 1,249-parameter decoder. Decoder underperformed simple spatial controls; roadside accuracy is unvalidated. 19.45% of nodes lie >5 km from a monitor; 60.58% are outside the monitor convex hull.",
+    "sources": [
+      "final_blr_results/final_research_v2r/citywide/road_predictions/road_predictions_20251008T0700Z.parquet",
+      "results/stations_v2.csv"
+    ],
+    "source_data": "source_data/F07_snapshot_node_data.csv",
+    "png": "figures/F07_citywide_estimation/F07_citywide_snapshot.png",
+    "pdf": "figures/F07_citywide_estimation/F07_citywide_snapshot.pdf",
+    "svg": "figures/F07_citywide_estimation/F07_citywide_snapshot.svg"
+  },
+  {
+    "id": "F08_routing_tradeoff",
+    "group": "F08_routing_evaluation",
+    "title": "Routing assignment and modeled-dose trade-off",
+    "caption": "Original concentration scenario; same nine frozen demand batches, 252 requests per method. Corrected allocator and original matcher assigned all in this low-load case; zero shared-edge violations and maximum utilization about 5.405%. Corrected versus shortest: \u22120.001207% modeled dose and +0.001324% travel time. Axes intentionally span \u00b10.5%. This is modeled dose, not measured exposure reduction or classical matching stability.",
+    "sources": [
+      "final_blr_results/final_routing_closure/v2t/ROUTING_COMPARISON_RESULTS.csv",
+      "final_blr_results/final_routing_closure/v2t/PAIRED_COMPARISONS.csv"
+    ],
+    "source_data": "source_data/F08_assignment.csv; F08_tradeoff.csv",
+    "png": "figures/F08_routing_evaluation/F08_routing_tradeoff.png",
+    "pdf": "figures/F08_routing_evaluation/F08_routing_tradeoff.pdf",
+    "svg": "figures/F08_routing_evaluation/F08_routing_tradeoff.svg"
+  },
+  {
+    "id": "F08b_routing_sensitivity",
+    "group": "F08_routing_evaluation",
+    "title": "Routing sensitivity to modeled concentration perturbations",
+    "caption": "Three frozen perturbations relative to the original field; 252 requests each. Bars show route identity stability, not calibrated exposure uncertainty. Assignment stability was 100% and declared edge-capacity violations zero in saved scenarios. No measured human exposure validation.",
+    "sources": [
+      "final_blr_results/final_routing_closure/v2t/SENSITIVITY_STABILITY.csv"
+    ],
+    "source_data": "source_data/F08_sensitivity_stability.csv",
+    "png": "figures/F08_routing_evaluation/F08b_routing_sensitivity.png",
+    "pdf": "figures/F08_routing_evaluation/F08b_routing_sensitivity.pdf",
+    "svg": "figures/F08_routing_evaluation/F08b_routing_sensitivity.svg"
+  }
+]
