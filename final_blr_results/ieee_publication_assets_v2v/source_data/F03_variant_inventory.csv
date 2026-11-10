@@ -1,0 +1,18 @@
+model,reader_name
+adaptive_graph_st,Adaptive graph ST
+adaptive_graph_st_fixed_knn,Adaptive graph ST (fixed kNN)
+climatology_hod_dow,Hour-of-day/day-of-week climatology
+gine_gru_wind,Wind-conditioned GINE–GRU
+gru_only,GRU-only
+persistence,Persistence
+ridge_lag_calendar_weather,Weather ridge
+same_hour_yesterday,Same-hour-yesterday
+st_gru_gcn,ST GRU–GCN
+station_train_mean,Station training mean
+stpignn_lambda0,"ST-PIGNN, zero regularization"
+stpignn_laplacian,"ST-PIGNN, Laplacian smoothing"
+stpignn_original,"ST-PIGNN, directional regularization"
+stpignn_v2,ST-PIGNN v2
+stpignn_v2_source_removed,"ST-PIGNN v2, source removed"
+stpignn_v2_transport_removed,"ST-PIGNN v2, transport removed"
+vanilla_gcn,Vanilla GCN

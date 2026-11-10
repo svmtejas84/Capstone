@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Directional regularization and ablation analysis. Negative paired differences favor directional regularization. The directional loss is a heuristic and does not enforce mass conservation.}
+\label{tab:t03_directional_regularization}
+\begin{tabular}{lrrrrrrrrrr}
+\hline
+horizon\_h & n\_pairs & seeds & mae\_lambda0 & mae\_directional & mae\_laplacian & directional\_minus\_lambda0 & directional\_minus\_laplacian & directional\_minus\_laplacian\_7d\_ci\_low & directional\_minus\_laplacian\_7d\_ci\_high & directional\_lambda0\_holm35\_p \\
+\hline
+1 & 14583 & 5 & 8.052 & 8.026 & 8.098 & -0.026 & -0.073 & -0.116 & -0.034 & 0.445 \\
+3 & 14583 & 5 & 12.472 & 12.342 & 12.164 & -0.130 & 0.178 & 0.071 & 0.303 & 0.017 \\
+6 & 14583 & 5 & 15.116 & 14.706 & 14.836 & -0.410 & -0.130 & -0.229 & -0.042 & 0.017 \\
+12 & 14583 & 5 & 15.772 & 15.509 & 15.507 & -0.262 & 0.003 & -0.175 & 0.189 & 0.017 \\
+24 & 14583 & 5 & 13.757 & 13.902 & 14.004 & 0.145 & -0.103 & -0.200 & -0.010 & 0.636 \\
+\hline
+\end{tabular}
+\end{table*}

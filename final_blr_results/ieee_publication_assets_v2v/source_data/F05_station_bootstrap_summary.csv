@@ -1,0 +1,2 @@
+estimand,estimate_ug_m3,ci_low_ug_m3,ci_high_ug_m3,unit,n_sites,replicates,seed
+equal_station_mean_difference,1.486930498836255,-2.5765295482832413,5.327835562009952,station,11,20000,8127

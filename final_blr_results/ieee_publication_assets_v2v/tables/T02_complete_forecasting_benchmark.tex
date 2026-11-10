@@ -1,0 +1,107 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Complete saved forecasting benchmark. Retrospective centered-weather and forecast-cutoff-safe protocols are separate; cross-protocol contrasts are not identical-input ablations. Internal model IDs remain in the companion CSV.}
+\label{tab:t02_complete_forecasting_benchmark}
+\begin{tabular}{lrrrrrrr}
+\hline
+protocol & model\_name & horizon\_h & n\_pairs & mae\_ug\_m3 & rmse\_ug\_m3 & r2 & seeds\_completed \\
+\hline
+Forecast-cutoff-safe MLP/TCN evaluation & MLP & 1 & 14583 & 8.016 & 24.631 & 0.559 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & MLP & 3 & 14583 & 12.543 & 32.209 & 0.245 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & MLP & 6 & 14583 & 15.513 & 36.678 & 0.021 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & MLP & 12 & 14583 & 16.026 & 35.090 & 0.104 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & MLP & 24 & 14583 & 13.840 & 29.340 & 0.374 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & TCN & 1 & 14583 & 8.080 & 25.098 & 0.542 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & TCN & 3 & 14583 & 12.268 & 31.571 & 0.275 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & TCN & 6 & 14583 & 14.868 & 34.724 & 0.123 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & TCN & 12 & 14583 & 15.278 & 34.235 & 0.147 & 5 \\
+Forecast-cutoff-safe MLP/TCN evaluation & TCN & 24 & 14583 & 13.894 & 29.265 & 0.377 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST & 1 & 14583 & 7.947 & 23.745 & 0.590 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST & 3 & 14583 & 13.052 & 34.584 & 0.130 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST & 6 & 14583 & 15.171 & 35.219 & 0.097 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST & 12 & 14583 & 16.926 & 37.205 & -0.007 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST & 24 & 14583 & 13.744 & 28.810 & 0.396 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST, fixed kNN & 1 & 14583 & 8.133 & 23.927 & 0.583 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST, fixed kNN & 3 & 14583 & 12.649 & 31.707 & 0.268 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST, fixed kNN & 6 & 14583 & 15.955 & 35.769 & 0.069 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST, fixed kNN & 12 & 14583 & 17.601 & 38.161 & -0.060 & 5 \\
+Retrospective centered-weather station evaluation & Adaptive graph ST, fixed kNN & 24 & 14583 & 15.171 & 29.803 & 0.354 & 5 \\
+Retrospective centered-weather station evaluation & GRU-only & 1 & 14583 & 7.991 & 24.101 & 0.577 & 5 \\
+Retrospective centered-weather station evaluation & GRU-only & 3 & 14583 & 12.655 & 31.901 & 0.259 & 5 \\
+Retrospective centered-weather station evaluation & GRU-only & 6 & 14583 & 15.162 & 34.960 & 0.111 & 5 \\
+Retrospective centered-weather station evaluation & GRU-only & 12 & 14583 & 16.389 & 35.786 & 0.068 & 5 \\
+Retrospective centered-weather station evaluation & GRU-only & 24 & 14583 & 14.107 & 29.367 & 0.372 & 5 \\
+Retrospective centered-weather station evaluation & Hour/day climatology & 1 & 14583 & 21.469 & 38.746 & -0.092 & 1 \\
+Retrospective centered-weather station evaluation & Hour/day climatology & 3 & 14583 & 21.469 & 38.746 & -0.092 & 1 \\
+Retrospective centered-weather station evaluation & Hour/day climatology & 6 & 14583 & 21.469 & 38.746 & -0.092 & 1 \\
+Retrospective centered-weather station evaluation & Hour/day climatology & 12 & 14583 & 21.469 & 38.746 & -0.092 & 1 \\
+Retrospective centered-weather station evaluation & Hour/day climatology & 24 & 14583 & 21.469 & 38.746 & -0.092 & 1 \\
+Retrospective centered-weather station evaluation & Persistence & 1 & 14583 & 8.116 & 25.358 & 0.532 & 1 \\
+Retrospective centered-weather station evaluation & Persistence & 3 & 14583 & 13.244 & 35.150 & 0.101 & 1 \\
+Retrospective centered-weather station evaluation & Persistence & 6 & 14583 & 16.607 & 39.950 & -0.161 & 1 \\
+Retrospective centered-weather station evaluation & Persistence & 12 & 14583 & 19.106 & 44.745 & -0.457 & 1 \\
+Retrospective centered-weather station evaluation & Persistence & 24 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & ST GRU–GCN & 1 & 14583 & 8.220 & 24.962 & 0.547 & 5 \\
+Retrospective centered-weather station evaluation & ST GRU–GCN & 3 & 14583 & 13.172 & 34.242 & 0.147 & 5 \\
+Retrospective centered-weather station evaluation & ST GRU–GCN & 6 & 14583 & 16.468 & 38.948 & -0.104 & 5 \\
+Retrospective centered-weather station evaluation & ST GRU–GCN & 12 & 14583 & 19.540 & 42.728 & -0.329 & 5 \\
+Retrospective centered-weather station evaluation & ST GRU–GCN & 24 & 14583 & 13.896 & 30.365 & 0.329 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN additional variant & 1 & 14583 & 9.530 & 25.528 & 0.526 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN additional variant & 3 & 14583 & 13.321 & 32.618 & 0.226 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN additional variant & 6 & 14583 & 15.856 & 35.259 & 0.095 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN additional variant & 12 & 14583 & 17.664 & 37.075 & -0.000 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN additional variant & 24 & 14583 & 14.709 & 30.017 & 0.344 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, Laplacian & 1 & 14583 & 8.098 & 23.891 & 0.585 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, Laplacian & 3 & 14583 & 12.164 & 30.734 & 0.313 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, Laplacian & 6 & 14583 & 14.836 & 33.752 & 0.171 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, Laplacian & 12 & 14583 & 15.507 & 33.572 & 0.180 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, Laplacian & 24 & 14583 & 14.004 & 29.180 & 0.380 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, directional & 1 & 14583 & 8.026 & 23.893 & 0.585 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, directional & 3 & 14583 & 12.342 & 30.905 & 0.305 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, directional & 6 & 14583 & 14.706 & 33.548 & 0.181 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, directional & 12 & 14583 & 15.509 & 34.337 & 0.142 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, directional & 24 & 14583 & 13.902 & 29.254 & 0.377 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, source term removed & 1 & 14583 & 9.520 & 25.645 & 0.521 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, source term removed & 3 & 14583 & 13.542 & 32.994 & 0.208 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, source term removed & 6 & 14583 & 16.026 & 35.878 & 0.063 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, source term removed & 12 & 14583 & 18.237 & 39.010 & -0.107 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, source term removed & 24 & 14583 & 14.678 & 30.047 & 0.343 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, transport term removed & 1 & 14583 & 8.071 & 24.254 & 0.572 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, transport term removed & 3 & 14583 & 13.181 & 31.569 & 0.275 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, transport term removed & 6 & 14583 & 15.878 & 34.656 & 0.126 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, transport term removed & 12 & 14583 & 17.491 & 36.408 & 0.035 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, transport term removed & 24 & 14583 & 14.045 & 29.075 & 0.385 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, $\lambda$=0 & 1 & 14583 & 8.052 & 24.097 & 0.577 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, $\lambda$=0 & 3 & 14583 & 12.472 & 31.495 & 0.278 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, $\lambda$=0 & 6 & 14583 & 15.116 & 34.337 & 0.142 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, $\lambda$=0 & 12 & 14583 & 15.772 & 35.078 & 0.105 & 5 \\
+Retrospective centered-weather station evaluation & ST-PIGNN, $\lambda$=0 & 24 & 14583 & 13.757 & 29.211 & 0.379 & 5 \\
+Retrospective centered-weather station evaluation & Same-hour-yesterday & 1 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & Same-hour-yesterday & 3 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & Same-hour-yesterday & 6 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & Same-hour-yesterday & 12 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & Same-hour-yesterday & 24 & 14583 & 14.130 & 31.386 & 0.283 & 1 \\
+Retrospective centered-weather station evaluation & Station training mean & 1 & 14583 & 20.965 & 37.336 & -0.014 & 1 \\
+Retrospective centered-weather station evaluation & Station training mean & 3 & 14583 & 20.965 & 37.336 & -0.014 & 1 \\
+Retrospective centered-weather station evaluation & Station training mean & 6 & 14583 & 20.965 & 37.336 & -0.014 & 1 \\
+Retrospective centered-weather station evaluation & Station training mean & 12 & 14583 & 20.965 & 37.336 & -0.014 & 1 \\
+Retrospective centered-weather station evaluation & Station training mean & 24 & 14583 & 20.965 & 37.336 & -0.014 & 1 \\
+Retrospective centered-weather station evaluation & Vanilla GCN & 1 & 14583 & 8.255 & 25.167 & 0.539 & 5 \\
+Retrospective centered-weather station evaluation & Vanilla GCN & 3 & 14583 & 13.231 & 34.464 & 0.136 & 5 \\
+Retrospective centered-weather station evaluation & Vanilla GCN & 6 & 14583 & 16.612 & 39.118 & -0.113 & 5 \\
+Retrospective centered-weather station evaluation & Vanilla GCN & 12 & 14583 & 19.055 & 44.134 & -0.417 & 5 \\
+Retrospective centered-weather station evaluation & Vanilla GCN & 24 & 14583 & 14.029 & 30.344 & 0.330 & 5 \\
+Retrospective centered-weather station evaluation & Weather ridge & 1 & 14583 & 8.706 & 24.316 & 0.570 & 1 \\
+Retrospective centered-weather station evaluation & Weather ridge & 3 & 14583 & 13.357 & 30.706 & 0.314 & 1 \\
+Retrospective centered-weather station evaluation & Weather ridge & 6 & 14583 & 16.106 & 33.752 & 0.171 & 1 \\
+Retrospective centered-weather station evaluation & Weather ridge & 12 & 14583 & 17.390 & 35.468 & 0.085 & 1 \\
+Retrospective centered-weather station evaluation & Weather ridge & 24 & 14583 & 15.005 & 29.707 & 0.358 & 1 \\
+Retrospective centered-weather station evaluation & Wind-conditioned GINE–GRU & 1 & 14583 & 7.984 & 24.113 & 0.577 & 5 \\
+Retrospective centered-weather station evaluation & Wind-conditioned GINE–GRU & 3 & 14583 & 12.744 & 31.445 & 0.280 & 5 \\
+Retrospective centered-weather station evaluation & Wind-conditioned GINE–GRU & 6 & 14583 & 16.026 & 34.740 & 0.122 & 5 \\
+Retrospective centered-weather station evaluation & Wind-conditioned GINE–GRU & 12 & 14583 & 16.877 & 35.556 & 0.080 & 5 \\
+Retrospective centered-weather station evaluation & Wind-conditioned GINE–GRU & 24 & 14583 & 14.188 & 28.932 & 0.391 & 5 \\
+\hline
+\end{tabular}
+\end{table*}

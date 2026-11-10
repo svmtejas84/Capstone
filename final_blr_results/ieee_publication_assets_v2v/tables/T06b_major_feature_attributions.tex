@@ -1,0 +1,25 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Selected signed and absolute feature attributions. Mean absolute and signed IG are summed over all 12 lags and 15 station nodes per record, then averaged across primary training-mean-baseline records. Distinct model variants and schemas; not causal and not a controlled horizon comparison.}
+\label{tab:t06b_major_feature_attributions}
+\begin{tabular}{lrrrr}
+\hline
+variant & feature & attribution\_records & mean\_abs\_ig\_sum\_lag\_node & mean\_signed\_ig\_sum\_lag\_node \\
+\hline
+One-hour ST-PIGNN variant & pm25\_lagged & 45 & 4.918 & -1.156 \\
+One-hour ST-PIGNN variant & wind\_speed & 45 & 0.382 & -0.023 \\
+One-hour ST-PIGNN variant & temperature & 45 & 0.959 & -0.100 \\
+One-hour ST-PIGNN variant & surface\_pressure & 45 & 1.864 & 0.549 \\
+One-hour ST-PIGNN variant & wind\_direction\_sin & 45 & 0.678 & 0.283 \\
+One-hour ST-PIGNN variant & wind\_direction\_cos & 45 & 0.435 & 0.056 \\
+Six-hour station-isolated ST-PIGNN variant & pm25\_lagged & 9 & 0.000 & -0.000 \\
+Six-hour station-isolated ST-PIGNN variant & wind\_speed & 9 & 0.989 & -0.668 \\
+Six-hour station-isolated ST-PIGNN variant & temperature & 9 & 2.647 & -0.411 \\
+Six-hour station-isolated ST-PIGNN variant & surface\_pressure & 9 & 2.406 & 0.148 \\
+Six-hour station-isolated ST-PIGNN variant & wind\_direction\_sin & 9 & 0.578 & -0.364 \\
+Six-hour station-isolated ST-PIGNN variant & wind\_direction\_cos & 9 & 0.319 & -0.036 \\
+Six-hour station-isolated ST-PIGNN variant & hour\_sin & 9 & 0.998 & 0.299 \\
+\hline
+\end{tabular}
+\end{table*}

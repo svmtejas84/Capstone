@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Separate forecast-origin-safe spatial-decoder evaluation. Different evaluation protocol from W6. Decoder pooled MAE 27.360 versus forecast-IDW 20.154; pooled difference +7.206 $\mu$g/m³, while equal-site difference is +5.101 (95\% station-bootstrap CI [1.815, 8.301]).}
+\label{tab:t04b_decoder_protocol}
+\begin{tabular}{lrrrrrrr}
+\hline
+method & n & mae & rmse & r2 & coverage\_pairs & scored\_stations & decoder\_parameter\_count \\
+\hline
+train\_only\_spatial\_mean & 14583 & 20.634 & 38.614 & -0.085 & 14583 & 11 & 0 \\
+forecast\_idw & 14583 & 20.154 & 39.295 & -0.124 & 14583 & 11 & 0 \\
+forecast\_decoder & 14583 & 27.360 & 44.046 & -0.412 & 14583 & 11 & 1249 \\
+\hline
+\end{tabular}
+\end{table*}

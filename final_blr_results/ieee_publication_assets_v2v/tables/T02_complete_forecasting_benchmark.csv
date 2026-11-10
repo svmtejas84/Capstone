@@ -1,0 +1,96 @@
+protocol,model_name,model,horizon_h,n_pairs,mae_ug_m3,rmse_ug_m3,r2,seeds_completed
+Forecast-cutoff-safe MLP/TCN evaluation,MLP,mlp,1,14583,8.016286629382481,24.631395793521047,0.5585105149719128,5
+Forecast-cutoff-safe MLP/TCN evaluation,MLP,mlp,3,14583,12.5431154783542,32.20909566400186,0.2450826940499108,5
+Forecast-cutoff-safe MLP/TCN evaluation,MLP,mlp,6,14583,15.512847280385564,36.67803955384542,0.0210634409213215,5
+Forecast-cutoff-safe MLP/TCN evaluation,MLP,mlp,12,14583,16.026358172647704,35.0904175043575,0.1039765212811516,5
+Forecast-cutoff-safe MLP/TCN evaluation,MLP,mlp,24,14583,13.839992526254823,29.33958753596217,0.3736020510143786,5
+Forecast-cutoff-safe MLP/TCN evaluation,TCN,tcn,1,14583,8.079930566462378,25.098219815650687,0.541617365790799,5
+Forecast-cutoff-safe MLP/TCN evaluation,TCN,tcn,3,14583,12.268375256735515,31.5713445329802,0.2746819687058792,5
+Forecast-cutoff-safe MLP/TCN evaluation,TCN,tcn,6,14583,14.867542348118654,34.72390059439495,0.1225965709757344,5
+Forecast-cutoff-safe MLP/TCN evaluation,TCN,tcn,12,14583,15.278443953325231,34.23461364189043,0.1471489652383253,5
+Forecast-cutoff-safe MLP/TCN evaluation,TCN,tcn,24,14583,13.894474377823087,29.264770666991023,0.3767926466173591,5
+Retrospective centered-weather station evaluation,Adaptive graph ST,adaptive_graph_st,1,14583,7.946645736694336,23.744651794433597,0.589726060628891,5
+Retrospective centered-weather station evaluation,Adaptive graph ST,adaptive_graph_st,3,14583,13.052213668823242,34.584232330322266,0.1296406984329223,5
+Retrospective centered-weather station evaluation,Adaptive graph ST,adaptive_graph_st,6,14583,15.17112636566162,35.21867752075195,0.0974143147468566,5
+Retrospective centered-weather station evaluation,Adaptive graph ST,adaptive_graph_st,12,14583,16.926307678222656,37.205039978027344,-0.0072699785232543,5
+Retrospective centered-weather station evaluation,Adaptive graph ST,adaptive_graph_st,24,14583,13.744016647338867,28.809703826904297,0.396023690700531,5
+Retrospective centered-weather station evaluation,"Adaptive graph ST, fixed kNN",adaptive_graph_st_fixed_knn,1,14583,8.133109092712402,23.92702865600586,0.5833994448184967,5
+Retrospective centered-weather station evaluation,"Adaptive graph ST, fixed kNN",adaptive_graph_st_fixed_knn,3,14583,12.64861011505127,31.706714630126957,0.2684486508369446,5
+Retrospective centered-weather station evaluation,"Adaptive graph ST, fixed kNN",adaptive_graph_st_fixed_knn,6,14583,15.955085754394531,35.76949691772461,0.0689607858657836,5
+Retrospective centered-weather station evaluation,"Adaptive graph ST, fixed kNN",adaptive_graph_st_fixed_knn,12,14583,17.60143280029297,38.16126251220703,-0.0597118139266967,5
+Retrospective centered-weather station evaluation,"Adaptive graph ST, fixed kNN",adaptive_graph_st_fixed_knn,24,14583,15.171014785766602,29.80262756347656,0.3536742925643921,5
+Retrospective centered-weather station evaluation,GRU-only,gru_only,1,14583,7.991346836090088,24.10053253173828,0.5773357152938843,5
+Retrospective centered-weather station evaluation,GRU-only,gru_only,3,14583,12.6549711227417,31.90060043334961,0.259474515914917,5
+Retrospective centered-weather station evaluation,GRU-only,gru_only,6,14583,15.16215991973877,34.959678649902344,0.1106408834457397,5
+Retrospective centered-weather station evaluation,GRU-only,gru_only,12,14583,16.388553619384766,35.78567886352539,0.0681182742118835,5
+Retrospective centered-weather station evaluation,GRU-only,gru_only,24,14583,14.106813430786133,29.367202758789062,0.3724223971366882,5
+Retrospective centered-weather station evaluation,Hour/day climatology,climatology_hod_dow,1,14583,21.46864891052246,38.74625015258789,-0.0924503803253173,1
+Retrospective centered-weather station evaluation,Hour/day climatology,climatology_hod_dow,3,14583,21.46864891052246,38.74625015258789,-0.0924503803253173,1
+Retrospective centered-weather station evaluation,Hour/day climatology,climatology_hod_dow,6,14583,21.46864891052246,38.74625015258789,-0.0924503803253173,1
+Retrospective centered-weather station evaluation,Hour/day climatology,climatology_hod_dow,12,14583,21.46864891052246,38.74625015258789,-0.0924503803253173,1
+Retrospective centered-weather station evaluation,Hour/day climatology,climatology_hod_dow,24,14583,21.46864891052246,38.74625015258789,-0.0924503803253173,1
+Retrospective centered-weather station evaluation,Persistence,persistence,1,14583,8.116095542907715,25.357742309570312,0.5320887565612793,1
+Retrospective centered-weather station evaluation,Persistence,persistence,3,14583,13.24435806274414,35.14985656738281,0.1009384989738464,1
+Retrospective centered-weather station evaluation,Persistence,persistence,6,14583,16.606889724731445,39.94972610473633,-0.1613681316375732,1
+Retrospective centered-weather station evaluation,Persistence,persistence,12,14583,19.105562210083008,44.74492645263672,-0.4569004774093628,1
+Retrospective centered-weather station evaluation,Persistence,persistence,24,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,ST GRU–GCN,st_gru_gcn,1,14583,8.219693183898926,24.962331771850582,0.5465675294399261,5
+Retrospective centered-weather station evaluation,ST GRU–GCN,st_gru_gcn,3,14583,13.17238998413086,34.2421760559082,0.1467721462249755,5
+Retrospective centered-weather station evaluation,ST GRU–GCN,st_gru_gcn,6,14583,16.46786117553711,38.94844436645508,-0.1038818359375,5
+Retrospective centered-weather station evaluation,ST GRU–GCN,st_gru_gcn,12,14583,19.54014015197754,42.72826766967773,-0.328534722328186,5
+Retrospective centered-weather station evaluation,ST GRU–GCN,st_gru_gcn,24,14583,13.896435737609863,30.36459350585937,0.329069972038269,5
+Retrospective centered-weather station evaluation,ST-PIGNN additional variant,stpignn_v2,1,14583,9.529688835144045,25.52754020690918,0.5258013904094696,5
+Retrospective centered-weather station evaluation,ST-PIGNN additional variant,stpignn_v2,3,14583,13.321236610412598,32.61838912963867,0.2257747054100036,5
+Retrospective centered-weather station evaluation,ST-PIGNN additional variant,stpignn_v2,6,14583,15.85557460784912,35.25891876220703,0.0953506827354431,5
+Retrospective centered-weather station evaluation,ST-PIGNN additional variant,stpignn_v2,12,14583,17.663726806640625,37.0753059387207,-0.0002574920654296,5
+Retrospective centered-weather station evaluation,ST-PIGNN additional variant,stpignn_v2,24,14583,14.70872974395752,30.016868591308597,0.3443484306335449,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, Laplacian",stpignn_laplacian,1,14583,8.0982084274292,23.891101837158203,0.5846495926380157,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, Laplacian",stpignn_laplacian,3,14583,12.16403102874756,30.733701705932617,0.3126593232154846,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, Laplacian",stpignn_laplacian,6,14583,14.835915565490724,33.751609802246094,0.1710443496704101,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, Laplacian",stpignn_laplacian,12,14583,15.506681442260742,33.57217025756836,0.1798352003097534,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, Laplacian",stpignn_laplacian,24,14583,14.004429817199709,29.180063247680664,0.3803951740264892,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, directional",stpignn_original,1,14583,8.02568531036377,23.893091201782227,0.5845803916454315,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, directional",stpignn_original,3,14583,12.341537475585938,30.90467071533203,0.3049908280372619,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, directional",stpignn_original,6,14583,14.706262588500977,33.54767990112305,0.1810313463211059,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, directional",stpignn_original,12,14583,15.509281158447266,34.337486267089844,0.1420156955718994,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, directional",stpignn_original,24,14583,13.90180778503418,29.253759384155277,0.3772615194320678,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, source term removed",stpignn_v2_source_removed,1,14583,9.520365715026855,25.64491844177246,0.5214306116104126,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, source term removed",stpignn_v2_source_removed,3,14583,13.542487144470217,32.99444961547852,0.2078196406364441,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, source term removed",stpignn_v2_source_removed,6,14583,16.025537490844727,35.87775039672852,0.0633168816566467,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, source term removed",stpignn_v2_source_removed,12,14583,18.23743438720703,39.00991821289063,-0.1073691844940185,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, source term removed",stpignn_v2_source_removed,24,14583,14.67774772644043,30.04707908630371,0.3430280089378357,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, transport term removed",stpignn_v2_transport_removed,1,14583,8.071176528930664,24.254180908203125,0.5719293057918549,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, transport term removed",stpignn_v2_transport_removed,3,14583,13.181195259094238,31.56905746459961,0.2747870683670044,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, transport term removed",stpignn_v2_transport_removed,6,14583,15.878057479858398,34.65607452392578,0.1260209679603576,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, transport term removed",stpignn_v2_transport_removed,12,14583,17.49053955078125,36.4080810546875,0.0354207754135131,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, transport term removed",stpignn_v2_transport_removed,24,14583,14.044758796691896,29.07546043395996,0.3848294615745544,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, λ=0",stpignn_lambda0,1,14583,8.052156448364258,24.09690284729004,0.5774630010128021,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, λ=0",stpignn_lambda0,3,14583,12.471519470214844,31.495027542114254,0.2781843543052673,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, λ=0",stpignn_lambda0,6,14583,15.116479873657228,34.336761474609375,0.1420519351959228,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, λ=0",stpignn_lambda0,12,14583,15.77167797088623,35.07814025878906,0.1046034693717956,5
+Retrospective centered-weather station evaluation,"ST-PIGNN, λ=0",stpignn_lambda0,24,14583,13.756937980651855,29.21068000793457,0.3790943026542663,5
+Retrospective centered-weather station evaluation,Same-hour-yesterday,same_hour_yesterday,1,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,Same-hour-yesterday,same_hour_yesterday,3,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,Same-hour-yesterday,same_hour_yesterday,6,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,Same-hour-yesterday,same_hour_yesterday,12,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,Same-hour-yesterday,same_hour_yesterday,24,14583,14.130311965942385,31.386001586914062,0.2831730842590332,1
+Retrospective centered-weather station evaluation,Station training mean,station_train_mean,1,14583,20.964645385742188,37.33641815185547,-0.0143961906433105,1
+Retrospective centered-weather station evaluation,Station training mean,station_train_mean,3,14583,20.964645385742188,37.33641815185547,-0.0143961906433105,1
+Retrospective centered-weather station evaluation,Station training mean,station_train_mean,6,14583,20.964645385742188,37.33641815185547,-0.0143961906433105,1
+Retrospective centered-weather station evaluation,Station training mean,station_train_mean,12,14583,20.964645385742188,37.33641815185547,-0.0143961906433105,1
+Retrospective centered-weather station evaluation,Station training mean,station_train_mean,24,14583,20.964645385742188,37.33641815185547,-0.0143961906433105,1
+Retrospective centered-weather station evaluation,Vanilla GCN,vanilla_gcn,1,14583,8.2550687789917,25.167325973510746,0.5390896499156952,5
+Retrospective centered-weather station evaluation,Vanilla GCN,vanilla_gcn,3,14583,13.23082447052002,34.46354293823242,0.1357046365737915,5
+Retrospective centered-weather station evaluation,Vanilla GCN,vanilla_gcn,6,14583,16.611604690551758,39.11772537231445,-0.1134982109069824,5
+Retrospective centered-weather station evaluation,Vanilla GCN,vanilla_gcn,12,14583,19.0545711517334,44.13416290283203,-0.4173988103866577,5
+Retrospective centered-weather station evaluation,Vanilla GCN,vanilla_gcn,24,14583,14.02881145477295,30.344459533691406,0.3299593925476074,5
+Retrospective centered-weather station evaluation,Weather ridge,ridge_lag_calendar_weather,1,14583,8.706328392028809,24.31586456298828,0.5697491466999054,1
+Retrospective centered-weather station evaluation,Weather ridge,ridge_lag_calendar_weather,3,14583,13.356836318969728,30.70566749572754,0.3139126300811767,1
+Retrospective centered-weather station evaluation,Weather ridge,ridge_lag_calendar_weather,6,14583,16.106332778930664,33.752201080322266,0.171015202999115,1
+Retrospective centered-weather station evaluation,Weather ridge,ridge_lag_calendar_weather,12,14583,17.3896484375,35.46760559082031,0.0846102237701416,1
+Retrospective centered-weather station evaluation,Weather ridge,ridge_lag_calendar_weather,24,14583,15.005094528198242,29.70724105834961,0.3578050136566162,1
+Retrospective centered-weather station evaluation,Wind-conditioned GINE–GRU,gine_gru_wind,1,14583,7.983870506286621,24.112794876098636,0.5769054591655731,5
+Retrospective centered-weather station evaluation,Wind-conditioned GINE–GRU,gine_gru_wind,3,14583,12.74437427520752,31.445425033569336,0.2804561853408813,5
+Retrospective centered-weather station evaluation,Wind-conditioned GINE–GRU,gine_gru_wind,6,14583,16.025676727294922,34.74005126953125,0.1217802166938781,5
+Retrospective centered-weather station evaluation,Wind-conditioned GINE–GRU,gine_gru_wind,12,14583,16.876649856567383,35.555999755859375,0.0800416469573974,5
+Retrospective centered-weather station evaluation,Wind-conditioned GINE–GRU,gine_gru_wind,24,14583,14.188251495361328,28.932151794433597,0.390878677368164,5

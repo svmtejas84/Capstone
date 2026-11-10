@@ -1,0 +1,40 @@
+split,feature,unit,missing_count,total_station_hours,missing_fraction,handling
+train,pm25_lagged,µg/m³,426722,459360,0.9289489724834552,Raw PM2.5 target availability; input value has train-fitted causal imputation and a separate lag_is_imputed channel
+train,pm10,µg/m³,417311,459360,0.908461772901428,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,no2,ppb,440759,459360,0.9595067049808429,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,so2,ppb,432748,459360,0.9420672239637757,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,co,ppb,436366,459360,0.9499433995123651,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,wind_speed,m/s,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,wind_gusts,m/s,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,temperature,°C,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,humidity,%,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,surface_pressure,hPa,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,wind_direction_sin,unitless,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,wind_direction_cos,unitless,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+train,srtm_elevation,m,0,459360,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,pm25_lagged,µg/m³,22677,29880,0.7589357429718876,Raw PM2.5 target availability; input value has train-fitted causal imputation and a separate lag_is_imputed channel
+validation,pm10,µg/m³,19132,29880,0.6402945113788487,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,no2,ppb,22821,29880,0.7637550200803213,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,so2,ppb,22670,29880,0.7587014725568942,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,co,ppb,21556,29880,0.7214190093708166,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,wind_speed,m/s,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,wind_gusts,m/s,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,temperature,°C,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,humidity,%,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,surface_pressure,hPa,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,wind_direction_sin,unitless,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,wind_direction_cos,unitless,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+validation,srtm_elevation,m,0,29880,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,pm25_lagged,µg/m³,52737,67320,0.7833778966131907,Raw PM2.5 target availability; input value has train-fitted causal imputation and a separate lag_is_imputed channel
+test,pm10,µg/m³,56629,67320,0.8411913250148544,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,no2,ppb,50076,67320,0.7438502673796792,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,so2,ppb,55195,67320,0.8198900772430184,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,co,ppb,49251,67320,0.7315953654188948,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,wind_speed,m/s,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,wind_gusts,m/s,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,temperature,°C,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,humidity,%,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,surface_pressure,hPa,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,wind_direction_sin,unitless,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,wind_direction_cos,unitless,90,67320,0.001336898395721925,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill
+test,srtm_elevation,m,0,67320,0.0,Raw feature missing before _causal_fill; fitted fill uses train median and bounded forward fill

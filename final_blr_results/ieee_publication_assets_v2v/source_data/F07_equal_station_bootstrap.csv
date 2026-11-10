@@ -1,0 +1,3 @@
+contrast,station_equal_weighted_delta_mae,station_bootstrap_95ci_low,station_bootstrap_95ci_high,bootstrap_replicates,seed,independent_sites
+decoder_minus_train_only_spatial_mean,5.939313918110648,2.5138965774425377,9.379224819183614,2000,4303,11
+decoder_minus_forecast_idw,5.100802220263547,1.8145628928825843,8.301342498992534,2000,4303,11

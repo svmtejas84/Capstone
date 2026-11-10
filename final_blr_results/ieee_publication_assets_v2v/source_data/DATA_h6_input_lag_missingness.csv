@@ -1,0 +1,4 @@
+split,horizon_hours,target_origins,input_station_hour_slots,pm25_lag_imputed_slots,pm25_lag_imputed_fraction,description
+train,6,14214,2557080,2183527,0.853914230293929,missing observed PM2.5 at historical input slot; model input includes causal filled value plus lag_is_imputed indicator
+validation,6,1961,352980,267517,0.7578814663720325,missing observed PM2.5 at historical input slot; model input includes causal filled value plus lag_is_imputed indicator
+test,6,4063,731340,560835,0.7668594634506523,missing observed PM2.5 at historical input slot; model input includes causal filled value plus lag_is_imputed indicator

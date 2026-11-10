@@ -1,0 +1,3 @@
+variant,checkpoint_records,attribution_records,baseline,lags,nodes,max_completeness_abs,max_wrapper_error
+One-hour ST-PIGNN variant,54,45,training_mean,12,15,2.1457672119140625e-05,4.57763671875e-05
+Six-hour station-isolated ST-PIGNN variant,18,9,training_mean,12,15,7.808208465576172e-06,7.62939453125e-06

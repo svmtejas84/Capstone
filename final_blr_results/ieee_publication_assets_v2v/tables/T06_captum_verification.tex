@@ -1,0 +1,14 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Captum Integrated Gradients coverage and numerical diagnostics. The one-hour and six-hour variants have different input schemas, selection protocols, and output attribution scales; magnitudes should not be treated as directly comparable or causal.}
+\label{tab:t06_captum_verification}
+\begin{tabular}{lrrrrrrr}
+\hline
+variant & checkpoint\_records & attribution\_records & baseline & lags & nodes & max\_completeness\_abs & max\_wrapper\_error \\
+\hline
+One-hour ST-PIGNN variant & 54 & 45 & training\_mean & 12 & 15 & 0.000 & 0.000 \\
+Six-hour station-isolated ST-PIGNN variant & 18 & 9 & training\_mean & 12 & 15 & 0.000 & 0.000 \\
+\hline
+\end{tabular}
+\end{table*}

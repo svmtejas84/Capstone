@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Claim-to-evidence classifications. Implementation, numerical output, and empirical validation are separate claims; statuses apply only to the evidence listed.}
+\label{tab:t08_claim_evidence}
+\begin{tabular}{lrrr}
+\hline
+Claim & Status & Evidence & Boundary \\
+\hline
+Multi-horizon station forecasting & MIXED & Corrected station graph; observed station labels; saved multi-horizon predictions & Simple baselines remain strong; weather protocol differs across some model families \\
+Superiority over neural baselines & MIXED & 17-variant retrospective station benchmark & Exploratory exposed test set; no blanket superiority \\
+Directional regularization benefit & MIXED & $\lambda$=0, directional, Laplacian comparisons & Horizon-dependent; 7-day paired intervals; no physical specificity \\
+Physical conservation & UNSUPPORTED & Directional hinge and finite-volume synthetic diagnostic & Historical loss is not a conservation balance; no empirical conservation validation \\
+Spatial generalization & UNSUPPORTED & W6 LOSO and v2r decoder holdouts & Pooled models lose to ridge/IDW; 11 scored sites; 4 unscored \\
+Road-node accuracy & NOT EVALUATED & 154,902 generated estimates & No independent roadside concentration labels \\
+Captum attribution & SUPPORTED for baseline-relative computation & Two compatible ST-PIGNN variants; raw IG tensors & Limited variants, non-comparable magnitudes; attribution is not causal \\
+Routing capacity feasibility & SUPPORTED within declared scenarios & v2t focused and benchmark checks & Low-demand synthetic capacity scenarios; no real traffic validation \\
+Real-world exposure reduction & NOT EVALUATED & Modeled routing dose scenarios & Dose differences are tiny and concentration field unvalidated \\
+RGDR superiority / novelty & NOT ESTABLISHED & Binary/continuous gate diagnostics only & No comparative training results or comprehensive novelty establishment \\
+Independent external validation & NOT EVALUATED & No second-city study & Requires new eligible dataset and prospective protocol \\
+\hline
+\end{tabular}
+\end{table*}

@@ -1,0 +1,14 @@
+variant,feature,attribution_records,mean_abs_ig_sum_lag_node,mean_signed_ig_sum_lag_node
+One-hour ST-PIGNN variant,pm25_lagged,45,4.917848587036133,-1.155540943145752
+One-hour ST-PIGNN variant,wind_speed,45,0.3821042478084564,-0.0232107639312744
+One-hour ST-PIGNN variant,temperature,45,0.9587945938110352,-0.0996390655636787
+One-hour ST-PIGNN variant,surface_pressure,45,1.864100694656372,0.5493490695953369
+One-hour ST-PIGNN variant,wind_direction_sin,45,0.6778850555419922,0.2827419936656952
+One-hour ST-PIGNN variant,wind_direction_cos,45,0.4352389872074127,0.0561875626444816
+Six-hour station-isolated ST-PIGNN variant,pm25_lagged,9,5.428768872661749e-06,-6.429074232983112e-07
+Six-hour station-isolated ST-PIGNN variant,wind_speed,9,0.989253044128418,-0.6677167415618896
+Six-hour station-isolated ST-PIGNN variant,temperature,9,2.6471993923187256,-0.4112137854099273
+Six-hour station-isolated ST-PIGNN variant,surface_pressure,9,2.4059553146362305,0.1480328738689422
+Six-hour station-isolated ST-PIGNN variant,wind_direction_sin,9,0.5778436660766602,-0.3636656999588012
+Six-hour station-isolated ST-PIGNN variant,wind_direction_cos,9,0.3192866444587707,-0.0359769873321056
+Six-hour station-isolated ST-PIGNN variant,hour_sin,9,0.9977128505706788,0.2987527549266815

@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Routing feasibility and modeled-dose scenario results. The original concentration scenario has 252 requests across nine batches. Dose/time differences are paired on common admitted trips. These are simulated estimates, not measured exposure reductions or stability guarantees.}
+\label{tab:t07_routing_feasibility}
+\begin{tabular}{lrrrrrrrrrrrr}
+\hline
+method & requests & assigned & unassigned & success\_rate & mean\_distance\_m & mean\_time\_min & mean\_modeled\_dose & capacity\_violations & max\_utilization & runtime\_s & dose\_diff\_pct\_vs\_shortest & time\_diff\_pct\_vs\_shortest \\
+\hline
+corrected\_da & 252 & 252 & 0 & 1.000 & 1629.323 & 6.517 & 0.500 & 0 & 0.046 & 26.125 & -0.001 & 0.001 \\
+fastest & 252 & 252 & 0 & 1.000 & 1629.303 & 6.517 & 0.500 & 0 & 0.046 & 26.125 & -- & -- \\
+minimum\_dose & 252 & 252 & 0 & 1.000 & 1629.412 & 6.518 & 0.500 & 0 & 0.046 & 26.125 & -- & -- \\
+offline\_bundle & 252 & 252 & 0 & 1.000 & 1629.412 & 6.518 & 0.500 & 0 & 0.046 & 26.125 & -- & -- \\
+original\_gs & 252 & 252 & 0 & 1.000 & 1629.323 & 6.517 & 0.500 & 0 & 0.046 & 26.125 & -- & -- \\
+shortest & 252 & 252 & 0 & 1.000 & 1629.303 & 6.517 & 0.500 & 0 & 0.046 & 26.125 & -- & -- \\
+\hline
+\end{tabular}
+\end{table*}

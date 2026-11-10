@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Dataset and graph summary. Source records and dataset versions are explicit; station and road graphs are distinct.}
+\label{tab:t01_dataset_graph_summary}
+\begin{tabular}{lrrrrr}
+\hline
+Component & Source & Resolution & Coverage & Dimensions / variables & Protocol notes \\
+\hline
+Air-quality observations & OpenAQ API records labelled with CPCB station names & hourly / irregular records & 15 sites; 11 scored in test & PM2.5 target plus pollutant inputs & Station monitors; values cleaned 0–500 $\mu$g/m³ \\
+Meteorology & Open-Meteo archive, one Bengaluru reference coordinate & hourly historical archive & citywide broadcast to stations & wind, gust, temperature, humidity, pressure, direction & v2j uses centered adjacent :30 mean; v2m uses cutoff-safe availability \\
+Road geometry & OpenStreetMap-derived stored graph & static nodes and edges & 154,902 nodes & 393,089 raw directed edge rows; 424,550 processed arcs & EPSG:32643; 64 historical partitions \\
+Terrain & SRTM sampled node elevation & static & 15 stations / road nodes as applicable & metres & Verified SRTM; distinct from legacy synthetic northing proxy \\
+Forecast graph & Station coordinate kNN & static & 15 station nodes & 60 directed arcs; 4-nearest-neighbour construction & Separate from road graph \\
+Corrected v2j inputs & 13 data channels + lag-missingness + four calendar channels & 12-hour history & 15 station nodes & 18 channels & 1,3,6,12,24-hour horizons; 14,583 observed test pairs/horizon \\
+\hline
+\end{tabular}
+\end{table*}

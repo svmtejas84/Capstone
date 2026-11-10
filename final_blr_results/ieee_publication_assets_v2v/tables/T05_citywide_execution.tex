@@ -1,0 +1,21 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Citywide experimental estimate execution. Three frozen six-hour snapshots × 154,902 road nodes. Station model operates on 15-site graph; separate decoder generates estimates. No roadside ground truth.}
+\label{tab:t05_citywide_execution}
+\begin{tabular}{lrrrrrrrrrrr}
+\hline
+origin\_utc & nodes & staged\_seconds & verification\_seconds & nodes\_per\_second & max\_abs\_diff\_ug\_m3 & wall\_seconds & query\_seconds & peak\_rss\_kib & gpu\_vram\_bytes & finite\_predictions & sha256 \\
+\hline
+2025-10-08 07:00:00+00:00 & 1000 & 0.001 & 0.001 & 830908.744 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2025-10-08 07:00:00+00:00 & 10000 & 0.006 & 0.005 & 1569345.540 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2025-10-08 07:00:00+00:00 & 154902 & -- & -- & 118775.663 & -- & 1.304 & 0.085 & 1363504.000 & 0.000 & 154902.000 & f58fab904af5261ee7b831347afed5414c5c059e7d76608351a622c090ba55f7 \\
+2026-02-10 01:00:00+00:00 & 1000 & 0.001 & 0.001 & 869935.156 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2026-02-10 01:00:00+00:00 & 10000 & 0.005 & 0.005 & 1972551.109 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2026-02-10 01:00:00+00:00 & 154902 & -- & -- & 133847.633 & -- & 1.157 & 0.082 & 1479252.000 & 0.000 & 154902.000 & 71d7cb6fed73c480e9f46ac24a8c960920436a60358989e149f8f9c1bbb2f58d \\
+2026-03-28 17:00:00+00:00 & 1000 & 0.001 & 0.001 & 811305.567 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2026-03-28 17:00:00+00:00 & 10000 & 0.005 & 0.005 & 2077294.766 & 0.000 & -- & -- & -- & -- & -- & -- \\
+2026-03-28 17:00:00+00:00 & 154902 & -- & -- & 137765.096 & -- & 1.124 & 0.082 & 1494616.000 & 0.000 & 154902.000 & 2e504af88c974b546ecab7496dd72dad87fea195159ead29b4434a915586aded \\
+\hline
+\end{tabular}
+\end{table*}
