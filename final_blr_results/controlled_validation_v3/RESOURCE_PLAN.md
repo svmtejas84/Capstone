@@ -1,0 +1,5 @@
+# Resource plan
+
+Host read-only `nvidia-smi` returned Tesla V100-PCIE-32GB, 32,768 MiB total, 12 MiB used. The sandboxed Python process reports no CUDA device; authorized training commands therefore require the same approved elevated execution path used for the GPU check. This is an execution restriction, not evidence that the V100 is absent.
+
+Core regularizer matrix: 125 final fits (5 horizons × 5 seeds × 5 variants), plus up to 20 seed-11 LR-selection fits for λ=0. Required neural baselines add further cells. Historical MLP/TCN 50 final cells used 84.8 s total V100 fit time and ~120 MiB allocated peak, but GINEConv–GRU cost must be measured directly; these MLP/TCN figures are **not** a GNN runtime estimate. One-batch memory and one-epoch wall time are mandatory before the full matrix. Hard stop: projected >24 V100 GPU-hours or >20 GiB new checkpoints. One worker only, `scripts/run_supervised.sh` with per-cell atomic artifacts, lock, logs and completion markers. Never rely on session persistence alone. Do not start 125 fits until smoke, timing and data gates pass.

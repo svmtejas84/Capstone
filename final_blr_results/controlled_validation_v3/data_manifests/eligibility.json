@@ -1,0 +1,14 @@
+{
+  "array_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5",
+  "first_utc": "2022-01-01T00:00:00+00:00",
+  "last_utc": "2026-03-28T23:00:00+00:00",
+  "station_count": 15,
+  "base_feature_count": 13,
+  "model_feature_count": 18,
+  "test_observed_pairs": 14583,
+  "causal_fill_synthetic_future_mutation": "PASS",
+  "pm25_imputation_synthetic_future_mutation": "PASS",
+  "weather_timestamp_rule": "source-inspected: latest archive record timestamp <= feature hour; actual release latency unknown",
+  "new_untouched_temporal_holdout": false,
+  "operational_issue_time_verification": false
+}

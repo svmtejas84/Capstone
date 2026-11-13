@@ -1,0 +1,15 @@
+# Gate A: data eligibility and information timing
+
+**Verdict: eligible only for exploratory, timestamp-causal historical-observation evaluation; operational forecast availability and independent temporal confirmation are unavailable.** No v3 neural training had started when this report was written.
+
+The saved candidate `final_blr_results/baselines/v2m/data/data_v2m_arrays.npz` contains 37,152 hourly timestamps from 2022-01-01 through 2026-03-28 23:00 UTC, 15 station IDs, 13 base channels, observed targets and masks. Four calendar channels plus a lag-imputation flag form 18 model channels. There are 14,583 observed test station–hour pairs in the exposed period. Exact hashes are in `data_manifests/source_checksums.csv`; the array hash is `8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5`.
+
+`src/stpignn/data_v2.py` selects the latest half-hour archive-weather record timestamped at or before feature hour c for the v2m arrays. Unlike historical v2j, it does not average c−30 with c+30 minutes. The raw Open-Meteo source is a retrospective archive with no recorded forecast issue time or release time. Thus timestamps are causal, but **availability by operational issuance is unverified**. Contemporaneous station pollutant observations and the residual anchor also lack measured ingest latency. Claims must say historical-observation retrospective prediction, not certified live forecasting.
+
+Imputation uses training-period PM2.5:PM10 ratios, hour/day climatology and medians; same-timestamp PM2.5 from other stations can enter spatial IDW; 24-hour forward fill is causal by row order. Its use at issue time assumes those observations are already received. The synthetic future-perturbation checks in `scripts/audit_data_gate.py` passed for causal fill and same-hour PM2.5 imputation. These targeted checks do not certify every operational data latency. Existing `baselines/v2m/tests/test_cutoff_data.py` verifies timeline/shape and a concrete 02:00 UTC cutoff-weather example. The v3 driver must also keep all 12 input row indices ≤ T−h and avoid future target labels.
+
+The saved array ends at the exposed test boundary. The raw station `2026_partial.parquet` index extends only to 2026-03-30 23:30 UTC; that short tail is insufficient for a newly untouched evaluation interval and has not been used for selection. No new future observation acquisition has been authorized or verified. The old test is repeatedly exposed; all results on it are exploratory.
+
+Spatial LOSO requires fold-specific rebuilding with held-out station targets excluded from ratio, IDW, climatology, scaler, anchor, and model fitting. The saved full-station array cannot by itself certify LOSO isolation; this sub-study remains gated separately.
+
+Gate decision: timestamp-causal exploratory training may proceed after model smoke tests, with the above availability caveat. Independent operational and temporal-generalization claims are blocked. Do not unlock test evaluation before all choices are frozen.

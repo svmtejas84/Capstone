@@ -1,0 +1,16 @@
+{
+  "gpu": "Tesla V100-PCIE-32GB",
+  "batch_shape": [
+    512,
+    12,
+    15,
+    18
+  ],
+  "observed_targets": 998,
+  "parameter_count": 43393,
+  "loss": 0.715554416179657,
+  "seconds": 0.5702997576445341,
+  "peak_allocated_bytes": 1211783168,
+  "all_input_indices_at_or_before_issue": true,
+  "finite_gradients": true
+}
