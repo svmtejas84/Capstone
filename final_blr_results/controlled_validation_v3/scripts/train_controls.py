@@ -52,9 +52,11 @@ def wind_masks(ctx, variant):
     if variant == "shuffled_wind":
         result = base.copy()
         rng = np.random.default_rng(4303)
-        for split in ("train", "validation", "test"):
-            indices = ctx.hours[split] - ctx.horizon
-            indices = np.unique(indices)
+        # Calendar-month groups depend only on issue timestamps, never target
+        # labels or target-availability masks. Preserve seasonal wind mix.
+        month = ctx.times.year.to_numpy() * 12 + ctx.times.month.to_numpy()
+        for key in np.unique(month):
+            indices = np.flatnonzero(month == key)
             result[indices] = base[rng.permutation(indices)]
         return result
     if variant == "rotated_wind":
