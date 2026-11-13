@@ -1,0 +1,11 @@
+{
+  "issue_utc": "2025-10-01T12:00:00+00:00",
+  "checked_hourly_rows": 32869,
+  "changed_raw_rows": {
+    "station_rows": 274260,
+    "weather_rows": 4278
+  },
+  "causal_feature_tensor_through_issue_unchanged": true,
+  "earlier_imputed_target_unchanged": true,
+  "source_artifacts_written": false
+}

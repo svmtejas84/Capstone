@@ -6,10 +6,10 @@
     15,
     18
   ],
-  "observed_targets": 998,
+  "observed_targets": 977,
   "parameter_count": 43393,
-  "loss": 0.715554416179657,
-  "seconds": 0.5702997576445341,
+  "loss": 0.7577104568481445,
+  "seconds": 0.5863680504262447,
   "peak_allocated_bytes": 1211783168,
   "all_input_indices_at_or_before_issue": true,
   "finite_gradients": true

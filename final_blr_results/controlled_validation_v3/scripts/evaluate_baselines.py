@@ -66,20 +66,6 @@ def main():
             mean=np.mean(np.stack(preds),axis=0);m=evaluate_arrays(mean,y,np.ones(len(y),bool))
             rows.append(dict(horizon_hours=h,model=name,seed="ensemble",mae=m["mae"],rmse=m["rmse"],r2=m["r2"],n=m["n"],source="new v3 same-input fit"))
             write_pred(out/f"h{h}_{name}_ensemble.npz",mean,y,i,j)
-        for name in ("mlp","tcn"):
-            preds=[]
-            for s in SEEDS:
-                path=V3.parent/"baselines/v2m"/name/f"h{h}"/f"seed{s}"/"predictions.parquet"
-                f=pd.read_parquet(path)
-                assert np.array_equal(pd.to_datetime(f.target_time_utc,utc=True).asi8,c.times[i].asi8)
-                assert np.array_equal(f.station_id.to_numpy(),c.station_ids[j])
-                assert np.array_equal(f.target_ug_m3.to_numpy(),y)
-                p=f.prediction_ug_m3.to_numpy();preds.append(p)
-                m=evaluate_arrays(p,y,np.ones(len(y),bool))
-                rows.append(dict(horizon_hours=h,model=name,seed=s,mae=m["mae"],rmse=m["rmse"],r2=m["r2"],n=m["n"],source="saved v2m same-input fit; different selection schedule"))
-            mean=np.mean(np.stack(preds),axis=0);m=evaluate_arrays(mean,y,np.ones(len(y),bool))
-            rows.append(dict(horizon_hours=h,model=name,seed="ensemble",mae=m["mae"],rmse=m["rmse"],r2=m["r2"],n=m["n"],source="saved v2m same-input fit; different selection schedule"))
-            write_pred(out/f"h{h}_{name}_ensemble.npz",mean,y,i,j)
     path=V3/"metrics/baselines.csv";path.parent.mkdir(exist_ok=True)
     with path.open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)

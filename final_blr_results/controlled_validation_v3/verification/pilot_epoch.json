@@ -3,9 +3,9 @@
   "seed": 11,
   "lr": 0.001,
   "best_epoch": 1,
-  "validation_mae": 6.965303738876292,
+  "validation_mae": 6.503219647592721,
   "epochs_run": 1,
   "parameter_count": 43393,
-  "train_seconds": 1.9483999321237206,
+  "train_seconds": 1.8025358822196722,
   "peak_gpu_bytes": 1212484096
 }

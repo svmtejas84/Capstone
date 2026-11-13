@@ -1,0 +1,8 @@
+{
+  "source": "final_blr_results/baselines/v2m/data/data_v2m_arrays.npz",
+  "source_sha256": "8dfe2a3eebdd7900c86d738c1225c1941ac716305282c2efc17a5da8c4bb84d5",
+  "output": "final_blr_results/controlled_validation_v3/data_manifests/data_v3_causal_arrays.npz",
+  "output_sha256": "bd08d733f924387da82e758d1060703dfcdd121f360b7e8765189d8b7446e202",
+  "rule": "pollutant channels and observation mask lagged one row; anchor strictly before issue",
+  "targets_unchanged": true
+}

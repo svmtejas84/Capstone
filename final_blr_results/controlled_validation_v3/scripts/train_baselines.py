@@ -9,8 +9,9 @@ import torch
 from final_blr_results.controlled_validation_v3.scripts.smoke_gpu import CutoffContext, ARR, FIT, V3
 from final_blr_results.controlled_validation_v3.scripts.train_controls import (
     BASE_CFG,HORIZONS,SEEDS,LRS,train_cell,atomic_json)
+from final_blr_results.baselines.v2m.reproducibility.train_v2m import MLP, TCN
 
-MODELS=["gru_only","vanilla_gcn","st_gru_gcn","adaptive_graph_st"]
+MODELS=["gru_only","vanilla_gcn","st_gru_gcn","adaptive_graph_st","mlp","tcn"]
 
 
 class BaselineContext(CutoffContext):
@@ -19,9 +20,14 @@ class BaselineContext(CutoffContext):
         super().__init__(horizon,BASE_CFG,ARR,FIT)
 
     def make(self,name):
+        if self.model_name=="mlp": return MLP().to(self.device)
+        if self.model_name=="tcn": return TCN().to(self.device)
         return super().make(self.model_name)
 
     def forward(self,model,name,x,anchor,wind):
+        if self.model_name in ("mlp","tcn"):
+            anchor_z=(torch.log1p(anchor.clamp_min(0))-self.mu)/self.sd
+            return model(x)+anchor_z
         return super().forward(model,self.model_name,x,anchor,wind)
 
 
@@ -46,7 +52,8 @@ def main():
                 result=train_cell(ctx,"zero",lr,seed,out,select=args.stage=="selection")
                 result=dict(result,baseline_model=name)
                 atomic_json(out/"model_identity.json",dict(model=name,horizon=h,seed=seed,lr=lr,
-                         input_protocol="v2m timestamp-causal historical observations",architecture_source="src/stpignn/models_v2.py or models_v3.py"))
+                         input_protocol="v3 delayed-pollutant historical observations",
+                         architecture_source=("final_blr_results/baselines/v2m/reproducibility/train_v2m.py" if name in ("mlp","tcn") else "src/stpignn/models_v2.py or models_v3.py")))
                 rows.append(result);print(json.dumps(result),flush=True)
     atomic_json(root/f"{args.stage}_summary.json",rows)
     (root/f"{args.stage}_COMPLETE").write_text("COMPLETE\n")

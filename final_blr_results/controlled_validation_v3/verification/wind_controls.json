@@ -1,10 +1,10 @@
 {
-  "train_issue_hours": 13408,
-  "true_active": 186289,
-  "shuffled_active": 186624,
-  "rotated_active": 153576,
-  "true_shuffled_different_fraction": 0.21442049522673032,
-  "true_rotated_different_fraction": 0.42246544351630866,
+  "train_issue_hours": 13382,
+  "true_active": 185890,
+  "shuffled_active": 186124,
+  "rotated_active": 153209,
+  "true_shuffled_different_fraction": 0.21395655856125143,
+  "true_rotated_different_fraction": 0.4223322373337319,
   "shuffle_deterministic": true,
   "shuffle_preserves_monthly_active_arc_distribution": true,
   "shuffle_uses_target_availability": false
