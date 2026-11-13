@@ -1,0 +1,5 @@
+# v3 recovery
+
+2026-11-13 startup. Branch `research/controlled-validation-v3` was created from `bcfae630410ce5c91f7059284d16eebb9143d18f`; pre-existing uncommitted v2w publication assets and historical untracked artifacts were preserved. V100 32 GiB is visible outside the command sandbox; CUDA is unavailable inside it. No v3 training process has started. Protocol frozen in `PROTOCOL_FREEZE.md`; next gate is source/data eligibility and future-mutation tests, then a measured GPU smoke test. Saved data end 2026-03-28 23:00 UTC; no later holdout exists in the saved v2m array. Do not begin training until Gate A passes and protocol commit/push is verified.
+
+Recovery: `cd /home/jupyter-1nt23cb058/Capstone`; `git branch --show-current`; `git rev-parse HEAD`; `git status --short`; `cat final_blr_results/controlled_validation_v3/PROTOCOL_FREEZE.md`; `cat final_blr_results/controlled_validation_v3/DATA_ELIGIBILITY.md` when present. Preserve all untracked v2w and historical paths. For GPU, run `nvidia-smi` with approved elevated execution; sandbox CUDA reports zero devices.
