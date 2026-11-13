@@ -18,6 +18,8 @@ def main():
                if not (root/"final"/f"h{h}_seed{s}_{v}"/"COMPLETE.json").exists()]
     if missing: raise RuntimeError(f"Test locked: {len(missing)} final cells incomplete; first: {missing[0]}")
     if not (root/"final_COMPLETE").exists(): raise RuntimeError("Final training marker absent")
+    if not (root/"baselines/final_COMPLETE").exists():
+        raise RuntimeError("Test locked: same-information neural baselines incomplete")
     unlock=V3/"verification/test_unlock.json"
     if unlock.exists(): raise RuntimeError("Test already unlocked; do not repeat without a versioned defect report")
     atomic_json(unlock,dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),
