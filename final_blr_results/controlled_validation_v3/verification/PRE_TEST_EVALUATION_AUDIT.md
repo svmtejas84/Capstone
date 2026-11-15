@@ -10,3 +10,5 @@ No v3 test prediction or score had been computed when this audit was written. Th
 - The test evaluator's finite-score and exact-pair assertions will be checked after execution. No model, hyperparameter, horizon, or population was changed in response to test outcomes.
 
 Pre-unlock checks: `python -m py_compile` on the four evaluation/analysis/build scripts, `git diff --check`, and `verify_baselines.py selection` passed. Baseline final fits were still running when this file was created.
+
+Additional validation-only check: `PYTHONPATH=. python final_blr_results/controlled_validation_v3/scripts/pretest_validation_smoke.py` passed after reloading saved h6 seed-11 true-wind and GRU-only checkpoints. Both reproduced their recorded validation MAEs (6.165340 and 6.197157 µg/m³) on exactly 6,656 matched observed targets. A synthetic 21-day check of the block analysis and Holm adjustment was deterministic and passed. No exposed-test score was read.
