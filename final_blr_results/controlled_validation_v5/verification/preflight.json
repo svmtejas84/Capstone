@@ -5,6 +5,7 @@
     "degree-preserving deterministic rewiring",
     "recomputed geometric edge distances",
     "lag24 strictly prior",
+    "lag24 fallback parity with same-hour-yesterday",
     "future target mutation invariant",
     "common train target masks"
   ],

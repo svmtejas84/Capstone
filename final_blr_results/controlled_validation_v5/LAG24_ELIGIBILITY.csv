@@ -1,0 +1,6 @@
+horizon_hours,scored_pairs,strictly_prior_daily_lag_pairs,genuine_observed_daily_lag_pairs,genuine_fraction,fallback_pairs,definition
+1,14583,14583,12375,0.8485908249331413,2208,observed PM2.5 at T-24 only if T-24 < issue; otherwise strict-prior issue anchor/fallback
+3,14583,14583,12375,0.8485908249331413,2208,observed PM2.5 at T-24 only if T-24 < issue; otherwise strict-prior issue anchor/fallback
+6,14583,14583,12375,0.8485908249331413,2208,observed PM2.5 at T-24 only if T-24 < issue; otherwise strict-prior issue anchor/fallback
+12,14583,14583,12375,0.8485908249331413,2208,observed PM2.5 at T-24 only if T-24 < issue; otherwise strict-prior issue anchor/fallback
+24,14583,0,0,0.0,14583,observed PM2.5 at T-24 only if T-24 < issue; otherwise strict-prior issue anchor/fallback

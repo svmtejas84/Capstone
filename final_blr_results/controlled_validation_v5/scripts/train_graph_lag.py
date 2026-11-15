@@ -98,11 +98,14 @@ class ExperimentalContext(CutoffContext):
                 daily_ok = (daily_idx >= 0) & (daily_idx < cutoff)
                 safe_daily = np.maximum(daily_idx, 0)
                 genuine = daily_ok[:, None] & self.observed[safe_daily]
-                # Strict-prior fallback anchor uses only genuine observations before issue.
-                source = np.where(genuine, daily_idx[:, None],
-                                  self.latest_observed[np.maximum(cutoff - 1, 0)])
+                # Match the frozen same-hour-yesterday baseline's causal
+                # fallback at the daily-lag timestamp, not a newer issue-time
+                # observation. At h=24 these timestamps coincide.
+                fallback_source = np.where(daily_idx[:, None] > 0,
+                    self.latest_observed[np.maximum(daily_idx - 1, 0)], -1)
+                source = np.where(genuine, daily_idx[:, None], fallback_source)
                 age = np.where(source >= 0, cutoff[:, None] - source, 168)
-                value = np.where(genuine, np.nan_to_num(self.y[safe_daily], nan=0), self.anchor[cutoff])
+                value = np.where(genuine, np.nan_to_num(self.y[safe_daily], nan=0), self.anchor[safe_daily])
                 value = np.maximum(0, value)
                 x[:, -1, :, 18] = (np.log1p(value) - self.mu) / self.sd
                 x[:, -1, :, 19] = genuine.astype(np.float32)

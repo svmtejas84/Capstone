@@ -25,6 +25,12 @@ def main():
     index, x, y, mask, anchor, wind = next(lag.batches("train"))
     assert index.min() - 6 >= 11 and x.shape[1:] == (12, 15, 21)
     assert torch.all(x[:, :-1, :, 18:] == 0)
+    daily = index - 24
+    cutoff = index - 6
+    good = (daily[:, None] >= 0) & (daily[:, None] < cutoff[:, None]) & lag.observed[np.maximum(daily, 0)]
+    daily_value = np.where(good, np.nan_to_num(lag.y[np.maximum(daily, 0)], nan=0), lag.anchor[np.maximum(daily, 0)])
+    recovered = np.expm1(x[:, -1, :, 18].cpu().numpy() * lag.sd + lag.mu)
+    assert np.allclose(recovered, daily_value, atol=1e-4), "daily-lag fallback differs from frozen baseline"
     # Perturb all target rows in the selected batch; no current target can
     # appear in its own lag or prior-observation window.
     initial = x.detach().cpu().clone()
@@ -45,7 +51,7 @@ def main():
         assert np.array_equal(idx, index) and torch.equal(m.cpu(), mask.cpu())
     receipt = dict(status="PASS", array_sha256=EXPECTED,
                    checks=["degree-preserving deterministic rewiring", "recomputed geometric edge distances",
-                           "lag24 strictly prior", "future target mutation invariant", "common train target masks"],
+                           "lag24 strictly prior", "lag24 fallback parity with same-hour-yesterday", "future target mutation invariant", "common train target masks"],
                    reference_batch_targets=int(mask.sum()), reference_batch_hours=len(index))
     out = V5 / "verification/preflight.json"; out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(receipt, indent=2) + "\n")

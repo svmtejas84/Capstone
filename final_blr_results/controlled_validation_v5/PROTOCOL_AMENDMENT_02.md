@@ -1,0 +1,7 @@
+# V5 protocol amendment 02 — daily-lag fallback parity
+
+Frozen before any L1 lag-24 or lag-matched graph fit and before any V5 test scoring. The original graph-only stage is already running and is unaffected. The original V5 protocol SHA remains `64682686b29660ff336ed6893e257950ce25c3e03683f68de088f6a808825266`.
+
+The initial L1 code and protocol used the strict-prior **issue-time** anchor when the T−24 daily-lag reading was missing. The preexisting V3 `same_hour_yesterday` baseline instead uses the strict-prior anchor **at the daily-lag timestamp** for h<24; for h=24, the daily-lag timestamp equals issue and its actual observation is excluded, so the same strict-prior issue anchor applies. To make L1 and this simple baseline information-parallel, L1 now uses exactly the latter fallback rule. The genuine indicator remains 1 only for a truly observed T−24 row strictly earlier than issue, and 0 otherwise; the age channel records issue minus the actual fallback source observation, or 168-hour sentinel if none exists. No test target or post-issue value enters. Source: V3 `scripts/evaluate_baselines.py:52-55`, repaired array `input_anchor`, V5 `LAG24_ELIGIBILITY.csv`.
+
+For h=1,3,6,12, the genuine daily-lag reading is available for 12,375/14,583 scored pairs (84.859%); for h=24 it is unavailable by definition (0/14,583). These are saved-data eligibility counts, not new model outcomes. This amendment changes L1/L1-graph fallback features only; G0/G1/G2 and L2 designs, fitted models and the resource budget are unchanged.
