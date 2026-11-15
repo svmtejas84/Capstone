@@ -47,7 +47,12 @@ def main():
                 climate[k]=np.nanmedian(c.y[c.train_period & (keys==k)],axis=0)
         climat=climate[keys[i],j]
         climat=np.where(np.isfinite(climat),climat,c.station_mean[j])
-        classical={"persistence":anchor,"same_hour_yesterday":c.anchor[i-24,j],
+        # The exact previous-day hour is available strictly before issue for
+        # h<24. At h=24 (or when missing), use the strictly prior causal fill.
+        yesterday_idx=i-24
+        yesterday=np.where((h<24)&np.isfinite(c.y[yesterday_idx,j]),
+                           c.y[yesterday_idx,j],c.anchor[yesterday_idx,j])
+        classical={"persistence":anchor,"same_hour_yesterday":yesterday,
                    "station_train_mean":c.station_mean[j],"climatology_hod_dow":climat,
                    "weather_ridge":np.expm1(ridge.predict(c.features[i-h,j][:,ridge_cols])*c.sd+c.mu)}
         for name,p in classical.items():
@@ -58,6 +63,7 @@ def main():
                     assert np.array_equal(z["station_index"],j)
                     p=z["pred"]
             m=evaluate_arrays(p,y,np.ones(len(y),bool))
+            assert np.isfinite(p).all() and np.isfinite(y).all()
             rows.append(dict(horizon_hours=h,model=name,seed="deterministic",mae=m["mae"],rmse=m["rmse"],r2=m["r2"],n=m["n"],source="v3 recomputed from train-only fit"))
             write_pred(saved,p,y,i,j)
         for name in MODELS:
@@ -79,13 +85,16 @@ def main():
                     write_pred(saved,result["pred"],result["truth"],result["time_index"],result["station_index"])
                 assert np.array_equal(result["time_index"],i) and np.array_equal(result["station_index"],j)
                 assert np.array_equal(result["truth"],y)
+                assert np.isfinite(result["pred"]).all()
                 preds.append(result["pred"])
                 rows.append(dict(horizon_hours=h,model=name,seed=s,mae=result["mae"],rmse=result["rmse"],r2=result["r2"],n=result["n"],source="new v3 same-input fit"))
             mean=np.mean(np.stack(preds),axis=0);m=evaluate_arrays(mean,y,np.ones(len(y),bool))
             rows.append(dict(horizon_hours=h,model=name,seed="ensemble",mae=m["mae"],rmse=m["rmse"],r2=m["r2"],n=m["n"],source="new v3 same-input fit"))
             write_pred(out/f"h{h}_{name}_ensemble.npz",mean,y,i,j)
-    with path.open("w",newline="") as f:
+    tmp=path.with_suffix(".csv.tmp")
+    with tmp.open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+    tmp.replace(path)
     print(f"Wrote {len(rows)} baseline rows")
 
 

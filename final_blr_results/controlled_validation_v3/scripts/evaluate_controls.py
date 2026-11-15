@@ -38,6 +38,7 @@ def main():
     rows=[]
     for h in HORIZONS:
         ctx=CutoffContext(h, BASE_CFG, ARR, FIT)
+        horizon_reference=None
         for v in VARIANTS:
             pmat=[]; reference=None
             for s in SEEDS:
@@ -58,11 +59,16 @@ def main():
                     result=ctx.evaluate(model,"stpignn_lambda0","test",collect=True)
                     save_once(saved,pred=result["pred"],truth=result["truth"],
                               time_index=result["time_index"],station_index=result["station_index"])
+                assert np.isfinite(result["pred"]).all() and np.isfinite(result["truth"]).all()
                 keys=np.stack([result["time_index"],result["station_index"]],axis=1)
                 if reference is None: reference=(keys,result["truth"])
                 else:
                     assert np.array_equal(keys,reference[0])
                     assert np.array_equal(result["truth"],reference[1])
+                if horizon_reference is None: horizon_reference=reference
+                else:
+                    assert np.array_equal(keys,horizon_reference[0])
+                    assert np.array_equal(result["truth"],horizon_reference[1])
                 pmat.append(result["pred"])
                 rows.append(dict(horizon_hours=h,variant=v,seed=s,mae=result["mae"],rmse=result["rmse"],
                                  r2=result["r2"],n=result["n"],population="exposed historical test"))
@@ -72,8 +78,10 @@ def main():
                              r2=er["r2"],n=er["n"],population="exposed historical test"))
             save_once(pred_dir/f"h{h}_{v}_ensemble.npz",pred=ensemble,truth=reference[1],
                       time_index=reference[0][:,0],station_index=reference[0][:,1])
-    with out.open("w",newline="") as f:
+    tmp=out.with_suffix(".csv.tmp")
+    with tmp.open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+    tmp.replace(out)
     print(f"Evaluated {len(rows)} seed/ensemble rows; exposed historical test only")
 
 
