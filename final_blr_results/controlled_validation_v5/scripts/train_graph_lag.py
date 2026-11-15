@@ -22,6 +22,7 @@ from final_blr_results.controlled_validation_v3.scripts.train_controls import BA
 V5 = V3.parent / "controlled_validation_v5"
 LR = {1: .001, 3: .0003, 6: .0003, 12: .0003, 24: .0003}
 VARIANTS = ("self_loops", "rewired", "lag24", "lookback36")
+CROSS_VARIANTS = ("lag24_self_loops", "lag24_rewired")
 
 
 def rewire_preserving_degree(edge_index: np.ndarray, seed: int = 5505) -> np.ndarray:
@@ -51,25 +52,25 @@ class ExperimentalContext(CutoffContext):
         super().__init__(horizon, BASE_CFG, ARR, FIT)
         self.variant = variant
         self.array_sha256 = hash_file(ARR)
-        if variant == "self_loops":
+        if variant in ("self_loops", "lag24_self_loops"):
             e = np.stack((np.arange(self.n), np.arange(self.n)))
             self._set_edges(e)
-        elif variant == "rewired":
+        elif variant in ("rewired", "lag24_rewired"):
             self._set_edges(rewire_preserving_degree(self.edge_index.cpu().numpy()))
-        elif variant == "lag24":
+        if variant in ("lag24", "lag24_self_loops", "lag24_rewired"):
             # Only the final feature row receives the three extra channels.
             self.features = np.concatenate((self.features, np.zeros((*self.features.shape[:2], 3), np.float32)), axis=2)
             obs = self.observed
             self.latest_observed = np.maximum.accumulate(np.where(obs, np.arange(len(obs))[:, None], -1), axis=0)
         elif variant == "lookback36":
             self.history = 36
-        else:
+        elif variant not in ("self_loops", "rewired"):
             raise ValueError(variant)
 
     def _set_edges(self, e):
         e = np.asarray(e, np.int64)
         length = np.linalg.norm(self.xy[e[1]] - self.xy[e[0]], axis=1).astype(np.float32)
-        if self.variant == "self_loops":
+        if self.variant in ("self_loops", "lag24_self_loops"):
             assert len(e.T) == self.n and np.all(length == 0)
         else:
             assert len(e.T) == 60 and np.all(length > 0)
@@ -79,7 +80,7 @@ class ExperimentalContext(CutoffContext):
         self.edge_length = length
 
     def batches(self, name, shuffle_seed=None):
-        if self.variant != "lookback36" and self.variant != "lag24":
+        if self.variant != "lookback36" and not self.variant.startswith("lag24"):
             yield from super().batches(name, shuffle_seed)
             return
         hours = self.hours[name].copy()
@@ -92,7 +93,7 @@ class ExperimentalContext(CutoffContext):
             window = np.maximum(0, cutoff[:, None] - np.arange(self.history - 1, -1, -1)[None, :])
             assert np.all(window <= cutoff[:, None])
             x = self.features[window].copy()
-            if self.variant == "lag24":
+            if self.variant.startswith("lag24"):
                 daily_idx = index - 24
                 daily_ok = (daily_idx >= 0) & (daily_idx < cutoff)
                 safe_daily = np.maximum(daily_idx, 0)
@@ -181,7 +182,7 @@ def train_cell(ctx: ExperimentalContext, seed: int):
 
 
 def main():
-    p = argparse.ArgumentParser(); p.add_argument("--stage", choices=["smoke","graph","lag"], required=True)
+    p = argparse.ArgumentParser(); p.add_argument("--stage", choices=["smoke","graph","lag","cross"], required=True)
     a = p.parse_args()
     assert torch.cuda.is_available()
     if a.stage == "smoke":
@@ -199,9 +200,9 @@ def main():
             print(json.dumps(dict(variant=v,batch_shape=list(x.shape),edges=int(ctx.edge_index.shape[1]),
                                   params=sum(q.numel() for q in model.parameters()),loss=float(loss.detach()))),flush=True)
         return
-    variants = VARIANTS[:2] if a.stage == "graph" else VARIANTS[2:]
+    variants = VARIANTS[:2] if a.stage == "graph" else (VARIANTS[2:] if a.stage == "lag" else CROSS_VARIANTS)
     rows=[]
-    for h in HORIZONS:
+    for h in ((6,) if a.stage == "cross" else HORIZONS):
         for v in variants:
             ctx=ExperimentalContext(h,v)
             for seed in SEEDS:

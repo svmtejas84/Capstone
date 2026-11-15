@@ -9,3 +9,7 @@ Recovery: `cd /home/jupyter-1nt23cb058/Capstone`; `git branch --show-current`; `
 ## Saved-data audit and protocol freeze
 
 Saved-prediction audit ran successfully: 602 method/horizon/anchor rows, 20 V3 contrasts, six V4 contrasts, 130 seed rows, 31 common-mask diagnostic rows. The V3 source array hash matched. Protocol SHA-256 `64682686b29660ff336ed6893e257950ce25c3e03683f68de088f6a808825266`; training remains NOT STARTED. Next: commit/push protocol, implement and smoke-test graph/lag/fairness runners, then launch bounded V100 work.
+
+## V100 graph run and pretest amendment
+
+Protocol-freeze commit `0ce92700e264da6e2788225bef5f0a4f327035dc` was pushed before training. Source and preflight implementation commit `44a3f09` was pushed. Graph stage launched under `scripts/run_supervised.sh` at `logs/graph/`; elevated process namespace reports PID 117422, while sandbox-only `ps` cannot see it. The process is RUNNING; check with elevated `bash scripts/run_supervised.sh status final_blr_results/controlled_validation_v5/logs/graph`. Preflight PASS; initial failed NaN equality assertion was test-only and repaired. No V5 test prediction scored. `PROTOCOL_AMENDMENT_01.md` adds 10 six-hour lag-matched graph cells before test scoring; the original protocol hash is unchanged. Next: monitor graph completion, launch lag/cross/fairness sequentially, validate all 160 cells, then score exposed test once.
