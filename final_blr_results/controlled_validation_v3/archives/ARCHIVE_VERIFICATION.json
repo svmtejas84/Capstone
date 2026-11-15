@@ -1,0 +1,8 @@
+{
+  "path": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/archives/ST_PIGNN_CONTROLLED_VALIDATION_V3.zip",
+  "size_bytes": 95611796,
+  "sha256": "90dca447ac79585e53c5e383701cd4670b72f75426b7f3787e23c6c9d3a82271",
+  "member_count": 2272,
+  "excluded_partial_checkpoint_count": 491,
+  "crc_and_member_sha256": "PASS"
+}

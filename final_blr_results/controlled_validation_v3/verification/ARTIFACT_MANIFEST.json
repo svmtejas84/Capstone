@@ -1,0 +1,12 @@
+{
+  "source_commit": "fab06c9076ec6daacaa4e7d95658db9e2f2514f6",
+  "branch": "research/controlled-validation-v3",
+  "protocol_sha256": "00b5e2215a5c6017493ae256e3f8e350df66d1f76084c59efc1db36213ab2675",
+  "repaired_array_sha256": "bd08d733f924387da82e758d1060703dfcdd121f360b7e8765189d8b7446e202",
+  "included_file_count": 2272,
+  "excluded_partial_checkpoint_count": 491,
+  "excluded_partial_checkpoint_bytes": 248796118,
+  "checkpoint_policy": "best.pt selected checkpoints included; restart-only partial.pt tensors excluded with verified local paths and hashes",
+  "exposed_historical_test": true,
+  "independent_temporal_validation": false
+}
