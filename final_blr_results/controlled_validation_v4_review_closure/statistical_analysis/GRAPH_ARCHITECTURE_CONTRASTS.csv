@@ -1,0 +1,16 @@
+horizon_hours,contrast,paired_delta_mae_ug_m3,ci95_low_ug_m3,ci95_high_ug_m3,block_signflip_p,paired_pairs,utc_days,nonoverlap_blocks,inference,holm_15_p
+1,unregularized_GINE_GRU_minus_gru_only,-0.259090662,-0.325145863,-0.202402079,9.9999e-06,14583,177,26,exploratory; 15-member family,0.0001499985
+1,unregularized_GINE_GRU_minus_tcn,-0.0347695164,-0.16334634,0.0922874625,0.656693433,14583,177,26,exploratory; 15-member family,1
+1,unregularized_GINE_GRU_minus_mlp,-0.101353452,-0.278769056,0.0703390086,0.321356786,14583,177,26,exploratory; 15-member family,1
+3,unregularized_GINE_GRU_minus_gru_only,-0.0458712168,-0.165466786,0.079498281,0.529844702,14583,177,26,exploratory; 15-member family,1
+3,unregularized_GINE_GRU_minus_tcn,0.0193383712,-0.162053558,0.226678839,0.879541205,14583,177,26,exploratory; 15-member family,1
+3,unregularized_GINE_GRU_minus_mlp,0.00855559483,-0.219721375,0.245994335,0.952160478,14583,177,26,exploratory; 15-member family,1
+6,unregularized_GINE_GRU_minus_gru_only,-0.234535933,-0.390413208,-0.0585173333,0.0514094859,14583,177,26,exploratory; 15-member family,0.565504345
+6,unregularized_GINE_GRU_minus_tcn,-0.305520803,-0.546125645,-0.0488578442,0.0689893101,14583,177,26,exploratory; 15-member family,0.624593754
+6,unregularized_GINE_GRU_minus_mlp,-0.297720432,-0.530848702,-0.0436874627,0.0800591994,14583,177,26,exploratory; 15-member family,0.640473595
+12,unregularized_GINE_GRU_minus_gru_only,-0.783406317,-1.07957633,-0.443533854,0.0021099789,14583,177,26,exploratory; 15-member family,0.0274297257
+12,unregularized_GINE_GRU_minus_tcn,-0.264064074,-0.445321776,-0.030247526,0.0624593754,14583,177,26,exploratory; 15-member family,0.624593754
+12,unregularized_GINE_GRU_minus_mlp,-0.726455212,-1.05878754,-0.279118372,0.0071599284,14583,177,26,exploratory; 15-member family,0.0859191408
+24,unregularized_GINE_GRU_minus_gru_only,-0.452471167,-0.603367303,-0.298691576,0.0001199988,14583,177,26,exploratory; 15-member family,0.0016799832
+24,unregularized_GINE_GRU_minus_tcn,-0.136294782,-0.356741151,0.112963887,0.279557204,14583,177,26,exploratory; 15-member family,1
+24,unregularized_GINE_GRU_minus_mlp,-0.0707030371,-0.246710454,0.132711689,0.472105279,14583,177,26,exploratory; 15-member family,1

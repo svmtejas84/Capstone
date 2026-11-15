@@ -1,0 +1,16 @@
+split,horizon_hours,utc_hours,stations,possible_station_hours,observed_target_pairs,observed_target_coverage_percent,scored_pairs,scored_target_hours,input_pollutant_imputed_fraction_all_stations_12h,target_mean_ug_m3,target_median_ug_m3,target_sd_ug_m3,target_n,note
+train,1,30624,15,459360,32638,7.10510275,30600,13644,0.849562689,34.1358681,31,22.9937344,32638,historical observation timestamps; release latency unverified
+train,3,30624,15,459360,32638,7.10510275,30062,13495,0.849086905,34.1358681,31,22.9937344,32638,historical observation timestamps; release latency unverified
+train,6,30624,15,459360,32638,7.10510275,29522,13382,0.848949252,34.1358681,31,22.9937344,32638,historical observation timestamps; release latency unverified
+train,12,30624,15,459360,32638,7.10510275,28741,13249,0.848998667,34.1358681,31,22.9937344,32638,historical observation timestamps; release latency unverified
+train,24,30624,15,459360,32638,7.10510275,27851,13119,0.849677313,34.1358681,31,22.9937344,32638,historical observation timestamps; release latency unverified
+validation,1,1992,15,29880,7203,24.1064257,6889,1941,0.757258572,24.9695225,25.8174992,12.8103447,7203,historical observation timestamps; release latency unverified
+validation,3,1992,15,29880,7203,24.1064257,6777,1932,0.756901311,24.9695225,25.8174992,12.8103447,7203,historical observation timestamps; release latency unverified
+validation,6,1992,15,29880,7203,24.1064257,6656,1929,0.756701803,24.9695225,25.8174992,12.8103447,7203,historical observation timestamps; release latency unverified
+validation,12,1992,15,29880,7203,24.1064257,6542,1931,0.756392773,24.9695225,25.8174992,12.8103447,7203,historical observation timestamps; release latency unverified
+validation,24,1992,15,29880,7203,24.1064257,6373,1921,0.755934409,24.9695225,25.8174992,12.8103447,7203,historical observation timestamps; release latency unverified
+test,1,4488,15,67320,14583,21.6622103,14583,4063,0.765386824,44.4256325,36.3400002,37.0705338,14583,historical observation timestamps; release latency unverified
+test,3,4488,15,67320,14583,21.6622103,14583,4063,0.766155277,44.4256325,36.3400002,37.0705338,14583,historical observation timestamps; release latency unverified
+test,6,4488,15,67320,14583,21.6622103,14583,4063,0.767190363,44.4256325,36.3400002,37.0705338,14583,historical observation timestamps; release latency unverified
+test,12,4488,15,67320,14583,21.6622103,14583,4063,0.768704023,44.4256325,36.3400002,37.0705338,14583,historical observation timestamps; release latency unverified
+test,24,4488,15,67320,14583,21.6622103,14583,4063,0.770250499,44.4256325,36.3400002,37.0705338,14583,historical observation timestamps; release latency unverified
