@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "array_sha256": "bd08d733f924387da82e758d1060703dfcdd121f360b7e8765189d8b7446e202",
+  "checks": [
+    "degree-preserving deterministic rewiring",
+    "recomputed geometric edge distances",
+    "lag24 strictly prior",
+    "future target mutation invariant",
+    "common train target masks"
+  ],
+  "reference_batch_targets": 977,
+  "reference_batch_hours": 512
+}
