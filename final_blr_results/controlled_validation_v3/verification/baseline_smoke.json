@@ -1,0 +1,80 @@
+[
+  {
+    "model": "gru_only",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 16193,
+    "observed": 977,
+    "loss": 0.528200626373291,
+    "finite_gradients": true
+  },
+  {
+    "model": "vanilla_gcn",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 5441,
+    "observed": 977,
+    "loss": 0.4899856150150299,
+    "finite_gradients": true
+  },
+  {
+    "model": "st_gru_gcn",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 26241,
+    "observed": 977,
+    "loss": 0.5050157904624939,
+    "finite_gradients": true
+  },
+  {
+    "model": "adaptive_graph_st",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 24434,
+    "observed": 977,
+    "loss": 0.5038875341415405,
+    "finite_gradients": true
+  },
+  {
+    "model": "mlp",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 18113,
+    "observed": 977,
+    "loss": 0.5598025321960449,
+    "finite_gradients": true
+  },
+  {
+    "model": "tcn",
+    "batch": [
+      512,
+      12,
+      15,
+      18
+    ],
+    "parameters": 16641,
+    "observed": 977,
+    "loss": 0.5024219751358032,
+    "finite_gradients": true
+  }
+]
