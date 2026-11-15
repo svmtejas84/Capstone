@@ -81,9 +81,9 @@ def main():
     for name in VARIANTS:
         if name=="true_wind":continue
         sub=s[s.contrast.eq(f"true_wind_minus_{name}")].sort_values("horizon_hours")
-        plt.errorbar(sub.horizon_hours,sub.paired_delta_mae_ug_m3,
-          yerr=[sub.paired_delta_mae_ug_m3-sub.ci95_low_ug_m3,sub.ci95_high_ug_m3-sub.paired_delta_mae_ug_m3],
-          marker="o",capsize=2,label=LABEL[name])
+        line,=plt.plot(sub.horizon_hours,sub.paired_delta_mae_ug_m3,marker="o",label=LABEL[name])
+        plt.vlines(sub.horizon_hours,sub.ci95_low_ug_m3,sub.ci95_high_ug_m3,
+                   color=line.get_color(),linewidth=1.5)
     plt.axhline(0,color="black",lw=.8);plt.xlabel("Forecast horizon (h)");plt.ylabel("True wind − control MAE (µg/m³)")
     plt.title("Exploratory seven-day block intervals; negative favors true wind");plt.legend(fontsize=8);fig(fig3)
 
@@ -102,13 +102,21 @@ def main():
     plt.xlabel("Forecast horizon (h)");plt.ylabel("Mean individual-seed MAE (µg/m³)")
     plt.title("Five fixed seeds; bars show seed SD, not spatial uncertainty");plt.legend(fontsize=8);fig(fig5)
 
-    fig6=out/"F6_coverage_shift";plt.figure(figsize=(7,3.5))
-    mask=z["observed_mask"]
-    for label,start,end in [("Train","2022-01-01","2025-06-29"),("Validation","2025-07-01","2025-09-21"),("Exposed test","2025-09-23","2026-03-28")]:
-        split=(times>=pd.Timestamp(start,tz="UTC"))&(times<=pd.Timestamp(end+"T23:00:00Z"))
-        coverage=100*mask[split].mean()
-        plt.bar(label,coverage,label=f"{label}: {coverage:.1f}%")
-    plt.ylabel("Observed station-hour coverage (%)");plt.title("Monitoring coverage by chronology; 15 stations")
+    fig6=out/"F6_coverage_shift";plt.figure(figsize=(8.5,3.3))
+    ds=pd.read_csv(V3/"metrics/data_coverage_shift.csv")
+    labels=["Train","Validation","Exposed test"]
+    order=["train","validation","test"]
+    unique=ds[ds.horizon_hours.eq(6)].set_index("split").loc[order]
+    ax=plt.subplot(1,3,1)
+    ax.bar(labels,unique.observed_target_coverage_percent,color="#38761d")
+    ax.set_ylabel("Observed target pairs (%)");ax.tick_params(axis="x",rotation=30)
+    ax=plt.subplot(1,3,2)
+    ax.bar(labels,100*unique.input_pollutant_imputed_fraction_all_stations_12h,color="#b45f06")
+    ax.set_ylabel("Imputed pollutant input cells (%)");ax.tick_params(axis="x",rotation=30)
+    ax=plt.subplot(1,3,3)
+    ax.bar(labels,unique.target_mean_ug_m3,color="#1c4587")
+    ax.set_ylabel("Observed PM2.5 mean (µg/m³)");ax.tick_params(axis="x",rotation=30)
+    plt.suptitle("Chronological coverage and shift; six-hour input windows")
     fig(fig6)
     print("Wrote 8 CSV/LaTeX tables and 6 PNG/PDF/SVG figures; F7 spatial holdout not evaluated")
 
