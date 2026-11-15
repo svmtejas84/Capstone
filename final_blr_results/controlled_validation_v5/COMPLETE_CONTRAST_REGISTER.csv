@@ -1,0 +1,27 @@
+horizon_hours,contrast,paired_delta_mae_ug_m3,ci95_low_ug_m3,ci95_high_ug_m3,block_signflip_p,paired_pairs,utc_days,nonoverlap_blocks,inference,holm_20_p,family,holm_6_p
+1,true_wind_minus_zero,0.2652447,0.110733252,0.40483492,0.0005599944,14583,177,26,exploratory; exposed historical test,0.0078399216,V3 frozen 20,
+1,true_wind_minus_shuffled_wind,-0.044008125,-0.0789292836,-0.00726864545,0.0313096869,14583,177,26,exploratory; exposed historical test,0.344406556,V3 frozen 20,
+1,true_wind_minus_rotated_wind,0.022099184,-0.0598175895,0.102236443,0.605493945,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+1,true_wind_minus_laplacian,-0.034091588,-0.10935934,0.0366181892,0.42499575,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+3,true_wind_minus_zero,-0.044267308,-0.234526755,0.111622808,0.602103979,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+3,true_wind_minus_shuffled_wind,0.037448674,0.00782609876,0.0696090579,0.0264397356,14583,177,26,exploratory; exposed historical test,0.317276827,V3 frozen 20,
+3,true_wind_minus_rotated_wind,-0.06910018,-0.0983802966,-0.0438560915,0.0004099959,14583,177,26,exploratory; exposed historical test,0.0065599344,V3 frozen 20,
+3,true_wind_minus_laplacian,0.0033778693,-0.0561604142,0.0521623732,0.879581204,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+6,true_wind_minus_zero,-0.12865154,-0.404159163,0.0916731863,0.23196768,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+6,true_wind_minus_shuffled_wind,-0.02394056,-0.053678682,0.00199635561,0.229867701,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+6,true_wind_minus_rotated_wind,-0.13719025,-0.191375077,-0.0845487115,0.0004599954,14583,177,26,exploratory; exposed historical test,0.006899931,V3 frozen 20,
+6,true_wind_minus_laplacian,-0.2247952,-0.342077645,-0.137386938,7.99992e-05,14583,177,26,exploratory; exposed historical test,0.0015199848,V3 frozen 20,
+12,true_wind_minus_zero,0.043723192,-0.272096712,0.305714407,0.753192468,14583,177,26,exploratory; exposed historical test,1,V3 frozen 20,
+12,true_wind_minus_shuffled_wind,0.04348371,0.00354403014,0.0808259574,0.0586294137,14583,177,26,exploratory; exposed historical test,0.527664723,V3 frozen 20,
+12,true_wind_minus_rotated_wind,-0.20022368,-0.304835779,-0.118367418,0.000199998,14583,177,26,exploratory; exposed historical test,0.003399966,V3 frozen 20,
+12,true_wind_minus_laplacian,-0.27266362,-0.446373851,-0.142150278,2.99997e-05,14583,177,26,exploratory; exposed historical test,0.000599994,V3 frozen 20,
+24,true_wind_minus_zero,0.29225293,0.00771550939,0.589972478,0.0741392586,14583,177,26,exploratory; exposed historical test,0.593114069,V3 frozen 20,
+24,true_wind_minus_shuffled_wind,0.036261994,0.000596642999,0.0738908162,0.0517294827,14583,177,26,exploratory; exposed historical test,0.517294827,V3 frozen 20,
+24,true_wind_minus_rotated_wind,-0.1380761,-0.261198243,-0.0431360913,0.0076299237,14583,177,26,exploratory; exposed historical test,0.0991890081,V3 frozen 20,
+24,true_wind_minus_laplacian,-0.29511946,-0.487279592,-0.164443522,8.99991e-05,14583,177,26,exploratory; exposed historical test,0.0016199838,V3 frozen 20,
+6,true_wind_006_minus_reverse_wind_006,-0.0462662130594,-0.0695065637517,-0.0265587652371,9.999900001e-05,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,0.00039999600004
+6,true_wind_006_minus_constant_north_006,0.0937139540911,0.00432489415422,0.192723456337,0.0969190308097,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,0.0969190308097
+6,true_wind_006_minus_full_shuffle_006,-0.169948801398,-0.226972715107,-0.126091020074,9.999900001e-06,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,5.9999400006e-05
+6,true_wind_006_minus_true_wind_03,-0.301215112209,-0.459648680177,-0.165330045037,0.000679993200068,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,0.0020399796002
+6,true_wind_006_minus_true_wind_10,-1.13631641865,-1.57450406718,-0.751268670378,2.9999700003e-05,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,0.000149998500015
+6,true_wind_006_minus_laplacian_matched,0.139459475875,0.0733420799905,0.202407597383,0.000789992100079,14583,177,26,exploratory; exposed test; 6-member V4 family,,V4 later exploratory 6,0.0020399796002
