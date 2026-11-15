@@ -68,7 +68,7 @@ def main():
     for r,p in zip(rows,adj): r["holm_20_p"]=p
     out=V3/"statistical_analysis/primary_contrasts.csv";out.parent.mkdir(exist_ok=True)
     with out.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n");w.writeheader();w.writerows(rows)
     print(f"Wrote {len(rows)} frozen contrasts")
 
 

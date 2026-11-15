@@ -33,7 +33,7 @@ def main(stage):
     assert len(rows)==expected
     out=V3/"verification/baseline_selected_lrs.csv";out.parent.mkdir(exist_ok=True)
     with out.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(choices[0]));w.writeheader();w.writerows(choices)
+        w=csv.DictWriter(f,fieldnames=list(choices[0]),lineterminator="\n");w.writeheader();w.writerows(choices)
     print(f"Verified {len(rows)} baseline {stage} cells, identities, hashes and selected LR")
 
 if __name__=="__main__":main(sys.argv[1])

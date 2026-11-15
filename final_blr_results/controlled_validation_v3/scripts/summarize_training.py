@@ -40,6 +40,10 @@ def main():
     df=pd.DataFrame(rows)
     out=V3/"metrics";out.mkdir(exist_ok=True)
     df.to_csv(out/"training_diagnostics.csv",index=False)
+    register=df.copy()
+    register["scientific_status"]=register.stage.apply(lambda s:"QUARANTINED: failed causal-input gate" if s.startswith("invalidated_") else "VALID: repaired input array")
+    register["test_scored"]=register.stage.isin(["control_final","baseline_final"])
+    register.to_csv(V3/"EXPERIMENT_REGISTER.csv",index=False)
     resource=df.groupby("stage",as_index=False).agg(completed_cells=("cell","count"),
                                                       completed_fit_seconds=("elapsed_seconds","sum"))
     resource["completed_fit_hours"]=resource.completed_fit_seconds/3600

@@ -35,7 +35,7 @@ def main():
     assert len(rows)==125
     out=V3/"verification/training_integrity.csv";out.parent.mkdir(exist_ok=True)
     with out.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n");w.writeheader();w.writerows(rows)
     print("Verified 20 selection + 125 final control cells, hashes, epochs and matched LR")
 
 

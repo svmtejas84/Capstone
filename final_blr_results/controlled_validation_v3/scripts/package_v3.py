@@ -13,7 +13,7 @@ ARCHIVE="ST_PIGNN_CONTROLLED_VALIDATION_V3.zip"
 def write_csv(path,rows,fields):
     path.parent.mkdir(exist_ok=True)
     with path.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=fields,lineterminator="\n");w.writeheader();w.writerows(rows)
 
 
 def main():

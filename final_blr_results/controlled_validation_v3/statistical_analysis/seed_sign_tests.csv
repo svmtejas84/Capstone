@@ -1,0 +1,21 @@
+horizon_hours,comparator,mean_seed_difference_ug_m3,favorable_seeds,unfavorable_seeds,ties,exact_two_sided_sign_p,interpretation
+1,zero,0.31113592045113486,0,5,0,0.0625,exploratory; seeds are not independent sites
+1,shuffled_wind,-0.054422813647814296,4,1,0,0.375,exploratory; seeds are not independent sites
+1,rotated_wind,0.02289662819386038,2,3,0,1.0,exploratory; seeds are not independent sites
+1,laplacian,-0.034574627816581584,3,2,0,1.0,exploratory; seeds are not independent sites
+3,zero,-0.06878107714432495,3,2,0,1.0,exploratory; seeds are not independent sites
+3,shuffled_wind,0.016252115589372805,3,2,0,1.0,exploratory; seeds are not independent sites
+3,rotated_wind,-0.06988835318345785,4,1,0,0.375,exploratory; seeds are not independent sites
+3,laplacian,-0.055476049362498614,3,2,0,1.0,exploratory; seeds are not independent sites
+6,zero,-0.12965716763570256,3,2,0,1.0,exploratory; seeds are not independent sites
+6,shuffled_wind,-0.05180814651256256,4,1,0,0.375,exploratory; seeds are not independent sites
+6,rotated_wind,-0.2237077181459263,4,1,0,0.375,exploratory; seeds are not independent sites
+6,laplacian,-0.22110366695722944,4,1,0,0.375,exploratory; seeds are not independent sites
+12,zero,0.08748991485176952,1,4,0,0.375,exploratory; seeds are not independent sites
+12,shuffled_wind,0.039507661026170024,3,2,0,1.0,exploratory; seeds are not independent sites
+12,rotated_wind,-0.2470933798051682,4,1,0,0.375,exploratory; seeds are not independent sites
+12,laplacian,-0.3779859195000096,5,0,0,0.0625,exploratory; seeds are not independent sites
+24,zero,0.3393907008705341,0,5,0,0.0625,exploratory; seeds are not independent sites
+24,shuffled_wind,0.05519625365166832,1,4,0,0.375,exploratory; seeds are not independent sites
+24,rotated_wind,-0.12813409676781545,3,2,0,1.0,exploratory; seeds are not independent sites
+24,laplacian,-0.2980946301641154,5,0,0,0.0625,exploratory; seeds are not independent sites

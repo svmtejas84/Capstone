@@ -93,7 +93,7 @@ def main():
             write_pred(out/f"h{h}_{name}_ensemble.npz",mean,y,i,j)
     tmp=path.with_suffix(".csv.tmp")
     with tmp.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n");w.writeheader();w.writerows(rows)
     tmp.replace(path)
     print(f"Wrote {len(rows)} baseline rows")
 

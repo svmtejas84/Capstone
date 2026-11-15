@@ -52,7 +52,7 @@ def main():
                                  interpretation="descriptive station-space ordering only"))
     out=V3/"metrics/wind_cone_diagnostics.csv"
     with out.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n");w.writeheader();w.writerows(rows)
     print(f"Wrote {len(rows)} descriptive wind-cone rows")
 
 

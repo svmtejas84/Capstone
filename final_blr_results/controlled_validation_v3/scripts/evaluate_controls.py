@@ -80,7 +80,7 @@ def main():
                       time_index=reference[0][:,0],station_index=reference[0][:,1])
     tmp=out.with_suffix(".csv.tmp")
     with tmp.open("w",newline="") as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n");w.writeheader();w.writerows(rows)
     tmp.replace(out)
     print(f"Evaluated {len(rows)} seed/ensemble rows; exposed historical test only")
 

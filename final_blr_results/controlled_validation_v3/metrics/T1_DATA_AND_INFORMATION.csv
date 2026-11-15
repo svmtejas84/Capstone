@@ -1,0 +1,2 @@
+stations,station_arcs,history_hours,channels,first_utc,last_utc,exposed_test_observed_pairs,weather_rule
+15,60,12,18,2022-01-01 00:00:00+00:00,2026-03-28 23:00:00+00:00,14583,archive record timestamp <= feature hour; release unknown

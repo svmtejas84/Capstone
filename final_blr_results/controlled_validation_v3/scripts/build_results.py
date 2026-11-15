@@ -12,7 +12,7 @@ LABEL={"zero":"No regularization","true_wind":"True-wind directional",
        "shuffled_wind":"Shuffled-wind directional","rotated_wind":"Rotated-wind directional",
        "laplacian":"Laplacian smoothing","gru_only":"GRU only","vanilla_gcn":"GCN",
        "st_gru_gcn":"GRU–GCN","adaptive_graph_st":"Adaptive graph",
-       "weather_ridge":"Weather ridge","same_hour_yesterday":"Same hour yesterday",
+       "weather_ridge":"Lag/weather ridge","same_hour_yesterday":"Same hour yesterday",
        "station_train_mean":"Station train mean","climatology_hod_dow":"Hour/day climatology",
        "persistence":"Persistence","mlp":"MLP","tcn":"TCN"}
 
@@ -20,12 +20,30 @@ LABEL={"zero":"No regularization","true_wind":"True-wind directional",
 def fig(path):
     plt.tight_layout();plt.savefig(path.with_suffix(".png"),dpi=300,bbox_inches="tight")
     plt.savefig(path.with_suffix(".pdf"),bbox_inches="tight")
-    plt.savefig(path.with_suffix(".svg"),bbox_inches="tight");plt.close()
+    svg=path.with_suffix(".svg")
+    plt.savefig(svg,bbox_inches="tight");plt.close()
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines())+"\n")
 
 
 def table(df,name):
     path=V3/"metrics"/f"{name}.csv";df.to_csv(path,index=False)
-    (V3/"metrics"/f"{name}.tex").write_text(df.to_latex(index=False,float_format=lambda x:f"{x:.3f}",escape=True))
+    # Pandas' LaTeX renderer requires a newer Jinja2 than this frozen JupyterHub
+    # environment provides. Write a simple escaped tabular directly.
+    def cell(x):
+        if pd.isna(x):return ""
+        if isinstance(x,(float,np.floating)):return f"{x:.6g}"
+        s=str(x)
+        for a,b in (("\\",r"\textbackslash{}"),("&",r"\&"),("%",r"\%"),
+                    ("_",r"\_"),("#",r"\#"),("$",r"\$")):
+            s=s.replace(a,b)
+        return s
+    alignment="".join("r" if pd.api.types.is_numeric_dtype(df[c]) else "l" for c in df.columns)
+    row_end=" "+chr(92)*2
+    lines=[r"\begin{tabular}{"+alignment+"}",r"\hline",
+           " & ".join(cell(c) for c in df.columns)+row_end,r"\hline"]
+    lines += [" & ".join(cell(v) for v in row)+row_end for row in df.itertuples(index=False,name=None)]
+    lines += [r"\hline",r"\end{tabular}"]
+    (V3/"metrics"/f"{name}.tex").write_text("\n".join(lines)+"\n")
 
 
 def main():
@@ -85,14 +103,29 @@ def main():
         plt.vlines(sub.horizon_hours,sub.ci95_low_ug_m3,sub.ci95_high_ug_m3,
                    color=line.get_color(),linewidth=1.5)
     plt.axhline(0,color="black",lw=.8);plt.xlabel("Forecast horizon (h)");plt.ylabel("True wind − control MAE (µg/m³)")
-    plt.title("Exploratory seven-day block intervals; negative favors true wind");plt.legend(fontsize=8);fig(fig3)
+    plt.title("Exploratory seven-day block intervals; negative favors true wind")
+    plt.legend(fontsize=8,loc="lower left",bbox_to_anchor=(1.02,0));fig(fig3)
 
-    fig4=out/"F4_effective_lambda";plt.figure(figsize=(7,3.5))
+    fig4=out/"F4_effective_lambda";plt.figure(figsize=(8,3.2))
     t4=pd.DataFrame(train);q=t4[t4.variant.ne("zero")]
-    for name in ["true_wind","shuffled_wind","rotated_wind","laplacian"]:
-        x=q[q.variant.eq(name)];plt.scatter(x.best_epoch,x.effective_lambda_at_best,label=LABEL[name],alpha=.65,s=20)
-    plt.xlabel("Selected validation epoch");plt.ylabel("Effective λ at checkpoint")
-    plt.title("Five-epoch warmup; nominal λ = 0.06");plt.legend(fontsize=7);fig(fig4)
+    ax=plt.subplot(1,2,1)
+    ep=np.arange(1,31)
+    ax.plot(ep,.06*np.minimum(1,ep/5),color="#1c4587",lw=2,label="Regularized conditions")
+    ax.plot(ep,np.zeros_like(ep),color="#666666",lw=1.5,ls="--",label="No regularization")
+    ax.axvline(10,color="#b45f06",ls=":",label="First selectable epoch")
+    ax.set(xlabel="Training epoch",ylabel="Applied λ",ylim=(-.003,.068))
+    ax.legend(fontsize=7,loc="lower right")
+    ax=plt.subplot(1,2,2)
+    names=["true_wind","shuffled_wind","rotated_wind","laplacian"]
+    values=[q[q.variant.eq(name)].best_epoch.to_numpy() for name in names]
+    ax.boxplot(values,showfliers=False)
+    for pos,arr in enumerate(values,1):
+        ax.scatter(np.full(len(arr),pos)+np.linspace(-.16,.16,len(arr)),arr,
+                   s=9,alpha=.6,color="#1c4587")
+    ax.set_xticks(range(1,5),["True wind","Shuffled","Rotated","Laplacian"],rotation=25)
+    ax.set(ylabel="Selected validation epoch",ylim=(8,30))
+    plt.suptitle("Frozen five-epoch warmup and validation-selected checkpoints")
+    fig(fig4)
 
     fig5=out/"F5_seed_stability";plt.figure(figsize=(7,3.5))
     indiv=c[c.seed.astype(str).ne("ensemble")]

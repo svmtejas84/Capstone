@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "source_hashes": 7,
+  "metric_rows_verified": 355,
+  "test_pair_counts": {
+    "1": 14583,
+    "3": 14583,
+    "6": 14583,
+    "12": 14583,
+    "24": 14583
+  },
+  "frozen_contrasts_verified": 20,
+  "caveat": "Exposed historical test; no independent temporal or spatial confirmation"
+}
