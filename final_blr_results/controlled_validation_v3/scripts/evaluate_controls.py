@@ -21,11 +21,20 @@ def main():
     if not (root/"baselines/final_COMPLETE").exists():
         raise RuntimeError("Test locked: same-information neural baselines incomplete")
     unlock=V3/"verification/test_unlock.json"
-    if unlock.exists(): raise RuntimeError("Test already unlocked; do not repeat without a versioned defect report")
-    atomic_json(unlock,dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),
-                           reason="all 125 frozen matched-control cells complete",
-                           exposed_historical_test=True,array_sha256=hash_file(ARR)))
+    if unlock.exists():
+        assert json.loads(unlock.read_text())["array_sha256"]==hash_file(ARR)
+    else:
+        atomic_json(unlock,dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),
+                               reason="all 125 frozen matched-control cells complete",
+                               exposed_historical_test=True,array_sha256=hash_file(ARR)))
     pred_dir=V3/"predictions"; pred_dir.mkdir(exist_ok=True)
+    out=V3/"metrics/matched_controls.csv"; out.parent.mkdir(exist_ok=True)
+    if out.exists(): raise RuntimeError("Control evaluation already complete; do not repeat")
+    def save_once(path, **arrays):
+        if path.exists(): return
+        tmp=path.with_name(path.stem+".tmp.npz")
+        np.savez_compressed(tmp,**arrays)
+        tmp.replace(path)
     rows=[]
     for h in HORIZONS:
         ctx=CutoffContext(h, BASE_CFG, ARR, FIT)
@@ -38,9 +47,17 @@ def main():
                 assert record["checkpoint_sha256"]==hash_file(ckpt)
                 payload=torch.load(ckpt,map_location="cpu",weights_only=False)
                 assert payload["variant"]==v and payload["horizon"]==h and payload["seed"]==s
-                model=ctx.make("stpignn_lambda0")
-                model.load_state_dict(payload["state_dict"],strict=True)
-                result=ctx.evaluate(model,"stpignn_lambda0","test",collect=True)
+                saved=pred_dir/f"h{h}_{v}_seed{s}.npz"
+                if saved.exists():
+                    with np.load(saved) as z:
+                        result={k:z[k] for k in ("pred","truth","time_index","station_index")}
+                    result.update(evaluate_arrays(result["pred"],result["truth"],np.ones(len(result["pred"]),bool)))
+                else:
+                    model=ctx.make("stpignn_lambda0")
+                    model.load_state_dict(payload["state_dict"],strict=True)
+                    result=ctx.evaluate(model,"stpignn_lambda0","test",collect=True)
+                    save_once(saved,pred=result["pred"],truth=result["truth"],
+                              time_index=result["time_index"],station_index=result["station_index"])
                 keys=np.stack([result["time_index"],result["station_index"]],axis=1)
                 if reference is None: reference=(keys,result["truth"])
                 else:
@@ -49,15 +66,12 @@ def main():
                 pmat.append(result["pred"])
                 rows.append(dict(horizon_hours=h,variant=v,seed=s,mae=result["mae"],rmse=result["rmse"],
                                  r2=result["r2"],n=result["n"],population="exposed historical test"))
-                np.savez_compressed(pred_dir/f"h{h}_{v}_seed{s}.npz",pred=result["pred"],truth=result["truth"],
-                                    time_index=result["time_index"],station_index=result["station_index"])
             ensemble=np.mean(np.stack(pmat),axis=0)
             er=evaluate_arrays(ensemble,reference[1],np.ones(len(ensemble),bool))
             rows.append(dict(horizon_hours=h,variant=v,seed="ensemble",mae=er["mae"],rmse=er["rmse"],
                              r2=er["r2"],n=er["n"],population="exposed historical test"))
-            np.savez_compressed(pred_dir/f"h{h}_{v}_ensemble.npz",pred=ensemble,truth=reference[1],
-                                time_index=reference[0][:,0],station_index=reference[0][:,1])
-    out=V3/"metrics/matched_controls.csv"; out.parent.mkdir(exist_ok=True)
+            save_once(pred_dir/f"h{h}_{v}_ensemble.npz",pred=ensemble,truth=reference[1],
+                      time_index=reference[0][:,0],station_index=reference[0][:,1])
     with out.open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
     print(f"Evaluated {len(rows)} seed/ensemble rows; exposed historical test only")

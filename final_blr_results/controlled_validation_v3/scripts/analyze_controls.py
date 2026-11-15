@@ -31,6 +31,9 @@ def block_analysis(day, diff, seed):
     blocks=np.arange(n)//7
     bs=np.bincount(blocks,weights=sums)
     obs=abs(bs.sum())
+    # The frozen addendum specifies an independent stream for the sign-flip
+    # test; it must not depend on how many bootstrap draws were used above.
+    rng=np.random.default_rng(91273+(seed-4303))
     draws=100000; hits=0
     for start in range(0,draws,2000):
         m=min(2000,draws-start)

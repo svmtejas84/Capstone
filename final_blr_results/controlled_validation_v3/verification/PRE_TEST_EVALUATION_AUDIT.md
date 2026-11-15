@@ -1,0 +1,11 @@
+# Pre-unlock evaluation audit (2026-11-15)
+
+No v3 test prediction or score had been computed when this audit was written. The test evaluator remains gated on the 125 matched-control final cells and the complete same-input baseline final stage.
+
+- The corrected 18-channel array is `data_manifests/data_v3_causal_arrays.npz`, SHA-256 `bd08d733f924387da82e758d1060703dfcdd121f360b7e8765189d8b7446e202`. Its pollutant channels and residual anchor are delayed strictly before the forecast issue hour. The full raw-data future-mutation test passed; operational ingest and archive-weather release times remain unknown.
+- `evaluate_controls.py` checks each checkpoint hash, state identity, and paired timestamp/station/truth arrays. It writes each seed prediction atomically before advancing. If the process fails after creating the one-time unlock marker, rerunning skips completed seed predictions and scores them from the saved arrays; a completed metrics CSV prevents another evaluation.
+- `evaluate_baselines.py` uses the same saved target population. Ridge fitting now uses the repaired `input_observed_mask` eligibility, matching the neural training mask. All classical fits use training-period observations only. Baseline neural predictions are also written atomically and reused after interruption.
+- `analyze_controls.py` implements the predeclared 20 ensemble contrasts. The seven-day moving-block interval and the nonoverlapping seven-day block sign-flip test now use the separate deterministic random streams specified in `STATISTICAL_PLAN_ADDENDUM.md` (2,000 and 100,000 draws respectively). Holm adjustment covers all 20 contrasts. The exposed historical test makes every inference exploratory.
+- The test evaluator's finite-score and exact-pair assertions will be checked after execution. No model, hyperparameter, horizon, or population was changed in response to test outcomes.
+
+Pre-unlock checks: `python -m py_compile` on the four evaluation/analysis/build scripts, `git diff --check`, and `verify_baselines.py selection` passed. Baseline final fits were still running when this file was created.
