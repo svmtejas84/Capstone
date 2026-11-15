@@ -7,7 +7,7 @@ from final_blr_results.controlled_validation_v3.scripts.train_controls import V3
 from final_blr_results.controlled_validation_v4_review_closure.scripts.train_sensitivity import V4,VARIANTS
 
 def load(v,suffix='_ensemble'):
- root=V3 if v=='true_wind' else V4
+ root=V3 if v in ('true_wind','zero','laplacian') else V4
  with np.load(root/'predictions'/f'h6_{v}{suffix}.npz') as z:return {k:z[k] for k in ('pred','truth','time_index','station_index')}
 def write(rows,path):
  path.parent.mkdir(exist_ok=True)
@@ -41,7 +41,7 @@ angle=np.abs(np.angle(np.exp(1j*(to[:,None]-bearing[None,:]))))
 mask=np.isfinite(to[:,None])&(angle<=np.deg2rad(37.5))
 scale=float(json.loads((V3.parents[1]/'results/data_v2j_fit.json').read_text())['fit']['target_standard_std'])
 vr=[]
-for v in ['true_wind']+VARIANTS:
+for v in ['zero','true_wind','laplacian']+VARIANTS:
  p=load(v);hours,inverse=np.unique(p['time_index'],return_inverse=True)
  pm=np.full((len(hours),len(xy)),np.nan);pm[inverse,p['station_index']]=p['pred']
  eligible=mask[hours-6]&np.isfinite(pm[:,src])&np.isfinite(pm[:,dst])

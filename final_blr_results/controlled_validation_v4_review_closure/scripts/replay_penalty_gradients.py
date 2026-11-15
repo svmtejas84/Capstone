@@ -19,7 +19,10 @@ for h in [1,3,6,12,24]:
   assert hash_file(ckpt)==record['checkpoint_sha256']
   payload=torch.load(ckpt,map_location='cpu',weights_only=False)
   assert payload['array_sha256']==hash_file(ARR)
-  model=ctx.make('stpignn_lambda0');model.load_state_dict(payload['state_dict'],strict=True);model.eval()
+  model=ctx.make('stpignn_lambda0');model.load_state_dict(payload['state_dict'],strict=True)
+  # cuDNN GRU backward is unavailable in eval mode. This enables autograd
+  # without any optimizer or parameter update; the backbone has no dropout.
+  model.train()
   z=ctx.forward(model,'stpignn_lambda0',x,anchor,wind)
   target=(torch.log1p(y.clamp_min(0))-ctx.mu)/ctx.sd
   data=((z-target).square()*valid).sum()/valid.sum().clamp_min(1)
@@ -44,5 +47,5 @@ for h in [1,3,6,12,24]:
   del model,z,pm,data,raw,gd,gr,dvec,rvec
 p=V4/'PENALTY_GRADIENT_REPLAY.csv'
 with p.open('w',newline='') as f:
- w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+ w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
 print(len(rows),p)

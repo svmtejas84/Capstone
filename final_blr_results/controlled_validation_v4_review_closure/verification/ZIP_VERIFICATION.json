@@ -1,0 +1,9 @@
+{
+  "path": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/archives/ST_PIGNN_V4_SCIENTIFIC_REVIEW_CLOSURE.zip",
+  "bytes": 9469232,
+  "sha256": "3b35f71b3f4ed3d2aac5de8b5936578a45d060ffb7dcc576f6f3ee5b9112b435",
+  "members": 243,
+  "verified_member_hashes": 242,
+  "crc": "PASS",
+  "excluded_restart_intermediates": true
+}

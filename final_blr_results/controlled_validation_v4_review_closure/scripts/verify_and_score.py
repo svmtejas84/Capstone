@@ -69,7 +69,7 @@ def score():
  path=V4/'metrics/V4_SENSITIVITY_SCORES.csv';path.parent.mkdir(exist_ok=True)
  tmp=path.with_suffix('.tmp')
  with tmp.open('w',newline='') as f:
-  w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+  w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
  tmp.replace(path)
  print(json.dumps(dict(rows=len(rows),variants=len(VARIANTS),n=14583)),flush=True)
 

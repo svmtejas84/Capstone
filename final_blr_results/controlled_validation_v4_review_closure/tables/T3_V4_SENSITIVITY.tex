@@ -1,0 +1,12 @@
+% Exploratory exposed Bengaluru test; MAE differences and CI bounds in micrograms per cubic metre.
+\begin{tabular}{lrrrr}\hline
+Comparator & $\Delta$MAE & $95\%$ CI low & $95\%$ CI high & Holm p \\
+\hline
+Reversed wind & -0.046 & -0.070 & -0.027 & 0.0004 \\
+Fixed north & 0.094 & 0.004 & 0.193 & 0.0969 \\
+Full-period shuffle & -0.170 & -0.227 & -0.126 & 0.0001 \\
+True wind, $\lambda=0.3$ & -0.301 & -0.460 & -0.165 & 0.0020 \\
+True wind, $\lambda=1.0$ & -1.136 & -1.575 & -0.751 & 0.0001 \\
+Magnitude-matched Laplacian & 0.139 & 0.073 & 0.202 & 0.0020 \\
+\hline
+\end{tabular}

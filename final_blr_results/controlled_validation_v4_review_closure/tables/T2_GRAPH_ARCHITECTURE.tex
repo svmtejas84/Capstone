@@ -1,0 +1,21 @@
+% Exploratory exposed Bengaluru test; MAE differences and CI bounds in micrograms per cubic metre.
+\begin{tabular}{llrrrr}\hline
+h (hours) & Comparator & $\Delta$MAE & $95\%$ CI low & $95\%$ CI high & Holm p \\
+\hline
+1 & GRU-only & -0.259 & -0.325 & -0.202 & 0.0001 \\
+1 & Temporal CNN & -0.035 & -0.163 & 0.092 & 1.0000 \\
+1 & MLP & -0.101 & -0.279 & 0.070 & 1.0000 \\
+3 & GRU-only & -0.046 & -0.165 & 0.079 & 1.0000 \\
+3 & Temporal CNN & 0.019 & -0.162 & 0.227 & 1.0000 \\
+3 & MLP & 0.009 & -0.220 & 0.246 & 1.0000 \\
+6 & GRU-only & -0.235 & -0.390 & -0.059 & 0.5655 \\
+6 & Temporal CNN & -0.306 & -0.546 & -0.049 & 0.6246 \\
+6 & MLP & -0.298 & -0.531 & -0.044 & 0.6405 \\
+12 & GRU-only & -0.783 & -1.080 & -0.444 & 0.0274 \\
+12 & Temporal CNN & -0.264 & -0.445 & -0.030 & 0.6246 \\
+12 & MLP & -0.726 & -1.059 & -0.279 & 0.0859 \\
+24 & GRU-only & -0.452 & -0.603 & -0.299 & 0.0017 \\
+24 & Temporal CNN & -0.136 & -0.357 & 0.113 & 1.0000 \\
+24 & MLP & -0.071 & -0.247 & 0.133 & 1.0000 \\
+\hline
+\end{tabular}

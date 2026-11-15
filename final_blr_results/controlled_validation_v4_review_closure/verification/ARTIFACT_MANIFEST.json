@@ -1,0 +1,15 @@
+{
+  "research_round": "V4 review closure",
+  "protocol_sha256": "649f6af1f43dc510816efafd0e033a2118b5b7758fc41a1a4572089c740e44f0",
+  "amendment": "PROTOCOL_AMENDMENT_01.md",
+  "source_array_sha256": "bd08d733f924387da82e758d1060703dfcdd121f360b7e8765189d8b7446e202",
+  "selected_checkpoint_count": 30,
+  "prediction_array_count": 36,
+  "invalidated_pretest_shuffle_attempts": 4,
+  "exposed_test": true,
+  "excluded": [
+    "partial.pt restart files",
+    "pre-amendment invalidated checkpoint tensors",
+    "historical V3 datasets/checkpoints"
+  ]
+}

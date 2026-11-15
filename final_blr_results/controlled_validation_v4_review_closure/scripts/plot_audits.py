@@ -8,6 +8,8 @@ OUT=ROOT/'figures';OUT.mkdir(exist_ok=True)
 plt.rcParams.update({'font.size':10,'axes.spines.top':False,'axes.spines.right':False,'figure.dpi':150,'savefig.dpi':300})
 def save(fig,name):
  for ext in ['png','pdf','svg']:fig.savefig(OUT/f'{name}.{ext}',bbox_inches='tight')
+ svg=OUT/f'{name}.svg'
+ svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
  plt.close(fig)
 
 r=pd.read_csv(ROOT/'COMPLETE_MODEL_AND_BASELINE_REGISTER.csv')
