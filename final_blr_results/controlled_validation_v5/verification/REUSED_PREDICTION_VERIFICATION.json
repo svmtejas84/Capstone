@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "reused_ensemble_files": 13,
+  "details": [
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h1_zero",
+      "horizon_hours": 1,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h3_zero",
+      "horizon_hours": 3,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h6_zero",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h12_zero",
+      "horizon_hours": 12,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h24_zero",
+      "horizon_hours": 24,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h6_true_wind",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/predictions/h6_true_wind_03",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/predictions/h6_true_wind_10",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h6_shuffled_wind",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/predictions/h6_full_shuffle_006",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/predictions/h6_reverse_wind_006",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v4_review_closure/predictions/h6_constant_north_006",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    },
+    {
+      "source": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v3/predictions/h6_laplacian",
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "max_abs_saved_ensemble_minus_five_seed_mean": 0.0
+    }
+  ]
+}

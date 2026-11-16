@@ -253,3 +253,5 @@
 2026-11-15 V5: verified 7/7 V3 and 11/11 V4 source hashes, saved all-method anchor/contrast/penalty audits, passed graph/lag and fairness GPU smoke tests, passed strict-prior preflight, launched supervised graph matrix. Amendment 02 corrected L1 missing-daily-lag fallback before L1 training.
 
 2026-11-16 V5: verified 50 graph topology fits and 1074.044 fit seconds, diagnosed shell-script-edit race after final fit, retained first failed supervisor attempt, completed clean restart, launched frozen 50-cell lag stage.
+
+2026-11-16 V5: launched restart-safe stage orchestrator PID 134757; it waits for active lag PID 132111, enforces frozen resource ceilings and schedules cross/fairness sequentially. Pretest audit, source manifests and methodology committed/pushed.

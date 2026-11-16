@@ -225,3 +225,5 @@ V4 release receipt superseding earlier formatting-stage ZIP hashes: local archiv
 2026-11-15 V5 pre-lag amendment 02 (`77d2e66`) pushed before L1 fit/test scoring; frozen baseline fallback parity now passed. Graph stage still active under elevated V100 supervisor. See V5 `RESUME.md`.
 
 2026-11-16 V5 graph stage complete: 50 cells, 1074.044 recorded V100 fit seconds, supervisor attempt 1 exit 0 after a Bash read/edited-script syntax failure at end of attempt 0; all fit cells preserved. Lag stage active PID 132111 in elevated namespace, no V5 test scores. Recovery: V5 `RESUME.md`, `logs/graph/attempts.log`, `logs/lag/`.
+
+2026-11-16 V5 lag worker PID 132111 and supervised sequential orchestrator PID 134757 active in elevated namespace. Orchestrator waits for lag COMPLETE, enforces 4h/4GiB gate, launches cross then fairness sequentially; no V5 test score yet. See V5 `RESUME.md` and `scripts/orchestrate_remaining.sh`.
