@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "horizons": [
+    {
+      "horizon_hours": 1,
+      "scored_pairs": 14583,
+      "min_issue_index": 32663,
+      "max_input_index_offset": 0,
+      "latest_pollutant_source_offset": -1,
+      "genuine_daily_lag_pairs": 12375,
+      "daily_lag_at_issue_excluded": 0,
+      "status": "PASS; timestamp causality only; release latency unverified"
+    },
+    {
+      "horizon_hours": 3,
+      "scored_pairs": 14583,
+      "min_issue_index": 32661,
+      "max_input_index_offset": 0,
+      "latest_pollutant_source_offset": -1,
+      "genuine_daily_lag_pairs": 12375,
+      "daily_lag_at_issue_excluded": 0,
+      "status": "PASS; timestamp causality only; release latency unverified"
+    },
+    {
+      "horizon_hours": 6,
+      "scored_pairs": 14583,
+      "min_issue_index": 32658,
+      "max_input_index_offset": 0,
+      "latest_pollutant_source_offset": -1,
+      "genuine_daily_lag_pairs": 12375,
+      "daily_lag_at_issue_excluded": 0,
+      "status": "PASS; timestamp causality only; release latency unverified"
+    },
+    {
+      "horizon_hours": 12,
+      "scored_pairs": 14583,
+      "min_issue_index": 32652,
+      "max_input_index_offset": 0,
+      "latest_pollutant_source_offset": -1,
+      "genuine_daily_lag_pairs": 12375,
+      "daily_lag_at_issue_excluded": 0,
+      "status": "PASS; timestamp causality only; release latency unverified"
+    },
+    {
+      "horizon_hours": 24,
+      "scored_pairs": 14583,
+      "min_issue_index": 32640,
+      "max_input_index_offset": 0,
+      "latest_pollutant_source_offset": -1,
+      "genuine_daily_lag_pairs": 0,
+      "daily_lag_at_issue_excluded": 1,
+      "status": "PASS; timestamp causality only; release latency unverified"
+    }
+  ],
+  "source_array": "V3 repaired causal array",
+  "caveat": "does not certify operational sensor ingestion or weather publication latency"
+}

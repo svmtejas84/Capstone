@@ -160,3 +160,5 @@
 2026-11-15 v4 final release ZIP (supersedes prior formatting-stage ZIP receipts): 9,469,232 bytes, SHA-256 3b35f71b3f4ed3d2aac5de8b5936578a45d060ffb7dcc576f6f3ee5b9112b435, 243 members with 242 checked member hashes. Five figure triplets, four LaTeX tables, 30 selected checkpoints and 36 prediction arrays included. No additional fit or test score after the 747.176-second valid-fit campaign.
 
 2026-11-15 V5 freeze: V100-PCIE-32GB, 32,488 MiB free at startup; host 95 GiB free. New-fit ceiling 150 cells, four recorded V100 fit-hours and four GiB selected/restart checkpoints. No V5 GPU training consumed at this checkpoint.
+
+2026-11-16 V5 after graph stage: 50 new fits, 1074.044 recorded V100 fit seconds (0.2983 hours), 110 fits and 3.7017 fit-hour budget remain. Lag stage active. No V5 test scoring yet.

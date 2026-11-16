@@ -249,3 +249,7 @@
 2026-11-15 v4 final: pushed evidence commit 4f0218f and verified remote equality; final continuity status and training-verification timestamp committed in a follow-up. No active V4 worker; all requested audits, 30 valid six-hour fits, saved predictions, statistics, penalty replay, figures, tables and local archive complete. Final exact branch SHA is reported after the follow-up push.
 
 2026-11-15 V5: created isolated branch, verified V100 and V3 source array, generated read-only saved-prediction audit into V5 (602 anchor-age rows, 26 contrast rows, 31 diagnostics), froze protocol before new training.
+
+2026-11-15 V5: verified 7/7 V3 and 11/11 V4 source hashes, saved all-method anchor/contrast/penalty audits, passed graph/lag and fairness GPU smoke tests, passed strict-prior preflight, launched supervised graph matrix. Amendment 02 corrected L1 missing-daily-lag fallback before L1 training.
+
+2026-11-16 V5: verified 50 graph topology fits and 1074.044 fit seconds, diagnosed shell-script-edit race after final fit, retained first failed supervisor attempt, completed clean restart, launched frozen 50-cell lag stage.

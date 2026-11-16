@@ -159,3 +159,5 @@
 2026-11-15 V5: preserve V3/V4; treat exposed Bengaluru test as exploratory; use fixed G0/G1/G2, L0/L1/L2 and six-hour seven-family three-strength matrices with five fixed seeds; select penalty strength by five-seed validation mean only. Protocol SHA-256 64682686b29660ff336ed6893e257950ce25c3e03683f68de088f6a808825266.
 
 2026-11-15 V5 amendment 01: pretest lag-matched graph check adds exactly 10 six-hour fits so graph necessity can be assessed with the daily-lag channel held fixed. No V5 test outcome had been inspected; original protocol file and hash stay frozen. Four-hour GPU ceiling unchanged.
+
+2026-11-15 V5 amendment 02: daily-lag fallback must match the saved same-hour-yesterday rule at T−24 for h<24, while h=24 uses the strict-prior issue anchor. No lag fit or V5 test result existed when this correction was made.

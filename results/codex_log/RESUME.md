@@ -221,3 +221,7 @@ V4 release receipt superseding earlier formatting-stage ZIP hashes: local archiv
 2026-11-15 V5 saved-data audit: 602 anchor-age rows over 16 V3 methods plus six V4 six-hour controls, 26 preserved contrast-family rows, 130 seed rows, 31 common-mask diagnostics; source array hash verified. V5 protocol frozen SHA-256 `64682686b29660ff336ed6893e257950ce25c3e03683f68de088f6a808825266`. No V5 fit/new-model test score yet. Recovery: `final_blr_results/controlled_validation_v5/RESUME.md`.
 
 2026-11-15 V5 graph stage active under supervised V100 PID 117422 (elevated namespace); frozen protocol commit 0ce9270 and training-code commit 44a3f09 pushed. Preflight PASS, no V5 test scores. Amendment 01 adds 10 six-hour lag-matched graph cells before test scoring. Exact status/recovery in V5 `RESUME.md`.
+
+2026-11-15 V5 pre-lag amendment 02 (`77d2e66`) pushed before L1 fit/test scoring; frozen baseline fallback parity now passed. Graph stage still active under elevated V100 supervisor. See V5 `RESUME.md`.
+
+2026-11-16 V5 graph stage complete: 50 cells, 1074.044 recorded V100 fit seconds, supervisor attempt 1 exit 0 after a Bash read/edited-script syntax failure at end of attempt 0; all fit cells preserved. Lag stage active PID 132111 in elevated namespace, no V5 test scores. Recovery: V5 `RESUME.md`, `logs/graph/attempts.log`, `logs/lag/`.

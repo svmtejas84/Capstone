@@ -13,3 +13,11 @@ Saved-prediction audit ran successfully: 602 method/horizon/anchor rows, 20 V3 c
 ## V100 graph run and pretest amendment
 
 Protocol-freeze commit `0ce92700e264da6e2788225bef5f0a4f327035dc` was pushed before training. Source and preflight implementation commit `44a3f09` was pushed. Graph stage launched under `scripts/run_supervised.sh` at `logs/graph/`; elevated process namespace reports PID 117422, while sandbox-only `ps` cannot see it. The process is RUNNING; check with elevated `bash scripts/run_supervised.sh status final_blr_results/controlled_validation_v5/logs/graph`. Preflight PASS; initial failed NaN equality assertion was test-only and repaired. No V5 test prediction scored. `PROTOCOL_AMENDMENT_01.md` adds 10 six-hour lag-matched graph cells before test scoring; the original protocol hash is unchanged. Next: monitor graph completion, launch lag/cross/fairness sequentially, validate all 160 cells, then score exposed test once.
+
+## Pre-lag fallback parity amendment
+
+`PROTOCOL_AMENDMENT_02.md` SHA-256 `be17ce0e511a57dddc48449e0350ed565455de9f7a824368dfa059e001148922`, commit `77d2e66`, was pushed before any L1 fit or V5 test score. It matches the frozen same-hour-yesterday fallback at T−24, instead of using a newer issue-time fallback. A V100 preflight passed daily-lag value parity, strict-prior source, future-target mutation, graph geometry and common train masks. `LAG24_ELIGIBILITY.csv` shows 12,375/14,583 genuine daily-lag readings for h=1,3,6,12 and zero at h=24. Graph stage remains active; then launch lag, cross and fairness stages sequentially.
+
+## Graph stage complete; lag stage active
+
+All 50 G1/G2 graph cells completed with checked `COMPLETE.json` and selected checkpoint hashes, 1,074.044 recorded V100 fit seconds (0.2983 h), best epochs 10–21. `logs/graph/COMPLETE` exists. The first supervisor attempt exited code 2 after all cells because `run_stage.sh` was edited while Bash was still parsing it; attempt 1 reloaded the script, skipped/verified all complete cells and exited 0. Failure history is retained in `logs/graph/attempts.log`; no fit was discarded. Lag stage launched under supervisor PID 132111 at `logs/lag/`. No V5 test prediction has been generated. Check with elevated `bash scripts/run_supervised.sh status final_blr_results/controlled_validation_v5/logs/lag`; do not launch cross until lag COMPLETE.
