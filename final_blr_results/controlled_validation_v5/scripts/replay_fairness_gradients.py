@@ -48,7 +48,8 @@ def main():
                 cos=float(torch.dot(dvec,rvec)/(torch.linalg.vector_norm(dvec)*torch.linalg.vector_norm(rvec)+1e-20)) if rn else 0.
                 rows.append(dict(family=family,lambda_max=strength,seed=seed,best_epoch=int(rec["best_epoch"]),
                                  effective_lambda=lam,first_train_batch_hours=len(index),observed_targets=int(valid.sum()),
-                                 active_arcs=int(m.sum()),raw_supervised_loss=float(data),raw_penalty=float(reg),
+                                 active_arcs=int(m.sum()),active_arc_fraction=float(m.float().mean()),
+                                 raw_supervised_loss=float(data),raw_penalty=float(reg),
                                  weighted_penalty=float(lam*reg),supervised_gradient_norm=dn,
                                  weighted_penalty_gradient_norm=rn,gradient_ratio=rn/dn if dn else np.nan,
                                  gradient_cosine=cos,checkpoint_sha256=rec["checkpoint_sha256"],
