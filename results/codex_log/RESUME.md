@@ -229,3 +229,5 @@ V4 release receipt superseding earlier formatting-stage ZIP hashes: local archiv
 2026-11-16 V5 lag worker PID 132111 and supervised sequential orchestrator PID 134757 active in elevated namespace. Orchestrator waits for lag COMPLETE, enforces 4h/4GiB gate, launches cross then fairness sequentially; no V5 test score yet. See V5 `RESUME.md` and `scripts/orchestrate_remaining.sh`.
 
 2026-11-16 V5 lag stage complete 50/50; graph+lag 100 cells, 0.8015 fit-hours and 93,048,928 checkpoint bytes. Cross worker PID 136375 active under orchestrator attempt1; attempt0 failed only from immediate cross PID-file status race, then resumed safely. No V5 test score. Recovery in V5 `RESUME.md`.
+
+2026-11-16 V5: 160/160 new fits and all four supervised markers complete. Pretest validation-only gate PASS, 90-grid strengths selected from mean five-seed validation MAE and documented in controlled_validation_v5/verification/PRETEST_GATE.md. Next push pretest gate, then supervised one-time exposed-test score; no V5 new-checkpoint test score yet.

@@ -166,3 +166,5 @@
 2026-11-16 V5 after lag stage: 100 new fits, 0.8015 recorded V100 fit-hours, 93,048,928 training/checkpoint bytes; 60 cells and ~3.1985 fit-hours remain within frozen limits. Cross stage active.
 
 2026-11-16 V5 cross-factor complete: 110/160 new fits; fairness worker active for remaining 50. Four recorded V100 fit-hour and four-GiB storage ceilings remain in force; final totals to be measured after fairness. No independent USB backup verified.
+
+2026-11-16 V5 full training: 160 fits, 4,599.384 recorded V100 fit seconds = 1.27761 hours, 149,129,418 training bytes, six runs at 30-epoch cap. Under frozen 4h/4GiB limits. Replays were read-only and did not update checkpoints. External USB backup unverified.

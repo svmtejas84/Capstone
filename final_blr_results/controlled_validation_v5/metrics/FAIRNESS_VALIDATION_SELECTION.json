@@ -1,0 +1,8 @@
+{
+  "constant_north": 0.3,
+  "full_shuffle": 1.0,
+  "laplacian": 1.0,
+  "reverse_wind": 1.0,
+  "true_wind": 0.06,
+  "within_month_shuffle": 1.0
+}

@@ -1,0 +1,8 @@
+{
+  "all_unique_context_rows": 225,
+  "new_v5_fit_rows": 160,
+  "recorded_new_fit_seconds": 4599.383906136267,
+  "recorded_new_fit_hours": 1.2776066405934074,
+  "new_runs_reaching_30_epoch_cap": 6,
+  "historic_zero_selection_asymmetry": "shared LR selected from V3 zero penalty seed11"
+}

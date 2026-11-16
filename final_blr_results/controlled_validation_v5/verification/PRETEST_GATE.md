@@ -1,0 +1,9 @@
+# V5 validation-only pretest gate — PASS
+
+Recorded before any V5 new-checkpoint test score. `scripts/verify_and_score.py --stage verify` exited 0 after checking all four supervised stage markers, all 160 new selected checkpoints and source-array hashes, five fixed seeds, 10–30 checkpoint epoch bounds, finite parameters, common six-hour LR 0.0003 and the 90-cell fairness grid. The inherited V3/V4 cells were checked against their immutable source hashes and checkpoint manifests. `metrics/NEW_TEST_SCORES.csv` did not exist at this gate.
+
+The frozen rule selected each regularizer family's coefficient by its five-seed **mean validation MAE**, with smaller λ breaking ties. Selected λ: actual wind 0.06; within-month shuffle 1.0; full shuffle 1.0; reverse wind 1.0; constant north 0.3; Laplacian 1.0. Source: `metrics/FAIRNESS_GRID_VALIDATION.csv` (all 18 family-strength rows), `metrics/FAIRNESS_VALIDATION_SELECTION.json`, and `verification/training_verified.json`. This selection does not use test performance.
+
+Training register: 225 context rows (25 historical unregularized, 160 new V5, 40 historical fairness). The 160 new fits used 4,599.384 recorded V100 fit seconds = 1.27761 hours; six reached the 30-epoch cap. Total new training-directory storage was 149,129,418 bytes at gate, below the four-GiB cap. All four stages exited successfully; the initial graph and orchestrator supervisor restarts remain documented. Replayed training-batch gradients cover all 90 fairness cells; the mean ratio of weighted penalty to supervised gradient norms is 0.159219. This is a descriptive checkpoint-local mean, not a matched penalty scale or a test statistic. Ten additional V3 shuffled/rotated checkpoint replays filled previously unmeasured entries in the V5 diagnostic table.
+
+The Bengaluru test period was previously exposed. The next one-time scoring step is exploratory; it cannot establish independent temporal generalization.

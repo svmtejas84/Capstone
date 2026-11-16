@@ -163,3 +163,5 @@
 2026-11-15 V5 amendment 02: daily-lag fallback must match the saved same-hour-yesterday rule at T−24 for h<24, while h=24 uses the strict-prior issue anchor. No lag fit or V5 test result existed when this correction was made.
 
 2026-11-16 V5: retain orchestrator startup-race attempt logs and rely on the independently supervised fairness worker; do not duplicate training or alter active shell scripts. Complete validation-only selection and checkpoint checks before the one-time exposed-test score.
+
+2026-11-16 V5: unlock the previously exposed Bengaluru test only after pushing the verified 160-cell training gate and validation-selected penalty strengths. Retain exploratory interpretation.
