@@ -1,0 +1,6 @@
+horizon_hours,scored_pairs,lag24_model_mae_ug_m3,same_hour_yesterday_mae_ug_m3,lag24_minus_simple_baseline_ug_m3,ci95_low_ug_m3,ci95_high_ug_m3,utc_days,nonoverlap_7day_blocks,status
+1,14583,10.5827169,14.130312,-3.54759431,-4.38863835,-2.72307633,177,26,post-score descriptive comparison named in frozen protocol; exposed test
+3,14583,12.8144569,14.130312,-1.31585503,-2.0922181,-0.409108577,177,26,post-score descriptive comparison named in frozen protocol; exposed test
+6,14583,14.1052399,14.130312,-0.025070712,-0.745163656,0.871216834,177,26,post-score descriptive comparison named in frozen protocol; exposed test
+12,14583,14.9376526,14.130312,0.807340443,0.142034424,1.68275342,177,26,post-score descriptive comparison named in frozen protocol; exposed test
+24,14583,13.9154797,14.972188,-1.05670905,-1.60946174,-0.457296397,177,26,post-score descriptive comparison named in frozen protocol; exposed test

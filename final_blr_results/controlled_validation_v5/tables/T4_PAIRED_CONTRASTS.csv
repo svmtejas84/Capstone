@@ -1,0 +1,29 @@
+horizon_hours,contrast,paired_delta_mae_ug_m3,ci95_low_ug_m3,ci95_high_ug_m3,block_signflip_p,scored_pairs,utc_days,nonoverlap_7day_blocks,family,inference,holm_family_p,source_table,true_lambda,comparator_lambda
+1,original_graph_minus_self_loops,-0.0170628484,-0.141075764,0.109367645,0.798712013,14583,177,26,V5 graph topology 10,exploratory exposed test,0.798712013,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+1,original_graph_minus_rewired,-0.0202598069,-0.0349953173,-0.00643315887,0.0060699393,14583,177,26,V5 graph topology 10,exploratory exposed test,0.0485595144,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+3,original_graph_minus_self_loops,-0.115959868,-0.245418791,-0.0117235995,0.0780392196,14583,177,26,V5 graph topology 10,exploratory exposed test,0.312156878,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+3,original_graph_minus_rewired,0.0123836454,0.0050046113,0.0205852532,0.0107798922,14583,177,26,V5 graph topology 10,exploratory exposed test,0.0754592454,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+6,original_graph_minus_self_loops,-0.19781746,-0.409470265,0.00557095598,0.117158828,14583,177,26,V5 graph topology 10,exploratory exposed test,0.351476485,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+6,original_graph_minus_rewired,0.0176205523,-0.0104785617,0.0398533042,0.240487595,14583,177,26,V5 graph topology 10,exploratory exposed test,0.48097519,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+12,original_graph_minus_self_loops,-0.891334176,-1.10777799,-0.682943423,1.99998e-05,14583,177,26,V5 graph topology 10,exploratory exposed test,0.000199998,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+12,original_graph_minus_rewired,-0.0162318964,-0.0292336487,-0.00211985527,0.0297597024,14583,177,26,V5 graph topology 10,exploratory exposed test,0.178558214,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+24,original_graph_minus_self_loops,-0.370213926,-0.689781967,-0.0492469421,0.0421095789,14583,177,26,V5 graph topology 10,exploratory exposed test,0.210547895,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+24,original_graph_minus_rewired,0.0365449786,0.0175529938,0.0595711161,0.0011599884,14583,177,26,V5 graph topology 10,exploratory exposed test,0.0104398956,GRAPH_TOPOLOGY_CONTRASTS.csv,,
+1,existing_12h_minus_lag24,0.31304881,0.173799734,0.434063391,0.0011599884,14583,177,26,V5 lag information 10,exploratory exposed test,0.005799942,LAG_INFORMATION_CONTRASTS.csv,,
+1,existing_12h_minus_lookback36,0.101245768,0.0191049445,0.165129544,0.0363896361,14583,177,26,V5 lag information 10,exploratory exposed test,0.109168908,LAG_INFORMATION_CONTRASTS.csv,,
+3,existing_12h_minus_lag24,0.853870392,0.608816156,1.08844397,2.99997e-05,14583,177,26,V5 lag information 10,exploratory exposed test,0.0002699973,LAG_INFORMATION_CONTRASTS.csv,,
+3,existing_12h_minus_lookback36,0.347691029,0.227221392,0.432394533,0.0001299987,14583,177,26,V5 lag information 10,exploratory exposed test,0.0009099909,LAG_INFORMATION_CONTRASTS.csv,,
+6,existing_12h_minus_lag24,1.38913107,1.00965097,1.74457152,9.9999e-06,14583,177,26,V5 lag information 10,exploratory exposed test,9.9999e-05,LAG_INFORMATION_CONTRASTS.csv,,
+6,existing_12h_minus_lookback36,0.692040622,0.477971548,0.893848672,7.99992e-05,14583,177,26,V5 lag information 10,exploratory exposed test,0.0006399936,LAG_INFORMATION_CONTRASTS.csv,,
+12,existing_12h_minus_lag24,0.440766424,0.145543758,0.73325518,0.009799902,14583,177,26,V5 lag information 10,exploratory exposed test,0.039199608,LAG_INFORMATION_CONTRASTS.csv,,
+12,existing_12h_minus_lookback36,0.00854396634,-0.098326511,0.131919166,0.887611124,14583,177,26,V5 lag information 10,exploratory exposed test,0.887611124,LAG_INFORMATION_CONTRASTS.csv,,
+24,existing_12h_minus_lag24,0.38892436,0.232738779,0.591208579,0.0004899951,14583,177,26,V5 lag information 10,exploratory exposed test,0.0029399706,LAG_INFORMATION_CONTRASTS.csv,,
+24,existing_12h_minus_lookback36,-0.0595310554,-0.169182721,0.0387038298,0.254097459,14583,177,26,V5 lag information 10,exploratory exposed test,0.508194918,LAG_INFORMATION_CONTRASTS.csv,,
+6,lag24_original_graph_minus_lag24_self_loops,-0.481514633,-0.641289965,-0.329062342,0.0001599984,14583,177,26,V5 secondary lag-matched graph 2,exploratory exposed test,0.0003199968,LAG_MATCHED_GRAPH_CONTRASTS.csv,,
+6,lag24_original_graph_minus_lag24_rewired,-0.0484941863,-0.0781312119,-0.0195257322,0.0049299507,14583,177,26,V5 secondary lag-matched graph 2,exploratory exposed test,0.0049299507,LAG_MATCHED_GRAPH_CONTRASTS.csv,,
+6,validation_selected_true_minus_zero,-0.128651544,-0.41883088,0.0945537673,0.231377686,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,0.231377686,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,0
+6,validation_selected_true_minus_within_month_shuffle,-1.2634933,-1.67839461,-0.905022989,1.99998e-05,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,9.9999e-05,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,1
+6,validation_selected_true_minus_full_shuffle,-1.14072978,-1.52752827,-0.806095446,9.9999e-06,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,5.99994e-05,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,1
+6,validation_selected_true_minus_reverse_wind,-0.950770795,-1.32853218,-0.614915435,5.99994e-05,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,0.0002399976,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,1
+6,validation_selected_true_minus_constant_north,-0.322068602,-0.467579353,-0.184966211,7.99992e-05,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,0.0002399976,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,0.3
+6,validation_selected_true_minus_laplacian,-0.965963542,-1.35233967,-0.596451041,0.0001099989,14583,177,26,V5 exploratory selected-family 6,exploratory exposed test,0.0002399976,FAIRNESS_SELECTED_CONTRASTS.csv,0.06,1

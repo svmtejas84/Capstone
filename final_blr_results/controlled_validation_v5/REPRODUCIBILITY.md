@@ -30,10 +30,12 @@ PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_valida
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/summarize_training.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/verify_and_score.py --stage score
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/analyze_v5.py
+PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/analyze_daily_baseline.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/diagnose_v5.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/build_results.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/plot_v5.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/verify_v5.py
+PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/verify_release.py
 PYTHONPATH=. MPLCONFIGDIR=/tmp/mpl_v5 python final_blr_results/controlled_validation_v5/scripts/package_v5.py
 ```
 

@@ -1,0 +1,35 @@
+% Numeric evidence only; exposed Bengaluru test; source: T4_PAIRED_CONTRASTS.csv
+\begin{tabular}{lrrrrrrrrrrrrrr}
+\hline
+horizon\_hours & contrast & paired\_delta\_mae\_ug\_m3 & ci95\_low\_ug\_m3 & ci95\_high\_ug\_m3 & block\_signflip\_p & scored\_pairs & utc\_days & nonoverlap\_7day\_blocks & family & inference & holm\_family\_p & source\_table & true\_lambda & comparator\_lambda \\
+\hline
+1 & original\_graph\_minus\_self\_loops & -0.0170628 & -0.141076 & 0.109368 & 0.798712 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.798712 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+1 & original\_graph\_minus\_rewired & -0.0202598 & -0.0349953 & -0.00643316 & 0.00606994 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.0485595 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+3 & original\_graph\_minus\_self\_loops & -0.11596 & -0.245419 & -0.0117236 & 0.0780392 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.312157 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+3 & original\_graph\_minus\_rewired & 0.0123836 & 0.00500461 & 0.0205853 & 0.0107799 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.0754592 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+6 & original\_graph\_minus\_self\_loops & -0.197817 & -0.40947 & 0.00557096 & 0.117159 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.351476 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+6 & original\_graph\_minus\_rewired & 0.0176206 & -0.0104786 & 0.0398533 & 0.240488 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.480975 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+12 & original\_graph\_minus\_self\_loops & -0.891334 & -1.10778 & -0.682943 & 1.99998e-05 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.000199998 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+12 & original\_graph\_minus\_rewired & -0.0162319 & -0.0292336 & -0.00211986 & 0.0297597 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.178558 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+24 & original\_graph\_minus\_self\_loops & -0.370214 & -0.689782 & -0.0492469 & 0.0421096 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.210548 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+24 & original\_graph\_minus\_rewired & 0.036545 & 0.017553 & 0.0595711 & 0.00115999 & 14583 & 177 & 26 & V5 graph topology 10 & exploratory exposed test & 0.0104399 & GRAPH\_TOPOLOGY\_CONTRASTS.csv & NA & NA \\
+1 & existing\_12h\_minus\_lag24 & 0.313049 & 0.1738 & 0.434063 & 0.00115999 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.00579994 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+1 & existing\_12h\_minus\_lookback36 & 0.101246 & 0.0191049 & 0.16513 & 0.0363896 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.109169 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+3 & existing\_12h\_minus\_lag24 & 0.85387 & 0.608816 & 1.08844 & 2.99997e-05 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.000269997 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+3 & existing\_12h\_minus\_lookback36 & 0.347691 & 0.227221 & 0.432395 & 0.000129999 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.000909991 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+6 & existing\_12h\_minus\_lag24 & 1.38913 & 1.00965 & 1.74457 & 9.9999e-06 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 9.9999e-05 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+6 & existing\_12h\_minus\_lookback36 & 0.692041 & 0.477972 & 0.893849 & 7.99992e-05 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.000639994 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+12 & existing\_12h\_minus\_lag24 & 0.440766 & 0.145544 & 0.733255 & 0.0097999 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.0391996 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+12 & existing\_12h\_minus\_lookback36 & 0.00854397 & -0.0983265 & 0.131919 & 0.887611 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.887611 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+24 & existing\_12h\_minus\_lag24 & 0.388924 & 0.232739 & 0.591209 & 0.000489995 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.00293997 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+24 & existing\_12h\_minus\_lookback36 & -0.0595311 & -0.169183 & 0.0387038 & 0.254097 & 14583 & 177 & 26 & V5 lag information 10 & exploratory exposed test & 0.508195 & LAG\_INFORMATION\_CONTRASTS.csv & NA & NA \\
+6 & lag24\_original\_graph\_minus\_lag24\_self\_loops & -0.481515 & -0.64129 & -0.329062 & 0.000159998 & 14583 & 177 & 26 & V5 secondary lag-matched graph 2 & exploratory exposed test & 0.000319997 & LAG\_MATCHED\_GRAPH\_CONTRASTS.csv & NA & NA \\
+6 & lag24\_original\_graph\_minus\_lag24\_rewired & -0.0484942 & -0.0781312 & -0.0195257 & 0.00492995 & 14583 & 177 & 26 & V5 secondary lag-matched graph 2 & exploratory exposed test & 0.00492995 & LAG\_MATCHED\_GRAPH\_CONTRASTS.csv & NA & NA \\
+6 & validation\_selected\_true\_minus\_zero & -0.128652 & -0.418831 & 0.0945538 & 0.231378 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 0.231378 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 0 \\
+6 & validation\_selected\_true\_minus\_within\_month\_shuffle & -1.26349 & -1.67839 & -0.905023 & 1.99998e-05 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 9.9999e-05 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 1 \\
+6 & validation\_selected\_true\_minus\_full\_shuffle & -1.14073 & -1.52753 & -0.806095 & 9.9999e-06 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 5.99994e-05 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 1 \\
+6 & validation\_selected\_true\_minus\_reverse\_wind & -0.950771 & -1.32853 & -0.614915 & 5.99994e-05 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 0.000239998 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 1 \\
+6 & validation\_selected\_true\_minus\_constant\_north & -0.322069 & -0.467579 & -0.184966 & 7.99992e-05 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 0.000239998 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 0.3 \\
+6 & validation\_selected\_true\_minus\_laplacian & -0.965964 & -1.35234 & -0.596451 & 0.000109999 & 14583 & 177 & 26 & V5 exploratory selected-family 6 & exploratory exposed test & 0.000239998 & FAIRNESS\_SELECTED\_CONTRASTS.csv & 0.06 & 1 \\
+\hline
+\end{tabular}

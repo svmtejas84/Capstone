@@ -231,3 +231,7 @@ V4 release receipt superseding earlier formatting-stage ZIP hashes: local archiv
 2026-11-16 V5 lag stage complete 50/50; graph+lag 100 cells, 0.8015 fit-hours and 93,048,928 checkpoint bytes. Cross worker PID 136375 active under orchestrator attempt1; attempt0 failed only from immediate cross PID-file status race, then resumed safely. No V5 test score. Recovery in V5 `RESUME.md`.
 
 2026-11-16 V5: 160/160 new fits and all four supervised markers complete. Pretest validation-only gate PASS, 90-grid strengths selected from mean five-seed validation MAE and documented in controlled_validation_v5/verification/PRETEST_GATE.md. Next push pretest gate, then supervised one-time exposed-test score; no V5 new-checkpoint test score yet.
+
+2026-11-16 V5 scientific analysis complete: 160 fits, 192 new prediction arrays, 240 scores, 28 paired contrasts, 140 seed rows, nine table pairs, four figure triplets. `controlled_validation_v5/FINAL_SCIENTIFIC_VERDICT.md` and `verification/FINAL_VERIFICATION.md` are authoritative. Final local ZIP and Git push still pending; next run V5 package script and commit lightweight outputs. Do not rerun guarded test score.
+
+2026-11-16 V5 local archive initial verification PASS (841 members); final checksum receipt pending after final continuity update. Lightweight results/docs push pending. Scientific results and one-time test score are complete; do not retrain or rescore.

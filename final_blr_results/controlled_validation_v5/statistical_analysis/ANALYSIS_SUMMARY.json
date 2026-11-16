@@ -1,0 +1,15 @@
+{
+  "graph_contrasts": 10,
+  "lag_contrasts": 10,
+  "lag_matched_graph_contrasts": 2,
+  "regularizer_contrasts": 6,
+  "seed_rows": 140,
+  "family_strengths": {
+    "constant_north": 0.3,
+    "full_shuffle": 1.0,
+    "laplacian": 1.0,
+    "reverse_wind": 1.0,
+    "true_wind": 0.06,
+    "within_month_shuffle": 1.0
+  }
+}

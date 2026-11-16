@@ -1,5 +1,5 @@
 """Build numerical V5 tables from verified metrics without changing models."""
-import csv
+import re
 from pathlib import Path
 
 import numpy as np
@@ -8,12 +8,26 @@ import pandas as pd
 V5=Path(__file__).resolve().parents[1]
 
 
+def latex_cell(value):
+    if pd.isna(value):
+        return "NA"
+    if isinstance(value, (float, np.floating)):
+        return f"{value:.6g}"
+    if isinstance(value, (bool, np.bool_)):
+        return "yes" if value else "no"
+    return re.sub(r"[\\&%$#_{}~^]", lambda m: "\\textbackslash{}" if m.group() == "\\" else "\\" + m.group(), str(value))
+
+
 def save(df,name):
     out=V5/"tables";out.mkdir(exist_ok=True)
-    df.to_csv(out/f"{name}.csv",index=False,float_format="%.9g")
+    df.to_csv(out/f"{name}.csv",index=False,float_format="%.9g",lineterminator="\n")
     with (out/f"{name}.tex").open("w") as f:
         f.write("% Numeric evidence only; exposed Bengaluru test; source: "+name+".csv\n")
-        f.write(df.to_latex(index=False,escape=True,float_format=lambda x:f"{x:.3f}"))
+        f.write("\\begin{tabular}{"+"l"+"r"*(len(df.columns)-1)+"}\n\\hline\n")
+        f.write(" & ".join(latex_cell(c) for c in df.columns)+" \\\\\n\\hline\n")
+        for row in df.itertuples(index=False,name=None):
+            f.write(" & ".join(latex_cell(v) for v in row)+" \\\\\n")
+        f.write("\\hline\n\\end{tabular}\n")
 
 
 def main():
@@ -46,7 +60,10 @@ def main():
     save(pd.concat(contrasts,ignore_index=True),"T4_PAIRED_CONTRASTS")
     save(pd.read_csv(V5/"TRAINING_SELECTION_REGISTER.csv"),"T5_TRAINING_SELECTION")
     save(pd.read_csv(V5/"ANCHOR_AGE_ALL_METHODS.csv"),"S1_ANCHOR_AGE_ALL_METHODS")
-    print("6 numerical CSV/LaTeX pairs written")
+    save(pd.read_csv(V5/"statistical_analysis/V5_SEED_LEVEL.csv"),"T6_SEED_LEVEL")
+    save(pd.read_csv(V5/"statistical_analysis/DAILY_LAG_SIMPLE_BASELINE.csv"),"T7_DAILY_BASELINE")
+    save(pd.read_csv(V5/"PENALTY_DIAGNOSTICS_NEW_CONDITIONS.csv"),"T8_PENALTY_DIAGNOSTICS")
+    print("9 numerical CSV/LaTeX pairs written")
 
 
 if __name__=="__main__":main()

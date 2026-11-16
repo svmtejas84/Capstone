@@ -261,3 +261,7 @@
 2026-11-16 V5: completed all 10 pretest six-hour lag-matched graph fits and verified cross supervisor exit 0. The supervised orchestrator launched the 50-cell regularizer fairness grid; its attempt 1 exited on an immediate status/PID-file race while the fairness worker remained active, and attempt 2 resumed monitoring. No V5 test score generated.
 
 2026-11-16 V5: all 160 new fits completed; validation-only checkpoint/source audit passed; froze six penalty strengths from 90 validation grid cells. Replayed 90 fairness and ten V3 missing penalty gradients without optimizer steps. No V5 test score yet.
+
+2026-11-16 V5: supervised one-time exposed-test scorer exited 0, saved 192 NPZ/240 metrics. Generated 28 paired ensemble contrasts, 140 seed rows, 40 new-condition diagnostics, nine numeric table pairs and four figure triplets. Full-score recomputation max discrepancy 7.11e-15. Six physics/cutoff tests passed with PYTHONPATH=. First bare pytest failed import collection; table export initially failed old Jinja2, then a source-only formatter fixed it.
+
+2026-11-16 V5: initial archive build succeeded with 841 members, CRC PASS and 840 member SHA-256 matches. Final ZIP will be rebuilt after continuity text is finalized; no model or result values will change.

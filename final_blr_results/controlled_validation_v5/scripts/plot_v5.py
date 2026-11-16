@@ -33,7 +33,7 @@ def main():
         col="mae_ug_m3" if variant=="zero" else "mae"
         ax[0].plot(data.horizon_hours,data[col],marker="o",color=COLORS[name],label=name)
     ax[0].set(title="Station-graph topology: ensemble MAE",xlabel="Forecast horizon (h)",ylabel="MAE (µg/m³)",xticks=H)
-    ax[0].legend(loc="upper left",frameon=False)
+    ax[0].legend(loc="lower right",frameon=False)
     for label,color in (("original_graph_minus_self_loops",COLORS["Self loops"]),
                         ("original_graph_minus_rewired",COLORS["Rewired degree-preserving graph"])):
         d=graph[graph.contrast==label]
@@ -90,8 +90,9 @@ def main():
     ax.bar(fresh.horizon_hours,fresh.fraction_of_scored_pairs*100,width=[.8,1.1,1.6,2,3],color="#56B4E9")
     ax.set(title="Genuine one-hour anchors among scored targets",xlabel="Forecast horizon (h)",
            ylabel="Fraction of scored pairs (%)",xticks=H,ylim=(0,100))
-    ax.text(.98,.04,"14,583 observed targets per horizon; unscored hours excluded",transform=ax.transAxes,
-            ha="right",va="bottom",fontsize=7)
+    ax.text(.02,.06,"14,583 observed targets per horizon; unscored hours excluded",transform=ax.transAxes,
+            ha="left",va="bottom",fontsize=7,
+            bbox={"facecolor":"white","alpha":.95,"edgecolor":"none","pad":2})
     save(fig,"F4_anchor_coverage")
     print("4 figure triplets written")
 

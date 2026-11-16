@@ -168,3 +168,7 @@
 2026-11-16 V5 cross-factor complete: 110/160 new fits; fairness worker active for remaining 50. Four recorded V100 fit-hour and four-GiB storage ceilings remain in force; final totals to be measured after fairness. No independent USB backup verified.
 
 2026-11-16 V5 full training: 160 fits, 4,599.384 recorded V100 fit seconds = 1.27761 hours, 149,129,418 training bytes, six runs at 30-epoch cap. Under frozen 4h/4GiB limits. Replays were read-only and did not update checkpoints. External USB backup unverified.
+
+2026-11-16 V5 final compute: 160 new V100 fits, 4,599.384 recorded fit seconds = 1.27761 hours; 149,129,418 bytes new training directory at pretest gate. One supervised exposed-test scorer completed in 47 seconds; no additional neural fit after gate. Archive pending checksum receipt. No USB backup verified.
+
+2026-11-16 V5 initial archive: 46,493,492 bytes, 841 members; final receipt to supersede after continuity update. Historical V3/V4 data and restart partials excluded. No external USB backup verified.

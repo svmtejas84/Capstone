@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "new_score_rows_recomputed": 240,
+  "max_abs_metric_discrepancy": 7.105427357601002e-15,
+  "figure_triplets_opened": 4,
+  "numeric_table_pairs_checked": 9,
+  "daily_baseline_rows_checked": 5,
+  "scientific_scope": "consistency and readability-file checks; not independent validation"
+}

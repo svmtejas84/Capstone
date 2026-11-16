@@ -1,0 +1,3 @@
+horizon_hours,contrast,paired_delta_mae_ug_m3,ci95_low_ug_m3,ci95_high_ug_m3,block_signflip_p,scored_pairs,utc_days,nonoverlap_7day_blocks,family,inference,holm_family_p
+6,lag24_original_graph_minus_lag24_self_loops,-0.4815146327018738,-0.6412899648850429,-0.32906234158985254,0.00015999840001599985,14583,177,26,V5 secondary lag-matched graph 2,exploratory exposed test,0.0003199968000319997
+6,lag24_original_graph_minus_lag24_rewired,-0.048494186252355576,-0.07813121194429745,-0.019525732206798322,0.004929950700492995,14583,177,26,V5 secondary lag-matched graph 2,exploratory exposed test,0.004929950700492995

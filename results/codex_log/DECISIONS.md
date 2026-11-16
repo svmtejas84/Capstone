@@ -165,3 +165,5 @@
 2026-11-16 V5: retain orchestrator startup-race attempt logs and rely on the independently supervised fairness worker; do not duplicate training or alter active shell scripts. Complete validation-only selection and checkpoint checks before the one-time exposed-test score.
 
 2026-11-16 V5: unlock the previously exposed Bengaluru test only after pushing the verified 160-cell training gate and validation-selected penalty strengths. Retain exploratory interpretation.
+
+2026-11-16 V5 verdict: graph-edge benefit versus self loops is visible but one degree-preserving rewiring matches or beats original at several horizons; daily-lag input helps the 12-hour model but does not establish a six-hour advantage over same-hour-yesterday; selected actual-wind controls have unequal penalty-gradient exposure, so physical specificity remains inconclusive. All test claims exploratory.

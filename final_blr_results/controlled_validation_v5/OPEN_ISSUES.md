@@ -1,4 +1,4 @@
-# V5 scientific limitations and pending outcome checks
+# V5 remaining scientific limitations
 
 These limitations are independent of whether any V5 MAE difference is favorable:
 
@@ -10,6 +10,8 @@ These limitations are independent of whether any V5 MAE difference is favorable:
 6. **Temporal control capacity:** L1 adds 192 parameters and three final-row channels; L2 retains parameter count but triples temporal processing. Any gain combines information and representation changes. At h=24 the actual T−24 measurement is ineligible at issue, so L1 cannot test an observed daily-lag signal there.
 7. **Regularizer exposure:** directional and Laplacian losses have different active-arc fractions and raw scales. The frozen λ grid and checkpoint-local gradient replay show exposure but cannot make penalty families mathematically equivalent. The directional hinge is not a mass-conservation equation.
 8. **Selection asymmetry:** the shared LR per horizon was inherited from validation selection on the unregularized seed-11 model. Subsequent conditions share that LR, which isolates a matched policy but may favor the selecting procedure.
-9. **Backup:** Git pushes and the planned ZIP preserve lightweight source and selected artifacts but do not verify an independent USB backup of historical raw data or checkpoints.
+9. **Simple daily-lag control:** the augmented network's six-hour MAE differs from same-hour-yesterday by only −0.025 µg/m³, with a seven-day block interval crossing zero. At 12 hours the simple control remains better. The graph and temporal mechanisms cannot be reduced to one overall superiority claim.
+10. **Selection shift and physical specificity:** validation picked much stronger false-direction and Laplacian penalties than actual wind, while test concentration means differ markedly from validation. The resulting selected-procedure differences do not isolate atmospheric wind correctness. Constant north at common λ=.06 beats actual wind at λ=.06 by point estimate on the exposed test.
+11. **Backup:** the local V5 ZIP preserves selected artifacts, but Git push and ZIP verification do not establish an independent USB backup of historical raw data or checkpoints.
 
-Pending until the authorized V5 fit/test sequence finishes: complete-matrix integrity, graph and lag numerical outcomes, validation-selected fairness grid, paired uncertainty, replayed gradients and archive checksum. An unfavorable result will not be omitted.
+The complete 160-cell matrix, 90-cell validation grid, 192 new prediction arrays, paired analyses and gradient replays have been verified. The remaining scientific gaps require data or prospective protocols outside V5: independent temporal replication, a genuine spatial holdout with station exclusion, operational release-time evidence, multiple topology realizations and penalties matched by optimization exposure. An unfavorable result is preserved in the full tables.
