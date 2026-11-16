@@ -167,3 +167,5 @@
 2026-11-16 V5: unlock the previously exposed Bengaluru test only after pushing the verified 160-cell training gate and validation-selected penalty strengths. Retain exploratory interpretation.
 
 2026-11-16 V5 verdict: graph-edge benefit versus self loops is visible but one degree-preserving rewiring matches or beats original at several horizons; daily-lag input helps the 12-hour model but does not establish a six-hour advantage over same-hour-yesterday; selected actual-wind controls have unequal penalty-gradient exposure, so physical specificity remains inconclusive. All test claims exploratory.
+
+2026-11-16 V5 final interpretation: classify graph-topology necessity as partial/inconclusive, causal daily-lag benefit over the 12-hour model as partial but not a six-hour advantage over same-hour-yesterday, true-wind physical specificity as inconclusive under unequal selected penalty exposure, and independent generalization as not evaluated. Preserve exposed-test and weather-latency caveats.

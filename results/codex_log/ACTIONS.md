@@ -265,3 +265,5 @@
 2026-11-16 V5: supervised one-time exposed-test scorer exited 0, saved 192 NPZ/240 metrics. Generated 28 paired ensemble contrasts, 140 seed rows, 40 new-condition diagnostics, nine numeric table pairs and four figure triplets. Full-score recomputation max discrepancy 7.11e-15. Six physics/cutoff tests passed with PYTHONPATH=. First bare pytest failed import collection; table export initially failed old Jinja2, then a source-only formatter fixed it.
 
 2026-11-16 V5: initial archive build succeeded with 841 members, CRC PASS and 840 member SHA-256 matches. Final ZIP will be rebuilt after continuity text is finalized; no model or result values will change.
+
+2026-11-16 V5 final scientific handoff written: all 160 fits, one-time 192-NPZ test score, 28 ensemble contrasts, 140 seed rows, nine CSV/LaTeX table pairs and four figure triplets. Verified 240 metrics from saved predictions. Local archive initially passed CRC/member checks and will be rebuilt with final continuity text.

@@ -172,3 +172,5 @@
 2026-11-16 V5 final compute: 160 new V100 fits, 4,599.384 recorded fit seconds = 1.27761 hours; 149,129,418 bytes new training directory at pretest gate. One supervised exposed-test scorer completed in 47 seconds; no additional neural fit after gate. Archive pending checksum receipt. No USB backup verified.
 
 2026-11-16 V5 initial archive: 46,493,492 bytes, 841 members; final receipt to supersede after continuity update. Historical V3/V4 data and restart partials excluded. No external USB backup verified.
+
+2026-11-16 V5 final: 160 new fits consumed 1.27761 recorded V100 fit-hours; six reached epoch cap. Training files 149,129,418 bytes at pretest gate. Four figure triplets and nine numerical table pairs generated; ZIP checksum receipt under controlled_validation_v5/archives/ZIP_VERIFICATION.json. Historical archives preserved; USB backup unverified.

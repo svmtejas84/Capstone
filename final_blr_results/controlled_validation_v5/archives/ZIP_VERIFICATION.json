@@ -1,0 +1,9 @@
+{
+  "archive_absolute_path": "/home/jupyter-1nt23cb058/Capstone/final_blr_results/controlled_validation_v5/archives/ST_PIGNN_CONTROLLED_VALIDATION_V5.zip",
+  "bytes": 46494245,
+  "sha256": "bb7dadb154d3bcfb4b779f6aeb8d7ad896a447119c0deb0ac0343b8827cc94f9",
+  "members": 841,
+  "member_hashes_verified": 840,
+  "crc": "PASS",
+  "excluded": "restart-only partial.pt, archive itself and Python caches; historical V3/V4 datasets/checkpoints remain external source dependencies"
+}
