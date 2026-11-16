@@ -255,3 +255,7 @@
 2026-11-16 V5: verified 50 graph topology fits and 1074.044 fit seconds, diagnosed shell-script-edit race after final fit, retained first failed supervisor attempt, completed clean restart, launched frozen 50-cell lag stage.
 
 2026-11-16 V5: launched restart-safe stage orchestrator PID 134757; it waits for active lag PID 132111, enforces frozen resource ceilings and schedules cross/fairness sequentially. Pretest audit, source manifests and methodology committed/pushed.
+
+2026-11-16 V5: verified lag stage 50/50 and passed 0.8015h/93MB budget gate, launched ten lag-matched graph fits. Preserved orchestrator immediate-status race attempt0 and safe attempt1 restart.
+
+2026-11-16 V5: completed all 10 pretest six-hour lag-matched graph fits and verified cross supervisor exit 0. The supervised orchestrator launched the 50-cell regularizer fairness grid; its attempt 1 exited on an immediate status/PID-file race while the fairness worker remained active, and attempt 2 resumed monitoring. No V5 test score generated.

@@ -162,3 +162,7 @@
 2026-11-15 V5 freeze: V100-PCIE-32GB, 32,488 MiB free at startup; host 95 GiB free. New-fit ceiling 150 cells, four recorded V100 fit-hours and four GiB selected/restart checkpoints. No V5 GPU training consumed at this checkpoint.
 
 2026-11-16 V5 after graph stage: 50 new fits, 1074.044 recorded V100 fit seconds (0.2983 hours), 110 fits and 3.7017 fit-hour budget remain. Lag stage active. No V5 test scoring yet.
+
+2026-11-16 V5 after lag stage: 100 new fits, 0.8015 recorded V100 fit-hours, 93,048,928 training/checkpoint bytes; 60 cells and ~3.1985 fit-hours remain within frozen limits. Cross stage active.
+
+2026-11-16 V5 cross-factor complete: 110/160 new fits; fairness worker active for remaining 50. Four recorded V100 fit-hour and four-GiB storage ceilings remain in force; final totals to be measured after fairness. No independent USB backup verified.

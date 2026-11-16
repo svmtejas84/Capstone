@@ -161,3 +161,5 @@
 2026-11-15 V5 amendment 01: pretest lag-matched graph check adds exactly 10 six-hour fits so graph necessity can be assessed with the daily-lag channel held fixed. No V5 test outcome had been inspected; original protocol file and hash stay frozen. Four-hour GPU ceiling unchanged.
 
 2026-11-15 V5 amendment 02: daily-lag fallback must match the saved same-hour-yesterday rule at T−24 for h<24, while h=24 uses the strict-prior issue anchor. No lag fit or V5 test result existed when this correction was made.
+
+2026-11-16 V5: retain orchestrator startup-race attempt logs and rely on the independently supervised fairness worker; do not duplicate training or alter active shell scripts. Complete validation-only selection and checkpoint checks before the one-time exposed-test score.

@@ -25,3 +25,11 @@ All 50 G1/G2 graph cells completed with checked `COMPLETE.json` and selected che
 ## Sequential stage orchestrator active
 
 Commit `0752632` pushed `METHODOLOGY.md`, source manifests, pretest audit and `scripts/orchestrate_remaining.sh`. V100 lag worker PID 132111 remains active. Supervised orchestrator PID 134757 waits for lag `COMPLETE`, checks the frozen four fit-hour/four-GiB limits, then launches cross and fairness stages sequentially with their own supervisor logs. Exact status commands: `bash scripts/run_supervised.sh status final_blr_results/controlled_validation_v5/logs/lag`; same for `orchestrator`, `cross`, `fairness`. Run these with elevated process visibility. Do not launch another copy while RUNNING. No V5 test scoring has occurred. After all four stage markers are COMPLETE, run V5 `REPRODUCIBILITY.md` verification and one-time score sequence.
+
+## Lag complete; cross-factor active
+
+Lag stage 50/50 cells and supervisor `logs/lag/COMPLETE` verified, exit 0 at 2026-11-16T02:05:37Z. Cumulative graph+lag: 100 new cells, 0.8015 recorded V100 fit-hours, 93,048,928 checkpoint bytes. Orchestrator budget gate passed and launched cross worker PID 136375. Its attempt 0 exited code 1 due an immediate status/PID-file creation race (`STAGE_STOPPED cross: STOPPED`); attempt 1 is RUNNING and sees the cross worker. No test scoring. Check elevated statuses of `logs/cross` and `logs/orchestrator`; preserve both orchestrator attempts. Next fairness stage is automatic after cross COMPLETE and budget check.
+
+## Cross-factor complete; fairness grid active
+
+All 10 six-hour lag-matched graph fits completed. `logs/cross/COMPLETE` was written after supervisor attempt 0 exited code 0 at 2026-11-16T02:09:43Z, bringing the new-cell count to 110. The orchestrator launched fairness worker PID 137061 under `logs/fairness/`. Orchestrator attempt 1 hit the same immediate status/PID-file race at launch and exited code 1; attempt 2 is monitoring the running fairness worker. All attempts remain logged. The final 50 fits are in progress. No V5 test prediction has been scored. Check elevated `bash scripts/run_supervised.sh status final_blr_results/controlled_validation_v5/logs/fairness` and the analogous `logs/orchestrator` status; do not launch a second worker.

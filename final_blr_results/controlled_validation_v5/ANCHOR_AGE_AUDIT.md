@@ -13,3 +13,5 @@ An anchor is the latest **genuinely observed** station PM2.5 row strictly before
 | 24 h | 14,583 | 12,311 | 84.42% | 149 |
 
 These proportions describe the *scored-target population*. They do not show that the system can maintain equal accuracy across unsensed hours. At six hours, V3 all-station historical pollutant input slots were approximately 84.9% imputed in training and 76.7% imputed in test. The apparent contrast arises because scoring selects observed targets, many of which have nearby prior observations. The per-bucket MAE patterns vary by site and period; they are descriptive associations, not a causal effect of anchor age. [SOURCE: V3 repaired array `observed_mask` and `input_observed_mask`; V4 `ANCHOR_AGE_AND_ERROR_AUDIT.md`; V5 `ANCHOR_AGE_ALL_METHODS.csv`.]
+
+Per-station anchor age and fallback counts are preserved in `data_manifests/ANCHOR_AGE_PER_STATION.csv` (75 station–horizon rows). Only **11 of the 15** monitoring stations have scored test targets; four have zero test targets. The 14,583 scored observations are not 14,583 independent geographic sites.
